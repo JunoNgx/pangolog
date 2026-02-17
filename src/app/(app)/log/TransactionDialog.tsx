@@ -15,6 +15,7 @@ import type { Buck, Dime } from "@/lib/db/types";
 import { useCreateBuck, useUpdateBuck } from "@/lib/hooks/useBucks";
 import { useCategories } from "@/lib/hooks/useCategories";
 import { useCreateDime, useUpdateDime } from "@/lib/hooks/useDimes";
+import { ToggleSwitch } from "@/components/ToggleSwitch";
 
 interface TransactionDialogProps {
     isOpen: boolean;
@@ -151,19 +152,23 @@ export function TransactionDialog({
                         />
 
                         <div className="flex items-center gap-4">
-                            <Checkbox
-                                isSelected={isIncome}
+                            <ToggleSwitch
+                                isSelectingRight={isIncome}
                                 onValueChange={setIsIncome}
-                            >
-                                Income
-                            </Checkbox>
-                            <Checkbox
-                                isSelected={isBuck}
+                                leftLabel="Income"
+                                leftColor="bg-emerald-600"
+                                rightLabel="Expense"
+                                rightColor="bg-amber-600"
+                            />
+                            
+                            <ToggleSwitch
+                                isSelectingRight={isBuck}
                                 onValueChange={setIsBuck}
-                                isDisabled={isEditing}
-                            >
-                                Big Buck
-                            </Checkbox>
+                                leftLabel="Big buck"
+                                leftColor="bg-emerald-600"
+                                rightLabel="Small dime"
+                                rightColor="bg-amber-600"
+                            />
                         </div>
 
                         <div>
