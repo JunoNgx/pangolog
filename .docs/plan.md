@@ -87,12 +87,18 @@
     - [ ] Responsive design
 
 ## Phase 2: Advanced features
+
+### Phase 2a: drag and drop
 - [ ] Category management view: Drag and drop priority ordering functionality
     - [ ] Reorder UI with drag handles
     - [ ] Save new order to IndexedDB
     - [ ] Update transaction form category order
+
+### Phase 2b: Summary view
 - [ ] Summary view
     - [ ] Display pie charts
+
+### Phase 2c: Setting view
 - [ ] Settings view
     - [ ] Custom display unit
         - [ ] Custom currency symbol input
