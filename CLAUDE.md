@@ -45,3 +45,4 @@ Personal expense tracker PWA. See `.docs/spec.md` and `.docs/plan.md` for full d
 - Phase 1a (basic setup): done
 - Phase 1b (route structure): done
 - Phase 1c (IndexedDB): done
+- Phase 1d (main layout + navbar): done
