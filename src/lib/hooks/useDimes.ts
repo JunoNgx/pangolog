@@ -1,0 +1,42 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+    createDime,
+    deleteDime,
+    getDimesByMonth,
+    updateDime,
+} from "../db/dimes";
+import type { DimeInput, DimeUpdate } from "../db/types";
+
+const DIMES_KEY = ["dimes"];
+
+export function useDimes(year: number, month: number) {
+    return useQuery({
+        queryKey: [...DIMES_KEY, year, month],
+        queryFn: () => getDimesByMonth(year, month),
+    });
+}
+
+export function useCreateDime() {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (input: DimeInput) => createDime(input),
+        onSuccess: () => queryClient.invalidateQueries({ queryKey: DIMES_KEY }),
+    });
+}
+
+export function useUpdateDime() {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: ({ id, input }: { id: string; input: DimeUpdate }) =>
+            updateDime(id, input),
+        onSuccess: () => queryClient.invalidateQueries({ queryKey: DIMES_KEY }),
+    });
+}
+
+export function useDeleteDime() {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (id: string) => deleteDime(id),
+        onSuccess: () => queryClient.invalidateQueries({ queryKey: DIMES_KEY }),
+    });
+}

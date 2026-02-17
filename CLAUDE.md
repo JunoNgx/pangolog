@@ -50,3 +50,4 @@ Personal expense tracker PWA. See `.docs/spec.md` and `.docs/plan.md` for full d
 - Phase 1d (main layout + navbar): done
 - Phase 1e (category view): done
 - Phase 2a (drag-and-drop category reordering): done
+- Phase 1f (transaction view): done
