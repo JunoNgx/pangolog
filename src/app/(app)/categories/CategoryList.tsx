@@ -1,14 +1,88 @@
 "use client";
 
+import { move } from "@dnd-kit/helpers";
+import { DragDropProvider } from "@dnd-kit/react";
+import { useSortable } from "@dnd-kit/react/sortable";
 import { Button, Chip, Spinner } from "@heroui/react";
 import { useState } from "react";
 import type { Category } from "@/lib/db/types";
-import { useCategories, useDeleteCategory } from "@/lib/hooks/useCategories";
+import {
+    useCategories,
+    useDeleteCategory,
+    useReorderCategories,
+} from "@/lib/hooks/useCategories";
 import { CategoryDialog } from "./CategoryDialog";
+
+interface SortableCategoryItemProps {
+    cat: Category;
+    index: number;
+    onEdit: (cat: Category) => void;
+    onDelete: (id: string) => void;
+    isDeleting: boolean;
+}
+
+function SortableCategoryItem({
+    cat,
+    index,
+    onEdit,
+    onDelete,
+    isDeleting,
+}: SortableCategoryItemProps) {
+    const { ref, handleRef, isDragging } = useSortable({
+        id: cat.id,
+        index,
+        group: "categories",
+    });
+
+    return (
+        <li
+            ref={ref}
+            className={`flex items-center gap-3 rounded-lg border border-default-200 px-4 py-3 bg-background ${
+                isDragging ? "opacity-50" : ""
+            }`}
+        >
+            <span
+                ref={handleRef}
+                className="text-default-400 cursor-grab active:cursor-grabbing select-none font-mono"
+            >
+                ⠿
+            </span>
+            <span className="text-xl">{cat.icon || "·"}</span>
+            <span
+                className="h-4 w-4 rounded-full shrink-0"
+                style={{ backgroundColor: cat.colour }}
+            />
+            <span className="font-mono font-medium flex-1">{cat.name}</span>
+            {cat.isIncomeOnly && (
+                <Chip size="sm" variant="flat" color="success">
+                    income
+                </Chip>
+            )}
+            {cat.isBuckOnly && (
+                <Chip size="sm" variant="flat" color="warning">
+                    buck
+                </Chip>
+            )}
+            <Button size="sm" variant="light" onPress={() => onEdit(cat)}>
+                Edit
+            </Button>
+            <Button
+                size="sm"
+                variant="light"
+                color="danger"
+                isLoading={isDeleting}
+                onPress={() => onDelete(cat.id)}
+            >
+                Delete
+            </Button>
+        </li>
+    );
+}
 
 export function CategoryList() {
     const { data: categories, isLoading } = useCategories();
     const deleteCategory = useDeleteCategory();
+    const reorderCategories = useReorderCategories();
     const [editingCategory, setEditingCategory] = useState<
         Category | undefined
     >();
@@ -22,6 +96,18 @@ export function CategoryList() {
     function handleCloseDialog() {
         setIsDialogOpen(false);
         setEditingCategory(undefined);
+    }
+
+    // biome-ignore lint/suspicious/noExplicitAny: dnd-kit event typing is complex
+    function handleDragEnd(event: any) {
+        if (event.canceled || !categories) return;
+
+        const reordered = move(categories, event);
+        const updates = reordered.map((cat: Category, i: number) => ({
+            id: cat.id,
+            priority: i,
+        }));
+        reorderCategories.mutate(updates);
     }
 
     if (isLoading) {
@@ -49,52 +135,20 @@ export function CategoryList() {
 
     return (
         <>
-            <ul className="flex flex-col gap-2">
-                {categories.map((cat, index) => (
-                    <li
-                        key={cat.id}
-                        className="flex items-center gap-3 rounded-lg border border-default-200 px-4 py-3"
-                    >
-                        <span className="text-default-400 font-mono text-sm w-6 text-right">
-                            {index + 1}
-                        </span>
-                        <span className="text-xl">{cat.icon || "·"}</span>
-                        <span
-                            className="h-4 w-4 rounded-full shrink-0"
-                            style={{ backgroundColor: cat.colour }}
+            <DragDropProvider onDragEnd={handleDragEnd}>
+                <ul className="flex flex-col gap-2">
+                    {categories.map((cat, index) => (
+                        <SortableCategoryItem
+                            key={cat.id}
+                            cat={cat}
+                            index={index}
+                            onEdit={handleEdit}
+                            onDelete={(id) => deleteCategory.mutate(id)}
+                            isDeleting={deleteCategory.isPending}
                         />
-                        <span className="font-mono font-medium flex-1">
-                            {cat.name}
-                        </span>
-                        {cat.isIncomeOnly && (
-                            <Chip size="sm" variant="flat" color="success">
-                                income
-                            </Chip>
-                        )}
-                        {cat.isBuckOnly && (
-                            <Chip size="sm" variant="flat" color="warning">
-                                buck
-                            </Chip>
-                        )}
-                        <Button
-                            size="sm"
-                            variant="light"
-                            onPress={() => handleEdit(cat)}
-                        >
-                            Edit
-                        </Button>
-                        <Button
-                            size="sm"
-                            variant="light"
-                            color="danger"
-                            isLoading={deleteCategory.isPending}
-                            onPress={() => deleteCategory.mutate(cat.id)}
-                        >
-                            Delete
-                        </Button>
-                    </li>
-                ))}
-            </ul>
+                    ))}
+                </ul>
+            </DragDropProvider>
             <CategoryDialog
                 isOpen={isDialogOpen}
                 onClose={handleCloseDialog}
