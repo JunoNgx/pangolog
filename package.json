@@ -10,9 +10,13 @@
     "format": "biome format --write"
   },
   "dependencies": {
+    "@heroui/react": "^2.8.9",
+    "@tanstack/react-query": "^5.90.21",
+    "framer-motion": "^12.34.0",
     "next": "16.1.6",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "zustand": "^5.0.11"
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.0",
