@@ -10,6 +10,8 @@
         "format": "biome format --write"
     },
     "dependencies": {
+        "@dnd-kit/helpers": "^0.3.0",
+        "@dnd-kit/react": "^0.3.0",
         "@heroui/react": "^2.8.9",
         "@tanstack/react-query": "^5.90.21",
         "framer-motion": "^12.34.0",

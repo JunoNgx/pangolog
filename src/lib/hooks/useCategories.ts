@@ -3,9 +3,10 @@ import {
     createCategory,
     deleteCategory,
     getAllCategories,
+    reorderCategories,
     updateCategory,
 } from "../db/categories";
-import type { CategoryInput, CategoryUpdate } from "../db/types";
+import type { Category, CategoryInput, CategoryUpdate } from "../db/types";
 
 const CATEGORIES_KEY = ["categories"];
 
@@ -31,6 +32,41 @@ export function useUpdateCategory() {
         mutationFn: ({ id, input }: { id: string; input: CategoryUpdate }) =>
             updateCategory(id, input),
         onSuccess: () =>
+            queryClient.invalidateQueries({ queryKey: CATEGORIES_KEY }),
+    });
+}
+
+export function useReorderCategories() {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (updates: { id: string; priority: number }[]) =>
+            reorderCategories(updates),
+        onMutate: async (updates) => {
+            await queryClient.cancelQueries({ queryKey: CATEGORIES_KEY });
+            const previous =
+                queryClient.getQueryData<Category[]>(CATEGORIES_KEY);
+
+            if (previous) {
+                const priorityMap = new Map(
+                    updates.map((u) => [u.id, u.priority]),
+                );
+                const reordered = [...previous]
+                    .map((cat) => ({
+                        ...cat,
+                        priority: priorityMap.get(cat.id) ?? cat.priority,
+                    }))
+                    .sort((a, b) => a.priority - b.priority);
+                queryClient.setQueryData(CATEGORIES_KEY, reordered);
+            }
+
+            return { previous };
+        },
+        onError: (_err, _vars, context) => {
+            if (context?.previous) {
+                queryClient.setQueryData(CATEGORIES_KEY, context.previous);
+            }
+        },
+        onSettled: () =>
             queryClient.invalidateQueries({ queryKey: CATEGORIES_KEY }),
     });
 }
