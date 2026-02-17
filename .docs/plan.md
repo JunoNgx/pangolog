@@ -1,12 +1,16 @@
 # Implementation plan: Pangolog
 
 ## Phase 1: MVP
+
+### Phase 1a: basic setup
 - [ ] Setup Next.js project with required stacks
     - [ ] HeroUI
     - [ ] TanStack
     - [ ] Zustand
     - [ ] Tailwind
 - [ ] Configure Biome
+
+### Phase 1b: route structure setup
 - [ ] Setup basic route structure
     - `/`: landing page
     - `/log`: transaction view
@@ -14,6 +18,7 @@
     - `/summary`: summary view
     - `/settings`: settings
 
+### Phase 1c: IndexedDB setup
 - [ ] IndexedDB schema implementation
     - [ ] Define database version 1
     - [ ] Create object stores: dimes, bucks, categories, settings
@@ -26,10 +31,27 @@
         - [ ] Query by month for dimes
         - [ ] Query by year for bucks
 
+### Phase 1d: main layout
 - [ ] Layout
     - Main view
     - Navbar for route switching
 
+### Phase 1e: category view
+- [ ] Category management view UI
+    - [ ] List of categories
+    - [ ] Add category button
+    - [ ] New category dialog
+        - [ ] Name input
+        - [ ] Color picker (hex)
+        - [ ] Emoji picker
+        - [ ] Income-only checkbox
+        - [ ] Big-buck-only checkbox
+    - [ ] Category CRUD
+        - [ ] Create category
+        - [ ] Edit category
+        - [ ] Soft delete (prevent if transactions exist)
+
+### Phase 1f: transaction view
 - [ ] Transaction view UI
     - [ ] List of transactions
     - [ ] Add transaction button
@@ -49,26 +71,15 @@
         - [ ] Soft delete (set deletedAt)
         - [ ] Permanent delete (after 30 days)
 
-- [ ] Category management view UI
-    - [ ] List of categories
-    - [ ] Add category button
-    - [ ] New category dialog
-        - [ ] Name input
-        - [ ] Color picker (hex)
-        - [ ] Emoji picker
-        - [ ] Income-only checkbox
-        - [ ] Big-buck-only checkbox
-    - [ ] Category CRUD
-        - [ ] Create category
-        - [ ] Edit category
-        - [ ] Soft delete (prevent if transactions exist)
 
+### Phase 1g: implement default route and setup important settings
 - [ ] User onboarding flow
     - [ ] Root page checks IndexedDB for existing data
     - [ ] Set localStorage flag on first transaction/category
     - [ ] Redirect returning users to /log
     - [ ] Show landing page for new users
 
+### Phase 1h: polishing
 - [ ] Polishing
     - [ ] Toast notifications
     - [ ] Loading skeletons
@@ -92,6 +103,8 @@
         - [ ] Disconnect option
 
 ## Phase 3: Drive sync
+
+### Phase 3a: OAuth
 - [ ] Google OAuth setup
     - [ ] Create Google Cloud project
     - [ ] Configure OAuth consent screen
@@ -100,12 +113,16 @@
     - [ ] Popup authentication
     - [ ] Token storage in IndexedDB
     - [ ] Token refresh handling
+
+### Phase 3b: Drive file structure
 - [ ] Define Drive file organization
     - [ ] Create appDataFolder
     - [ ] File naming convention: `YYYY-MM.json` (dimes)
     - [ ] File naming convention: `YYYY-bucks.json` (bucks)
     - [ ] `categories.json`
     - [ ] `settings.json`
+
+### Phase 3c: Sync logic
 - [ ] Upload logic
     - [ ] Serialize data to JSON
     - [ ] Create/update Drive files
@@ -118,6 +135,8 @@
     - [ ] 30s debounced after changes
     - [ ] On visibilitychange (tab close)
     - [ ] Manual sync button
+
+### Phase 3d: Misc implementations
 - [ ] Implement "last write wins" with updatedAt
     - [ ] Compare timestamps
     - [ ] Resolve conflicts automatically
