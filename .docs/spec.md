@@ -116,7 +116,7 @@ Approach:
 - `updatedAt`: iso timestamp, date of updating (also for collision resolution logic).
 - `colour`: string, colour hex code.
 - `icon`: string, the single emoji icon for the category.
-- `priority`: number, the order value for priority sorting.
+- `priority`: number, custom sort order value.
 - `isBigBuckOnly`: boolean, this will only be displayed when adding Big Buck expenses.
 - `isIncomeOnly`: boolean, this will only be displayed when adding income transactions.
     A category can be both `isBigBuckOnly` and `isIncomeOnly` and these are not mutually exclusive.
