@@ -11,7 +11,7 @@
 - [x] Configure Biome
 
 ### Phase 1b: route structure setup
-- [ ] Setup basic route structure
+- [x] Setup basic route structure
     - `/`: landing page
     - `/log`: transaction view
     - `/categories`: category management
