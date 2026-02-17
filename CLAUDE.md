@@ -38,7 +38,8 @@ Personal expense tracker PWA. See `.docs/spec.md` and `.docs/plan.md` for full d
 - Currency is cosmetic only (user-set string, no conversion logic)
 
 ## Current Progress
-- Phase 1 (MVP): not started
+- Phase 1a (basic setup): done
+- Phase 1b (route structure): not started
 
 ## Convention
 - Use 4 space indentation

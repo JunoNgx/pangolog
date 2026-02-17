@@ -3,12 +3,12 @@
 ## Phase 1: MVP
 
 ### Phase 1a: basic setup
-- [ ] Setup Next.js project with required stacks
-    - [ ] HeroUI
-    - [ ] TanStack
-    - [ ] Zustand
-    - [ ] Tailwind
-- [ ] Configure Biome
+- [x] Setup Next.js project with required stacks
+    - [x] HeroUI
+    - [x] TanStack
+    - [x] Zustand
+    - [x] Tailwind
+- [x] Configure Biome
 
 ### Phase 1b: route structure setup
 - [ ] Setup basic route structure
