@@ -37,11 +37,45 @@ Personal expense tracker PWA. See `.docs/spec.md` and `.docs/plan.md` for full d
 - No hard deletes — always soft delete with `deletedAt`
 - Currency is cosmetic only (user-set string, no conversion logic)
 
-## Convention
+## Maintainer's preferences
 - Use 4 space indentation
-- Use only `yarn`
+- Use only `yarn` to manage packages
 - Use `camelCase` for hooks and `PascalCase` for components
 - Use the term `Dialog` instead of `Modal`
+
+### Tailwind classes
+- Tailwind classes are to be wrapped in literal template, grouping classes into categories:
+    - Container (e.g. `w-full`, `max-w-md`)
+    - Inner structure (e.g. `flex flex-col`, `p-6 gap-4`)
+    - Content style (e.g. `font-sans text-gray-900 dark:text-gray-100`)
+    - Visual effects (e.g. `shadow-lg`, `border border-gray-200`, `dark:border-gray-700`)
+    - Behaviours (e.g. `hover:shadow-xl`, `transition-shadow duration-300`, `focus-within:ring-2 focus-within:ring-primary-500`)
+
+Complete example:
+```
+const cardClasses = `
+    /* CONTAINER */
+    w-full max-w-md
+    bg-white dark:bg-gray-800
+    rounded-xl
+    
+    /* INNER STRUCTURE */
+    flex flex-col
+    p-6 gap-4
+    
+    /* CONTENT STYLES */
+    font-sans text-gray-900 dark:text-gray-100
+    
+    /* VISUAL EFFECTS */
+    shadow-lg
+    border border-gray-200 dark:border-gray-700
+    
+    /* BEHAVIOR */
+    hover:shadow-xl
+    transition-shadow duration-300
+    focus-within:ring-2 focus-within:ring-primary-500
+`;
+```
 
 ## Current Progress
 - Phase 1a (basic setup): done
