@@ -37,11 +37,11 @@ Personal expense tracker PWA. See `.docs/spec.md` and `.docs/plan.md` for full d
 - No hard deletes — always soft delete with `deletedAt`
 - Currency is cosmetic only (user-set string, no conversion logic)
 
-## Current Progress
-- Phase 1a (basic setup): done
-- Phase 1b (route structure): done
-- Phase 1c (IndexedDB): not started
-
 ## Convention
 - Use 4 space indentation
 - Only use `yarn`
+
+## Current Progress
+- Phase 1a (basic setup): done
+- Phase 1b (route structure): done
+- Phase 1c (IndexedDB): done
