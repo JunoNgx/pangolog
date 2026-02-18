@@ -15,6 +15,7 @@ import type { Buck, Dime } from "@/lib/db/types";
 import { useCreateBuck, useUpdateBuck } from "@/lib/hooks/useBucks";
 import { useCategories } from "@/lib/hooks/useCategories";
 import { useCreateDime, useUpdateDime } from "@/lib/hooks/useDimes";
+import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
 
 interface TransactionDialogProps {
     isOpen: boolean;
@@ -45,6 +46,8 @@ export function TransactionDialog({
     const updateDime = useUpdateDime();
     const createBuck = useCreateBuck();
     const updateBuck = useUpdateBuck();
+
+    const { setHasUsedBefore } = useLocalSettingsStore();
 
     const isEditing = !!transaction;
 
@@ -116,6 +119,8 @@ export function TransactionDialog({
             );
             return;
         }
+
+        setHasUsedBefore(true);
 
         if (isCreatingBuck) {
             createBuck.mutate(input, { onSuccess: onClose });
