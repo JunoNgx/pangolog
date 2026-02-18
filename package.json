@@ -8,7 +8,8 @@
         "start": "next start",
         "lint": "biome check",
         "format": "biome format --write",
-        "efix": "yarn biome check --write --unsafe"
+        "efix": "yarn biome check --write --unsafe",
+        "typecheck": "yarn tsc --noEmit"
     },
     "dependencies": {
         "@dnd-kit/helpers": "^0.3.0",
