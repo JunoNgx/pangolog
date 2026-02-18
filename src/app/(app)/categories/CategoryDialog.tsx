@@ -110,27 +110,21 @@ export function CategoryDialog({
                                 <button
                                     type="button"
                                     className={`
-                                        /* CONTAINER */
                                         w-full rounded-lg
 
-                                        /* INNER STRUCTURE */
                                         flex items-center gap-3
                                         px-3 py-2
 
-                                        /* VISUAL EFFECTS */
                                         bg-default-100
 
-                                        /* BEHAVIOR */
                                         hover:bg-default-200
                                         transition-colors
                                     `}
                                 >
                                     <div
                                         className={`
-                                            /* CONTAINER */
                                             size-6 shrink-0 rounded-full
 
-                                            /* VISUAL EFFECTS */
                                             border border-default-300
                                         `}
                                         style={{ backgroundColor: colour }}
