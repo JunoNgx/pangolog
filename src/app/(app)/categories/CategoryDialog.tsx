@@ -103,49 +103,58 @@ export function CategoryDialog({
                             isRequired
                             autoFocus
                         />
-                        <div className="flex gap-2">
-                            <Popover placement="bottom-start">
-                                <PopoverTrigger>
-                                    <button
-                                        type="button"
-                                        className={`
-                                            rounded-lg
+                        <div className="flex justify-between">
+                            <div className="flex flex-col gap-1">
+                                <span className="text-xs text-foreground-500">
+                                    Icon
+                                </span>
+                                <Popover placement="bottom-start">
+                                    <PopoverTrigger>
+                                        <button
+                                            type="button"
+                                            className={`
+                                                rounded-lg
 
-                                            flex items-center justify-center
-                                            px-3 py-2
+                                                flex items-center justify-center
+                                                px-3 py-2
 
-                                            bg-default-100
+                                                bg-default-100
 
-                                            hover:bg-default-200
-                                            transition-colors
-                                        `}
-                                    >
-                                        <span className="text-xl">
-                                            {icon || "😀"}
-                                        </span>
-                                    </button>
-                                </PopoverTrigger>
-                                <PopoverContent>
-                                    <Picker
-                                        data={data}
-                                        theme={
-                                            resolvedTheme === "dark"
-                                                ? "dark"
-                                                : "light"
-                                        }
-                                        onEmojiSelect={(emoji: {
-                                            native: string;
-                                        }) => setIcon(emoji.native)}
-                                        previewPosition="none"
-                                    />
-                                </PopoverContent>
-                            </Popover>
-                            <Popover placement="bottom-start">
-                                <PopoverTrigger>
-                                    <button
-                                        type="button"
-                                        className={`
-                                            flex-1 rounded-lg
+                                                hover:bg-default-200
+                                                transition-colors
+                                            `}
+                                        >
+                                            <span className="text-xl">
+                                                {icon || "😀"}
+                                            </span>
+                                        </button>
+                                    </PopoverTrigger>
+                                    <PopoverContent>
+                                        <Picker
+                                            data={data}
+                                            theme={
+                                                resolvedTheme === "dark"
+                                                    ? "dark"
+                                                    : "light"
+                                            }
+                                            onEmojiSelect={(emoji: {
+                                                native: string;
+                                            }) => setIcon(emoji.native)}
+                                            previewPosition="none"
+                                        />
+                                    </PopoverContent>
+                                </Popover>
+                            </div>
+                            <div className="flex w-1/2 flex-col gap-1">
+                                <span className="text-xs text-foreground-500">
+                                    Colour
+                                </span>
+                                <Popover placement="bottom-end">
+                                    <PopoverTrigger>
+                                        <button
+                                            type="button"
+                                            className={`
+                                            w-full rounded-lg
 
                                             flex items-center gap-3
                                             px-3 py-2
@@ -155,42 +164,45 @@ export function CategoryDialog({
                                             hover:bg-default-200
                                             transition-colors
                                         `}
-                                    >
-                                        <div
-                                            className={`
+                                        >
+                                            <div
+                                                className={`
                                                 size-6 shrink-0 rounded-full
 
                                                 border border-default-300
                                             `}
-                                            style={{ backgroundColor: colour }}
-                                        />
-                                        <span className="text-sm text-foreground-500">
-                                            {colour}
-                                        </span>
-                                    </button>
-                                </PopoverTrigger>
-                                <PopoverContent>
-                                    <div className="flex flex-col gap-2 p-2">
-                                        <HexColorPicker
-                                            color={colour}
-                                            onChange={setColour}
-                                        />
-                                        <Input
-                                            label="Hex"
-                                            size="sm"
-                                            value={colour}
-                                            onValueChange={(v) =>
-                                                setColour(
-                                                    v.startsWith("#")
-                                                        ? v
-                                                        : `#${v}`,
-                                                )
-                                            }
-                                            maxLength={7}
-                                        />
-                                    </div>
-                                </PopoverContent>
-                            </Popover>
+                                                style={{
+                                                    backgroundColor: colour,
+                                                }}
+                                            />
+                                            <span className="text-sm text-foreground-500">
+                                                {colour}
+                                            </span>
+                                        </button>
+                                    </PopoverTrigger>
+                                    <PopoverContent>
+                                        <div className="flex flex-col gap-2 p-2">
+                                            <HexColorPicker
+                                                color={colour}
+                                                onChange={setColour}
+                                            />
+                                            <Input
+                                                label="Hex"
+                                                size="sm"
+                                                value={colour}
+                                                onValueChange={(v) =>
+                                                    setColour(
+                                                        v.startsWith("#")
+                                                            ? v
+                                                            : `#${v}`,
+                                                    )
+                                                }
+                                                maxLength={7}
+                                            />
+                                        </div>
+                                    </PopoverContent>
+                                </Popover>
+                            </div>
                         </div>
 
                         <Checkbox
