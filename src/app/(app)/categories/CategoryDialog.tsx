@@ -24,6 +24,10 @@ import {
     useUpdateCategory,
 } from "@/lib/hooks/useCategories";
 
+function randomHexColor() {
+    return `#${Math.floor(Math.random() * 0xffffff).toString(16).padStart(6, "0")}`;
+}
+
 interface CategoryDialogProps {
     isOpen: boolean;
     onClose: () => void;
@@ -36,7 +40,7 @@ export function CategoryDialog({
     category,
 }: CategoryDialogProps) {
     const [name, setName] = useState("");
-    const [colour, setColour] = useState("#6366f1");
+    const [colour, setColour] = useState(randomHexColor);
     const [icon, setIcon] = useState("");
 
     const [isIncomeOnly, setIsIncomeOnly] = useState(false);
@@ -57,7 +61,7 @@ export function CategoryDialog({
             setIsBuckOnly(category.isBuckOnly);
         } else {
             setName("");
-            setColour("#6366f1");
+            setColour(randomHexColor());
             setIcon("");
 
             setIsIncomeOnly(false);
@@ -67,7 +71,7 @@ export function CategoryDialog({
 
     function handleClose() {
             setName("");
-            setColour("#6366f1");
+            setColour(randomHexColor());
             setIcon("");
             setIsIncomeOnly(false);
             setIsBuckOnly(false);
