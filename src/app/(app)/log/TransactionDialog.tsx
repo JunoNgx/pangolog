@@ -47,8 +47,6 @@ export function TransactionDialog({
     const createBuck = useCreateBuck();
     const updateBuck = useUpdateBuck();
 
-    const { setHasUsedBefore } = useLocalSettingsStore();
-
     const isEditing = !!transaction;
 
     useEffect(() => {
@@ -119,8 +117,6 @@ export function TransactionDialog({
             );
             return;
         }
-
-        setHasUsedBefore(true);
 
         if (isCreatingBuck) {
             createBuck.mutate(input, { onSuccess: onClose });

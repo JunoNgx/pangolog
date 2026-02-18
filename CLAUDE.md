@@ -81,9 +81,11 @@ const cardClasses = `
 `;
 
 Don't comment on the classes. Just keep one type of classes in its own line. Each computed class should be on its own line.
-
-Optional
 ```
+
+## Deviation from original plan
+- `hasUsedBefore` is no longer used and users can freely access route.
+- Default starting location will be set in PWA manifest.
 
 ## Current Progress
 - Phase 1a (basic setup): done

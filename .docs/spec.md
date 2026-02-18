@@ -145,7 +145,7 @@ Approach:
 - `isSyncEnabled`: boolean
 - `lastSyncTime`: iso string
 - `syncError`: string
-- `hasUsedBefore`: boolean,
+- ~~`hasUsedBefore`: boolean,~~ no longer used
 - `isViewingBigBucks`: boolean
 - `shouldIncludeBucksInDimes`: boolean
 - `lastSelectedMonth`: string, e.g. `"2026-02"`
@@ -221,7 +221,7 @@ Approach:
     - Default page if user is just a visitor.
     - Approach for implementation:
         - Check existing IndexedDB data.
-        - Set flag on first meaningful action (e.g. adding first transaction or category?) `hasUsedBefore` (invisible to user).
+        - ~~Set flag on first meaningful action (e.g. adding first transaction or category?) `hasUsedBefore` (invisible to user).~~ User will now have free access to all routes without any intentional redirection. PWA manifest will point to the main route as the default starting url.
         - Implement a root page and return accordingly.
 
 - Category management view
@@ -236,7 +236,7 @@ Approach:
     - Emoji-based icon
     - Checkbox: is income-only category
     - Checkbox: is big buck-only category
-    
+
 - Settings view
     - Custom display currency unit
     - Configuring Drive sync
