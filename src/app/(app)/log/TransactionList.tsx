@@ -134,9 +134,10 @@ export function TransactionList({
                                 </span>
                             )}
                             <span
-                                className={`font-mono font-medium ${
-                                    tx.isIncome ? "text-success" : "text-danger"
-                                }`}
+                                className={`
+                                    font-mono font-medium
+                                    ${tx.isIncome ? "text-success" : "text-danger"}
+                                `}
                             >
                                 {tx.isIncome ? "+" : "-"}
                                 {amountDisplay}

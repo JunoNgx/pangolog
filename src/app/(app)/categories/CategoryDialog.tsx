@@ -114,14 +114,9 @@ export function CategoryDialog({
                                             type="button"
                                             className={`
                                                 rounded-lg
-
-                                                flex items-center justify-center
-                                                px-3 py-2
-
+                                                flex items-center justify-center px-3 py-2
                                                 bg-default-100
-
-                                                hover:bg-default-200
-                                                transition-colors cursor-pointer
+                                                hover:bg-default-200 transition-colors cursor-pointer
                                             `}
                                         >
                                             <span className="text-xl">
@@ -154,23 +149,17 @@ export function CategoryDialog({
                                         <button
                                             type="button"
                                             className={`
-                                            w-full rounded-lg
-
-                                            flex items-center gap-3
-                                            px-3 py-2
-
-                                            bg-default-100
-
-                                            hover:bg-default-200
-                                            transition-colors cursor-pointer
-                                        `}
+                                                w-full rounded-lg
+                                                flex items-center gap-3 px-3 py-2
+                                                bg-default-100
+                                                hover:bg-default-200 transition-colors cursor-pointer
+                                            `}
                                         >
                                             <div
                                                 className={`
-                                                size-6 shrink-0 rounded-full
-
-                                                border border-default-300
-                                            `}
+                                                    size-6 shrink-0 rounded-full
+                                                    border border-default-300
+                                                `}
                                                 style={{
                                                     backgroundColor: colour,
                                                 }}

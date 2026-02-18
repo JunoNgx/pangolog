@@ -1,8 +1,8 @@
-import { Switch } from "@heroui/react";
 import type { SwitchProps } from "@heroui/react";
+import { Switch } from "@heroui/react";
 import { useId } from "react";
 
-interface ToggleSwitchProps extends Omit<SwitchProps, 'children' | 'onChange'> {
+interface ToggleSwitchProps extends Omit<SwitchProps, "children" | "onChange"> {
     leftLabel: string;
     rightLabel: string;
     isSelectingRight: boolean;
@@ -32,14 +32,14 @@ export function ToggleSwitch({
     const isSelectingRightActive = isSelectingRight && !isDisabled;
 
     const handleLeftLabelKeyDown = (e: React.KeyboardEvent) => {
-        if (e.key === 'Enter' || e.key === ' ') {
+        if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
             onValueChange(false);
         }
     };
 
     const handleRightLabelKeyDown = (e: React.KeyboardEvent) => {
-        if (e.key === 'Enter' || e.key === ' ') {
+        if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
             onValueChange(true);
         }
@@ -54,11 +54,10 @@ export function ToggleSwitch({
             <span
                 id={leftLabelId}
                 className={`
-                    flex items-center gap-1
-                    font-mono text-sm transition-all cursor-pointer
-                    px-2 py-1 rounded
-                    hover:bg-default-100 focus-visible:outline-none focus-visible:ring-2 
-                    focus-visible:ring-primary-300 focus-visible:ring-offset-2
+                    flex items-center gap-1 px-2 py-1 rounded
+                    font-mono text-sm
+                    hover:bg-default-100 transition-all cursor-pointer
+                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-300 focus-visible:ring-offset-2
                     ${!isSelectingRightActive ? "text-default-600" : "text-default-400"}
                     ${isDisabled ? "cursor-not-allowed opacity-50" : ""}
                 `}
@@ -83,7 +82,7 @@ export function ToggleSwitch({
                 size="sm"
                 classNames={{
                     base: `
-                        ${isDisabled ? 'opacity-50 cursor-not-allowed' : ''}
+                        ${isDisabled ? "opacity-50 cursor-not-allowed" : ""}
                     `,
                     wrapper: `
                         ${leftColor}
@@ -99,13 +98,12 @@ export function ToggleSwitch({
             <span
                 id={rightLabelId}
                 className={`
-                    flex items-center gap-1
-                    font-mono text-sm transition-all cursor-pointer
-                    px-2 py-1 rounded
-                    hover:bg-default-100 focus-visible:outline-none focus-visible:ring-2 
-                    focus-visible:ring-primary-300 focus-visible:ring-offset-2
+                    flex items-center gap-1 px-2 py-1 rounded
+                    font-mono text-sm
+                    hover:bg-default-100 transition-all cursor-pointer
+                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-300 focus-visible:ring-offset-2
                     ${isSelectingRightActive ? "text-default-600" : "text-default-400"}
-                    ${isDisabled ? 'cursor-not-allowed opacity-50' : ''}
+                    ${isDisabled ? "cursor-not-allowed opacity-50" : ""}
                 `}
                 role="button"
                 tabIndex={!isSelectingRightActive ? 0 : -1}
