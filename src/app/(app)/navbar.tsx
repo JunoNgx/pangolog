@@ -32,7 +32,9 @@ export function AppNavbar() {
             onMenuOpenChange={setIsMenuOpen}
         >
             <NavbarBrand>
-                <span className="font-mono font-bold text-lg">Pangolog</span>
+                <NextLink href="/" className="font-mono font-bold text-lg">
+                    Pangolog
+                </NextLink>
             </NavbarBrand>
             <NavbarContent className="hidden md:flex" justify="end">
                 {navItems.map((item) => (

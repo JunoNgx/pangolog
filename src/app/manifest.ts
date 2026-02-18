@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
         name: "Pangolog",
         short_name: "Pangolog",
         description: "A minimal personal expense tracker",
-        start_url: "/",
+        start_url: "/log",
         display: "standalone",
         background_color: "#000000",
         theme_color: "#000000",
