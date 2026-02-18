@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, Checkbox, Switch } from "@heroui/react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useBucks } from "@/lib/hooks/useBucks";
 import { useCategories } from "@/lib/hooks/useCategories";
 import { useDimes } from "@/lib/hooks/useDimes";
@@ -45,6 +45,14 @@ export default function LogPage() {
         ? bucksLoading
         : dimesLoading || (shouldIncludeBucksInDimes && bucksLoading);
 
+    const [supportsMonthInput, setSupportsMonthInput] = useState(true);
+
+    useEffect(() => {
+        const input = document.createElement("input");
+        input.type = "month";
+        setSupportsMonthInput(input.type === "month");
+    }, []);
+
     const monthValue = `${selectedYear}-${String(selectedMonth).padStart(2, "0")}`;
 
     function handleMonthChange(value: string) {
@@ -53,6 +61,43 @@ export default function LogPage() {
             setSelectedYear(y);
             setSelectedMonth(m);
         }
+    }
+
+    const monthNames = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+    ];
+
+    const selectClasses = `
+        font-mono text-sm rounded-lg px-3 py-2
+
+        bg-default-100 text-foreground
+
+        border border-default-200
+
+        cursor-pointer
+    `;
+
+    const yearOptions = Array.from({ length: 21 }, (_, i) => {
+        return new Date().getFullYear() - 10 + i;
+    });
+
+    function handleMonthSelect(e: React.ChangeEvent<HTMLSelectElement>) {
+        setSelectedMonth(Number(e.target.value));
+    }
+
+    function handleYearSelect(e: React.ChangeEvent<HTMLSelectElement>) {
+        setSelectedYear(Number(e.target.value));
     }
 
     return (
@@ -72,12 +117,41 @@ export default function LogPage() {
 
                 {!isViewingBigBucks && (
                     <div className="flex items-center gap-4 flex-wrap">
-                        <input
-                            type="month"
-                            value={monthValue}
-                            onChange={(e) => handleMonthChange(e.target.value)}
-                            className="font-mono text-sm bg-default-100 rounded-lg px-3 py-2 border border-default-200"
-                        />
+                        {supportsMonthInput ? (
+                            <input
+                                type="month"
+                                value={monthValue}
+                                onChange={(e) =>
+                                    handleMonthChange(e.target.value)
+                                }
+                                className="font-mono text-sm bg-default-100 text-foreground rounded-lg px-3 py-2 border border-default-200 cursor-pointer"
+                            />
+                        ) : (
+                            <div className="flex gap-1">
+                                <select
+                                    value={selectedMonth}
+                                    onChange={handleMonthSelect}
+                                    className={selectClasses}
+                                >
+                                    {monthNames.map((name, i) => (
+                                        <option key={name} value={i + 1}>
+                                            {name}
+                                        </option>
+                                    ))}
+                                </select>
+                                <select
+                                    value={selectedYear}
+                                    onChange={handleYearSelect}
+                                    className={selectClasses}
+                                >
+                                    {yearOptions.map((y) => (
+                                        <option key={y} value={y}>
+                                            {y}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        )}
                         <Checkbox
                             isSelected={shouldIncludeBucksInDimes}
                             onValueChange={setShouldIncludeBucksInDimes}
