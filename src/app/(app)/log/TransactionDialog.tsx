@@ -165,14 +165,14 @@ export function TransactionDialog({
                                 rightColor="bg-amber-600"
                             />
 
-                            <ToggleSwitch
+                            {!isEditing && <ToggleSwitch
                                 isSelectingRight={isCreatingBuck}
                                 onValueChange={setIsCreatingBuck}
                                 leftLabel="Big buck"
                                 leftColor="bg-emerald-600"
                                 rightLabel="Small dime"
                                 rightColor="bg-amber-600"
-                            />
+                            />}
                         </div>
 
                         <div>
