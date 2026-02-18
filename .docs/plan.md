@@ -133,14 +133,14 @@
 ## Phase 3: Drive sync
 
 ### Phase 3a: OAuth
-- [ ] Google OAuth setup
-    - [ ] Create Google Cloud project
-    - [ ] Configure OAuth consent screen
-    - [ ] Get client ID and secret
-- [ ] Implement OAuth flow
-    - [ ] Popup authentication
-    - [ ] Token storage in IndexedDB
-    - [ ] Token refresh handling
+- [x] Google OAuth setup
+    - [x] Create Google Cloud project
+    - [x] Configure OAuth consent screen
+    - [x] Get client ID and secret
+- [x] Implement OAuth flow
+    - [x] Popup authentication
+    - [x] Token storage in IndexedDB
+    - [x] Token refresh handling
 
 ### Phase 3b: Drive file structure
 - [ ] Define Drive file organization

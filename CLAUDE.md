@@ -100,3 +100,4 @@ Don't comment on the classes. Just keep one type of classes in its own line. Eac
 - Phase 1k (create transaction and category hotkey): done
 - Phase 2e (setup PWA and icons): done
 - Phase 2c (dummy settings view): done
+- Phase 3a (OAuth setup): done
