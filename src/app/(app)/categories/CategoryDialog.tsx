@@ -15,6 +15,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@heroui/react";
+import { useTheme } from "next-themes";
 import { type FormEvent, useEffect, useState } from "react";
 import { HexColorPicker } from "react-colorful";
 import type { Category } from "@/lib/db/types";
@@ -40,6 +41,7 @@ export function CategoryDialog({
 
     const [isIncomeOnly, setIsIncomeOnly] = useState(false);
     const [isBuckOnly, setIsBuckOnly] = useState(false);
+    const { resolvedTheme } = useTheme();
     const createCategory = useCreateCategory();
     const updateCategory = useUpdateCategory();
 
@@ -128,6 +130,11 @@ export function CategoryDialog({
                             <PopoverContent>
                                 <Picker
                                     data={data}
+                                    theme={
+                                        resolvedTheme === "dark"
+                                            ? "dark"
+                                            : "light"
+                                    }
                                     onEmojiSelect={(emoji: {
                                         native: string;
                                     }) => setIcon(emoji.native)}
