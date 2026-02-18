@@ -1,6 +1,45 @@
 import { getDb } from "./connection";
 import type { Buck, Category, Dime } from "./types";
 
+const PURGE_DAYS = 30;
+
+async function purgeStore(
+    storeName: "dimes" | "bucks" | "categories",
+    cutoffIso: string,
+): Promise<void> {
+    const db = await getDb();
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction(storeName, "readwrite");
+        const store = tx.objectStore(storeName);
+        const request = store.openCursor();
+
+        request.onsuccess = () => {
+            const cursor = request.result;
+            if (!cursor) return;
+            const record = cursor.value as { deletedAt: string | null };
+            if (record.deletedAt && record.deletedAt < cutoffIso) {
+                cursor.delete();
+            }
+            cursor.continue();
+        };
+
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
+    });
+}
+
+export async function purgeExpiredRecords(): Promise<void> {
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - PURGE_DAYS);
+    const cutoffIso = cutoff.toISOString();
+
+    await Promise.all([
+        purgeStore("dimes", cutoffIso),
+        purgeStore("bucks", cutoffIso),
+        purgeStore("categories", cutoffIso),
+    ]);
+}
+
 export async function getAllDimesForSync(): Promise<Dime[]> {
     const db = await getDb();
     return new Promise((resolve, reject) => {
