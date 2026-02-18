@@ -86,9 +86,8 @@
     - [ ] Empty states
 
 ### Phase 1j: Responsive design
-- [ ] Responsive design
-    - [ ] Navbar in mobile
-    - [ ] Floating buttons positioning in mobile
+- [x] Responsive design
+    - [x] Navbar in mobile
 
 ### Phase 1k: Hotkey shortcut
 - [ ] Hotkey shortcut: `Cmd/Ctrl + Enter`

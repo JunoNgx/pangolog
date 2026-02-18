@@ -94,3 +94,4 @@ Optional
 - Phase 2a (drag-and-drop category reordering): done
 - Phase 1f (transaction view): done
 - Phase 2d (dark/light theme switcher): done
+- Phase 1j (mobile responsiveness for navbar): done
