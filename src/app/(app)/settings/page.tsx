@@ -85,7 +85,7 @@ export default function SettingsPage() {
                                     variant="flat"
                                     className="max-w-xs"
                                     isLoading={syncStatus === "syncing"}
-                                    onPress={sync}
+                                    onPress={() => sync()}
                                 >
                                     Sync now
                                 </Button>
