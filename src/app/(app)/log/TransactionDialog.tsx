@@ -154,9 +154,9 @@ export function TransactionDialog({
                                 <ToggleSwitch
                                     isSelectingRight={isCreatingBuck}
                                     onValueChange={setIsCreatingBuck}
-                                    leftLabel="Big buck"
+                                    leftLabel="Small dime"
                                     leftColor="bg-emerald-600"
-                                    rightLabel="Small dime"
+                                    rightLabel="Big buck"
                                     rightColor="bg-amber-600"
                                 />
                             )}
