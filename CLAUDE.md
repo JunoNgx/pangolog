@@ -54,6 +54,7 @@ Personal expense tracker PWA. See `.docs/spec.md` and `.docs/plan.md` for full d
     - Visual effects (e.g. `shadow-lg`, `border border-gray-200`, `dark:border-gray-700`)
     - Behaviours (e.g. `hover:shadow-xl`, `transition-shadow duration-300`, `focus-within:ring-2 focus-within:ring-primary-500`)
     - Computed classes
+- Do not use pixel-unit classes, e.g. `size-[18px]`
 
 Complete example:
 ```
