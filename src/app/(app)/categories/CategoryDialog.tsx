@@ -24,6 +24,18 @@ import {
     useUpdateCategory,
 } from "@/lib/hooks/useCategories";
 
+const EMOJI_DEFAULTS = [
+    "😀","😎","🤩","🥳","😍","🤔","😤","🥹",
+    "🐶","🐱","🦊","🐼","🦁","🐸","🐙","🦋",
+    "🍕","🍣","🍜","🍎","🍓","🧁","🍩","☕",
+    "⚽","🎮","🎵","🎨","📚","🏋","🎯","🚀",
+    "💰","💳","🏠","🚗","✈️","🌍","🌈","⚡",
+];
+
+function randomEmoji() {
+    return EMOJI_DEFAULTS[Math.floor(Math.random() * EMOJI_DEFAULTS.length)];
+}
+
 function randomHexColor() {
     return `#${Math.floor(Math.random() * 0xffffff)
         .toString(16)
@@ -43,8 +55,9 @@ export function CategoryDialog({
 }: CategoryDialogProps) {
     const [name, setName] = useState("");
     const [colour, setColour] = useState(randomHexColor);
-    const [icon, setIcon] = useState("");
+    const [icon, setIcon] = useState(randomEmoji());
 
+    const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
     const [isIncomeOnly, setIsIncomeOnly] = useState(false);
     const [isBuckOnly, setIsBuckOnly] = useState(false);
     const { resolvedTheme } = useTheme();
@@ -64,17 +77,23 @@ export function CategoryDialog({
         } else {
             setName("");
             setColour(randomHexColor());
-            setIcon("");
+            setIcon(randomEmoji());
 
             setIsIncomeOnly(false);
             setIsBuckOnly(false);
         }
     }, [category]);
 
+    function handleEmojiSelect(emoji: { native: string }) {
+        setIcon(emoji.native);
+        setIsEmojiPickerOpen(false);
+    }
+
     function handleClose() {
         setName("");
         setColour(randomHexColor());
-        setIcon("");
+        setIcon(randomEmoji());
+        setIsEmojiPickerOpen(false);
         setIsIncomeOnly(false);
         setIsBuckOnly(false);
         onClose();
@@ -124,7 +143,11 @@ export function CategoryDialog({
                                 <span className="text-xs text-foreground-500">
                                     Icon
                                 </span>
-                                <Popover placement="bottom-start">
+                                <Popover
+                                    placement="bottom-start"
+                                    isOpen={isEmojiPickerOpen}
+                                    onOpenChange={setIsEmojiPickerOpen}
+                                >
                                     <PopoverTrigger>
                                         <button
                                             type="button"
@@ -136,7 +159,7 @@ export function CategoryDialog({
                                             `}
                                         >
                                             <span className="text-xl">
-                                                {icon || "😀"}
+                                                {icon}
                                             </span>
                                         </button>
                                     </PopoverTrigger>
@@ -148,9 +171,7 @@ export function CategoryDialog({
                                                     ? "dark"
                                                     : "light"
                                             }
-                                            onEmojiSelect={(emoji: {
-                                                native: string;
-                                            }) => setIcon(emoji.native)}
+                                            onEmojiSelect={handleEmojiSelect}
                                             previewPosition="none"
                                         />
                                     </PopoverContent>
