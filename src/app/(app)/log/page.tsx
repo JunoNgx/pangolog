@@ -100,6 +100,52 @@ export default function LogPage() {
         setSelectedYear(Number(e.target.value));
     }
 
+    const standardMonthSelector = (
+        <input
+            type="month"
+            value={monthValue}
+            onChange={(e) =>
+                handleMonthChange(e.target.value)
+            }
+            className={`
+                font-mono text-sm rounded-lg px-3 py-2
+
+                bg-default-100 text-foreground 
+                
+                border border-default-200
+                
+                cursor-pointer
+            `}
+        />
+    );
+
+    const fallbackMonthSelector = (
+        <div className="flex gap-1">
+            <select
+                value={selectedMonth}
+                onChange={handleMonthSelect}
+                className={selectClasses}
+            >
+                {monthNames.map((name, i) => (
+                    <option key={name} value={i + 1}>
+                        {name}
+                    </option>
+                ))}
+            </select>
+            <select
+                value={selectedYear}
+                onChange={handleYearSelect}
+                className={selectClasses}
+            >
+                {yearOptions.map((y) => (
+                    <option key={y} value={y}>
+                        {y}
+                    </option>
+                ))}
+            </select>
+        </div>
+    );
+
     return (
         <div>
             <h2 className="font-mono text-xl font-bold mb-4">Transactions</h2>
@@ -117,41 +163,10 @@ export default function LogPage() {
 
                 {!isViewingBigBucks && (
                     <div className="flex items-center gap-4 flex-wrap">
-                        {supportsMonthInput ? (
-                            <input
-                                type="month"
-                                value={monthValue}
-                                onChange={(e) =>
-                                    handleMonthChange(e.target.value)
-                                }
-                                className="font-mono text-sm bg-default-100 text-foreground rounded-lg px-3 py-2 border border-default-200 cursor-pointer"
-                            />
-                        ) : (
-                            <div className="flex gap-1">
-                                <select
-                                    value={selectedMonth}
-                                    onChange={handleMonthSelect}
-                                    className={selectClasses}
-                                >
-                                    {monthNames.map((name, i) => (
-                                        <option key={name} value={i + 1}>
-                                            {name}
-                                        </option>
-                                    ))}
-                                </select>
-                                <select
-                                    value={selectedYear}
-                                    onChange={handleYearSelect}
-                                    className={selectClasses}
-                                >
-                                    {yearOptions.map((y) => (
-                                        <option key={y} value={y}>
-                                            {y}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-                        )}
+                        {supportsMonthInput
+                            ? standardMonthSelector
+                            : fallbackMonthSelector
+                        }
                         <Checkbox
                             isSelected={shouldIncludeBucksInDimes}
                             onValueChange={setShouldIncludeBucksInDimes}
