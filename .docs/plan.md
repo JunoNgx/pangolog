@@ -179,17 +179,15 @@
 
 ## Phase 4: Data mobility
 
-### Export
+### Phase 4a: Export
 - [ ] JSON export
     - [ ] Complete data export
     - [ ] Pretty print option
 - [ ] CSV export
     - [ ] Flatten nested data
     - [ ] Handle categories separately
-- [ ] Share/Download functionality
 
-### Import
-- [ ] File upload component
+### Phase 4b: Import
 - [ ] JSON import
     - [ ] Validate schema
     - [ ] Preview changes
