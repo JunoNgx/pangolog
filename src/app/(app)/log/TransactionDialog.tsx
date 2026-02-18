@@ -10,12 +10,12 @@ import {
     ModalFooter,
     ModalHeader,
 } from "@heroui/react";
-import { type FormEvent, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { ToggleSwitch } from "@/components/ToggleSwitch";
 import type { Buck, Dime } from "@/lib/db/types";
 import { useCreateBuck, useUpdateBuck } from "@/lib/hooks/useBucks";
 import { useCategories } from "@/lib/hooks/useCategories";
 import { useCreateDime, useUpdateDime } from "@/lib/hooks/useDimes";
-import { ToggleSwitch } from "@/components/ToggleSwitch";
 
 interface TransactionDialogProps {
     isOpen: boolean;
@@ -90,7 +90,7 @@ export function TransactionDialog({
         }
     }
 
-    function handleSubmit(e: FormEvent) {
+    function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         const amountMinor = Math.round(Number.parseFloat(amount) * 100);
         if (Number.isNaN(amountMinor) || amountMinor <= 0) return;
@@ -160,7 +160,7 @@ export function TransactionDialog({
                                 rightLabel="Expense"
                                 rightColor="bg-amber-600"
                             />
-                            
+
                             <ToggleSwitch
                                 isSelectingRight={isBuck}
                                 onValueChange={setIsBuck}
