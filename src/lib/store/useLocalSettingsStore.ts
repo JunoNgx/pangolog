@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { createJSONStorage, persist } from "zustand/middleware";
+import { persist } from "zustand/middleware";
 
 interface LocalSettingsStore {
     hasUsedBefore: boolean;
@@ -15,7 +15,7 @@ export const useLocalSettingsStore = create<LocalSettingsStore>()(
     persist(
         (set) => ({
             hasUsedBefore: false,
-            setHasUsedBefore: (value) => set({ hasUsedBefore: value}),
+            setHasUsedBefore: (value) => set({ hasUsedBefore: value }),
             // isSyncEnabled: false,
             // lastSyncTime: "",
             // syncError: "",

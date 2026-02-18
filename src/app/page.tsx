@@ -1,9 +1,9 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
 import LandingPage from "./LandingPage";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 
 export default function RootPage() {
     const { hasUsedBefore } = useLocalSettingsStore();
@@ -15,5 +15,5 @@ export default function RootPage() {
         }
     }, [hasUsedBefore, router]);
 
-    return <LandingPage/>;
-};
+    return <LandingPage />;
+}

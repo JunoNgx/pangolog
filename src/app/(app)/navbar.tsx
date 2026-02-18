@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import {
     Navbar,
     NavbarBrand,
@@ -12,6 +11,7 @@ import {
 } from "@heroui/react";
 import NextLink from "next/link";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 
 const navItems = [

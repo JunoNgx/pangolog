@@ -46,9 +46,8 @@ export function ToggleSwitch({
     };
 
     return (
-        <div
+        <fieldset
             className={`flex items-center gap-1 min-h-[11] ${className}`}
-            role="group"
             aria-labelledby={`${leftLabelId} ${rightLabelId}`}
         >
             <span
@@ -61,9 +60,9 @@ export function ToggleSwitch({
                     ${!isSelectingRightActive ? "text-default-600" : "text-default-400"}
                     ${isDisabled ? "cursor-not-allowed opacity-50" : ""}
                 `}
-                role="button"
                 tabIndex={isSelectingRightActive ? 0 : -1}
-                aria-pressed={!isSelectingRight}
+                role="switch"
+                aria-checked={!isSelectingRight}
                 aria-disabled={isDisabled}
                 onClick={() => !isDisabled && onValueChange(false)}
                 onKeyDown={handleLeftLabelKeyDown}
@@ -105,9 +104,9 @@ export function ToggleSwitch({
                     ${isSelectingRightActive ? "text-default-600" : "text-default-400"}
                     ${isDisabled ? "cursor-not-allowed opacity-50" : ""}
                 `}
-                role="button"
                 tabIndex={!isSelectingRightActive ? 0 : -1}
-                aria-pressed={isSelectingRight}
+                role="switch"
+                aria-checked={isSelectingRight}
                 aria-disabled={isDisabled}
                 onClick={() => !isDisabled && onValueChange(true)}
                 onKeyDown={handleRightLabelKeyDown}
@@ -117,6 +116,6 @@ export function ToggleSwitch({
                 )} */}
                 {rightLabel}
             </span>
-        </div>
+        </fieldset>
     );
 }
