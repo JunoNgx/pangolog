@@ -75,6 +75,8 @@ const cardClasses = `
     transition-shadow duration-300
     focus-within:ring-2 focus-within:ring-primary-500
 `;
+
+Don't comment on the classes. Just separate them with a blank line.
 ```
 
 ## Current Progress
