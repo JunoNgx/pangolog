@@ -20,8 +20,6 @@ export function ToggleSwitch({
     onValueChange,
     isDisabled = false,
     className = "",
-    leftColor = "text-danger-600",
-    rightColor = "text-success-600",
     id,
     ...props
 }: ToggleSwitchProps) {
@@ -57,7 +55,7 @@ export function ToggleSwitch({
                     font-mono text-sm text-right w-min
                     hover:bg-default-100 transition-all cursor-pointer
                     focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-300 focus-visible:ring-offset-2
-                    ${!isSelectingRightActive ? "text-default-600" : "text-default-400"}
+                    ${!isSelectingRightActive ? "text-default-600" : "text-default-300"}
                     ${isDisabled ? "cursor-not-allowed opacity-50" : ""}
                 `}
                 tabIndex={isSelectingRightActive ? 0 : -1}
@@ -84,8 +82,8 @@ export function ToggleSwitch({
                         ${isDisabled ? "opacity-50 cursor-not-allowed" : ""}
                     `,
                     wrapper: `
-                        ${leftColor}
-                        group-data-[selected=true]:${rightColor}
+                        bg-primary
+                        group-data-[selected=true]:bg-primary
                     `,
                     thumb: "bg-white",
                 }}
@@ -101,7 +99,7 @@ export function ToggleSwitch({
                     font-mono text-sm w-min
                     hover:bg-default-100 transition-all cursor-pointer
                     focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-300 focus-visible:ring-offset-2
-                    ${isSelectingRightActive ? "text-default-600" : "text-default-400"}
+                    ${isSelectingRightActive ? "text-default-600" : "text-default-300"}
                     ${isDisabled ? "cursor-not-allowed opacity-50" : ""}
                 `}
                 tabIndex={!isSelectingRightActive ? 0 : -1}
