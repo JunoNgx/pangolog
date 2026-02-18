@@ -23,29 +23,19 @@ export function TransactionList({
     categories,
     isLoading,
 }: TransactionListProps) {
-    const deleteDime = useDeleteDime();
-    const deleteBuck = useDeleteBuck();
     const [editingTx, setEditingTx] = useState<Dime | Buck | undefined>();
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     const categoryMap = new Map(categories.map((c) => [c.id, c]));
-
-    function handleEdit(tx: Dime | Buck) {
-        setEditingTx(tx);
-        setIsDialogOpen(true);
-    }
 
     function handleCloseDialog() {
         setIsDialogOpen(false);
         setEditingTx(undefined);
     }
 
-    function handleDelete(tx: Dime | Buck) {
-        if (isDime(tx)) {
-            deleteDime.mutate(tx.id);
-        } else {
-            deleteBuck.mutate(tx.id);
-        }
+    function openEditDialog(transaction: Buck | Dime) {
+        setEditingTx(transaction);
+        setIsDialogOpen(true);
     }
 
     const sorted = [...transactions].sort(
@@ -95,72 +85,13 @@ export function TransactionList({
                     const cat = tx.categoryId
                         ? categoryMap.get(tx.categoryId)
                         : undefined;
-                    const amountDisplay = formatAmount(tx.amount);
-                    const isDeleting = isDime(tx)
-                        ? deleteDime.isPending
-                        : deleteBuck.isPending;
 
-                    return (
-                        <li
-                            key={tx.id}
-                            className="flex items-center gap-3 rounded-lg border border-default-200 px-4 py-3 bg-background"
-                        >
-                            {cat ? (
-                                <>
-                                    <span className="text-xl">
-                                        {cat.icon || "·"}
-                                    </span>
-                                    <span
-                                        className="h-4 w-4 rounded-full shrink-0"
-                                        style={{
-                                            backgroundColor: cat.colour,
-                                        }}
-                                    />
-                                </>
-                            ) : (
-                                <span className="text-xl text-default-300">
-                                    ·
-                                </span>
-                            )}
-                            <span className="font-mono flex-1 truncate">
-                                {tx.description || (
-                                    <span className="text-default-300">
-                                        (no description)
-                                    </span>
-                                )}
-                            </span>
-                            {!isDime(tx) && (
-                                <span className="text-xs text-default-400 font-mono">
-                                    BUCK
-                                </span>
-                            )}
-                            <span
-                                className={`
-                                    font-mono font-medium
-                                    ${tx.isIncome ? "text-success" : "text-danger"}
-                                `}
-                            >
-                                {tx.isIncome ? "+" : "-"}
-                                {amountDisplay}
-                            </span>
-                            <Button
-                                size="sm"
-                                variant="light"
-                                onPress={() => handleEdit(tx)}
-                            >
-                                Edit
-                            </Button>
-                            <Button
-                                size="sm"
-                                variant="light"
-                                color="danger"
-                                isLoading={isDeleting}
-                                onPress={() => handleDelete(tx)}
-                            >
-                                Delete
-                            </Button>
-                        </li>
-                    );
+                    return <TransactionItem
+                        key={tx.id}
+                        transaction={tx}
+                        category={cat}
+                        openEditDialog={openEditDialog}
+                    />;
                 })}
             </ul>
             <TransactionDialog
@@ -171,3 +102,97 @@ export function TransactionList({
         </>
     );
 }
+
+interface TransactionItemProps {
+    transaction: (Dime | Buck);
+    category: Category | undefined,
+    openEditDialog: (model: Dime | Buck) => void,
+}
+
+function TransactionItem({
+    transaction,
+    category,
+    openEditDialog,
+}: TransactionItemProps) {
+    const deleteDime = useDeleteDime();
+    const deleteBuck = useDeleteBuck();
+
+    const isDeleting = isDime(transaction)
+        ? deleteDime.isPending
+        : deleteBuck.isPending;
+
+    const amountDisplay = formatAmount(transaction.amount);
+
+    function handleEdit(tx: Dime | Buck) {
+        openEditDialog(transaction);
+    }
+
+    function handleDelete(tx: Dime | Buck) {
+        if (isDime(tx)) {
+            deleteDime.mutate(tx.id);
+        } else {
+            deleteBuck.mutate(tx.id);
+        }
+    }
+
+    return (
+        <li
+            className="flex items-center gap-3 rounded-lg border border-default-200 px-4 py-3 bg-background"
+        >
+            {category ? (
+                <>
+                    <span className="text-xl">
+                        {category.icon || "·"}
+                    </span>
+                    <span
+                        className="h-4 w-4 rounded-full shrink-0"
+                        style={{
+                            backgroundColor: category.colour,
+                        }}
+                    />
+                </>
+            ) : (
+                <span className="text-xl text-default-300">
+                    ·
+                </span>
+            )}
+            <span className="font-mono flex-1 truncate">
+                {transaction.description || (
+                    <span className="text-default-300">
+                        (no description)
+                    </span>
+                )}
+            </span>
+            {!isDime(transaction) && (
+                <span className="text-xs text-default-400 font-mono">
+                    BUCK
+                </span>
+            )}
+            <span
+                className={`
+                    font-mono font-medium
+                    ${transaction.isIncome ? "text-success" : "text-danger"}
+                `}
+            >
+                {transaction.isIncome ? "+" : "-"}
+                {amountDisplay}
+            </span>
+            <Button
+                size="sm"
+                variant="light"
+                onPress={() => handleEdit(transaction)}
+            >
+                Edit
+            </Button>
+            <Button
+                size="sm"
+                variant="light"
+                color="danger"
+                isLoading={isDeleting}
+                onPress={() => handleDelete(transaction)}
+            >
+                Delete
+            </Button>
+        </li>
+    );
+};
