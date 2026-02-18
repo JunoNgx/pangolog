@@ -16,7 +16,7 @@ import {
     PopoverTrigger,
 } from "@heroui/react";
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { type SubmitEventHandler, useEffect, useState } from "react";
 import { HexColorPicker } from "react-colorful";
 import type { Category } from "@/lib/db/types";
 import {
@@ -65,7 +65,7 @@ export function CategoryDialog({
         }
     }, [category]);
 
-    function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    const handleSubmit: SubmitEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault();
         const input = {
             name,
@@ -84,7 +84,7 @@ export function CategoryDialog({
         } else {
             createCategory.mutate(input, { onSuccess: onClose });
         }
-    }
+    };
 
     const isPending = createCategory.isPending || updateCategory.isPending;
 
