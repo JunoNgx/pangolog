@@ -177,6 +177,18 @@
 - [x] Manual sync button (settings page)
 - [ ] Error notifications (toast) — deferred to Phase 1h
 
+### Phase 3e: Initialise seed data upon entering the app
+- [ ] Should use the time user enters the app as creation datetime
+- [ ] Categories
+    - [ ] Food
+    - [ ] Videogame
+    - [ ] Grocery
+- [ ] Small dimes
+    - [ ] Eggs, $5, category Grocery
+    - [ ] Sandwich, $10, category Food
+- [ ] Big bucks
+    - [ ] What Remains of Edith Finch, $20, Videogame
+
 ## Phase 4: Data mobility
 
 ### Phase 4a: Export
@@ -205,3 +217,6 @@
 
 ## Phase 6: Additional features
 - [ ] Magic input for quick adding
+
+## Phase 7: Amendment
+- [ ] Should rename `createdAt` to `transactionDatetime`
