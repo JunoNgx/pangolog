@@ -1,16 +1,16 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import { Providers } from "./providers";
 import "./globals.css";
 
-const geistSans = Geist({
+const geistSans = localFont({
+    src: "./fonts/Geist-VariableFont_wght.ttf",
     variable: "--font-geist-sans",
-    subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
+const geistMono = localFont({
+    src: "./fonts/GeistMono-VariableFont_wght.ttf",
     variable: "--font-geist-mono",
-    subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
