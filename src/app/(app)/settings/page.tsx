@@ -63,6 +63,11 @@ export default function SettingsPage() {
                     Google Drive Sync
                 </h3>
                 <div className="flex flex-col gap-3">
+                    {lastSyncTime && (
+                        <p className="font-mono text-xs text-default-400">
+                            Last synced: {new Date(lastSyncTime).toLocaleString()}
+                        </p>
+                    )}
                     {isConnected ? (
                         <>
                             <p className="font-mono text-sm text-success-500">
@@ -72,9 +77,6 @@ export default function SettingsPage() {
                                 {syncStatus === "syncing" && "Syncing..."}
                                 {syncStatus === "error" &&
                                     `Error: ${syncError}`}
-                                {syncStatus === "idle" &&
-                                    lastSyncTime &&
-                                    `Last synced: ${new Date(lastSyncTime).toLocaleString()}`}
                             </p>
                             <div className="flex gap-2">
                                 <Button

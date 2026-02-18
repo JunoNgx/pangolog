@@ -87,6 +87,10 @@ Don't comment on the classes. Just keep one type of classes in its own line. Eac
 - `hasUsedBefore` is no longer used and users can freely access route.
 - Default starting location will be set in PWA manifest.
 
+## Known behaviours
+- Zustand `persist` middleware hydrates asynchronously — on first render, persisted state (e.g. `isSeeded`, `authToken`) is at its default value. Gate logic that depends on persisted state behind `hasHydrated` from `useLocalSettingsStore`.
+- React 18 automatic batching defers renders until the event loop yields. After calling a state setter inside an async function, use `await Promise.resolve()` to flush the render before continuing with heavy async work (e.g. Drive API calls).
+
 ## Current Progress
 - Phase 1a (basic setup): done
 - Phase 1b (route structure): done
@@ -104,3 +108,4 @@ Don't comment on the classes. Just keep one type of classes in its own line. Eac
 - Phase 3b (Drive file structure): done
 - Phase 3c (Sync logic): done
 - Phase 3d (Misc implementations): done
+- Phase 3e (Seed data for new users): done

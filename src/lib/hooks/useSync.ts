@@ -1,9 +1,10 @@
 "use client";
 
 import { useQueryClient } from "@tanstack/react-query";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { getOrCreatePangoFolder } from "@/lib/drive/client";
 import { syncAll } from "@/lib/drive/sync";
+import { purgeSeedData } from "@/lib/db/seed";
 import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
 import { useGoogleAuth } from "./useGoogleAuth";
 
@@ -21,38 +22,74 @@ export function useSync() {
     const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const queryClient = useQueryClient();
 
-    const sync = useCallback(async () => {
-        const token = await getValidToken();
-        if (!token) return;
+    const seedResolverRef = useRef<((carryOver: boolean) => void) | null>(null);
+    const [isAwaitingSeedDecision, setIsAwaitingSeedDecision] = useState(false);
 
-        setSyncStatus("syncing");
-        setSyncError(null);
+    const resolveSeedDecision = useCallback((carryOver: boolean) => {
+        seedResolverRef.current?.(carryOver);
+    }, []);
 
-        try {
-            let folderId = driveFolderId;
-            if (!folderId) {
-                folderId = await getOrCreatePangoFolder(token);
-                setDriveFolderId(folderId);
+    const sync = useCallback(
+        async (options?: { skipSeedPrompt?: boolean }) => {
+            const token = await getValidToken();
+            if (!token) return;
+
+            const { seedIds, setSeedIds } = useLocalSettingsStore.getState();
+            if (seedIds) {
+                if (options?.skipSeedPrompt) return;
+                if (seedResolverRef.current !== null) return;
+
+                const carryOver = await new Promise<boolean>((resolve) => {
+                    seedResolverRef.current = resolve;
+                    setIsAwaitingSeedDecision(true);
+                });
+
+                setIsAwaitingSeedDecision(false);
+                seedResolverRef.current = null;
+
+                // Yield to let React flush the dialog close before continuing
+                await Promise.resolve();
+
+                if (carryOver) {
+                    setSeedIds(null);
+                } else {
+                    await purgeSeedData();
+                    await queryClient.invalidateQueries();
+                }
             }
 
-            await syncAll(token, folderId);
-            await queryClient.invalidateQueries();
+            setSyncStatus("syncing");
+            setSyncError(null);
 
-            setSyncStatus("idle");
-            setLastSyncTime(new Date().toISOString());
-        } catch (err) {
-            setSyncStatus("error");
-            setSyncError(err instanceof Error ? err.message : "Sync failed.");
-        }
-    }, [
-        driveFolderId,
-        getValidToken,
-        queryClient,
-        setDriveFolderId,
-        setLastSyncTime,
-        setSyncError,
-        setSyncStatus,
-    ]);
+            try {
+                let folderId = driveFolderId;
+                if (!folderId) {
+                    folderId = await getOrCreatePangoFolder(token);
+                    setDriveFolderId(folderId);
+                }
+
+                await syncAll(token, folderId);
+                await queryClient.invalidateQueries();
+
+                setSyncStatus("idle");
+                setLastSyncTime(new Date().toISOString());
+            } catch (err) {
+                setSyncStatus("error");
+                setSyncError(
+                    err instanceof Error ? err.message : "Sync failed.",
+                );
+            }
+        },
+        [
+            driveFolderId,
+            getValidToken,
+            queryClient,
+            setDriveFolderId,
+            setLastSyncTime,
+            setSyncError,
+            setSyncStatus,
+        ],
+    );
 
     const debouncedSync = useCallback(() => {
         if (debounceRef.current) clearTimeout(debounceRef.current);
@@ -68,7 +105,7 @@ export function useSync() {
         });
     }, [queryClient, debouncedSync]);
 
-    // Immediate sync on tab hide
+    // Immediate sync on tab hide — skip seed prompt (user can't interact)
     useEffect(() => {
         const handleVisibilityChange = () => {
             if (document.visibilityState !== "hidden") return;
@@ -76,7 +113,7 @@ export function useSync() {
                 clearTimeout(debounceRef.current);
                 debounceRef.current = null;
             }
-            sync();
+            sync({ skipSeedPrompt: true });
         };
         document.addEventListener("visibilitychange", handleVisibilityChange);
         return () =>
@@ -86,5 +123,5 @@ export function useSync() {
             );
     }, [sync]);
 
-    return { sync };
+    return { sync, isAwaitingSeedDecision, resolveSeedDecision };
 }
