@@ -9,7 +9,8 @@ import {
     ModalFooter,
     ModalHeader,
 } from "@heroui/react";
-import React, { useEffect, useMemo, useState } from "react";
+import type React from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
 import type { Buck, Dime } from "@/lib/db/types";
 import { useCreateBuck, useUpdateBuck } from "@/lib/hooks/useBucks";
@@ -187,7 +188,9 @@ export function TransactionDialog({
                             <p className="text-sm text-default-500 mb-2 font-mono">
                                 Category
                             </p>
-                            <div className={`flex flex-wrap gap-2 ${isCategoryExpanded ? "max-h-[50vh] overflow-y-auto" : ""}`}>
+                            <div
+                                className={`flex flex-wrap gap-2 ${isCategoryExpanded ? "max-h-[50vh] overflow-y-auto" : ""}`}
+                            >
                                 {visibleCategories.map((cat) => (
                                     <Button
                                         key={cat.id}
@@ -202,7 +205,13 @@ export function TransactionDialog({
                                                 ? "primary"
                                                 : "default"
                                         }
-                                        onPress={() => setCategoryId(categoryId === cat.id ? null : cat.id)}
+                                        onPress={() =>
+                                            setCategoryId(
+                                                categoryId === cat.id
+                                                    ? null
+                                                    : cat.id,
+                                            )
+                                        }
                                         startContent={
                                             <span
                                                 className="h-3 w-3 rounded-full inline-block"
@@ -216,16 +225,19 @@ export function TransactionDialog({
                                     </Button>
                                 ))}
                             </div>
-                            {!isCategoryExpanded && filteredCategories.length > 7 && (
-                                <Button
-                                    size="sm"
-                                    variant="light"
-                                    className="mt-2"
-                                    onPress={() => setIsCategoryExpanded(true)}
-                                >
-                                    Show all ({filteredCategories.length})
-                                </Button>
-                            )}
+                            {!isCategoryExpanded &&
+                                filteredCategories.length > 7 && (
+                                    <Button
+                                        size="sm"
+                                        variant="light"
+                                        className="mt-2"
+                                        onPress={() =>
+                                            setIsCategoryExpanded(true)
+                                        }
+                                    >
+                                        Show all ({filteredCategories.length})
+                                    </Button>
+                                )}
                             {isCategoryExpanded && (
                                 <Button
                                     size="sm"

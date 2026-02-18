@@ -148,14 +148,17 @@ export async function createFile(
         JSON.stringify(data),
     );
     const res = await expectOk(
-        await fetch(`${DRIVE_UPLOAD_API}/files?uploadType=multipart&fields=id`, {
-            method: "POST",
-            headers: {
-                ...authHeader(token),
-                "Content-Type": `multipart/related; boundary=${boundary}`,
+        await fetch(
+            `${DRIVE_UPLOAD_API}/files?uploadType=multipart&fields=id`,
+            {
+                method: "POST",
+                headers: {
+                    ...authHeader(token),
+                    "Content-Type": `multipart/related; boundary=${boundary}`,
+                },
+                body,
             },
-            body,
-        }),
+        ),
     );
     const file = (await res.json()) as DriveFile;
     return file.id;
