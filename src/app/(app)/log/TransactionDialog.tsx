@@ -20,7 +20,7 @@ interface TransactionDialogProps {
     isOpen: boolean;
     onClose: () => void;
     transaction?: Dime | Buck;
-    defaultIsBuck?: boolean;
+    defaultIsCreatingBuck?: boolean;
 }
 
 function isDime(tx: Dime | Buck): tx is Dime {
@@ -31,11 +31,11 @@ export function TransactionDialog({
     isOpen,
     onClose,
     transaction,
-    defaultIsBuck = false,
+    defaultIsCreatingBuck = false,
 }: TransactionDialogProps) {
     const [amount, setAmount] = useState("");
     const [isIncome, setIsIncome] = useState(false);
-    const [isBuck, setIsBuck] = useState(defaultIsBuck);
+    const [isCreatingBuck, setIsCreatingBuck] = useState(defaultIsCreatingBuck);
     const [categoryId, setCategoryId] = useState<string | null>(null);
     const [description, setDescription] = useState("");
     const [showAllCategories, setShowAllCategories] = useState(false);
@@ -52,27 +52,27 @@ export function TransactionDialog({
         if (transaction) {
             setAmount((transaction.amount / 100).toFixed(2));
             setIsIncome(transaction.isIncome);
-            setIsBuck(!isDime(transaction));
+            setIsCreatingBuck(!isDime(transaction));
             setCategoryId(transaction.categoryId);
             setDescription(transaction.description);
         } else {
             setAmount("");
             setIsIncome(false);
-            setIsBuck(defaultIsBuck);
+            setIsCreatingBuck(defaultIsCreatingBuck);
             setCategoryId(null);
             setDescription("");
         }
         setShowAllCategories(false);
-    }, [transaction, defaultIsBuck]);
+    }, [transaction, defaultIsCreatingBuck]);
 
     const filteredCategories = useMemo(() => {
         if (!categories) return [];
         return categories.filter((cat) => {
-            if (!isBuck && cat.isBuckOnly) return false;
+            if (!isCreatingBuck && cat.isBuckOnly) return false;
             if (!isIncome && cat.isIncomeOnly) return false;
             return true;
         });
-    }, [categories, isBuck, isIncome]);
+    }, [categories, isCreatingBuck, isIncome]);
 
     const selectedCategory = categoryId
         ? (filteredCategories.find((c) => c.id === categoryId) ?? null)
@@ -101,23 +101,28 @@ export function TransactionDialog({
             description,
         };
 
-        if (isEditing) {
-            if (isDime(transaction)) {
-                updateDime.mutate(
-                    { id: transaction.id, input },
-                    { onSuccess: onClose },
-                );
-            } else {
-                updateBuck.mutate(
-                    { id: transaction.id, input },
-                    { onSuccess: onClose },
-                );
-            }
-        } else if (isBuck) {
-            createBuck.mutate(input, { onSuccess: onClose });
-        } else {
-            createDime.mutate(input, { onSuccess: onClose });
+        if (isEditing && isDime(transaction)) {
+            updateDime.mutate(
+                { id: transaction.id, input },
+                { onSuccess: onClose },
+            );
+            return;
         }
+
+        if (isEditing && !isDime(transaction)) {
+            updateBuck.mutate(
+                { id: transaction.id, input },
+                { onSuccess: onClose },
+            );
+            return;
+        }
+
+        if (isCreatingBuck) {
+            createBuck.mutate(input, { onSuccess: onClose });
+            return;
+        }
+
+        createDime.mutate(input, { onSuccess: onClose });
     }
 
     const isPending =
@@ -161,8 +166,8 @@ export function TransactionDialog({
                             />
 
                             <ToggleSwitch
-                                isSelectingRight={isBuck}
-                                onValueChange={setIsBuck}
+                                isSelectingRight={isCreatingBuck}
+                                onValueChange={setIsCreatingBuck}
                                 leftLabel="Big buck"
                                 leftColor="bg-emerald-600"
                                 rightLabel="Small dime"
