@@ -140,23 +140,7 @@ export function TransactionDialog({
                         {isEditing ? "Edit Transaction" : "New Transaction"}
                     </ModalHeader>
                     <ModalBody className="gap-4">
-                        <Input
-                            label="Amount"
-                            value={amount}
-                            onValueChange={handleAmountChange}
-                            isRequired
-                            autoFocus
-                            inputMode="decimal"
-                            placeholder="0.00"
-                        />
-
-                        <Input
-                            label="Description"
-                            value={description}
-                            onValueChange={setDescription}
-                        />
-
-                        <div className="flex items-center gap-4">
+                        <div className="flex justify-between items-center gap-4">
                             <ToggleSwitch
                                 isSelectingRight={isIncome}
                                 onValueChange={setIsIncome}
@@ -177,6 +161,22 @@ export function TransactionDialog({
                                 />
                             )}
                         </div>
+
+                        <Input
+                            label="Amount"
+                            value={amount}
+                            onValueChange={handleAmountChange}
+                            isRequired
+                            autoFocus
+                            inputMode="decimal"
+                            placeholder="0.00"
+                        />
+
+                        <Input
+                            label="Description"
+                            value={description}
+                            onValueChange={setDescription}
+                        />
 
                         <div>
                             <p className="text-sm text-default-500 mb-2 font-mono">
