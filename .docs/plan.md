@@ -107,14 +107,14 @@
     - [ ] Display pie charts
 
 ### Phase 2c: Setting view
-- [ ] Settings view
-    - [ ] Custom display unit
-        - [ ] Custom currency symbol input
-        - [ ] Prefix/suffix toggle
-    - [ ] Google Drive connection UI
-        - [ ] Connect button
-        - [ ] Connection status
-        - [ ] Disconnect option
+- [x] Settings view
+    - [x] Custom display unit
+        - [x] Custom currency symbol input
+        - [x] Prefix/suffix toggle
+    - [x] Google Drive connection UI
+        - [x] Connect button
+        - [x] Connection status
+        - [x] Disconnect option
 
 ### Phase 2d: Dark/Light theme switcher
 - [x] Theme switcher

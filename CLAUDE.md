@@ -96,4 +96,5 @@ Optional
 - Phase 2d (dark/light theme switcher): done
 - Phase 1j (mobile responsiveness for navbar): done
 - Phase 1k (create transaction and category hotkey): done
-- Phase 2e (setup PWA and icons)
+- Phase 2e (setup PWA and icons): done
+- Phase 2c (dummy settings view): done
