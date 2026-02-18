@@ -1,6 +1,7 @@
 "use client";
 
 import { Skeleton } from "@heroui/react";
+import type React from "react";
 import { useState } from "react";
 import type { Buck, Category, Dime } from "@/lib/db/types";
 import { formatAmount } from "@/lib/utils";
@@ -117,19 +118,38 @@ function TransactionItem({
     const hasCategory = !!category;
     const hasDescription = !!transaction.description;
     const txDate = new Date(transaction.transactedAt);
-    const txDay = txDate.getDay();
+    const txDay = txDate.getDate();
     const txMonth = txDate.toLocaleDateString("en-us", { month: "short" });
     const isBigBuck = !isDime(transaction);
 
+    const ariaLabel = [
+        transaction.description,
+        category?.name,
+        transaction.isIncome ? "income" : "expense",
+        amountDisplay,
+        `${txDay} ${txMonth}`,
+    ].filter(Boolean).join(", ");
+
+    function handleKeyDown(e: React.KeyboardEvent<HTMLLIElement>) {
+        if (e.key !== "Enter" && e.key !== " ") return;
+        e.preventDefault();
+        openEditDialog(transaction);
+    }
+
     return (
         <li
+            role="button"
+            tabIndex={0}
+            aria-label={ariaLabel}
             className={`
                 grid grid-cols-12 gap-1 relative
                 pt-0 pr-0 pl-2 pb-1 mb-1
                 border-b-1 border-default-200 bg-background
                 cursor-pointer hover:border-default-400 transition
+                focus:outline-none focus-visible:ring-2 focus-visible:ring-primary
             `}
             onClick={() => openEditDialog(transaction)}
+            onKeyDown={handleKeyDown}
         >
             <div
                 className="absolute left-1 w-1 h-full"
