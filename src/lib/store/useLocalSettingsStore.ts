@@ -5,6 +5,8 @@ import type { AuthToken } from "@/lib/auth/types";
 interface LocalSettingsStore {
     authToken: AuthToken | null;
     setAuthToken: (token: AuthToken | null) => void;
+    driveFolderId: string | null;
+    setDriveFolderId: (id: string | null) => void;
 }
 
 export const useLocalSettingsStore = create<LocalSettingsStore>()(
@@ -12,6 +14,8 @@ export const useLocalSettingsStore = create<LocalSettingsStore>()(
         (set) => ({
             authToken: null,
             setAuthToken: (token) => set({ authToken: token }),
+            driveFolderId: null,
+            setDriveFolderId: (id) => set({ driveFolderId: id }),
         }),
         {
             name: "pangolog-local-settings",
