@@ -139,8 +139,9 @@ function TransactionItem({
             />
 
             <div className={`
-                    flex flex-col justify-around items-center col-span-1
+                    flex flex-col justify-around items-center col-span-2
                     font-sans
+                    md:col-span-1
                 `}>
                 <p className="font-mono font-medium text-[24px] leading-none">{txDay}</p>
                 <p className="text-xs">{txMonth}</p>
@@ -148,7 +149,10 @@ function TransactionItem({
 
             <div className={`
                 font-sans
-                ${isBigBuck ? "col-span-8" : "col-span-9"}
+                ${isBigBuck
+                    ? "col-span-7 md:col-span-8"
+                    : "col-span-8 md:col-span-9"
+                }
             `}>
                 {hasCategory
                     ? <div className="">{category.icon || "·"} {category.name}</div>
