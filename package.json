@@ -12,8 +12,11 @@
     "dependencies": {
         "@dnd-kit/helpers": "^0.3.0",
         "@dnd-kit/react": "^0.3.0",
+        "@emoji-mart/data": "^1.2.1",
+        "@emoji-mart/react": "^1.1.1",
         "@heroui/react": "^2.8.9",
         "@tanstack/react-query": "^5.90.21",
+        "emoji-mart": "^5.6.0",
         "framer-motion": "^12.34.0",
         "next": "16.1.6",
         "react": "19.2.3",

@@ -1,5 +1,7 @@
 "use client";
 
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
 import {
     Button,
     Checkbox,
@@ -99,12 +101,40 @@ export function CategoryDialog({
                             isRequired
                             autoFocus
                         />
-                        <Input
-                            label="Icon"
-                            placeholder="e.g. 🍔"
-                            value={icon}
-                            onValueChange={setIcon}
-                        />
+                        <Popover placement="bottom-start">
+                            <PopoverTrigger>
+                                <button
+                                    type="button"
+                                    className={`
+                                        w-full rounded-lg
+
+                                        flex items-center gap-3
+                                        px-3 py-2
+
+                                        bg-default-100
+
+                                        hover:bg-default-200
+                                        transition-colors
+                                    `}
+                                >
+                                    <span className="text-xl">
+                                        {icon || "😀"}
+                                    </span>
+                                    <span className="text-sm text-foreground-500">
+                                        {icon ? "Change icon" : "Pick icon"}
+                                    </span>
+                                </button>
+                            </PopoverTrigger>
+                            <PopoverContent>
+                                <Picker
+                                    data={data}
+                                    onEmojiSelect={(emoji: {
+                                        native: string;
+                                    }) => setIcon(emoji.native)}
+                                    previewPosition="none"
+                                />
+                            </PopoverContent>
+                        </Popover>
                         <Popover placement="bottom-start">
                             <PopoverTrigger>
                                 <button
