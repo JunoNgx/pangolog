@@ -19,22 +19,13 @@ const themes = [
 
 export function ThemeSwitcher() {
     const { theme, setTheme } = useTheme();
-    const [mounted, setMounted] = useState(false);
-
-    useEffect(() => {
-        setMounted(true);
-    }, []);
-
     const CurrentIcon = themes.find((t) => t.key === theme)?.icon ?? Monitor;
 
     return (
         <Dropdown>
             <DropdownTrigger>
                 <Button isIconOnly variant="light" size="sm" aria-label="Theme">
-                    <CurrentIcon
-                        size={18}
-                        className={mounted ? "opacity-100" : "opacity-0"}
-                    />
+                    <CurrentIcon size={18}/>
                 </Button>
             </DropdownTrigger>
             <DropdownMenu
