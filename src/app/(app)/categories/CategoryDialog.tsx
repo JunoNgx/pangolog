@@ -65,6 +65,15 @@ export function CategoryDialog({
         }
     }, [category]);
 
+    function handleClose() {
+            setName("");
+            setColour("#6366f1");
+            setIcon("");
+            setIsIncomeOnly(false);
+            setIsBuckOnly(false);
+            onClose();
+    }
+
     const handleSubmit: SubmitEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault();
         const input = {
@@ -79,11 +88,12 @@ export function CategoryDialog({
         if (isEditing) {
             updateCategory.mutate(
                 { id: category.id, input },
-                { onSuccess: onClose },
+                { onSuccess: handleClose },
             );
-        } else {
-            createCategory.mutate(input, { onSuccess: onClose });
+            return;
         }
+
+        createCategory.mutate(input, { onSuccess: handleClose });
     };
 
     const isPending = createCategory.isPending || updateCategory.isPending;
@@ -208,15 +218,15 @@ export function CategoryDialog({
                         </Checkbox>
                     </ModalBody>
                     <ModalFooter>
-                        <Button variant="light" onPress={onClose}>
-                            Cancel
-                        </Button>
                         <Button
                             type="submit"
                             color="primary"
                             isLoading={isPending}
                         >
                             {isEditing ? "Save" : "Create"}
+                        </Button>
+                        <Button variant="light" onPress={onClose}>
+                            Cancel
                         </Button>
                     </ModalFooter>
                 </form>
