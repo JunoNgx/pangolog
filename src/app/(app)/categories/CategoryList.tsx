@@ -37,9 +37,13 @@ function SortableCategoryItem({
     return (
         <li
             ref={ref}
-            className={`flex items-center gap-3 rounded-lg border border-default-200 px-4 py-3 bg-background ${
-                isDragging ? "opacity-50" : ""
-            }`}
+            className={`
+                rounded-lg px-4 py-3
+                flex items-center gap-3
+                bg-background
+                border border-default-200
+                ${isDragging ? "opacity-50" : ""}
+            `}
         >
             <span
                 ref={handleRef}

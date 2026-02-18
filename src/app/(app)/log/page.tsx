@@ -79,12 +79,9 @@ export default function LogPage() {
     ];
 
     const selectClasses = `
-        font-mono text-sm rounded-lg px-3 py-2
-
-        bg-default-100 text-foreground
-
-        border border-default-200
-
+        rounded-lg px-3 py-2
+        font-mono text-sm text-foreground
+        bg-default-100 border border-default-200
         cursor-pointer
     `;
 
@@ -104,16 +101,11 @@ export default function LogPage() {
         <input
             type="month"
             value={monthValue}
-            onChange={(e) =>
-                handleMonthChange(e.target.value)
-            }
+            onChange={(e) => handleMonthChange(e.target.value)}
             className={`
-                font-mono text-sm rounded-lg px-3 py-2
-
-                bg-default-100 text-foreground 
-                
-                border border-default-200
-                
+                rounded-lg px-3 py-2
+                font-mono text-sm text-foreground
+                bg-default-100 border border-default-200
                 cursor-pointer
             `}
         />
@@ -165,8 +157,7 @@ export default function LogPage() {
                     <div className="flex items-center gap-4 flex-wrap">
                         {supportsMonthInput
                             ? standardMonthSelector
-                            : fallbackMonthSelector
-                        }
+                            : fallbackMonthSelector}
                         <Checkbox
                             isSelected={shouldIncludeBucksInDimes}
                             onValueChange={setShouldIncludeBucksInDimes}
