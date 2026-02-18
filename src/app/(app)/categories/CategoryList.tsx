@@ -3,7 +3,7 @@
 import { move } from "@dnd-kit/helpers";
 import { DragDropProvider } from "@dnd-kit/react";
 import { useSortable } from "@dnd-kit/react/sortable";
-import { Button, Chip, Spinner } from "@heroui/react";
+import { Button, Chip, Skeleton } from "@heroui/react";
 import { useState } from "react";
 import type { Category } from "@/lib/db/types";
 import {
@@ -112,9 +112,21 @@ export function CategoryList() {
 
     if (isLoading) {
         return (
-            <div className="flex justify-center py-12">
-                <Spinner />
-            </div>
+            <ul className="flex flex-col gap-2">
+                {["s1", "s2", "s3", "s4"].map((key) => (
+                    <li
+                        key={key}
+                        className="flex items-center gap-3 rounded-lg border border-default-200 px-4 py-3 bg-background"
+                    >
+                        <Skeleton className="h-5 w-4 rounded" />
+                        <Skeleton className="h-6 w-6 rounded" />
+                        <Skeleton className="h-4 w-4 rounded-full" />
+                        <Skeleton className="h-4 flex-1 rounded" />
+                        <Skeleton className="h-8 w-12 rounded" />
+                        <Skeleton className="h-8 w-16 rounded" />
+                    </li>
+                ))}
+            </ul>
         );
     }
 
