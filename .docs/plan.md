@@ -143,12 +143,12 @@
     - [x] Token refresh handling
 
 ### Phase 3b: Drive file structure
-- [ ] Define Drive file organization
-    - [ ] Create appDataFolder
-    - [ ] File naming convention: `YYYY-MM.json` (dimes)
-    - [ ] File naming convention: `YYYY-bucks.json` (bucks)
-    - [ ] `categories.json`
-    - [ ] `settings.json`
+- [x] Define Drive file organization
+    - [x] Create `Pangolog` folder in Drive root (visible to user)
+    - [x] File naming convention: `YYYY-MM.json` (dimes)
+    - [x] File naming convention: `YYYY-bucks.json` (bucks)
+    - [x] `categories.json`
+    - [x] `settings.json`
 
 ### Phase 3c: Sync logic
 - [ ] Upload logic
