@@ -7,6 +7,7 @@ import { useDeleteBuck } from "@/lib/hooks/useBucks";
 import { useDeleteDime } from "@/lib/hooks/useDimes";
 import { formatAmount } from "@/lib/utils";
 import { TransactionDialog } from "./TransactionDialog";
+import { Pencil, Trash2 } from "lucide-react";
 
 interface TransactionListProps {
     transactions: (Dime | Buck)[];
@@ -178,20 +179,22 @@ function TransactionItem({
                 {amountDisplay}
             </span>
             <Button
+                className="min-w-0"
                 size="sm"
                 variant="light"
                 onPress={() => handleEdit(transaction)}
             >
-                Edit
+                <Pencil size="18"/>
             </Button>
             <Button
+                className="min-w-0"
                 size="sm"
                 variant="light"
                 color="danger"
                 isLoading={isDeleting}
                 onPress={() => handleDelete(transaction)}
             >
-                Delete
+                <Trash2 size="18"/>
             </Button>
         </li>
     );
