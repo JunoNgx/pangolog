@@ -4,11 +4,10 @@ import type { Buck, BuckInput, BuckUpdate } from "./types";
 export async function createBuck(input: BuckInput): Promise<Buck> {
     const db = await getDb();
     const now = new Date().toISOString();
-    const date = new Date(now);
+    const date = new Date(input.transactedAt);
 
     const buck: Buck = {
         id: crypto.randomUUID(),
-        transactedAt: now,
         updatedAt: now,
         deletedAt: null,
         year: date.getFullYear(),
@@ -40,13 +39,14 @@ export async function updateBuck(id: string, input: BuckUpdate): Promise<Buck> {
                 return;
             }
 
+            const transactedAt = input.transactedAt ?? existing.transactedAt;
             const updated: Buck = {
                 ...existing,
                 ...input,
                 id: existing.id,
-                transactedAt: existing.transactedAt,
+                transactedAt,
                 deletedAt: existing.deletedAt,
-                year: existing.year,
+                year: new Date(transactedAt).getFullYear(),
                 updatedAt: new Date().toISOString(),
             };
 

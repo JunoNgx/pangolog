@@ -4,11 +4,10 @@ import type { Dime, DimeInput, DimeUpdate } from "./types";
 export async function createDime(input: DimeInput): Promise<Dime> {
     const db = await getDb();
     const now = new Date().toISOString();
-    const date = new Date(now);
+    const date = new Date(input.transactedAt);
 
     const dime: Dime = {
         id: crypto.randomUUID(),
-        transactedAt: now,
         updatedAt: now,
         deletedAt: null,
         year: date.getFullYear(),
@@ -41,14 +40,16 @@ export async function updateDime(id: string, input: DimeUpdate): Promise<Dime> {
                 return;
             }
 
+            const transactedAt = input.transactedAt ?? existing.transactedAt;
+            const date = new Date(transactedAt);
             const updated: Dime = {
                 ...existing,
                 ...input,
                 id: existing.id,
-                transactedAt: existing.transactedAt,
+                transactedAt,
                 deletedAt: existing.deletedAt,
-                year: existing.year,
-                month: existing.month,
+                year: date.getFullYear(),
+                month: date.getMonth() + 1,
                 updatedAt: new Date().toISOString(),
             };
 
