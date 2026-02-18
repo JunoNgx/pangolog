@@ -125,9 +125,10 @@
         - [x] Use system settings
 
 ### Phase 2e: Setup Progressive Web App
-- [ ] Setup manifest
-- [ ] Setup metadata
-- [ ] Setup placeholder imagefile for icons
+- [x] Setup favicon for the site
+- [x] Setup manifest
+- [x] Setup metadata
+- [x] Setup placeholder imagefile for icons
 
 ## Phase 3: Drive sync
 
