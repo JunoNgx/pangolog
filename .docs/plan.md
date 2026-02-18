@@ -151,18 +151,18 @@
     - [x] `settings.json`
 
 ### Phase 3c: Sync logic
-- [ ] Upload logic
-    - [ ] Serialize data to JSON
-    - [ ] Create/update Drive files
-    - [ ] Handle rate limits with retry
-- [ ] Download logic
-    - [ ] List files in appDataFolder
-    - [ ] Download and parse JSON
-    - [ ] Merge with local data
-- [ ] Sync triggers
-    - [ ] 30s debounced after changes
-    - [ ] On visibilitychange (tab close)
-    - [ ] Manual sync button
+- [x] Upload logic
+    - [x] Serialize data to JSON
+    - [x] Create/update Drive files
+    - [x] Handle rate limits with retry
+- [x] Download logic
+    - [x] List files in appDataFolder
+    - [x] Download and parse JSON
+    - [x] Merge with local data
+- [x] Sync triggers
+    - [x] 30s debounced after changes
+    - [x] On visibilitychange (tab close)
+    - [x] Manual sync button
 
 ### Phase 3d: Misc implementations
 - [ ] Implement "last write wins" with updatedAt
