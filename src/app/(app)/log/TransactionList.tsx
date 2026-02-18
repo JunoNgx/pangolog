@@ -5,6 +5,7 @@ import { useState } from "react";
 import type { Buck, Category, Dime } from "@/lib/db/types";
 import { useDeleteBuck } from "@/lib/hooks/useBucks";
 import { useDeleteDime } from "@/lib/hooks/useDimes";
+import { formatAmount } from "@/lib/utils";
 import { TransactionDialog } from "./TransactionDialog";
 
 interface TransactionListProps {
@@ -94,7 +95,7 @@ export function TransactionList({
                     const cat = tx.categoryId
                         ? categoryMap.get(tx.categoryId)
                         : undefined;
-                    const amountDisplay = (tx.amount / 100).toFixed(2);
+                    const amountDisplay = formatAmount(tx.amount);
                     const isDeleting = isDime(tx)
                         ? deleteDime.isPending
                         : deleteBuck.isPending;
