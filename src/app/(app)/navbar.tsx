@@ -1,12 +1,12 @@
 "use client";
 
 import {
-    Link,
     Navbar,
     NavbarBrand,
     NavbarContent,
     NavbarItem,
 } from "@heroui/react";
+import NextLink from "next/link";
 import { usePathname } from "next/navigation";
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 
@@ -28,19 +28,19 @@ export function AppNavbar() {
             <NavbarContent justify="end">
                 {navItems.map((item) => (
                     <NavbarItem key={item.href}>
-                        <Link
+                        <NextLink
                             href={item.href}
-                            color={
+                            className={
                                 pathname === item.href
-                                    ? "primary"
-                                    : "foreground"
+                                    ? "text-primary"
+                                    : "text-foreground"
                             }
                             aria-current={
                                 pathname === item.href ? "page" : undefined
                             }
                         >
                             {item.label}
-                        </Link>
+                        </NextLink>
                     </NavbarItem>
                 ))}
                 <NavbarItem>
