@@ -44,7 +44,7 @@ Personal expense tracker PWA. See `.docs/spec.md` and `.docs/plan.md` for full d
 - Use `camelCase` for hooks and `PascalCase` for components
 - Use the term `Dialog` instead of `Modal`
 - Complicated handler function, taking up more than one line, should be implemented separately outside of the template.
-- Do not use the deprecated `FormEvent`
+- Do not use the deprecated `FormEvent` and `React.FormEventHandler`
 
 ### Tailwind classes
 - Tailwind classes are to be wrapped in literal template, grouping classes into categories:

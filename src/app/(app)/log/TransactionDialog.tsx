@@ -90,7 +90,7 @@ export function TransactionDialog({
         }
     }
 
-    function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    function handleSubmit(e: SubmitEvent) {
         e.preventDefault();
         const amountMinor = Math.round(Number.parseFloat(amount) * 100);
         if (Number.isNaN(amountMinor) || amountMinor <= 0) return;
