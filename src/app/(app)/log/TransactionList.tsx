@@ -136,65 +136,84 @@ function TransactionItem({
         }
     }
 
+    const hasCategory = !!category;
+    const hasDescription = !!transaction.description;
+    const txDate = new Date(transaction.transactedAt);
+    const txDay = txDate.getDay();
+    const txMonth = txDate.toLocaleDateString("en-us", { month: "short" });
+    const isBigBuck = !isDime(transaction);
+
     return (
-        <li
-            className="flex items-center gap-3 rounded-lg border border-default-200 px-4 py-3 bg-background"
-        >
-            {category ? (
-                <>
-                    <span className="text-xl">
-                        {category.icon || "·"}
-                    </span>
-                    <span
-                        className="h-4 w-4 rounded-full shrink-0"
-                        style={{
-                            backgroundColor: category.colour,
-                        }}
-                    />
-                </>
-            ) : (
-                <span className="text-xl text-default-300">
-                    ·
+        <li className={`
+            grid grid-cols-12 gap-1 relative
+            pt-0 pr-0 pl-2 pb-1 mb-1
+            border-b-1 border-default-200 bg-background`
+        }>
+            <div
+                className="absolute left-1 w-1 h-full"
+                style={{
+                    backgroundColor: category?.colour,
+                }}
+            />
+
+            <div className={`
+                    flex flex-col justify-around items-center col-span-1
+                    font-sans
+                `}>
+                <p className="font-mono font-medium text-[24px] leading-none">{txDay}</p>
+                <p className="text-xs">{txMonth}</p>
+            </div>
+
+            <div className={`
+                font-sans
+                ${isBigBuck ? "col-span-6" : "col-span-7"}
+            `}>
+                {hasCategory
+                    ? <div className="">{category.icon || "·"} {category.name}</div>
+                    : <div className="text-gray-500">no category</div>
+                }
+                {hasDescription
+                    ? <div className="truncate">{transaction.description}</div>
+                    : <div className="text-gray-500">no description</div>
+                }
+            </div>
+
+            {isBigBuck && (
+                <span className={`
+                    col-span-1 justify-self-center self-center
+                    font-mono text-center text-xs text-default-400
+                `}>
+                    BIG BUCK
                 </span>
             )}
-            <span className="font-mono flex-1 truncate">
-                {transaction.description || (
-                    <span className="text-default-300">
-                        (no description)
-                    </span>
-                )}
-            </span>
-            {!isDime(transaction) && (
-                <span className="text-xs text-default-400 font-mono">
-                    BUCK
-                </span>
-            )}
+
             <span
                 className={`
+                    col-span-2 self-center justify-self-center
                     font-mono font-medium
-                    ${transaction.isIncome ? "text-success" : "text-danger"}
+                    ${transaction.isIncome ? "text-success" : ""}
                 `}
             >
-                {transaction.isIncome ? "+" : "-"}
-                {amountDisplay}
+                {transaction.isIncome ? "+" : ""}{amountDisplay}
             </span>
+
             <Button
-                className="min-w-0"
+                className="col-span-1 self-center min-w-0"
                 size="sm"
                 variant="light"
                 onPress={() => handleEdit(transaction)}
             >
-                <Pencil size="18"/>
+                <Pencil size="18" />
             </Button>
             <Button
-                className="min-w-0"
+                className="col-span-1 self-center min-w-0"
                 size="sm"
                 variant="light"
                 color="danger"
                 isLoading={isDeleting}
                 onPress={() => handleDelete(transaction)}
             >
-                <Trash2 size="18"/>
+                <Trash2 size="18" />
             </Button>
         </li>
     );
