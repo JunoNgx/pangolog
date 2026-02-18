@@ -42,16 +42,10 @@ export type DimeInput = Omit<
 >;
 
 export type DimeUpdate = Partial<
-    Omit<
-        Dime,
-        "id" | "updatedAt" | "deletedAt" | "year" | "month"
-    >
+    Omit<Dime, "id" | "updatedAt" | "deletedAt" | "year" | "month">
 >;
 
-export type BuckInput = Omit<
-    Buck,
-    "id" | "updatedAt" | "deletedAt" | "year"
->;
+export type BuckInput = Omit<Buck, "id" | "updatedAt" | "deletedAt" | "year">;
 
 export type BuckUpdate = Partial<
     Omit<Buck, "id" | "updatedAt" | "deletedAt" | "year">

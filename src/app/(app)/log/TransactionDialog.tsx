@@ -13,9 +13,17 @@ import type React from "react";
 import { useEffect, useMemo, useState } from "react";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
 import type { Buck, Dime } from "@/lib/db/types";
-import { useCreateBuck, useDeleteBuck, useUpdateBuck } from "@/lib/hooks/useBucks";
+import {
+    useCreateBuck,
+    useDeleteBuck,
+    useUpdateBuck,
+} from "@/lib/hooks/useBucks";
 import { useCategories } from "@/lib/hooks/useCategories";
-import { useCreateDime, useDeleteDime, useUpdateDime } from "@/lib/hooks/useDimes";
+import {
+    useCreateDime,
+    useDeleteDime,
+    useUpdateDime,
+} from "@/lib/hooks/useDimes";
 
 interface TransactionDialogProps {
     isOpen: boolean;
@@ -296,7 +304,9 @@ export function TransactionDialog({
                             )}
                         </div>
                     </ModalBody>
-                    <ModalFooter className={isEditing ? "justify-between" : undefined}>
+                    <ModalFooter
+                        className={isEditing ? "justify-between" : undefined}
+                    >
                         {isEditing && (
                             <Button
                                 color="danger"
