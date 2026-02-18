@@ -28,6 +28,26 @@ function isDime(tx: Dime | Buck): tx is Dime {
     return "month" in tx;
 }
 
+function todayDateString(): string {
+    const d = new Date();
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+}
+
+function toDateInputValue(isoString: string): string {
+    const d = new Date(isoString);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+}
+
+function fromDateInputValue(dateStr: string): string {
+    return new Date(`${dateStr}T12:00:00`).toISOString();
+}
+
 export function TransactionDialog({
     isOpen,
     onClose,
@@ -35,6 +55,7 @@ export function TransactionDialog({
     defaultIsCreatingBuck = false,
 }: TransactionDialogProps) {
     const [amount, setAmount] = useState("");
+    const [transactedAt, setTransactedAt] = useState(todayDateString());
     const [isIncome, setIsIncome] = useState(false);
     const [isCreatingBuck, setIsCreatingBuck] = useState(defaultIsCreatingBuck);
     const [categoryId, setCategoryId] = useState<string | null>(null);
@@ -54,12 +75,14 @@ export function TransactionDialog({
     useEffect(() => {
         if (transaction) {
             setAmount((transaction.amount / 100).toFixed(2));
+            setTransactedAt(toDateInputValue(transaction.transactedAt));
             setIsIncome(transaction.isIncome);
             setIsCreatingBuck(!isDime(transaction));
             setCategoryId(transaction.categoryId);
             setDescription(transaction.description);
         } else {
             setAmount("");
+            setTransactedAt(todayDateString());
             setIsIncome(false);
             setIsCreatingBuck(defaultIsCreatingBuck);
             setCategoryId(null);
@@ -83,6 +106,7 @@ export function TransactionDialog({
 
     function handleClose() {
         setAmount("");
+        setTransactedAt(todayDateString());
         setIsIncome(false);
         setIsCreatingBuck(defaultIsCreatingBuck);
         setCategoryId(null);
@@ -104,6 +128,7 @@ export function TransactionDialog({
         if (Number.isNaN(amountMinor) || amountMinor <= 0) return;
 
         const input = {
+            transactedAt: fromDateInputValue(transactedAt),
             amount: amountMinor,
             isIncome,
             categoryId,
@@ -189,6 +214,14 @@ export function TransactionDialog({
                             classNames={{
                                 input: "text-2xl text-center font-mono",
                             }}
+                        />
+
+                        <Input
+                            type="date"
+                            label="Date"
+                            value={transactedAt}
+                            onValueChange={setTransactedAt}
+                            isRequired
                         />
 
                         <Input
@@ -280,7 +313,7 @@ export function TransactionDialog({
                                 color="primary"
                                 isLoading={isPending}
                             >
-                                Save
+                                {isEditing ? "Save" : "Create"}
                             </Button>
                             <Button variant="light" onPress={onClose}>
                                 Cancel
