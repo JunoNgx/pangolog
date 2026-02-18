@@ -145,9 +145,7 @@ export function TransactionDialog({
                                 isSelectingRight={isIncome}
                                 onValueChange={setIsIncome}
                                 leftLabel="Expense"
-                                leftColor="bg-emerald-600"
                                 rightLabel="Income"
-                                rightColor="bg-amber-600"
                             />
 
                             {!isEditing && (
@@ -155,9 +153,7 @@ export function TransactionDialog({
                                     isSelectingRight={isCreatingBuck}
                                     onValueChange={setIsCreatingBuck}
                                     leftLabel="Small dime"
-                                    leftColor="bg-emerald-600"
                                     rightLabel="Big buck"
-                                    rightColor="bg-amber-600"
                                 />
                             )}
                         </div>
