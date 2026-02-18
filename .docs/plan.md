@@ -73,11 +73,11 @@
 
 
 ### Phase 1g: implement default route and setup important settings
-- [ ] User onboarding flow
+- [x] User onboarding flow
     - [ ] Root page checks IndexedDB for existing data
-    - [ ] Set localStorage flag on first transaction/category
-    - [ ] Redirect returning users to /log
-    - [ ] Show landing page for new users
+    - [x] Set localStorage flag on first transaction creation
+    - [x] Redirect returning users to /log
+    - [x] Show landing page for new users
 
 ### Phase 1h: polishing
 - [ ] Polishing
