@@ -95,3 +95,4 @@ Optional
 - Phase 1f (transaction view): done
 - Phase 2d (dark/light theme switcher): done
 - Phase 1j (mobile responsiveness for navbar): done
+- Phase 1k (create transaction and category hotkey): done
