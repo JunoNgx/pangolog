@@ -87,3 +87,4 @@ Don't comment on the classes. Just separate them with a blank line.
 - Phase 1e (category view): done
 - Phase 2a (drag-and-drop category reordering): done
 - Phase 1f (transaction view): done
+- Phase 2d (dark/light theme switcher): done
