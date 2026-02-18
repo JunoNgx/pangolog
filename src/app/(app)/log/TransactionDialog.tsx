@@ -144,9 +144,9 @@ export function TransactionDialog({
                             <ToggleSwitch
                                 isSelectingRight={isIncome}
                                 onValueChange={setIsIncome}
-                                leftLabel="Income"
+                                leftLabel="Expense"
                                 leftColor="bg-emerald-600"
-                                rightLabel="Expense"
+                                rightLabel="Income"
                                 rightColor="bg-amber-600"
                             />
 
