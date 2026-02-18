@@ -3,11 +3,9 @@
 import { Button, Skeleton } from "@heroui/react";
 import { useState } from "react";
 import type { Buck, Category, Dime } from "@/lib/db/types";
-import { useDeleteBuck } from "@/lib/hooks/useBucks";
-import { useDeleteDime } from "@/lib/hooks/useDimes";
 import { formatAmount } from "@/lib/utils";
 import { TransactionDialog } from "./TransactionDialog";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil } from "lucide-react";
 
 interface TransactionListProps {
     transactions: (Dime | Buck)[];
@@ -115,26 +113,7 @@ function TransactionItem({
     category,
     openEditDialog,
 }: TransactionItemProps) {
-    const deleteDime = useDeleteDime();
-    const deleteBuck = useDeleteBuck();
-
-    const isDeleting = isDime(transaction)
-        ? deleteDime.isPending
-        : deleteBuck.isPending;
-
     const amountDisplay = formatAmount(transaction.amount);
-
-    function handleEdit(tx: Dime | Buck) {
-        openEditDialog(transaction);
-    }
-
-    function handleDelete(tx: Dime | Buck) {
-        if (isDime(tx)) {
-            deleteDime.mutate(tx.id);
-        } else {
-            deleteBuck.mutate(tx.id);
-        }
-    }
 
     const hasCategory = !!category;
     const hasDescription = !!transaction.description;
@@ -166,7 +145,7 @@ function TransactionItem({
 
             <div className={`
                 font-sans
-                ${isBigBuck ? "col-span-6" : "col-span-7"}
+                ${isBigBuck ? "col-span-7" : "col-span-8"}
             `}>
                 {hasCategory
                     ? <div className="">{category.icon || "·"} {category.name}</div>
@@ -201,19 +180,9 @@ function TransactionItem({
                 className="col-span-1 self-center min-w-0"
                 size="sm"
                 variant="light"
-                onPress={() => handleEdit(transaction)}
+                onPress={() => openEditDialog(transaction)}
             >
                 <Pencil size="18" />
-            </Button>
-            <Button
-                className="col-span-1 self-center min-w-0"
-                size="sm"
-                variant="light"
-                color="danger"
-                isLoading={isDeleting}
-                onPress={() => handleDelete(transaction)}
-            >
-                <Trash2 size="18" />
             </Button>
         </li>
     );

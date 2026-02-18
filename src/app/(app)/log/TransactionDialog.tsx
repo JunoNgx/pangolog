@@ -13,9 +13,9 @@ import type React from "react";
 import { useEffect, useMemo, useState } from "react";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
 import type { Buck, Dime } from "@/lib/db/types";
-import { useCreateBuck, useUpdateBuck } from "@/lib/hooks/useBucks";
+import { useCreateBuck, useDeleteBuck, useUpdateBuck } from "@/lib/hooks/useBucks";
 import { useCategories } from "@/lib/hooks/useCategories";
-import { useCreateDime, useUpdateDime } from "@/lib/hooks/useDimes";
+import { useCreateDime, useDeleteDime, useUpdateDime } from "@/lib/hooks/useDimes";
 
 interface TransactionDialogProps {
     isOpen: boolean;
@@ -44,8 +44,10 @@ export function TransactionDialog({
     const { data: categories } = useCategories();
     const createDime = useCreateDime();
     const updateDime = useUpdateDime();
+    const deleteDime = useDeleteDime();
     const createBuck = useCreateBuck();
     const updateBuck = useUpdateBuck();
+    const deleteBuck = useDeleteBuck();
 
     const isEditing = !!transaction;
 
@@ -132,11 +134,22 @@ export function TransactionDialog({
         createDime.mutate(input, { onSuccess: handleClose });
     }
 
+    function handleDelete() {
+        if (!transaction) return;
+        if (isDime(transaction)) {
+            deleteDime.mutate(transaction.id, { onSuccess: handleClose });
+        } else {
+            deleteBuck.mutate(transaction.id, { onSuccess: handleClose });
+        }
+    }
+
     const isPending =
         createDime.isPending ||
         updateDime.isPending ||
         createBuck.isPending ||
         updateBuck.isPending;
+
+    const isDeleting = deleteDime.isPending || deleteBuck.isPending;
 
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
@@ -250,17 +263,29 @@ export function TransactionDialog({
                             )}
                         </div>
                     </ModalBody>
-                    <ModalFooter>
-                        <Button
-                            type="submit"
-                            color="primary"
-                            isLoading={isPending}
-                        >
-                            {isEditing ? "Save" : "Create"}
-                        </Button>
-                        <Button variant="light" onPress={onClose}>
-                            Cancel
-                        </Button>
+                    <ModalFooter className={isEditing ? "justify-between" : undefined}>
+                        {isEditing && (
+                            <Button
+                                color="danger"
+                                variant="light"
+                                isLoading={isDeleting}
+                                onPress={handleDelete}
+                            >
+                                Delete
+                            </Button>
+                        )}
+                        <div className="flex gap-2">
+                            <Button
+                                type="submit"
+                                color="primary"
+                                isLoading={isPending}
+                            >
+                                Save
+                            </Button>
+                            <Button variant="light" onPress={onClose}>
+                                Cancel
+                            </Button>
+                        </div>
                     </ModalFooter>
                 </form>
             </ModalContent>
