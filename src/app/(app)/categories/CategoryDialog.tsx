@@ -9,8 +9,12 @@ import {
     ModalContent,
     ModalFooter,
     ModalHeader,
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
 } from "@heroui/react";
 import { type FormEvent, useEffect, useState } from "react";
+import { HexColorPicker } from "react-colorful";
 import type { Category } from "@/lib/db/types";
 import {
     useCreateCategory,
@@ -34,7 +38,6 @@ export function CategoryDialog({
 
     const [isIncomeOnly, setIsIncomeOnly] = useState(false);
     const [isBuckOnly, setIsBuckOnly] = useState(false);
-
     const createCategory = useCreateCategory();
     const updateCategory = useUpdateCategory();
 
@@ -102,12 +105,61 @@ export function CategoryDialog({
                             value={icon}
                             onValueChange={setIcon}
                         />
-                        <Input
-                            label="Colour"
-                            type="color"
-                            value={colour}
-                            onValueChange={setColour}
-                        />
+                        <Popover placement="bottom-start">
+                            <PopoverTrigger>
+                                <button
+                                    type="button"
+                                    className={`
+                                        /* CONTAINER */
+                                        w-full rounded-lg
+
+                                        /* INNER STRUCTURE */
+                                        flex items-center gap-3
+                                        px-3 py-2
+
+                                        /* VISUAL EFFECTS */
+                                        bg-default-100
+
+                                        /* BEHAVIOR */
+                                        hover:bg-default-200
+                                        transition-colors
+                                    `}
+                                >
+                                    <div
+                                        className={`
+                                            /* CONTAINER */
+                                            size-6 shrink-0 rounded-full
+
+                                            /* VISUAL EFFECTS */
+                                            border border-default-300
+                                        `}
+                                        style={{ backgroundColor: colour }}
+                                    />
+                                    <span className="text-sm text-foreground-500">
+                                        {colour}
+                                    </span>
+                                </button>
+                            </PopoverTrigger>
+                            <PopoverContent>
+                                <div className="flex flex-col gap-2 p-2">
+                                    <HexColorPicker
+                                        color={colour}
+                                        onChange={setColour}
+                                    />
+                                    <Input
+                                        label="Hex"
+                                        size="sm"
+                                        value={colour}
+                                        onValueChange={(v) =>
+                                            setColour(
+                                                v.startsWith("#") ? v : `#${v}`,
+                                            )
+                                        }
+                                        maxLength={7}
+                                    />
+                                </div>
+                            </PopoverContent>
+                        </Popover>
 
                         <Checkbox
                             isSelected={isIncomeOnly}
