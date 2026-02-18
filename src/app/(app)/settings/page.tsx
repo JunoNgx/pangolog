@@ -2,6 +2,8 @@
 
 import { Button, Input, Radio, RadioGroup } from "@heroui/react";
 import { useGoogleAuth } from "@/lib/hooks/useGoogleAuth";
+import { useSync } from "@/lib/hooks/useSync";
+import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
 
 export default function SettingsPage() {
@@ -13,6 +15,8 @@ export default function SettingsPage() {
     } = useProfileSettingsStore();
     const { authToken, isConnected, isConnecting, error, connect, disconnect } =
         useGoogleAuth();
+    const { sync } = useSync();
+    const { syncStatus, lastSyncTime, syncError } = useLocalSettingsStore();
 
     const previewAmount = "12.50";
     const preview = customCurrency
@@ -64,14 +68,31 @@ export default function SettingsPage() {
                             <p className="font-mono text-sm text-success-500">
                                 Status: Connected as {authToken!.email}
                             </p>
-                            <Button
-                                color="danger"
-                                variant="flat"
-                                className="max-w-xs"
-                                onPress={disconnect}
-                            >
-                                Disconnect
-                            </Button>
+                            <p className="font-mono text-xs text-default-400">
+                                {syncStatus === "syncing" && "Syncing..."}
+                                {syncStatus === "error" && `Error: ${syncError}`}
+                                {syncStatus === "idle" && lastSyncTime &&
+                                    `Last synced: ${new Date(lastSyncTime).toLocaleString()}`}
+                            </p>
+                            <div className="flex gap-2">
+                                <Button
+                                    color="primary"
+                                    variant="flat"
+                                    className="max-w-xs"
+                                    isLoading={syncStatus === "syncing"}
+                                    onPress={sync}
+                                >
+                                    Sync now
+                                </Button>
+                                <Button
+                                    color="danger"
+                                    variant="flat"
+                                    className="max-w-xs"
+                                    onPress={disconnect}
+                                >
+                                    Disconnect
+                                </Button>
+                            </div>
                         </>
                     ) : (
                         <>

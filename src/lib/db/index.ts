@@ -1,5 +1,13 @@
 export { createBuck, deleteBuck, getBucksByYear, updateBuck } from "./bucks";
 export {
+    bulkPutBucks,
+    bulkPutCategories,
+    bulkPutDimes,
+    getAllBucksForSync,
+    getAllCategoriesForSync,
+    getAllDimesForSync,
+} from "./sync";
+export {
     createCategory,
     deleteCategory,
     getAllCategories,

@@ -92,6 +92,22 @@ export async function getOrCreatePangoFolder(token: string): Promise<string> {
 
 // --- File operations ---
 
+export async function listFiles(
+    token: string,
+    folderId: string,
+): Promise<DriveFile[]> {
+    const query = encodeURIComponent(
+        `'${folderId}' in parents and trashed=false`,
+    );
+    const res = await expectOk(
+        await fetch(`${DRIVE_API}/files?q=${query}&fields=files(id,name)`, {
+            headers: authHeader(token),
+        }),
+    );
+    const { files } = (await res.json()) as DriveFileList;
+    return files;
+}
+
 export async function findFile(
     token: string,
     folderId: string,
