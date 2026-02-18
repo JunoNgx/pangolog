@@ -190,7 +190,7 @@ export default function LogPage() {
             <TransactionDialog
                 isOpen={isCreateOpen}
                 onClose={() => setIsCreateOpen(false)}
-                defaultIsBuck={isViewingBigBucks}
+                defaultIsCreatingBuck={isViewingBigBucks}
             />
         </div>
     );
