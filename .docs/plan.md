@@ -90,6 +90,11 @@
     - [ ] Navbar in mobile
     - [ ] Floating buttons positioning in mobile
 
+### Phase 1k: Hotkey shortcut
+- [ ] Hotkey shortcut: `Cmd/Ctrl + Enter`
+    - [ ] Transaction view: open the create new Transaction dialog
+    - [ ] Category view: open the create new Category dialog
+
 ## Phase 2: Advanced features
 
 ### Phase 2a: drag and drop
