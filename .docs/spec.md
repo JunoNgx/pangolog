@@ -210,6 +210,8 @@ Approach:
     - Category accordion:
         - Collapsed: 7 categories of highest priority.
         - Expended: show all categories in a half-screen scrollable area.
+        - Selecting a Category is performed by clicking on a Category that is not yet selected.
+        - Deselecting a Category is performed by clicking on the selected Category.
     - Input is capped to two decimal points.
     - Future consideration: setting for auto-adding decimal point.
 

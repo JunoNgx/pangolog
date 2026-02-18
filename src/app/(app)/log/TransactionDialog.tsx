@@ -39,7 +39,7 @@ export function TransactionDialog({
     const [isCreatingBuck, setIsCreatingBuck] = useState(defaultIsCreatingBuck);
     const [categoryId, setCategoryId] = useState<string | null>(null);
     const [description, setDescription] = useState("");
-    const [showAllCategories, setShowAllCategories] = useState(false);
+    const [isCategoryExpanded, setIsCategoryExpanded] = useState(false);
 
     const { data: categories } = useCategories();
     const createDime = useCreateDime();
@@ -63,7 +63,7 @@ export function TransactionDialog({
             setCategoryId(null);
             setDescription("");
         }
-        setShowAllCategories(false);
+        setIsCategoryExpanded(false);
     }, [transaction, defaultIsCreatingBuck]);
 
     const filteredCategories = useMemo(() => {
@@ -75,13 +75,19 @@ export function TransactionDialog({
         });
     }, [categories, isCreatingBuck, isIncome]);
 
-    const selectedCategory = categoryId
-        ? (filteredCategories.find((c) => c.id === categoryId) ?? null)
-        : null;
-
-    const visibleCategories = showAllCategories
+    const visibleCategories = isCategoryExpanded
         ? filteredCategories
         : filteredCategories.slice(0, 7);
+
+    function handleClose() {
+        setAmount("");
+        setIsIncome(false);
+        setIsCreatingBuck(defaultIsCreatingBuck);
+        setCategoryId(null);
+        setDescription("");
+        setIsCategoryExpanded(false);
+        onClose();
+    }
 
     function handleAmountChange(value: string) {
         const match = value.match(/^\d*\.?\d{0,2}$/);
@@ -105,7 +111,7 @@ export function TransactionDialog({
         if (isEditing && isDime(transaction)) {
             updateDime.mutate(
                 { id: transaction.id, input },
-                { onSuccess: onClose },
+                { onSuccess: handleClose },
             );
             return;
         }
@@ -113,17 +119,17 @@ export function TransactionDialog({
         if (isEditing && !isDime(transaction)) {
             updateBuck.mutate(
                 { id: transaction.id, input },
-                { onSuccess: onClose },
+                { onSuccess: handleClose },
             );
             return;
         }
 
         if (isCreatingBuck) {
-            createBuck.mutate(input, { onSuccess: onClose });
+            createBuck.mutate(input, { onSuccess: handleClose });
             return;
         }
 
-        createDime.mutate(input, { onSuccess: onClose });
+        createDime.mutate(input, { onSuccess: handleClose });
     }
 
     const isPending =
@@ -166,6 +172,10 @@ export function TransactionDialog({
                             autoFocus
                             inputMode="decimal"
                             placeholder="0.00"
+                            onFocus={(e) => e.target.select()}
+                            classNames={{
+                                input: "text-2xl text-center font-mono",
+                            }}
                         />
 
                         <Input
@@ -178,32 +188,7 @@ export function TransactionDialog({
                             <p className="text-sm text-default-500 mb-2 font-mono">
                                 Category
                             </p>
-                            {selectedCategory && (
-                                <div className="flex items-center gap-2 mb-3 px-3 py-2 rounded-lg border-2 border-primary bg-primary/5">
-                                    <span
-                                        className="h-4 w-4 rounded-full shrink-0"
-                                        style={{
-                                            backgroundColor:
-                                                selectedCategory.colour,
-                                        }}
-                                    />
-                                    <span className="text-lg">
-                                        {selectedCategory.icon || "·"}
-                                    </span>
-                                    <span className="font-mono font-medium">
-                                        {selectedCategory.name}
-                                    </span>
-                                    <Button
-                                        size="sm"
-                                        variant="light"
-                                        className="ml-auto"
-                                        onPress={() => setCategoryId(null)}
-                                    >
-                                        Clear
-                                    </Button>
-                                </div>
-                            )}
-                            <div className="flex flex-wrap gap-2">
+                            <div className={`flex flex-wrap gap-2 ${isCategoryExpanded ? "max-h-[50vh] overflow-y-auto" : ""}`}>
                                 {visibleCategories.map((cat) => (
                                     <Button
                                         key={cat.id}
@@ -218,7 +203,7 @@ export function TransactionDialog({
                                                 ? "primary"
                                                 : "default"
                                         }
-                                        onPress={() => setCategoryId(cat.id)}
+                                        onPress={() => setCategoryId(categoryId === cat.id ? null : cat.id)}
                                         startContent={
                                             <span
                                                 className="h-3 w-3 rounded-full inline-block"
@@ -232,31 +217,38 @@ export function TransactionDialog({
                                     </Button>
                                 ))}
                             </div>
-                            {!showAllCategories &&
-                                filteredCategories.length > 7 && (
-                                    <Button
-                                        size="sm"
-                                        variant="light"
-                                        className="mt-2"
-                                        onPress={() =>
-                                            setShowAllCategories(true)
-                                        }
-                                    >
-                                        Show all ({filteredCategories.length})
-                                    </Button>
-                                )}
+                            {!isCategoryExpanded && filteredCategories.length > 7 && (
+                                <Button
+                                    size="sm"
+                                    variant="light"
+                                    className="mt-2"
+                                    onPress={() => setIsCategoryExpanded(true)}
+                                >
+                                    Show all ({filteredCategories.length})
+                                </Button>
+                            )}
+                            {isCategoryExpanded && (
+                                <Button
+                                    size="sm"
+                                    variant="light"
+                                    className="mt-2"
+                                    onPress={() => setIsCategoryExpanded(false)}
+                                >
+                                    Show less
+                                </Button>
+                            )}
                         </div>
                     </ModalBody>
                     <ModalFooter>
-                        <Button variant="light" onPress={onClose}>
-                            Cancel
-                        </Button>
                         <Button
                             type="submit"
                             color="primary"
                             isLoading={isPending}
                         >
                             {isEditing ? "Save" : "Create"}
+                        </Button>
+                        <Button variant="light" onPress={onClose}>
+                            Cancel
                         </Button>
                     </ModalFooter>
                 </form>
