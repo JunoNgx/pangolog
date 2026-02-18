@@ -8,7 +8,7 @@ export async function createDime(input: DimeInput): Promise<Dime> {
 
     const dime: Dime = {
         id: crypto.randomUUID(),
-        createdAt: now,
+        transactedAt: now,
         updatedAt: now,
         deletedAt: null,
         year: date.getFullYear(),
@@ -45,7 +45,7 @@ export async function updateDime(id: string, input: DimeUpdate): Promise<Dime> {
                 ...existing,
                 ...input,
                 id: existing.id,
-                createdAt: existing.createdAt,
+                transactedAt: existing.transactedAt,
                 deletedAt: existing.deletedAt,
                 year: existing.year,
                 month: existing.month,

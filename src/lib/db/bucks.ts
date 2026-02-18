@@ -8,7 +8,7 @@ export async function createBuck(input: BuckInput): Promise<Buck> {
 
     const buck: Buck = {
         id: crypto.randomUUID(),
-        createdAt: now,
+        transactedAt: now,
         updatedAt: now,
         deletedAt: null,
         year: date.getFullYear(),
@@ -44,7 +44,7 @@ export async function updateBuck(id: string, input: BuckUpdate): Promise<Buck> {
                 ...existing,
                 ...input,
                 id: existing.id,
-                createdAt: existing.createdAt,
+                transactedAt: existing.transactedAt,
                 deletedAt: existing.deletedAt,
                 year: existing.year,
                 updatedAt: new Date().toISOString(),

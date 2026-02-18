@@ -20,12 +20,12 @@ export function getDb(): Promise<IDBDatabase> {
             const dimes = db.createObjectStore("dimes", { keyPath: "id" });
             dimes.createIndex("yearMonth", ["year", "month"]);
             dimes.createIndex("categoryId", "categoryId");
-            dimes.createIndex("createdAt", "createdAt");
+            dimes.createIndex("transactedAt", "transactedAt");
 
             const bucks = db.createObjectStore("bucks", { keyPath: "id" });
             bucks.createIndex("year", "year");
             bucks.createIndex("categoryId", "categoryId");
-            bucks.createIndex("createdAt", "createdAt");
+            bucks.createIndex("transactedAt", "transactedAt");
 
             const categories = db.createObjectStore("categories", {
                 keyPath: "id",
