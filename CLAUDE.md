@@ -36,6 +36,7 @@ Personal expense tracker PWA. See `.docs/spec.md` and `.docs/plan.md` for full d
 - Monospace-heavy minimalist design
 - No hard deletes — always soft delete with `deletedAt`
 - Currency is cosmetic only (user-set string, no conversion logic)
+- Firefox fallback: `<input type="month">` is unsupported on Firefox desktop; detect with feature check and fall back to dual `<select>` dropdowns (month name + year)
 
 ## Maintainer's preferences
 - Use 4 space indentation
@@ -51,33 +52,34 @@ Personal expense tracker PWA. See `.docs/spec.md` and `.docs/plan.md` for full d
     - Content style (e.g. `font-sans text-gray-900 dark:text-gray-100`)
     - Visual effects (e.g. `shadow-lg`, `border border-gray-200`, `dark:border-gray-700`)
     - Behaviours (e.g. `hover:shadow-xl`, `transition-shadow duration-300`, `focus-within:ring-2 focus-within:ring-primary-500`)
+    - Computed classes
 
 Complete example:
 ```
 const cardClasses = `
     /* CONTAINER */
-    w-full max-w-md
-    bg-white dark:bg-gray-800
-    rounded-xl
-    
+    w-full max-w-md bg-white dark:bg-gray-800 rounded-xl
+
     /* INNER STRUCTURE */
-    flex flex-col
-    p-6 gap-4
-    
+    flex flex-col p-6 gap-4
+
     /* CONTENT STYLES */
     font-sans text-gray-900 dark:text-gray-100
-    
+
     /* VISUAL EFFECTS */
-    shadow-lg
-    border border-gray-200 dark:border-gray-700
-    
+    shadow-lg border border-gray-200 dark:border-gray-700
+
     /* BEHAVIOR */
-    hover:shadow-xl
-    transition-shadow duration-300
-    focus-within:ring-2 focus-within:ring-primary-500
+    hover:shadow-xl transition-shadow duration-300 focus-within:ring-2 focus-within:ring-primary-500
+
+    /* COMPUTED CLASSES */
+    ${!isActive ? "bg-amber-600" : ""}
+    ${!isDisabled ? "text-default-100" : "text-default-400"}
 `;
 
-Don't comment on the classes. Just separate them with a blank line.
+Don't comment on the classes. Just keep one type of classes in its own line. Each computed class should be on its own line.
+
+Optional
 ```
 
 ## Current Progress
