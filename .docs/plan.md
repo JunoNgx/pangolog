@@ -97,10 +97,10 @@
 ## Phase 2: Advanced features
 
 ### Phase 2a: drag and drop
-- [ ] Category management view: Drag and drop priority ordering functionality
-    - [ ] Reorder UI with drag handles
-    - [ ] Save new order to IndexedDB
-    - [ ] Update transaction form category order
+- [x] Category management view: Drag and drop priority ordering functionality
+    - [x] Reorder UI with drag handles
+    - [x] Save new order to IndexedDB
+    - [x] Update transaction form category order
 
 ### Phase 2b: Summary view
 - [ ] Summary view
@@ -117,12 +117,12 @@
         - [ ] Disconnect option
 
 ### Phase 2d: Dark/Light theme switcher
-- [ ] Theme switcher
-    - [ ] Location: navbar
-    - [ ] Options:
-        - [ ] Dark theme
-        - [ ] Light theme
-        - [ ] Use system settings
+- [x] Theme switcher
+    - [x] Location: navbar
+    - [x] Options:
+        - [x] Dark theme
+        - [s] Light theme
+        - [x] Use system settings
 
 ### Phase 2e: Setup Progressive Web App
 - [ ] Setup manifest
