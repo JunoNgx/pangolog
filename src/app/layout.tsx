@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
     title: "Pangolog",
-    description: "A minimal personal expense tracker",
+    description: "An offine-first and privacy-first minimalist expense tracker",
     appleWebApp: {
         capable: true,
         statusBarStyle: "default",

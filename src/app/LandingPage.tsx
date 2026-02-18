@@ -14,7 +14,7 @@ export default function LandingPage() {
         <div className={containerClasses}>
             <h1 className="text-4xl font-bold tracking-tight">pangolog</h1>
             <p className="text-default-500 text-center">
-                a minimal expense tracker
+                an offine-first and privacy-first minimalist expense tracker
             </p>
             <Button
                 as={Link}
