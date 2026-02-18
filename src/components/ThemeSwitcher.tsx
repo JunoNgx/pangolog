@@ -25,25 +25,16 @@ export function ThemeSwitcher() {
         setMounted(true);
     }, []);
 
-    if (!mounted) {
-        return (
-            <Button isIconOnly variant="light" size="sm" aria-label="Theme">
-                <Sun size={18} />
-            </Button>
-        );
-    }
-
-    const currentIcon = () => {
-        const match = themes.find((t) => t.key === theme);
-        const Icon = match?.icon ?? Monitor;
-        return <Icon size={18} />;
-    };
+    const CurrentIcon = themes.find((t) => t.key === theme)?.icon ?? Monitor;
 
     return (
         <Dropdown>
             <DropdownTrigger>
                 <Button isIconOnly variant="light" size="sm" aria-label="Theme">
-                    {currentIcon()}
+                    <CurrentIcon
+                        size={18}
+                        className={mounted ? "opacity-100" : "opacity-0"}
+                    />
                 </Button>
             </DropdownTrigger>
             <DropdownMenu
