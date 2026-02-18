@@ -1,11 +1,10 @@
 "use client";
 
-import { Button, Skeleton } from "@heroui/react";
+import { Skeleton } from "@heroui/react";
 import { useState } from "react";
 import type { Buck, Category, Dime } from "@/lib/db/types";
 import { formatAmount } from "@/lib/utils";
 import { TransactionDialog } from "./TransactionDialog";
-import { Pencil } from "lucide-react";
 
 interface TransactionListProps {
     transactions: (Dime | Buck)[];
@@ -123,11 +122,15 @@ function TransactionItem({
     const isBigBuck = !isDime(transaction);
 
     return (
-        <li className={`
-            grid grid-cols-12 gap-1 relative
-            pt-0 pr-0 pl-2 pb-1 mb-1
-            border-b-1 border-default-200 bg-background`
-        }>
+        <li
+            className={`
+                grid grid-cols-12 gap-1 relative
+                pt-0 pr-0 pl-2 pb-1 mb-1
+                border-b-1 border-default-200 bg-background
+                cursor-pointer
+            `}
+            onClick={() => openEditDialog(transaction)}
+        >
             <div
                 className="absolute left-1 w-1 h-full"
                 style={{
@@ -145,7 +148,7 @@ function TransactionItem({
 
             <div className={`
                 font-sans
-                ${isBigBuck ? "col-span-7" : "col-span-8"}
+                ${isBigBuck ? "col-span-8" : "col-span-9"}
             `}>
                 {hasCategory
                     ? <div className="">{category.icon || "·"} {category.name}</div>
@@ -176,14 +179,6 @@ function TransactionItem({
                 {transaction.isIncome ? "+" : ""}{amountDisplay}
             </span>
 
-            <Button
-                className="col-span-1 self-center min-w-0"
-                size="sm"
-                variant="light"
-                onPress={() => openEditDialog(transaction)}
-            >
-                <Pencil size="18" />
-            </Button>
         </li>
     );
 };
