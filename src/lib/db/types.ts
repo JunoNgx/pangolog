@@ -1,6 +1,6 @@
 export interface Dime {
     id: string;
-    createdAt: string;
+    transactedAt: string;
     updatedAt: string;
     deletedAt: string | null;
     categoryId: string | null;
@@ -13,7 +13,7 @@ export interface Dime {
 
 export interface Buck {
     id: string;
-    createdAt: string;
+    transactedAt: string;
     updatedAt: string;
     deletedAt: string | null;
     categoryId: string | null;
@@ -38,23 +38,23 @@ export interface Category {
 
 export type DimeInput = Omit<
     Dime,
-    "id" | "createdAt" | "updatedAt" | "deletedAt" | "year" | "month"
+    "id" | "transactedAt" | "updatedAt" | "deletedAt" | "year" | "month"
 >;
 
 export type DimeUpdate = Partial<
     Omit<
         Dime,
-        "id" | "createdAt" | "updatedAt" | "deletedAt" | "year" | "month"
+        "id" | "transactedAt" | "updatedAt" | "deletedAt" | "year" | "month"
     >
 >;
 
 export type BuckInput = Omit<
     Buck,
-    "id" | "createdAt" | "updatedAt" | "deletedAt" | "year"
+    "id" | "transactedAt" | "updatedAt" | "deletedAt" | "year"
 >;
 
 export type BuckUpdate = Partial<
-    Omit<Buck, "id" | "createdAt" | "updatedAt" | "deletedAt" | "year">
+    Omit<Buck, "id" | "transactedAt" | "updatedAt" | "deletedAt" | "year">
 >;
 
 export type CategoryInput = Omit<

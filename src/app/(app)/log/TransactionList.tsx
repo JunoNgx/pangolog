@@ -50,7 +50,7 @@ export function TransactionList({
 
     const sorted = [...transactions].sort(
         (a, b) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+            new Date(b.transactedAt).getTime() - new Date(a.transactedAt).getTime(),
     );
 
     if (isLoading) {
