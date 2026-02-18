@@ -1,16 +1,19 @@
 "use client";
 
 import { Button, Checkbox, Switch } from "@heroui/react";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useBucks } from "@/lib/hooks/useBucks";
 import { useCategories } from "@/lib/hooks/useCategories";
 import { useDimes } from "@/lib/hooks/useDimes";
+import { useHotkey } from "@/lib/hooks/useHotkey";
 import { useLogStore } from "@/lib/store/useLogStore";
 import { TransactionDialog } from "./TransactionDialog";
 import { TransactionList } from "./TransactionList";
 
 export default function LogPage() {
     const [isCreateOpen, setIsCreateOpen] = useState(false);
+    const openCreateDialog = useCallback(() => setIsCreateOpen(true), []);
+    useHotkey("Enter", openCreateDialog, { ctrlOrMeta: true });
 
     const {
         isViewingBigBucks,

@@ -1,12 +1,15 @@
 "use client";
 
 import { Button } from "@heroui/react";
-import { useState } from "react";
+import { useCallback, useState } from "react";
+import { useHotkey } from "@/lib/hooks/useHotkey";
 import { CategoryDialog } from "./CategoryDialog";
 import { CategoryList } from "./CategoryList";
 
 export default function CategoriesPage() {
     const [isCreateOpen, setIsCreateOpen] = useState(false);
+    const openCreateDialog = useCallback(() => setIsCreateOpen(true), []);
+    useHotkey("Enter", openCreateDialog, { ctrlOrMeta: true });
 
     return (
         <div>

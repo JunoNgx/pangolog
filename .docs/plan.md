@@ -90,9 +90,9 @@
     - [x] Navbar in mobile
 
 ### Phase 1k: Hotkey shortcut
-- [ ] Hotkey shortcut: `Cmd/Ctrl + Enter`
-    - [ ] Transaction view: open the create new Transaction dialog
-    - [ ] Category view: open the create new Category dialog
+- [x] Hotkey shortcut: `Cmd/Ctrl + Enter`
+    - [x] Transaction view: open the create new Transaction dialog
+    - [x] Category view: open the create new Category dialog
 
 ## Phase 2: Advanced features
 
