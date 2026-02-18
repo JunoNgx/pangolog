@@ -66,12 +66,14 @@ export default function SettingsPage() {
                     {isConnected ? (
                         <>
                             <p className="font-mono text-sm text-success-500">
-                                Status: Connected as {authToken!.email}
+                                Status: Connected as {authToken?.email}
                             </p>
                             <p className="font-mono text-xs text-default-400">
                                 {syncStatus === "syncing" && "Syncing..."}
-                                {syncStatus === "error" && `Error: ${syncError}`}
-                                {syncStatus === "idle" && lastSyncTime &&
+                                {syncStatus === "error" &&
+                                    `Error: ${syncError}`}
+                                {syncStatus === "idle" &&
+                                    lastSyncTime &&
                                     `Last synced: ${new Date(lastSyncTime).toLocaleString()}`}
                             </p>
                             <div className="flex gap-2">

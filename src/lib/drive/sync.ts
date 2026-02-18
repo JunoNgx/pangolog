@@ -9,8 +9,8 @@ import {
 } from "@/lib/db/sync";
 import type { Buck, Category, Dime } from "@/lib/db/types";
 import {
-    CATEGORIES_FILE,
     buckFileName,
+    CATEGORIES_FILE,
     dimeFileName,
     downloadFile,
     listFiles,
@@ -41,7 +41,9 @@ function mergeRecords<T extends { id: string; updatedAt: string }>(
             continue;
         }
         if (r.updatedAt > existing.updatedAt) {
-            console.debug(`[sync] conflict on ${r.id}: remote (${r.updatedAt}) > local (${existing.updatedAt}), remote wins`);
+            console.debug(
+                `[sync] conflict on ${r.id}: remote (${r.updatedAt}) > local (${existing.updatedAt}), remote wins`,
+            );
             map.set(r.id, r);
         }
     }
@@ -114,7 +116,9 @@ export async function syncAll(token: string, folderId: string): Promise<void> {
 
     const uploads: Promise<void>[] = [];
 
-    uploads.push(upsertFile(token, folderId, CATEGORIES_FILE, mergedCategories));
+    uploads.push(
+        upsertFile(token, folderId, CATEGORIES_FILE, mergedCategories),
+    );
 
     const mergedDimesByMonth = groupBy(mergedDimes, (d) =>
         dimeFileName(d.year, d.month),

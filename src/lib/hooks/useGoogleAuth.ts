@@ -14,7 +14,8 @@ function loadGis(): Promise<void> {
         const script = document.createElement("script");
         script.src = "https://accounts.google.com/gsi/client";
         script.onload = () => resolve();
-        script.onerror = () => reject(new Error("Failed to load Google Identity Services"));
+        script.onerror = () =>
+            reject(new Error("Failed to load Google Identity Services"));
         document.head.appendChild(script);
     });
 }
@@ -58,7 +59,7 @@ export function useGoogleAuth() {
             return;
         }
 
-        const client = window.google!.accounts.oauth2.initTokenClient({
+        const client = window.google?.accounts.oauth2.initTokenClient({
             client_id: CLIENT_ID,
             scope: SCOPE,
             callback: async (response) => {
@@ -108,7 +109,7 @@ export function useGoogleAuth() {
         }
 
         return new Promise((resolve) => {
-            const client = window.google!.accounts.oauth2.initTokenClient({
+            const client = window.google?.accounts.oauth2.initTokenClient({
                 client_id: CLIENT_ID,
                 scope: SCOPE,
                 callback: (response) => {
@@ -134,5 +135,13 @@ export function useGoogleAuth() {
         });
     }, [authToken, setAuthToken]);
 
-    return { authToken, isConnected, isConnecting, error, connect, disconnect, getValidToken };
+    return {
+        authToken,
+        isConnected,
+        isConnecting,
+        error,
+        connect,
+        disconnect,
+        getValidToken,
+    };
 }

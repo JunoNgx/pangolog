@@ -25,7 +25,9 @@ import {
 } from "@/lib/hooks/useCategories";
 
 function randomHexColor() {
-    return `#${Math.floor(Math.random() * 0xffffff).toString(16).padStart(6, "0")}`;
+    return `#${Math.floor(Math.random() * 0xffffff)
+        .toString(16)
+        .padStart(6, "0")}`;
 }
 
 interface CategoryDialogProps {
@@ -70,12 +72,12 @@ export function CategoryDialog({
     }, [category]);
 
     function handleClose() {
-            setName("");
-            setColour(randomHexColor());
-            setIcon("");
-            setIsIncomeOnly(false);
-            setIsBuckOnly(false);
-            onClose();
+        setName("");
+        setColour(randomHexColor());
+        setIcon("");
+        setIsIncomeOnly(false);
+        setIsBuckOnly(false);
+        onClose();
     }
 
     const handleSubmit: SubmitEventHandler<HTMLFormElement> = (e) => {
