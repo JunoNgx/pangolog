@@ -65,7 +65,8 @@ export default function SettingsPage() {
                 <div className="flex flex-col gap-3">
                     {lastSyncTime && (
                         <p className="font-mono text-xs text-default-400">
-                            Last synced: {new Date(lastSyncTime).toLocaleString()}
+                            Last synced:{" "}
+                            {new Date(lastSyncTime).toLocaleString()}
                         </p>
                     )}
                     {isConnected ? (

@@ -2,9 +2,9 @@
 
 import { useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { purgeSeedData } from "@/lib/db/seed";
 import { getOrCreatePangoFolder } from "@/lib/drive/client";
 import { syncAll } from "@/lib/drive/sync";
-import { purgeSeedData } from "@/lib/db/seed";
 import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
 import { useGoogleAuth } from "./useGoogleAuth";
 

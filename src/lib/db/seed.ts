@@ -9,8 +9,12 @@ export async function purgeSeedData(): Promise<void> {
     const db = await getDb();
 
     await new Promise<void>((resolve, reject) => {
-        const tx = db.transaction(["categories", "dimes", "bucks"], "readwrite");
-        for (const id of seedIds.categoryIds) tx.objectStore("categories").delete(id);
+        const tx = db.transaction(
+            ["categories", "dimes", "bucks"],
+            "readwrite",
+        );
+        for (const id of seedIds.categoryIds)
+            tx.objectStore("categories").delete(id);
         for (const id of seedIds.dimeIds) tx.objectStore("dimes").delete(id);
         for (const id of seedIds.buckIds) tx.objectStore("bucks").delete(id);
         tx.oncomplete = () => resolve();

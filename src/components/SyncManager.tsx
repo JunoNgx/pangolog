@@ -1,7 +1,7 @@
 "use client";
 
-import { SeedCarryoverDialog } from "./SeedCarryoverDialog";
 import { useSync } from "@/lib/hooks/useSync";
+import { SeedCarryoverDialog } from "./SeedCarryoverDialog";
 
 export function SyncManager() {
     const { isAwaitingSeedDecision, resolveSeedDecision } = useSync();

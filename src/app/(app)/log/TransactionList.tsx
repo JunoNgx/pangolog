@@ -39,7 +39,8 @@ export function TransactionList({
 
     const sorted = [...transactions].sort(
         (a, b) =>
-            new Date(b.transactedAt).getTime() - new Date(a.transactedAt).getTime(),
+            new Date(b.transactedAt).getTime() -
+            new Date(a.transactedAt).getTime(),
     );
 
     if (isLoading) {
@@ -85,12 +86,14 @@ export function TransactionList({
                         ? categoryMap.get(tx.categoryId)
                         : undefined;
 
-                    return <TransactionItem
-                        key={tx.id}
-                        transaction={tx}
-                        category={cat}
-                        openEditDialog={openEditDialog}
-                    />;
+                    return (
+                        <TransactionItem
+                            key={tx.id}
+                            transaction={tx}
+                            category={cat}
+                            openEditDialog={openEditDialog}
+                        />
+                    );
                 })}
             </ul>
             <TransactionDialog
@@ -103,9 +106,9 @@ export function TransactionList({
 }
 
 interface TransactionItemProps {
-    transaction: (Dime | Buck);
-    category: Category | undefined,
-    openEditDialog: (model: Dime | Buck) => void,
+    transaction: Dime | Buck;
+    category: Category | undefined;
+    openEditDialog: (model: Dime | Buck) => void;
 }
 
 function TransactionItem({
@@ -128,7 +131,9 @@ function TransactionItem({
         transaction.isIncome ? "income" : "expense",
         amountDisplay,
         `${txDay} ${txMonth}`,
-    ].filter(Boolean).join(", ");
+    ]
+        .filter(Boolean)
+        .join(", ");
 
     function handleKeyDown(e: React.KeyboardEvent<HTMLLIElement>) {
         if (e.key !== "Enter" && e.key !== " ") return;
@@ -138,8 +143,6 @@ function TransactionItem({
 
     return (
         <li
-            role="button"
-            tabIndex={0}
             aria-label={ariaLabel}
             className={`
                 grid grid-cols-12 gap-1 relative
@@ -158,37 +161,50 @@ function TransactionItem({
                 }}
             />
 
-            <div className={`
+            <div
+                className={`
                     flex flex-col justify-around items-center col-span-2
                     font-sans
                     md:col-span-1
-                `}>
-                <p className="font-mono font-medium text-[24px] leading-none">{txDay}</p>
+                `}
+            >
+                <p className="font-mono font-medium text-[24px] leading-none">
+                    {txDay}
+                </p>
                 <p className="text-xs">{txMonth}</p>
             </div>
 
-            <div className={`
+            <div
+                className={`
                 font-sans
-                ${isBigBuck
-                    ? "col-span-7 md:col-span-8"
-                    : "col-span-8 md:col-span-9"
+                ${
+                    isBigBuck
+                        ? "col-span-7 md:col-span-8"
+                        : "col-span-8 md:col-span-9"
                 }
-            `}>
-                {hasCategory
-                    ? <div className="">{category.icon || "·"} {category.name}</div>
-                    : <div className="text-gray-500">no category</div>
-                }
-                {hasDescription
-                    ? <div className="truncate">{transaction.description}</div>
-                    : <div className="text-gray-500">no description</div>
-                }
+            `}
+            >
+                {hasCategory ? (
+                    <div className="">
+                        {category.icon || "·"} {category.name}
+                    </div>
+                ) : (
+                    <div className="text-gray-500">no category</div>
+                )}
+                {hasDescription ? (
+                    <div className="truncate">{transaction.description}</div>
+                ) : (
+                    <div className="text-gray-500">no description</div>
+                )}
             </div>
 
             {isBigBuck && (
-                <span className={`
+                <span
+                    className={`
                     col-span-1 justify-self-center self-center
                     font-mono text-center text-xs text-default-400
-                `}>
+                `}
+                >
                     BIG BUCK
                 </span>
             )}
@@ -200,9 +216,9 @@ function TransactionItem({
                     ${transaction.isIncome ? "text-success" : ""}
                 `}
             >
-                {transaction.isIncome ? "+" : ""}{amountDisplay}
+                {transaction.isIncome ? "+" : ""}
+                {amountDisplay}
             </span>
-
         </li>
     );
-};
+}
