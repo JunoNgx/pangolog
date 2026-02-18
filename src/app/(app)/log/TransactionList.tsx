@@ -127,7 +127,7 @@ function TransactionItem({
                 grid grid-cols-12 gap-1 relative
                 pt-0 pr-0 pl-2 pb-1 mb-1
                 border-b-1 border-default-200 bg-background
-                cursor-pointer
+                cursor-pointer hover:border-default-400 transition
             `}
             onClick={() => openEditDialog(transaction)}
         >
