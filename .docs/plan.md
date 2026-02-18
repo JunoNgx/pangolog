@@ -108,6 +108,14 @@
         - [ ] Connection status
         - [ ] Disconnect option
 
+### Phase 2d: Dark/Light theme switcher
+- [ ] Theme switcher
+    - [ ] Location: navbar
+    - [ ] Options:
+        - [ ] Dark theme
+        - [ ] Light theme
+        - [ ] Use system settings
+
 ## Phase 3: Drive sync
 
 ### Phase 3a: OAuth
