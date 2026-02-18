@@ -42,7 +42,6 @@ export function useGoogleAuth() {
     const isConnected = authToken !== null && isTokenValid(authToken);
 
     const connect = useCallback(async () => {
-        console.log("CLIENT_ID:", CLIENT_ID);
         if (!CLIENT_ID) {
             setError("Google Client ID is not configured.");
             return;
@@ -89,6 +88,12 @@ export function useGoogleAuth() {
                 setIsConnecting(false);
             },
         });
+
+        if (!client) {
+            setError("Failed to initialise Google Identity Services.");
+            setIsConnecting(false);
+            return;
+        }
 
         client.requestAccessToken();
     }, [setAuthToken]);
