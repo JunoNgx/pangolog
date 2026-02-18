@@ -2,6 +2,7 @@
 
 import { HeroUIProvider } from "@heroui/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ThemeProvider } from "next-themes";
 import { useState } from "react";
 
 export function Providers({ children }: { children: React.ReactNode }) {
@@ -9,7 +10,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
     return (
         <QueryClientProvider client={queryClient}>
-            <HeroUIProvider>{children}</HeroUIProvider>
+            <ThemeProvider attribute="class" defaultTheme="system">
+                <HeroUIProvider>{children}</HeroUIProvider>
+            </ThemeProvider>
         </QueryClientProvider>
     );
 }

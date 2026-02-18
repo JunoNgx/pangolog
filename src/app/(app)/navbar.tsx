@@ -8,6 +8,7 @@ import {
     NavbarItem,
 } from "@heroui/react";
 import { usePathname } from "next/navigation";
+import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 
 const navItems = [
     { label: "Log", href: "/log" },
@@ -42,6 +43,9 @@ export function AppNavbar() {
                         </Link>
                     </NavbarItem>
                 ))}
+                <NavbarItem>
+                    <ThemeSwitcher />
+                </NavbarItem>
             </NavbarContent>
         </Navbar>
     );
