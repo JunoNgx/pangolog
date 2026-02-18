@@ -121,7 +121,7 @@ export function CategoryDialog({
                                                 bg-default-100
 
                                                 hover:bg-default-200
-                                                transition-colors
+                                                transition-colors cursor-pointer
                                             `}
                                         >
                                             <span className="text-xl">
@@ -162,7 +162,7 @@ export function CategoryDialog({
                                             bg-default-100
 
                                             hover:bg-default-200
-                                            transition-colors
+                                            transition-colors cursor-pointer
                                         `}
                                         >
                                             <div
