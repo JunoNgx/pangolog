@@ -19,57 +19,57 @@
     - `/settings`: settings
 
 ### Phase 1c: IndexedDB setup
-- [ ] IndexedDB schema implementation
-    - [ ] Define database version 1
-    - [ ] Create object stores: dimes, bucks, categories, settings
-    - [ ] Create indexes for queries (month, year, categoryId)
-    - [ ] Implement wrapper functions (get, put, delete, query)
-        - [ ] Small dimes
-        - [ ] Big bucks
-        - [ ] Categories
-        - [ ] Soft deletion
-        - [ ] Query by month for dimes
-        - [ ] Query by year for bucks
+- [x] IndexedDB schema implementation
+    - [x] Define database version 1
+    - [x] Create object stores: dimes, bucks, categories, settings
+    - [x] Create indexes for queries (month, year, categoryId)
+    - [x] Implement wrapper functions (get, put, delete, query)
+        - [x] Small dimes
+        - [x] Big bucks
+        - [x] Categories
+        - [x] Soft deletion
+        - [x] Query by month for dimes
+        - [x] Query by year for bucks
 
 ### Phase 1d: main layout
-- [ ] Layout
+- [x] Layout
     - Main view
     - Navbar for route switching
 
 ### Phase 1e: category view
-- [ ] Category management view UI
-    - [ ] List of categories
-    - [ ] Add category button
-    - [ ] New category dialog
-        - [ ] Name input
-        - [ ] Color picker (hex)
-        - [ ] Emoji picker
-        - [ ] Income-only checkbox
-        - [ ] Big-buck-only checkbox
-    - [ ] Category CRUD
-        - [ ] Create category
-        - [ ] Edit category
-        - [ ] Soft delete (prevent if transactions exist)
+- [x] Category management view UI
+    - [x] List of categories
+    - [x] Add category button
+    - [x] New category dialog
+        - [x] Name input
+        - [x] Color picker (hex)
+        - [x] Emoji picker
+        - [x] Income-only checkbox
+        - [x] Big-buck-only checkbox
+    - [x] Category CRUD
+        - [x] Create category
+        - [x] Edit category
+        - [x] Soft delete (prevent if transactions exist)
 
 ### Phase 1f: transaction view
-- [ ] Transaction view UI
-    - [ ] List of transactions
-    - [ ] Add transaction button
-    - [ ] New transaction dialog
-        - [ ] Amount input (with decimal handling)
-        - [ ] Income/expense toggle
-        - [ ] Dime/buck toggle (disabled on edit)
-        - [ ] Category selector with accordion (7 visible)
-        - [ ] Description input
-    - [ ] Transaction view list configuration
-        - [ ] Month picker
-        - [ ] Big Bucks only
-        - [ ] Inclusion of Big Bucks in Small Dimes
-    - [ ] CRUD operations
-        - [ ] Create transaction
-        - [ ] Edit transaction
-        - [ ] Soft delete (set deletedAt)
-        - [ ] Permanent delete (after 30 days)
+- [x] Transaction view UI
+    - [x] List of transactions
+    - [x] Add transaction button
+    - [x] New transaction dialog
+        - [x] Amount input (with decimal handling)
+        - [x] Income/expense toggle
+        - [x] Dime/buck toggle (disabled on edit)
+        - [x] Category selector with accordion (7 visible)
+        - [x] Description input
+    - [x] Transaction view list configuration
+        - [x] Month picker
+        - [x] Big Bucks only
+        - [x] Inclusion of Big Bucks in Small Dimes
+    - [x] CRUD operations
+        - [x] Create transaction
+        - [x] Edit transaction
+        - [x] Soft delete (set deletedAt)
+        - [x] Permanent delete (after 30 days)
 
 
 ### Phase 1g: implement default route and setup important settings
@@ -82,9 +82,13 @@
 ### Phase 1h: polishing
 - [ ] Polishing
     - [ ] Toast notifications
-    - [ ] Loading skeletons
+    - [x] Loading skeletons
     - [ ] Empty states
-    - [ ] Responsive design
+
+### Phase 1j: Responsive design
+- [ ] Responsive design
+    - [ ] Navbar in mobile
+    - [ ] Floating buttons positioning in mobile
 
 ## Phase 2: Advanced features
 
