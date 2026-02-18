@@ -1,36 +1,36 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Pangolog
 
-## Getting Started
+## Overview
 
-First, run the development server:
+A minimalist, offline-first, and privacy-first personal expense tracker Progressive Web App.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Offline-first principle, operational without an internet connection.
+- Privacy-first cloud-sync, with data stored in user's Google Drive.
+- Transaction list view with filter by month.
+- Separation of regular daily (Small Dimes) and irregular large (Big Bucks) transactions.
+- Assigning transactions to categories, with label, colour, and emoji-based icon.
+- Overview and summary by month and year.
+- (Post-release) Recurring transactions.
+- (Post-release) Monthly budgeting.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Tech stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- NextJS as based frontend framework
+- IndexedDB for data persistence.
+- TanStack as handle caching, loading, and errors, as an abstraction layer on top of IndexedDB.
+- Zustand as UI state management.
+- Tailwind CSS
 
-## Learn More
+## Running
 
-To learn more about Next.js, take a look at the following resources:
+Run `yarn && yarn dev` from the root directory.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Environment variable
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+This project does NOT require any setup for environment variable.
 
-## Deploy on Vercel
+## Support and Contribution
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+To get support, provide feedback, or contribute, please open a PR for this repository, or contact me via email or BlueSky.
