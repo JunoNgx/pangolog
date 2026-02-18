@@ -2,7 +2,6 @@
 
 import {
     Button,
-    Checkbox,
     Input,
     Modal,
     ModalBody,
