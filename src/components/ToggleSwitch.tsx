@@ -47,7 +47,7 @@ export function ToggleSwitch({
 
     return (
         <div
-            className={`flex items-center gap-1 min-h-[44px] ${className}`}
+            className={`flex items-center gap-1 min-h-[11] ${className}`}
             role="group"
             aria-labelledby={`${leftLabelId} ${rightLabelId}`}
         >
