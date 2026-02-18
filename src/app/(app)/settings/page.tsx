@@ -1,6 +1,7 @@
 "use client";
 
 import { Button, Input, Radio, RadioGroup } from "@heroui/react";
+import { useGoogleAuth } from "@/lib/hooks/useGoogleAuth";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
 
 export default function SettingsPage() {
@@ -10,6 +11,8 @@ export default function SettingsPage() {
         setCustomCurrency,
         setIsPrefixCurrency,
     } = useProfileSettingsStore();
+    const { authToken, isConnected, isConnecting, error, connect, disconnect } =
+        useGoogleAuth();
 
     const previewAmount = "12.50";
     const preview = customCurrency
@@ -56,20 +59,41 @@ export default function SettingsPage() {
                     Google Drive Sync
                 </h3>
                 <div className="flex flex-col gap-3">
-                    <p className="text-sm text-default-400 font-mono">
-                        Status: Not connected
-                    </p>
-                    <Button
-                        color="primary"
-                        variant="flat"
-                        className="max-w-xs"
-                        isDisabled
-                    >
-                        Connect Google Drive
-                    </Button>
-                    <p className="text-xs text-default-400">
-                        Google Drive sync is not yet available.
-                    </p>
+                    {isConnected ? (
+                        <>
+                            <p className="font-mono text-sm text-success-500">
+                                Status: Connected as {authToken!.email}
+                            </p>
+                            <Button
+                                color="danger"
+                                variant="flat"
+                                className="max-w-xs"
+                                onPress={disconnect}
+                            >
+                                Disconnect
+                            </Button>
+                        </>
+                    ) : (
+                        <>
+                            <p className="font-mono text-sm text-default-400">
+                                Status: Not connected
+                            </p>
+                            <Button
+                                color="primary"
+                                variant="flat"
+                                className="max-w-xs"
+                                isLoading={isConnecting}
+                                onPress={connect}
+                            >
+                                Connect Google Drive
+                            </Button>
+                        </>
+                    )}
+                    {error && (
+                        <p className="font-mono text-xs text-danger-500">
+                            {error}
+                        </p>
+                    )}
                 </div>
             </section>
         </div>
