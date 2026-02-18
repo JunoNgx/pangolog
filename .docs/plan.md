@@ -124,6 +124,11 @@
         - [ ] Light theme
         - [ ] Use system settings
 
+### Phase 2e: Setup Progressive Web App
+- [ ] Setup manifest
+- [ ] Setup metadata
+- [ ] Setup placeholder imagefile for icons
+
 ## Phase 3: Drive sync
 
 ### Phase 3a: OAuth
