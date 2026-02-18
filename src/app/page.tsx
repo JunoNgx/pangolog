@@ -1,6 +1,4 @@
-"use client"
-
-import { Link } from "@heroui/react";
+import Link from "next/link";
 
 export default function LandingPage() {
     return (
