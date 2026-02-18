@@ -170,14 +170,16 @@ export function TransactionDialog({
                                 rightColor="bg-amber-600"
                             />
 
-                            {!isEditing && <ToggleSwitch
-                                isSelectingRight={isCreatingBuck}
-                                onValueChange={setIsCreatingBuck}
-                                leftLabel="Big buck"
-                                leftColor="bg-emerald-600"
-                                rightLabel="Small dime"
-                                rightColor="bg-amber-600"
-                            />}
+                            {!isEditing && (
+                                <ToggleSwitch
+                                    isSelectingRight={isCreatingBuck}
+                                    onValueChange={setIsCreatingBuck}
+                                    leftLabel="Big buck"
+                                    leftColor="bg-emerald-600"
+                                    rightLabel="Small dime"
+                                    rightColor="bg-amber-600"
+                                />
+                            )}
                         </div>
 
                         <div>

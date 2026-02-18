@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { Button } from "@heroui/react";
+import Link from "next/link";
 
 export default function LandingPage() {
     const containerClasses = `
@@ -10,9 +10,7 @@ export default function LandingPage() {
 
     return (
         <div className={containerClasses}>
-            <h1 className="text-4xl font-bold tracking-tight">
-                pangolog
-            </h1>
+            <h1 className="text-4xl font-bold tracking-tight">pangolog</h1>
             <p className="text-default-500 text-center">
                 a minimal expense tracker
             </p>
