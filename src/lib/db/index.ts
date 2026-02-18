@@ -6,6 +6,7 @@ export {
     getAllBucksForSync,
     getAllCategoriesForSync,
     getAllDimesForSync,
+    purgeExpiredRecords,
 } from "./sync";
 export {
     createCategory,

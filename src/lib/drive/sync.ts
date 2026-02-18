@@ -5,6 +5,7 @@ import {
     getAllBucksForSync,
     getAllCategoriesForSync,
     getAllDimesForSync,
+    purgeExpiredRecords,
 } from "@/lib/db/sync";
 import type { Buck, Category, Dime } from "@/lib/db/types";
 import {
@@ -35,7 +36,12 @@ function mergeRecords<T extends { id: string; updatedAt: string }>(
     for (const r of local) map.set(r.id, r);
     for (const r of remote) {
         const existing = map.get(r.id);
-        if (!existing || r.updatedAt > existing.updatedAt) {
+        if (!existing) {
+            map.set(r.id, r);
+            continue;
+        }
+        if (r.updatedAt > existing.updatedAt) {
+            console.debug(`[sync] conflict on ${r.id}: remote (${r.updatedAt}) > local (${existing.updatedAt}), remote wins`);
             map.set(r.id, r);
         }
     }
@@ -43,6 +49,8 @@ function mergeRecords<T extends { id: string; updatedAt: string }>(
 }
 
 export async function syncAll(token: string, folderId: string): Promise<void> {
+    await purgeExpiredRecords();
+
     const [localDimes, localBucks, localCategories] = await Promise.all([
         getAllDimesForSync(),
         getAllBucksForSync(),

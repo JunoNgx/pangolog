@@ -139,7 +139,7 @@
     - [x] Get client ID and secret
 - [x] Implement OAuth flow
     - [x] Popup authentication
-    - [x] Token storage in IndexedDB
+    - [x] Token storage in localStorage (via Zustand)
     - [x] Token refresh handling
 
 ### Phase 3b: Drive file structure
@@ -154,9 +154,8 @@
 - [x] Upload logic
     - [x] Serialize data to JSON
     - [x] Create/update Drive files
-    - [x] Handle rate limits with retry
 - [x] Download logic
-    - [x] List files in appDataFolder
+    - [x] List files in Pangolog Drive folder
     - [x] Download and parse JSON
     - [x] Merge with local data
 - [x] Sync triggers
@@ -165,19 +164,18 @@
     - [x] Manual sync button
 
 ### Phase 3d: Misc implementations
-- [ ] Implement "last write wins" with updatedAt
-    - [ ] Compare timestamps
-    - [ ] Resolve conflicts automatically
-    - [ ] Log conflicts for debugging
-- [ ] 30-day purge job
-    - [ ] Find records with deletedAt < 30 days
-    - [ ] Remove from IndexedDB
-    - [ ] Remove from Drive on next sync
-
-- [ ] Connection status indicator
-- [ ] Last sync time display
-- [ ] Manual sync button
-- [ ] Error notifications
+- [x] Implement "last write wins" with updatedAt
+    - [x] Compare timestamps
+    - [x] Resolve conflicts automatically
+    - [x] Log conflicts for debugging
+- [x] 30-day purge job
+    - [x] Find records with deletedAt older than 30 days
+    - [x] Remove from IndexedDB before each sync
+    - [x] Removed records excluded from next Drive upload
+- [x] Connection status indicator (dot in navbar: green/blue/red)
+- [x] Last sync time display (settings page)
+- [x] Manual sync button (settings page)
+- [ ] Error notifications (toast) — deferred to Phase 1h
 
 ## Phase 4: Data mobility
 
