@@ -14,6 +14,7 @@ import {
     dimeFileName,
     downloadFile,
     listFiles,
+    trashFile,
     upsertFile,
 } from "./client";
 
@@ -60,7 +61,20 @@ export async function syncAll(token: string, folderId: string): Promise<void> {
     ]);
 
     const driveFiles = await listFiles(token, folderId);
-    const driveFileMap = new Map(driveFiles.map((f) => [f.name, f.id]));
+
+    // Deduplicate Drive files by name — keep first occurrence, trash extras
+    const driveFileMap = new Map<string, string>();
+    const toTrash: string[] = [];
+    for (const f of driveFiles) {
+        if (driveFileMap.has(f.name)) {
+            toTrash.push(f.id);
+        } else {
+            driveFileMap.set(f.name, f.id);
+        }
+    }
+    if (toTrash.length > 0) {
+        await Promise.all(toTrash.map((id) => trashFile(token, id)));
+    }
 
     // --- Download and merge ---
 

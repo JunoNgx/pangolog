@@ -20,6 +20,7 @@ export function useSync() {
     } = useLocalSettingsStore();
     const { getValidToken } = useGoogleAuth();
     const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const isSyncingRef = useRef(false);
     const queryClient = useQueryClient();
 
     const seedResolverRef = useRef<((carryOver: boolean) => void) | null>(null);
@@ -31,13 +32,25 @@ export function useSync() {
 
     const sync = useCallback(
         async (options?: { skipSeedPrompt?: boolean }) => {
+            if (isSyncingRef.current) return;
+            isSyncingRef.current = true;
+
             const token = await getValidToken();
-            if (!token) return;
+            if (!token) {
+                isSyncingRef.current = false;
+                return;
+            }
 
             const { seedIds, setSeedIds } = useLocalSettingsStore.getState();
             if (seedIds) {
-                if (options?.skipSeedPrompt) return;
-                if (seedResolverRef.current !== null) return;
+                if (options?.skipSeedPrompt) {
+                    isSyncingRef.current = false;
+                    return;
+                }
+                if (seedResolverRef.current !== null) {
+                    isSyncingRef.current = false;
+                    return;
+                }
 
                 const carryOver = await new Promise<boolean>((resolve) => {
                     seedResolverRef.current = resolve;
@@ -78,6 +91,8 @@ export function useSync() {
                 setSyncError(
                     err instanceof Error ? err.message : "Sync failed.",
                 );
+            } finally {
+                isSyncingRef.current = false;
             }
         },
         [

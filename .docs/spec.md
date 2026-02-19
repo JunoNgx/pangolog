@@ -156,7 +156,7 @@ Approach:
 - `isPrefixCurrency`: boolean, whether to display the currency in front of the amount, to differentiate different conventions. E.g. $12 and 12 SGD.
 
 ## Storage approach
-- OAuth scope: `drive.file` — files are visible and accessible to the user in Google Drive.
+- OAuth scope: `drive.file` + `drive.readonly` — `drive.readonly` enables cross-device file discovery (listing all files in the Pangolog folder); `drive.file` handles creating and updating files. Files remain visible in the user's Google Drive.
 - Files are stored in a dedicated `Pangolog` folder in the user's Drive root.
 - Settings are stored in `settings.json`.
 - Categories are stored in `categories.json`.

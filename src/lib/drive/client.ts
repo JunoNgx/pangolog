@@ -185,6 +185,19 @@ export async function updateFile(
     );
 }
 
+export async function trashFile(token: string, fileId: string): Promise<void> {
+    await expectOk(
+        await fetch(`${DRIVE_API}/files/${fileId}`, {
+            method: "PATCH",
+            headers: {
+                ...authHeader(token),
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ trashed: true }),
+        }),
+    );
+}
+
 export async function upsertFile(
     token: string,
     folderId: string,
