@@ -91,6 +91,9 @@ Don't comment on the classes. Just keep one type of classes in its own line. Eac
 - Zustand `persist` middleware hydrates asynchronously — on first render, persisted state (e.g. `isSeeded`, `authToken`) is at its default value. Gate logic that depends on persisted state behind `hasHydrated` from `useLocalSettingsStore`.
 - React 18 automatic batching defers renders until the event loop yields. After calling a state setter inside an async function, use `await Promise.resolve()` to flush the render before continuing with heavy async work (e.g. Drive API calls).
 
+## Linting behaviour
+- This repository has a custom script `yarn efix` to fix linter issues. Run this instead of the usual standard linter script.
+
 ## Current Progress
 - Phase 1a (basic setup): done
 - Phase 1b (route structure): done

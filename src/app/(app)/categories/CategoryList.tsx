@@ -6,10 +6,7 @@ import { useSortable } from "@dnd-kit/react/sortable";
 import { Chip, Skeleton } from "@heroui/react";
 import { useState } from "react";
 import type { Category } from "@/lib/db/types";
-import {
-    useCategories,
-    useReorderCategories,
-} from "@/lib/hooks/useCategories";
+import { useCategories, useReorderCategories } from "@/lib/hooks/useCategories";
 import { CategoryDialog } from "./CategoryDialog";
 
 interface SortableCategoryItemProps {
