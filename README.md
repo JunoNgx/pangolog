@@ -15,6 +15,16 @@ A minimalist, offline-first, and privacy-first personal expense tracker Progress
 - (Post-release) Recurring transactions.
 - (Post-release) Monthly budgeting.
 
+## Methodology
+
+The project is an experiment with spec-driven AI-assisted development.
+
+In the `.docs` directory, `spec.md` and `plan.md` were written before development started. `CLAUDE.md` was continuously maintained throughout the course of development, serving as instructions for the AI agent.
+
+The process follows the outlined phases, using the AI as the implementation agent. Generated code is moderately scrutinised, and technical decisions are documented as the project evolves.
+
+A significant degree of human judgement was exercised in numerous areas, particularly in UI/UX design and some areas of code readability.
+
 ## Tech stack
 
 - NextJS as based frontend framework
