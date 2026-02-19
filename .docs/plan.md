@@ -130,6 +130,18 @@
 - [x] Setup metadata
 - [x] Setup placeholder imagefile for icons
 
+### Phase 2f: Header and utility panel layout
+- [x] A list of to the app's routes (e.g. `/log`, `/settings`)
+    - [x] Position: on top of main view, similar to tab list/tab switch
+    - [x] Has icon and label
+    - [x] Current route is indicated
+    - [x] Mobile layout: floating at the bottom of the viewport
+
+- [x] Utility panel
+    - [x] Position: to the right of the header
+    - [x] Sync indicator
+    - [x] Theme switcher
+
 ## Phase 3: Drive sync
 
 ### Phase 3a: OAuth

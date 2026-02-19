@@ -10,7 +10,7 @@ export default function AppLayout({
         <>
             <SyncManager />
             <AppNavbar />
-            <main className="container mx-auto max-w-4xl px-4 py-6">
+            <main className="container mx-auto max-w-4xl px-4 pt-6 pb-24 md:pb-6">
                 {children}
             </main>
         </>

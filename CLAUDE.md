@@ -108,4 +108,5 @@ Don't comment on the classes. Just keep one type of classes in its own line. Eac
 - Phase 3b (Drive file structure): done
 - Phase 3c (Sync logic): done
 - Phase 3d (Misc implementations): done
+- Phase 2f (header and utility panel layout): done
 - Phase 3e (Seed data for new users): incomplete
