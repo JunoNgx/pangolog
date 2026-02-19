@@ -1,0 +1,332 @@
+"use client";
+
+import { Button, Checkbox, Input, Radio, RadioGroup } from "@heroui/react";
+import { useTheme } from "next-themes";
+import { useRef, useState } from "react";
+import { exportJson } from "@/lib/export";
+import { useGoogleAuth } from "@/lib/hooks/useGoogleAuth";
+import { useSync } from "@/lib/hooks/useSync";
+import {
+    executeImport,
+    type ImportData,
+    type ImportPreview,
+    previewImport,
+    validateImportData,
+} from "@/lib/import";
+import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
+import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
+
+export default function SettingsClient() {
+    const {
+        customCurrency,
+        isPrefixCurrency,
+        setCustomCurrency,
+        setIsPrefixCurrency,
+    } = useProfileSettingsStore();
+    const { authToken, isConnected, isConnecting, error, connect, disconnect } =
+        useGoogleAuth();
+    const { theme, setTheme } = useTheme();
+    const { sync } = useSync();
+    const { syncStatus, lastSyncTime, syncError } = useLocalSettingsStore();
+
+    const [prettyPrint, setPrettyPrint] = useState(true);
+    const [isExportingJson, setIsExportingJson] = useState(false);
+    const fileInputRef = useRef<HTMLInputElement>(null);
+    const [importData, setImportData] = useState<ImportData | null>(null);
+    const [importPreview, setImportPreview] = useState<ImportPreview | null>(
+        null,
+    );
+    const [importError, setImportError] = useState<string | null>(null);
+    const [importResult, setImportResult] = useState<ImportPreview | null>(
+        null,
+    );
+    const [isImporting, setIsImporting] = useState(false);
+
+    async function handleExportJson() {
+        setIsExportingJson(true);
+        await exportJson(prettyPrint);
+        setIsExportingJson(false);
+    }
+
+    async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+        const file = e.target.files?.[0];
+        if (!fileInputRef.current) return;
+        fileInputRef.current.value = "";
+        setImportError(null);
+        setImportPreview(null);
+        setImportData(null);
+        setImportResult(null);
+        if (!file) return;
+
+        try {
+            const text = await file.text();
+            const parsed: unknown = JSON.parse(text);
+            if (!validateImportData(parsed)) {
+                setImportError(
+                    "Invalid file format. Please select a valid Pangolog JSON export.",
+                );
+                return;
+            }
+            const preview = await previewImport(parsed);
+            setImportData(parsed);
+            setImportPreview(preview);
+        } catch {
+            setImportError(
+                "Failed to read file. Make sure it is a valid JSON file.",
+            );
+        }
+    }
+
+    async function handleConfirmImport() {
+        if (!importData) return;
+        setIsImporting(true);
+        const result = await executeImport(importData);
+        setIsImporting(false);
+        setImportResult(result);
+        setImportData(null);
+        setImportPreview(null);
+    }
+
+    function handleCancelImport() {
+        setImportData(null);
+        setImportPreview(null);
+        setImportError(null);
+        setImportResult(null);
+    }
+
+    const previewAmount = "12.50";
+    const preview = customCurrency
+        ? isPrefixCurrency
+            ? `${customCurrency}${previewAmount}`
+            : `${previewAmount} ${customCurrency}`
+        : previewAmount;
+
+    return (
+        <div>
+            <h2 className="font-mono text-xl font-bold mb-6">Settings</h2>
+
+            <section className="mb-8">
+                <h3 className="font-mono text-lg font-semibold mb-4">Theme</h3>
+                <RadioGroup
+                    orientation="horizontal"
+                    value={theme ?? "system"}
+                    onValueChange={setTheme}
+                    classNames={{ wrapper: "gap-6" }}
+                >
+                    <Radio value="light">Light</Radio>
+                    <Radio value="dark">Dark</Radio>
+                    <Radio value="system">System</Radio>
+                </RadioGroup>
+            </section>
+
+            <section className="mb-8">
+                <h3 className="font-mono text-lg font-semibold mb-4">
+                    Display Currency
+                </h3>
+                <div className="flex flex-col gap-4">
+                    <Input
+                        label="Currency symbol"
+                        placeholder="e.g. $, EUR, VND"
+                        value={customCurrency}
+                        onValueChange={setCustomCurrency}
+                        className="max-w-xs"
+                    />
+                    <RadioGroup
+                        label="Position"
+                        orientation="horizontal"
+                        value={isPrefixCurrency ? "prefix" : "suffix"}
+                        onValueChange={(v) =>
+                            setIsPrefixCurrency(v === "prefix")
+                        }
+                    >
+                        <Radio value="prefix">Prefix ($12)</Radio>
+                        <Radio value="suffix">Suffix (12 SGD)</Radio>
+                    </RadioGroup>
+                    <p className="font-mono text-sm text-default-500">
+                        Preview: {preview}
+                    </p>
+                </div>
+            </section>
+
+            <section className="mb-8">
+                <h3 className="font-mono text-lg font-semibold mb-4">
+                    Export Data
+                </h3>
+                <div className="flex flex-col gap-3">
+                    <div className="flex items-center gap-3">
+                        <Button
+                            color="primary"
+                            variant="flat"
+                            isLoading={isExportingJson}
+                            onPress={handleExportJson}
+                        >
+                            Export JSON
+                        </Button>
+                        <Checkbox
+                            isSelected={prettyPrint}
+                            onValueChange={setPrettyPrint}
+                            size="sm"
+                        >
+                            <span className="font-mono text-sm">
+                                Pretty print
+                            </span>
+                        </Checkbox>
+                    </div>
+                    <p className="font-mono text-xs text-default-400">
+                        Exports all transactions, categories, and display
+                        settings into a single file. On import, records are
+                        resolved by last-updated timestamp to avoid duplicates.
+                    </p>
+                </div>
+            </section>
+
+            <section className="mb-8">
+                <h3 className="font-mono text-lg font-semibold mb-4">
+                    Import Data
+                </h3>
+                <div className="flex flex-col gap-3">
+                    <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept=".json"
+                        className="hidden"
+                        onChange={handleFileChange}
+                    />
+                    <Button
+                        color="primary"
+                        variant="flat"
+                        className="max-w-xs"
+                        onPress={() => fileInputRef.current?.click()}
+                    >
+                        Import JSON
+                    </Button>
+                    {importError && (
+                        <p className="font-mono text-xs text-danger-500">
+                            {importError}
+                        </p>
+                    )}
+                    {importPreview && (
+                        <div className="flex flex-col gap-2 p-3 rounded-lg bg-default-100 font-mono text-sm">
+                            <p className="font-semibold text-default-700">
+                                Preview:
+                            </p>
+                            <p className="text-default-600">
+                                Dimes: +{importPreview.dimesAdded} new,{" "}
+                                {importPreview.dimesUpdated} updated
+                            </p>
+                            <p className="text-default-600">
+                                Bucks: +{importPreview.bucksAdded} new,{" "}
+                                {importPreview.bucksUpdated} updated
+                            </p>
+                            <p className="text-default-600">
+                                Categories: +{importPreview.categoriesAdded}{" "}
+                                new, {importPreview.categoriesUpdated} updated
+                            </p>
+                            <div className="flex gap-2 mt-1">
+                                <Button
+                                    size="sm"
+                                    color="primary"
+                                    isLoading={isImporting}
+                                    onPress={handleConfirmImport}
+                                >
+                                    Confirm
+                                </Button>
+                                <Button
+                                    size="sm"
+                                    variant="light"
+                                    onPress={handleCancelImport}
+                                >
+                                    Cancel
+                                </Button>
+                            </div>
+                        </div>
+                    )}
+                    {importResult && (
+                        <div className="flex flex-col gap-1 p-3 rounded-lg bg-success-50 font-mono text-sm">
+                            <p className="font-semibold text-success-700">
+                                Import complete.
+                            </p>
+                            <p className="text-success-600">
+                                Dimes: +{importResult.dimesAdded} new,{" "}
+                                {importResult.dimesUpdated} updated
+                            </p>
+                            <p className="text-success-600">
+                                Bucks: +{importResult.bucksAdded} new,{" "}
+                                {importResult.bucksUpdated} updated
+                            </p>
+                            <p className="text-success-600">
+                                Categories: +{importResult.categoriesAdded} new,{" "}
+                                {importResult.categoriesUpdated} updated
+                            </p>
+                        </div>
+                    )}
+                </div>
+            </section>
+
+            <section>
+                <h3 className="font-mono text-lg font-semibold mb-4">
+                    Google Drive Sync
+                </h3>
+                <div className="flex flex-col gap-3">
+                    {lastSyncTime && (
+                        <p className="font-mono text-xs text-default-400">
+                            Last synced:{" "}
+                            {new Date(lastSyncTime).toLocaleString()}
+                        </p>
+                    )}
+                    {isConnected ? (
+                        <>
+                            <p className="font-mono text-sm text-success-500">
+                                Status: Connected as {authToken?.email}
+                            </p>
+                            <p className="font-mono text-xs text-default-400">
+                                {syncStatus === "syncing" && "Syncing..."}
+                                {syncStatus === "error" &&
+                                    `Error: ${syncError}`}
+                            </p>
+                            <div className="flex gap-2">
+                                <Button
+                                    color="primary"
+                                    variant="flat"
+                                    className="max-w-xs"
+                                    isLoading={syncStatus === "syncing"}
+                                    onPress={() => sync()}
+                                >
+                                    Sync now
+                                </Button>
+                                <Button
+                                    color="danger"
+                                    variant="flat"
+                                    className="max-w-xs"
+                                    onPress={disconnect}
+                                >
+                                    Disconnect
+                                </Button>
+                            </div>
+                        </>
+                    ) : (
+                        <>
+                            <p className="font-mono text-sm text-default-400">
+                                Status: Not connected
+                            </p>
+                            <Button
+                                color="primary"
+                                variant="flat"
+                                className="max-w-xs"
+                                isLoading={isConnecting}
+                                onPress={connect}
+                            >
+                                Connect Google Drive
+                            </Button>
+                        </>
+                    )}
+                    {error && (
+                        <p className="font-mono text-xs text-danger-500">
+                            {error}
+                        </p>
+                    )}
+                </div>
+            </section>
+        </div>
+    );
+}
