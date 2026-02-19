@@ -191,7 +191,7 @@
 - [x] Connection status indicator (dot in navbar: green/blue/red)
 - [x] Last sync time display (settings page)
 - [x] Manual sync button (settings page)
-- [ ] Error notifications (toast) - deferred to Phase 1h
+- [x] Error notifications (toast) - deferred to Phase 1h
 
 ### Phase 3e: Initialise demo data upon entering the app
 - [ ] Should use the time user enters the app as creation datetime

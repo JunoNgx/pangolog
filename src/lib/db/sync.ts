@@ -1,4 +1,4 @@
-import { getDb } from "./connection";
+import { forceDeleteDb, getDb } from "./connection";
 import type { Buck, Category, Dime } from "./types";
 
 const PURGE_DAYS = 30;
@@ -68,6 +68,25 @@ export async function getAllCategoriesForSync(): Promise<Category[]> {
         request.onsuccess = () => resolve(request.result as Category[]);
         request.onerror = () => reject(request.error);
     });
+}
+
+export async function clearAllData(): Promise<void> {
+    try {
+        const db = await getDb();
+        await new Promise<void>((resolve, reject) => {
+            const tx = db.transaction(
+                ["dimes", "bucks", "categories"],
+                "readwrite",
+            );
+            tx.objectStore("dimes").clear();
+            tx.objectStore("bucks").clear();
+            tx.objectStore("categories").clear();
+            tx.oncomplete = () => resolve();
+            tx.onerror = () => reject(tx.error);
+        });
+    } catch {
+        await forceDeleteDb();
+    }
 }
 
 export async function bulkPutDimes(dimes: Dime[]): Promise<void> {
