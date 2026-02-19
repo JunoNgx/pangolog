@@ -262,6 +262,9 @@ Approach:
 
 ## Technical Decisions
 
+### UUID generation fallback for non-secure contexts
+`crypto.randomUUID()` requires a secure context (HTTPS). `localhost` qualifies, but accessing the app over HTTP via a local network IP (e.g. during development from a phone) does not. All record creation would fail silently in this case. A `generateId()` utility in `src/lib/db/uuid.ts` wraps `crypto.randomUUID()` with a `Math.random()`-based UUID v4 fallback for non-secure contexts. All DB create functions use this instead of calling `crypto.randomUUID()` directly.
+
 ### Separation of Big Bucks and Small Dimes storage (vs `isBigBuck`)
 - Query patterns are separated
 - Storage strategy matches query patterns

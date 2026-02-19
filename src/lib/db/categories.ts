@@ -1,12 +1,13 @@
 import { getDb } from "./connection";
 import type { Category, CategoryInput, CategoryUpdate } from "./types";
+import { generateId } from "./uuid";
 
 export async function createCategory(input: CategoryInput): Promise<Category> {
     const db = await getDb();
     const now = new Date().toISOString();
 
     const category: Category = {
-        id: crypto.randomUUID(),
+        id: generateId(),
         createdAt: now,
         updatedAt: now,
         deletedAt: null,

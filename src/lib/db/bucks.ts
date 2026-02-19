@@ -1,5 +1,6 @@
 import { getDb } from "./connection";
 import type { Buck, BuckInput, BuckUpdate } from "./types";
+import { generateId } from "./uuid";
 
 export async function createBuck(input: BuckInput): Promise<Buck> {
     const db = await getDb();
@@ -7,7 +8,7 @@ export async function createBuck(input: BuckInput): Promise<Buck> {
     const date = new Date(input.transactedAt);
 
     const buck: Buck = {
-        id: crypto.randomUUID(),
+        id: generateId(),
         updatedAt: now,
         deletedAt: null,
         year: date.getFullYear(),
