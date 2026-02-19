@@ -14,7 +14,10 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-    title: "Pangolog",
+    title: {
+        default: "Pangolog",
+        template: "Pangolog - %s",
+    },
     description: "An offine-first and privacy-first minimalist expense tracker",
     appleWebApp: {
         capable: true,
