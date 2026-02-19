@@ -1,5 +1,6 @@
 import { getDb } from "./connection";
 import type { Dime, DimeInput, DimeUpdate } from "./types";
+import { generateId } from "./uuid";
 
 export async function createDime(input: DimeInput): Promise<Dime> {
     const db = await getDb();
@@ -7,7 +8,7 @@ export async function createDime(input: DimeInput): Promise<Dime> {
     const date = new Date(input.transactedAt);
 
     const dime: Dime = {
-        id: crypto.randomUUID(),
+        id: generateId(),
         updatedAt: now,
         deletedAt: null,
         year: date.getFullYear(),
