@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 import {
     createBuck,
     deleteBuck,
@@ -22,6 +23,7 @@ export function useCreateBuck() {
     return useMutation({
         mutationFn: (input: BuckInput) => createBuck(input),
         onSuccess: () => queryClient.invalidateQueries({ queryKey: BUCKS_KEY }),
+        onError: () => toast.error("Failed to save transaction"),
     });
 }
 
@@ -31,6 +33,7 @@ export function useUpdateBuck() {
         mutationFn: ({ id, input }: { id: string; input: BuckUpdate }) =>
             updateBuck(id, input),
         onSuccess: () => queryClient.invalidateQueries({ queryKey: BUCKS_KEY }),
+        onError: () => toast.error("Failed to update transaction"),
     });
 }
 
@@ -39,6 +42,7 @@ export function useDeleteBuck() {
     return useMutation({
         mutationFn: (id: string) => deleteBuck(id),
         onSuccess: () => queryClient.invalidateQueries({ queryKey: BUCKS_KEY }),
+        onError: () => toast.error("Failed to delete transaction"),
     });
 }
 
@@ -47,5 +51,6 @@ export function useRestoreBuck() {
     return useMutation({
         mutationFn: (id: string) => restoreBuck(id),
         onSuccess: () => queryClient.invalidateQueries({ queryKey: BUCKS_KEY }),
+        onError: () => toast.error("Failed to undo deletion"),
     });
 }
