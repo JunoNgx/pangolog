@@ -52,7 +52,7 @@ export function ToggleSwitch({
                 id={leftLabelId}
                 className={`
                     flex items-center gap-1 px-2 py-1 rounded
-                    font-mono text-sm text-right w-min
+                    font-mono text-sm text-right
                     hover:bg-default-100 transition-all cursor-pointer
                     focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-300 focus-visible:ring-offset-2
                     ${!isSelectingRightActive ? "text-default-600" : "text-default-300"}
@@ -96,7 +96,7 @@ export function ToggleSwitch({
                 id={rightLabelId}
                 className={`
                     flex items-center gap-1 px-2 py-1 rounded
-                    font-mono text-sm w-min
+                    font-mono text-sm
                     hover:bg-default-100 transition-all cursor-pointer
                     focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-300 focus-visible:ring-offset-2
                     ${isSelectingRightActive ? "text-default-600" : "text-default-300"}
