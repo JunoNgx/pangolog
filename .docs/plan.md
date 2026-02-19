@@ -81,7 +81,7 @@
 
 ### Phase 1h: polishing
 - [ ] Polishing
-    - [ ] Toast notifications
+    - [x] Toast notifications
     - [x] Loading skeletons
     - [ ] Empty states
 

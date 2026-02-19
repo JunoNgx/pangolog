@@ -4,6 +4,7 @@ import {
     deleteDime,
     getDimesByMonth,
     getDimesByYear,
+    restoreDime,
     updateDime,
 } from "../db/dimes";
 import type { DimeInput, DimeUpdate } from "../db/types";
@@ -45,6 +46,14 @@ export function useDeleteDime() {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: (id: string) => deleteDime(id),
+        onSuccess: () => queryClient.invalidateQueries({ queryKey: DIMES_KEY }),
+    });
+}
+
+export function useRestoreDime() {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (id: string) => restoreDime(id),
         onSuccess: () => queryClient.invalidateQueries({ queryKey: DIMES_KEY }),
     });
 }

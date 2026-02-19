@@ -2,6 +2,7 @@
 
 import { useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef } from "react";
+import { toast } from "sonner";
 import { getOrCreatePangoFolder } from "@/lib/drive/client";
 import { syncAll } from "@/lib/drive/sync";
 import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
@@ -22,7 +23,7 @@ export function useSync() {
     const isSyncingRef = useRef(false);
     const queryClient = useQueryClient();
 
-    const sync = useCallback(async () => {
+    const sync = useCallback(async (silent = false) => {
         if (isSyncingRef.current) return;
         isSyncingRef.current = true;
 
@@ -47,9 +48,12 @@ export function useSync() {
 
             setSyncStatus("idle");
             setLastSyncTime(new Date().toISOString());
+            if (!silent) toast.success("Sync complete");
         } catch (err) {
+            const message = err instanceof Error ? err.message : "Sync failed.";
             setSyncStatus("error");
-            setSyncError(err instanceof Error ? err.message : "Sync failed.");
+            setSyncError(message);
+            toast.error(`Sync failed: ${message}`);
         } finally {
             isSyncingRef.current = false;
         }
@@ -65,7 +69,7 @@ export function useSync() {
 
     const debouncedSync = useCallback(() => {
         if (debounceRef.current) clearTimeout(debounceRef.current);
-        debounceRef.current = setTimeout(sync, DEBOUNCE_MS);
+        debounceRef.current = setTimeout(() => sync(true), DEBOUNCE_MS);
     }, [sync]);
 
     // Trigger debounced sync after any successful mutation
@@ -85,7 +89,7 @@ export function useSync() {
                 clearTimeout(debounceRef.current);
                 debounceRef.current = null;
             }
-            sync();
+            sync(true);
         };
         document.addEventListener("visibilitychange", handleVisibilityChange);
         return () =>

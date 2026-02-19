@@ -87,6 +87,33 @@ export async function deleteBuck(id: string): Promise<void> {
     });
 }
 
+export async function restoreBuck(id: string): Promise<void> {
+    const db = await getDb();
+
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction("bucks", "readwrite");
+        const store = tx.objectStore("bucks");
+        const getReq = store.get(id);
+
+        getReq.onerror = () => reject(getReq.error);
+        getReq.onsuccess = () => {
+            const existing: Buck | undefined = getReq.result;
+            if (!existing) {
+                reject(new Error(`Buck ${id} not found`));
+                return;
+            }
+
+            const putReq = store.put({
+                ...existing,
+                deletedAt: null,
+                updatedAt: new Date().toISOString(),
+            });
+            putReq.onsuccess = () => resolve();
+            putReq.onerror = () => reject(putReq.error);
+        };
+    });
+}
+
 export async function getBucksByYear(year: number): Promise<Buck[]> {
     const db = await getDb();
 

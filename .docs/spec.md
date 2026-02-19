@@ -170,7 +170,7 @@ Approach:
 - Vibe: minimalist, clear, and readable. Heavy usage of monospace fonts.
 - Loading states for async operations.
 - Skeleton screens for initial loads.
-- Toast notifications for sync status and errors.
+- Toast notifications (sonner) for: deletion with undo action, Google Drive connection, successful manual sync, and sync errors.
 
 ### Layout
 (Excluding Landing Page)

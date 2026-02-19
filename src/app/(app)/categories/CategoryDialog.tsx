@@ -17,11 +17,13 @@ import {
 } from "@heroui/react";
 import { useTheme } from "next-themes";
 import { type SubmitEventHandler, useEffect, useState } from "react";
+import { toast } from "sonner";
 import { HexColorPicker } from "react-colorful";
 import type { Category } from "@/lib/db/types";
 import {
     useCreateCategory,
     useDeleteCategory,
+    useRestoreCategory,
     useUpdateCategory,
 } from "@/lib/hooks/useCategories";
 
@@ -67,6 +69,7 @@ export function CategoryDialog({
     const createCategory = useCreateCategory();
     const updateCategory = useUpdateCategory();
     const deleteCategory = useDeleteCategory();
+    const restoreCategory = useRestoreCategory();
 
     const isEditing = !!category;
 
@@ -129,7 +132,19 @@ export function CategoryDialog({
 
     function handleDelete() {
         if (!category) return;
-        deleteCategory.mutate(category.id, { onSuccess: handleClose });
+        const id = category.id;
+        deleteCategory.mutate(id, {
+            onSuccess: () => {
+                handleClose();
+                toast("Category deleted", {
+                    duration: 5000,
+                    action: {
+                        label: "Undo",
+                        onClick: () => restoreCategory.mutate(id),
+                    },
+                });
+            },
+        });
     }
 
     return (
