@@ -111,8 +111,18 @@ export function TransactionDialog({
         });
     }, [categories, isCreatingBuck, isIncome]);
 
+    // On Android (Chrome and Firefox), tapping the backdrop to close the dialog
+    // causes the keyboard to flash briefly. This happens because the input blur
+    // fires mid-animation, after the close has already begun. Blurring on
+    // touchstart (before the click/onClose fires) gives the keyboard a full
+    // touch cycle to dismiss before the modal starts closing.
+    function handleBackdropTouchStart(e: React.TouchEvent) {
+        if (!(e.target as HTMLElement).closest('[role="dialog"]')) {
+            (document.activeElement as HTMLElement)?.blur();
+        }
+    }
+
     function handleClose() {
-        (document.activeElement as HTMLElement)?.blur();
         setAmount("");
         setTransactedAt(todayDateString());
         setIsIncome(false);
@@ -207,7 +217,12 @@ export function TransactionDialog({
     const isDeleting = deleteDime.isPending || deleteBuck.isPending;
 
     return (
-        <Modal isOpen={isOpen} onClose={handleClose} classNames={{ closeButton: "cursor-pointer" }}>
+        <Modal
+            isOpen={isOpen}
+            onClose={handleClose}
+            onTouchStart={handleBackdropTouchStart}
+            classNames={{ closeButton: "cursor-pointer" }}
+        >
             <ModalContent>
                 <form onSubmit={handleSubmit}>
                     <ModalHeader>

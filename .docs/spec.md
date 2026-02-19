@@ -267,6 +267,9 @@ The settings page includes a "Danger Zone" section with a "Reset all data" butto
 
 `clearAllData()` first attempts a standard store-clear transaction. If `getDb()` fails (e.g. the stored DB is at a higher version than the code requests - a `VersionError`), it falls back to `forceDeleteDb()` which bypasses the version check and deletes the entire database. This handles cases where a user has a cached PWA build at a different schema version.
 
+### Keyboard flash on Android when closing dialog via backdrop tap
+On Android (Chrome and Firefox), tapping the backdrop to dismiss a dialog causes the virtual keyboard to flash briefly before disappearing. This happens because the input blur fires mid-close-animation, after the dismiss has already begun. The fix: `handleBackdropTouchStart` on the Modal detects a touch outside `[role="dialog"]` (i.e. the backdrop) and calls `blur()` on `touchstart`. Since `touchstart` precedes the `click` that triggers `onClose`, the keyboard has a full touch event cycle to dismiss before the modal begins closing.
+
 ### Known issue: dialog input scroll on Firefox Android
 On Firefox Android, focusing an input inside a dialog scrolls it out of view above the fixed bottom navbar. A potential fix: disable `autoFocus` on touch devices via a `useIsPointerFine` hook that checks the `(pointer: fine)` media query. Not applied - the issue is intermittent and unconfirmed on other mobile browsers.
 
