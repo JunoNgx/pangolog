@@ -7,9 +7,17 @@ import {
     getAllDimesForSync,
 } from "./db/sync";
 import type { Buck, Category, Dime } from "./db/types";
+import { useProfileSettingsStore } from "./store/useProfileSettingsStore";
+
+interface ImportSettings {
+    customCurrency: string;
+    isPrefixCurrency: boolean;
+    updatedAt: string;
+}
 
 export interface ImportData {
     exportedAt: string;
+    settings?: ImportSettings;
     dimes: Dime[];
     bucks: Buck[];
     categories: Category[];
@@ -137,6 +145,18 @@ export async function executeImport(data: ImportData): Promise<ImportPreview> {
         bulkPutBucks(bucksToPut),
         bulkPutCategories(categoriesToPut),
     ]);
+
+    if (data.settings) {
+        const { settingsUpdatedAt, applyRemoteSettings } =
+            useProfileSettingsStore.getState();
+        if (data.settings.updatedAt > settingsUpdatedAt) {
+            applyRemoteSettings(
+                data.settings.customCurrency,
+                data.settings.isPrefixCurrency,
+                data.settings.updatedAt,
+            );
+        }
+    }
 
     return preview;
 }

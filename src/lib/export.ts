@@ -3,6 +3,7 @@ import {
     getAllCategoriesForSync,
     getAllDimesForSync,
 } from "./db/sync";
+import { useProfileSettingsStore } from "./store/useProfileSettingsStore";
 
 function todayString(): string {
     return new Date().toISOString().split("T")[0];
@@ -29,8 +30,16 @@ export async function exportJson(prettyPrint: boolean): Promise<void> {
         getAllCategoriesForSync(),
     ]);
 
+    const { customCurrency, isPrefixCurrency, settingsUpdatedAt } =
+        useProfileSettingsStore.getState();
+
     const data = {
         exportedAt: new Date().toISOString(),
+        settings: {
+            customCurrency,
+            isPrefixCurrency,
+            updatedAt: settingsUpdatedAt,
+        },
         dimes: dimes.filter((d) => d.deletedAt === null),
         bucks: bucks.filter((b) => b.deletedAt === null),
         categories: categories.filter((c) => c.deletedAt === null),

@@ -4,8 +4,14 @@ import { persist } from "zustand/middleware";
 interface ProfileSettingsStore {
     customCurrency: string;
     isPrefixCurrency: boolean;
+    settingsUpdatedAt: string;
     setCustomCurrency: (value: string) => void;
     setIsPrefixCurrency: (value: boolean) => void;
+    applyRemoteSettings: (
+        customCurrency: string,
+        isPrefixCurrency: boolean,
+        settingsUpdatedAt: string,
+    ) => void;
 }
 
 export const useProfileSettingsStore = create<ProfileSettingsStore>()(
@@ -13,8 +19,22 @@ export const useProfileSettingsStore = create<ProfileSettingsStore>()(
         (set) => ({
             customCurrency: "",
             isPrefixCurrency: true,
-            setCustomCurrency: (value) => set({ customCurrency: value }),
-            setIsPrefixCurrency: (value) => set({ isPrefixCurrency: value }),
+            settingsUpdatedAt: new Date(0).toISOString(),
+            setCustomCurrency: (value) =>
+                set({
+                    customCurrency: value,
+                    settingsUpdatedAt: new Date().toISOString(),
+                }),
+            setIsPrefixCurrency: (value) =>
+                set({
+                    isPrefixCurrency: value,
+                    settingsUpdatedAt: new Date().toISOString(),
+                }),
+            applyRemoteSettings: (
+                customCurrency,
+                isPrefixCurrency,
+                settingsUpdatedAt,
+            ) => set({ customCurrency, isPrefixCurrency, settingsUpdatedAt }),
         }),
         {
             name: "pangolog-profile-settings",

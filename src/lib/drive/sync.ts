@@ -8,15 +8,23 @@ import {
     purgeExpiredRecords,
 } from "@/lib/db/sync";
 import type { Buck, Category, Dime } from "@/lib/db/types";
+import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
 import {
     buckFileName,
     CATEGORIES_FILE,
     dimeFileName,
     downloadFile,
     listFiles,
+    SETTINGS_FILE,
     trashFile,
     upsertFile,
 } from "./client";
+
+interface DriveSettings {
+    customCurrency: string;
+    isPrefixCurrency: boolean;
+    updatedAt: string;
+}
 
 function groupBy<T>(arr: T[], key: (item: T) => string): Map<string, T[]> {
     const map = new Map<string, T[]>();
@@ -62,7 +70,7 @@ export async function syncAll(token: string, folderId: string): Promise<void> {
 
     const driveFiles = await listFiles(token, folderId);
 
-    // Deduplicate Drive files by name — keep first occurrence, trash extras
+    // Deduplicate Drive files by name - keep first occurrence, trash extras
     const driveFileMap = new Map<string, string>();
     const toTrash: string[] = [];
     for (const f of driveFiles) {
@@ -75,6 +83,34 @@ export async function syncAll(token: string, folderId: string): Promise<void> {
     if (toTrash.length > 0) {
         await Promise.all(toTrash.map((id) => trashFile(token, id)));
     }
+
+    // --- Settings sync ---
+
+    const {
+        customCurrency,
+        isPrefixCurrency,
+        settingsUpdatedAt,
+        applyRemoteSettings,
+    } = useProfileSettingsStore.getState();
+
+    const settingsFileId = driveFileMap.get(SETTINGS_FILE);
+    if (settingsFileId) {
+        const remote = await downloadFile<DriveSettings>(token, settingsFileId);
+        if (remote.updatedAt > settingsUpdatedAt) {
+            applyRemoteSettings(
+                remote.customCurrency,
+                remote.isPrefixCurrency,
+                remote.updatedAt,
+            );
+        }
+    }
+
+    const localSettings: DriveSettings = {
+        customCurrency,
+        isPrefixCurrency,
+        updatedAt: settingsUpdatedAt,
+    };
+    await upsertFile(token, folderId, SETTINGS_FILE, localSettings);
 
     // --- Download and merge ---
 
