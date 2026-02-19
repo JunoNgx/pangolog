@@ -267,6 +267,9 @@ The settings page includes a "Danger Zone" section with a "Reset all data" butto
 
 `clearAllData()` first attempts a standard store-clear transaction. If `getDb()` fails (e.g. the stored DB is at a higher version than the code requests - a `VersionError`), it falls back to `forceDeleteDb()` which bypasses the version check and deletes the entire database. This handles cases where a user has a cached PWA build at a different schema version.
 
+### Known issue: dialog input scroll on Firefox Android
+On Firefox Android, focusing an input inside a dialog scrolls it out of view above the fixed bottom navbar. A potential fix: disable `autoFocus` on touch devices via a `useIsPointerFine` hook that checks the `(pointer: fine)` media query. Not applied - the issue is intermittent and unconfirmed on other mobile browsers.
+
 ### UUID generation fallback for non-secure contexts
 `crypto.randomUUID()` requires a secure context (HTTPS). `localhost` qualifies, but accessing the app over HTTP via a local network IP (e.g. during development from a phone) does not. All record creation would fail silently in this case. A `generateId()` utility in `src/lib/db/uuid.ts` wraps `crypto.randomUUID()` with a `Math.random()`-based UUID v4 fallback for non-secure contexts. All DB create functions use this instead of calling `crypto.randomUUID()` directly.
 
