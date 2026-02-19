@@ -159,7 +159,7 @@ export default function LogPage() {
                 </div>
 
                 {!isViewingBigBucks && (
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between gap-4">
                         {supportsMonthInput
                             ? standardMonthSelector
                             : fallbackMonthSelector}
