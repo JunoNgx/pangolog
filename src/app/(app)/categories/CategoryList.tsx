@@ -30,6 +30,9 @@ function SortableCategoryItem({
         <li
             ref={ref}
             onClick={() => onEdit(cat)}
+            onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") onEdit(cat);
+            }}
             className={`
                 rounded-lg px-4 py-3
                 flex items-center gap-3
@@ -39,13 +42,14 @@ function SortableCategoryItem({
                 ${isDragging ? "opacity-50" : ""}
             `}
         >
-            <span
+            <button
+                type="button"
                 ref={handleRef}
                 onClick={(e) => e.stopPropagation()}
-                className="text-default-400 cursor-grab active:cursor-grabbing select-none font-mono"
+                className="text-default-400 cursor-grab active:cursor-grabbing select-none font-mono bg-transparent p-0 border-0"
             >
                 ⠿
-            </span>
+            </button>
             <span className="flex items-center gap-4 shrink-0">
                 <span
                     className="h-6 w-6 rounded shrink-0"
