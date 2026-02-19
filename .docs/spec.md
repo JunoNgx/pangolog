@@ -182,6 +182,18 @@ Approach:
     - Blue: sync in progress
     - Red: encountering error, with message
 
+### Navbar
+- A list of to the app's routes (e.g. `/log`, `/settings`)
+    - Position: on top of main view, similar to tab list/tab switch
+    - Has icon and label
+    - Current route is indicated
+    - Mobile layout: floating at the bottom of the viewport
+
+### Utility panel
+- Position: to the right of the header
+    - Sync indicator
+    - Theme switcher
+
 ### Views
 
 - Transaction view:
