@@ -11,17 +11,20 @@ import {
 } from "@heroui/react";
 import type React from "react";
 import { useEffect, useMemo, useState } from "react";
+import { toast } from "sonner";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
 import type { Buck, Dime } from "@/lib/db/types";
 import {
     useCreateBuck,
     useDeleteBuck,
+    useRestoreBuck,
     useUpdateBuck,
 } from "@/lib/hooks/useBucks";
 import { useCategories } from "@/lib/hooks/useCategories";
 import {
     useCreateDime,
     useDeleteDime,
+    useRestoreDime,
     useUpdateDime,
 } from "@/lib/hooks/useDimes";
 
@@ -73,9 +76,11 @@ export function TransactionDialog({
     const createDime = useCreateDime();
     const updateDime = useUpdateDime();
     const deleteDime = useDeleteDime();
+    const restoreDime = useRestoreDime();
     const createBuck = useCreateBuck();
     const updateBuck = useUpdateBuck();
     const deleteBuck = useDeleteBuck();
+    const restoreBuck = useRestoreBuck();
 
     const isEditing = !!transaction;
 
@@ -163,10 +168,33 @@ export function TransactionDialog({
 
     function handleDelete() {
         if (!transaction) return;
+        const id = transaction.id;
         if (isDime(transaction)) {
-            deleteDime.mutate(transaction.id, { onSuccess: handleClose });
+            deleteDime.mutate(id, {
+                onSuccess: () => {
+                    handleClose();
+                    toast("Transaction deleted", {
+                        duration: 5000,
+                        action: {
+                            label: "Undo",
+                            onClick: () => restoreDime.mutate(id),
+                        },
+                    });
+                },
+            });
         } else {
-            deleteBuck.mutate(transaction.id, { onSuccess: handleClose });
+            deleteBuck.mutate(id, {
+                onSuccess: () => {
+                    handleClose();
+                    toast("Transaction deleted", {
+                        duration: 5000,
+                        action: {
+                            label: "Undo",
+                            onClick: () => restoreBuck.mutate(id),
+                        },
+                    });
+                },
+            });
         }
     }
 

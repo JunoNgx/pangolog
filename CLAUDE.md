@@ -117,4 +117,5 @@ Don't comment on the classes. Just keep one type of classes in its own line. Eac
 - Phase 3c (Sync logic): done - includes settings.json sync (customCurrency, isPrefixCurrency)
 - Phase 3d (Misc implementations): done
 - Phase 3e (Seed data for new users): incomplete
+- Phase 1h (toast notifications): done - sonner; deletion undo, Google Drive connection, manual sync success/failure; auto-syncs are silent
 - Phase 4a (JSON export/import): done - includes display settings; error reporting deferred

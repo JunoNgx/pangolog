@@ -4,6 +4,7 @@ import {
     deleteCategory,
     getAllCategories,
     reorderCategories,
+    restoreCategory,
     updateCategory,
 } from "../db/categories";
 import type { Category, CategoryInput, CategoryUpdate } from "../db/types";
@@ -75,6 +76,15 @@ export function useDeleteCategory() {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: (id: string) => deleteCategory(id),
+        onSuccess: () =>
+            queryClient.invalidateQueries({ queryKey: CATEGORIES_KEY }),
+    });
+}
+
+export function useRestoreCategory() {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (id: string) => restoreCategory(id),
         onSuccess: () =>
             queryClient.invalidateQueries({ queryKey: CATEGORIES_KEY }),
     });

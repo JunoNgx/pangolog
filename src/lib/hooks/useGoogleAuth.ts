@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
+import { toast } from "sonner";
 import type { AuthToken } from "@/lib/auth/types";
 import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
 
@@ -76,6 +77,7 @@ export function useGoogleAuth() {
                         expiresAt: Date.now() + response.expires_in * 1000,
                         email,
                     });
+                    toast.success(`Connected as ${email}`);
                 } catch {
                     setError("Failed to retrieve user information.");
                 } finally {

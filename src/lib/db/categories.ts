@@ -87,6 +87,33 @@ export async function deleteCategory(id: string): Promise<void> {
     });
 }
 
+export async function restoreCategory(id: string): Promise<void> {
+    const db = await getDb();
+
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction("categories", "readwrite");
+        const store = tx.objectStore("categories");
+        const getReq = store.get(id);
+
+        getReq.onerror = () => reject(getReq.error);
+        getReq.onsuccess = () => {
+            const existing: Category | undefined = getReq.result;
+            if (!existing) {
+                reject(new Error(`Category ${id} not found`));
+                return;
+            }
+
+            const putReq = store.put({
+                ...existing,
+                deletedAt: null,
+                updatedAt: new Date().toISOString(),
+            });
+            putReq.onsuccess = () => resolve();
+            putReq.onerror = () => reject(putReq.error);
+        };
+    });
+}
+
 export async function reorderCategories(
     updates: { id: string; priority: number }[],
 ): Promise<void> {
