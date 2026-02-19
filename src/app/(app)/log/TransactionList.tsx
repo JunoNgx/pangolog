@@ -37,7 +37,7 @@ export function TransactionList({
         setIsDialogOpen(true);
     }
 
-    const sorted = [...transactions].sort(
+    const displayedItems = [...transactions].sort(
         (a, b) =>
             new Date(b.transactedAt).getTime() -
             new Date(a.transactedAt).getTime(),
@@ -63,7 +63,7 @@ export function TransactionList({
         );
     }
 
-    if (!sorted.length) {
+    if (!displayedItems.length) {
         return (
             <>
                 <p className="text-center text-default-400 py-12 font-mono">
@@ -81,7 +81,7 @@ export function TransactionList({
     return (
         <>
             <ul className="flex flex-col gap-2">
-                {sorted.map((tx) => {
+                {displayedItems.map((tx) => {
                     const cat = tx.categoryId
                         ? categoryMap.get(tx.categoryId)
                         : undefined;
