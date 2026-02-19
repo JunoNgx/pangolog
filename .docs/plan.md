@@ -106,6 +106,7 @@
 - [x] Summary view
     - [x] Switch: month and yearly
     - [x] Checkbox: include Big Bucks in yearly view
+    - [x] Switch: viewing Big Bucks only in the year view
 
 ### Phase 2c: Setting view
 - [x] Settings view

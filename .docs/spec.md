@@ -230,7 +230,8 @@ Approach:
 
 - Summary view
     - Toggle switch: monthly vs yearly.
-    - Checkbox: should include Big Buck transactions (yearly only)
+    - Toggle switch: Small Dimes vs Big Bucks (yearly only).
+    - Checkbox: include Big Buck transactions alongside dimes (yearly, Small Dimes mode only).
     - Data: Segmented horizontal bar for expenses and incomes, each with a legend (category icon, name, amount, %). Categories below 3% are collapsed into "Other".
 
 - Landing page
