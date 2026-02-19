@@ -1,11 +1,12 @@
 "use client";
 
-import { Button, Checkbox, Switch } from "@heroui/react";
+import { Button, Checkbox } from "@heroui/react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useBucks } from "@/lib/hooks/useBucks";
 import { useCategories } from "@/lib/hooks/useCategories";
 import { useDimes } from "@/lib/hooks/useDimes";
 import { useHotkey } from "@/lib/hooks/useHotkey";
+import { ToggleSwitch } from "@/components/ToggleSwitch";
 import { useLogStore } from "@/lib/store/useLogStore";
 import { TransactionDialog } from "./TransactionDialog";
 import { TransactionList } from "./TransactionList";
@@ -147,14 +148,14 @@ export default function LogPage() {
             <h2 className="font-mono text-xl font-bold mb-4">Transactions</h2>
 
             <div className="flex flex-col gap-3 mb-4">
-                <div className="flex items-center gap-4">
-                    <Switch
-                        isSelected={isViewingBigBucks}
+                <div className="flex items-center gap-3">
+                    <span className="font-mono text-sm text-default-500">Viewing:</span>
+                    <ToggleSwitch
+                        isSelectingRight={isViewingBigBucks}
                         onValueChange={setIsViewingBigBucks}
-                        size="sm"
-                    >
-                        <span className="font-mono text-sm">Big Bucks</span>
-                    </Switch>
+                        leftLabel="Small Dimes"
+                        rightLabel="Big Bucks"
+                    />
                 </div>
 
                 {!isViewingBigBucks && (
