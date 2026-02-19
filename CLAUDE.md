@@ -103,7 +103,7 @@ Don't comment on the classes. Just keep one type of classes in its own line. Eac
 - Phase 1d (main layout + navbar): done
 - Phase 1e (category view): done
 - Phase 2a (drag-and-drop category reordering): done
-- Phase 1f (transaction view): done
+- Phase 1f (transaction view): done — includes category filter dropdown (Popover, Check/Uncheck all, Uncategorised option)
 - Phase 2d (dark/light theme switcher): done
 - Phase 1j (mobile responsiveness for navbar): done
 - Phase 1k (create transaction and category hotkey): done
