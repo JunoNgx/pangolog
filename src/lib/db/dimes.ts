@@ -90,6 +90,26 @@ export async function deleteDime(id: string): Promise<void> {
     });
 }
 
+export async function getDimesByYear(year: number): Promise<Dime[]> {
+    const db = await getDb();
+
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction("dimes", "readonly");
+        const store = tx.objectStore("dimes");
+        const index = store.index("yearMonth");
+        const range = IDBKeyRange.bound([year, 1], [year, 12]);
+        const request = index.getAll(range);
+
+        request.onerror = () => reject(request.error);
+        request.onsuccess = () => {
+            const results: Dime[] = request.result.filter(
+                (d: Dime) => d.deletedAt === null,
+            );
+            resolve(results);
+        };
+    });
+}
+
 export async function getDimesByMonth(
     year: number,
     month: number,
