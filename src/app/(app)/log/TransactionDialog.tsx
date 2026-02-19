@@ -250,7 +250,7 @@ export function TransactionDialog({
                                     Categories menu.
                                 </p>
                             )}
-                            <div className="flex flex-wrap gap-2 max-h-36 overflow-y-auto">
+                            <div className="flex flex-wrap gap-2 max-h-36 overflow-y-auto p-1">
                                 {filteredCategories.map((cat) => (
                                     <Button
                                         key={cat.id}
