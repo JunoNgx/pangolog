@@ -80,7 +80,7 @@ export function AppNavbar() {
                     const itemClass = `
                         flex flex-col items-center justify-center flex-1 gap-1
                         transition-colors
-                        ${isActive ? "text-primary" : "text-default-400"}
+                        ${isActive ? "bg-primary/10 text-primary rounded-lg" : "text-default-400"}
                     `;
                     return (
                         <NextLink
