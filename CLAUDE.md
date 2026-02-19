@@ -93,6 +93,8 @@ Don't comment on the classes. Just keep one type of classes in its own line. Eac
 
 ## Linting behaviour
 - This repository has a custom script `yarn efix` to fix linter issues. Run this instead of the usual standard linter script.
+- Only run `yarn efix` (or `yarn lint`) on files you have directly modified. Never run it project-wide, as it reformats unrelated files and produces noisy diffs.
+- To lint a specific file: `yarn biome check --write --unsafe <file>`
 
 ## Current Progress
 - Phase 1a (basic setup): done
@@ -112,4 +114,6 @@ Don't comment on the classes. Just keep one type of classes in its own line. Eac
 - Phase 3c (Sync logic): done
 - Phase 3d (Misc implementations): done
 - Phase 2f (header and utility panel layout): done
+- Phase 4a (JSON export): done (import not yet implemented)
+- Phase 4b (CSV export): done (import not yet implemented)
 - Phase 3e (Seed data for new users): incomplete
