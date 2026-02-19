@@ -173,7 +173,9 @@ export default function SettingsPage() {
                         </Checkbox>
                     </div>
                     <p className="font-mono text-xs text-default-400">
-                        Exports all transactions and categories into a single file. On import, records with matching IDs are resolved by last-updated timestamp to avoid duplicates.
+                        Exports all transactions, categories, and display
+                        settings into a single file. On import, records are
+                        resolved by last-updated timestamp to avoid duplicates.
                     </p>
                 </div>
             </section>
