@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 import {
     createDime,
     deleteDime,
@@ -30,6 +31,7 @@ export function useCreateDime() {
     return useMutation({
         mutationFn: (input: DimeInput) => createDime(input),
         onSuccess: () => queryClient.invalidateQueries({ queryKey: DIMES_KEY }),
+        onError: () => toast.error("Failed to save transaction"),
     });
 }
 
@@ -39,6 +41,7 @@ export function useUpdateDime() {
         mutationFn: ({ id, input }: { id: string; input: DimeUpdate }) =>
             updateDime(id, input),
         onSuccess: () => queryClient.invalidateQueries({ queryKey: DIMES_KEY }),
+        onError: () => toast.error("Failed to update transaction"),
     });
 }
 
@@ -47,6 +50,7 @@ export function useDeleteDime() {
     return useMutation({
         mutationFn: (id: string) => deleteDime(id),
         onSuccess: () => queryClient.invalidateQueries({ queryKey: DIMES_KEY }),
+        onError: () => toast.error("Failed to delete transaction"),
     });
 }
 
@@ -55,5 +59,6 @@ export function useRestoreDime() {
     return useMutation({
         mutationFn: (id: string) => restoreDime(id),
         onSuccess: () => queryClient.invalidateQueries({ queryKey: DIMES_KEY }),
+        onError: () => toast.error("Failed to undo deletion"),
     });
 }

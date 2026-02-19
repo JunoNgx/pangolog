@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 import {
     createCategory,
     deleteCategory,
@@ -24,6 +25,7 @@ export function useCreateCategory() {
         mutationFn: (input: CategoryInput) => createCategory(input),
         onSuccess: () =>
             queryClient.invalidateQueries({ queryKey: CATEGORIES_KEY }),
+        onError: () => toast.error("Failed to save category"),
     });
 }
 
@@ -34,6 +36,7 @@ export function useUpdateCategory() {
             updateCategory(id, input),
         onSuccess: () =>
             queryClient.invalidateQueries({ queryKey: CATEGORIES_KEY }),
+        onError: () => toast.error("Failed to update category"),
     });
 }
 
@@ -78,6 +81,7 @@ export function useDeleteCategory() {
         mutationFn: (id: string) => deleteCategory(id),
         onSuccess: () =>
             queryClient.invalidateQueries({ queryKey: CATEGORIES_KEY }),
+        onError: () => toast.error("Failed to delete category"),
     });
 }
 
@@ -87,5 +91,6 @@ export function useRestoreCategory() {
         mutationFn: (id: string) => restoreCategory(id),
         onSuccess: () =>
             queryClient.invalidateQueries({ queryKey: CATEGORIES_KEY }),
+        onError: () => toast.error("Failed to undo deletion"),
     });
 }
