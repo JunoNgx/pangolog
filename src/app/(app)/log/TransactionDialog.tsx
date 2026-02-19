@@ -217,7 +217,7 @@ export function TransactionDialog({
                         </div>
 
                         <Input
-                            label="Amount"
+                            variant="underlined"
                             value={amount}
                             onValueChange={handleAmountChange}
                             isRequired
@@ -226,7 +226,11 @@ export function TransactionDialog({
                             placeholder="0.00"
                             onFocus={(e) => e.target.select()}
                             classNames={{
-                                input: "text-2xl text-center font-mono",
+                                base: "my-2",
+                                input: `
+                                    text-4xl text-center font-mono
+                                    ${isIncome ? "text-success" : "text-foreground"}
+                                `,
                             }}
                         />
 
