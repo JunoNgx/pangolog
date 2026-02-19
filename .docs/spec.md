@@ -44,8 +44,8 @@ Approach:
 - Delete: remove transaction
 
 ### Advanced financial review:
-- View pie chart summary by month, with and without big buck transactions
-- View pie chart summary by year, with and without big buck transactions
+- View segmented bar summary by month, with and without big buck transactions
+- View segmented bar summary by year, with and without big buck transactions
 
 ### Synchronisation
 - Cloud synchronisation is entirely optional, users can start using immediately without providing Google Drive authorisation.
@@ -230,8 +230,8 @@ Approach:
 
 - Summary view
     - Toggle switch: monthly vs yearly.
-    - Checkbox: should include Big Buck transactions
-    - Data: Pie chart of expenses and incomes with legends
+    - Checkbox: should include Big Buck transactions (yearly only)
+    - Data: Segmented horizontal bar for expenses and incomes, each with a legend (category icon, name, amount, %). Categories below 3% are collapsed into "Other".
 
 - Landing page
     - Overview description of the app.

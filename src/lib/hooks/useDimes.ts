@@ -3,6 +3,7 @@ import {
     createDime,
     deleteDime,
     getDimesByMonth,
+    getDimesByYear,
     updateDime,
 } from "../db/dimes";
 import type { DimeInput, DimeUpdate } from "../db/types";
@@ -13,6 +14,13 @@ export function useDimes(year: number, month: number) {
     return useQuery({
         queryKey: [...DIMES_KEY, year, month],
         queryFn: () => getDimesByMonth(year, month),
+    });
+}
+
+export function useDimesByYear(year: number) {
+    return useQuery({
+        queryKey: [...DIMES_KEY, year],
+        queryFn: () => getDimesByYear(year),
     });
 }
 

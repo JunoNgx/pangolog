@@ -103,8 +103,9 @@
     - [x] Update transaction form category order
 
 ### Phase 2b: Summary view
-- [ ] Summary view
-    - [ ] Display pie charts
+- [x] Summary view
+    - [x] Switch: month and yearly
+    - [x] Checkbox: include Big Bucks in yearly view
 
 ### Phase 2c: Setting view
 - [x] Settings view

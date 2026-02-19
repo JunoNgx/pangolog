@@ -108,11 +108,12 @@ Don't comment on the classes. Just keep one type of classes in its own line. Eac
 - Phase 1j (mobile responsiveness for navbar): done
 - Phase 1k (create transaction and category hotkey): done
 - Phase 2e (setup PWA and icons): done
-- Phase 2c (dummy settings view): done
+- Phase 2b (summary view): done — segmented bar, no external chart lib; categories < 3% collapsed into "Other"
+- Phase 2c (settings view): done
+- Phase 2f (header and utility panel layout): done
 - Phase 3a (OAuth setup): done
 - Phase 3b (Drive file structure): done
 - Phase 3c (Sync logic): done
 - Phase 3d (Misc implementations): done
-- Phase 2f (header and utility panel layout): done
-- Phase 4a (JSON export/import): done (error reporting deferred)
 - Phase 3e (Seed data for new users): incomplete
+- Phase 4a (JSON export/import): done (error reporting deferred)
