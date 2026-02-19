@@ -68,7 +68,6 @@ export function TransactionDialog({
     const [isCreatingBuck, setIsCreatingBuck] = useState(defaultIsCreatingBuck);
     const [categoryId, setCategoryId] = useState<string | null>(null);
     const [description, setDescription] = useState("");
-    const [isCategoryExpanded, setIsCategoryExpanded] = useState(false);
 
     const { data: categories } = useCategories();
     const createDime = useCreateDime();
@@ -96,7 +95,6 @@ export function TransactionDialog({
             setCategoryId(null);
             setDescription("");
         }
-        setIsCategoryExpanded(false);
     }, [transaction, defaultIsCreatingBuck]);
 
     const filteredCategories = useMemo(() => {
@@ -108,9 +106,6 @@ export function TransactionDialog({
         });
     }, [categories, isCreatingBuck, isIncome]);
 
-    const visibleCategories = isCategoryExpanded
-        ? filteredCategories
-        : filteredCategories.slice(0, 7);
 
     function handleClose() {
         setAmount("");
@@ -119,7 +114,6 @@ export function TransactionDialog({
         setIsCreatingBuck(defaultIsCreatingBuck);
         setCategoryId(null);
         setDescription("");
-        setIsCategoryExpanded(false);
         onClose();
     }
 
@@ -252,10 +246,8 @@ export function TransactionDialog({
                                     Categories menu.
                                 </p>
                             )}
-                            <div
-                                className={`flex flex-wrap gap-2 ${isCategoryExpanded ? "max-h-[50vh] overflow-y-auto" : ""}`}
-                            >
-                                {visibleCategories.map((cat) => (
+                            <div className="flex flex-wrap gap-2 max-h-36 overflow-y-auto">
+                                {filteredCategories.map((cat) => (
                                     <Button
                                         key={cat.id}
                                         size="sm"
@@ -289,29 +281,6 @@ export function TransactionDialog({
                                     </Button>
                                 ))}
                             </div>
-                            {!isCategoryExpanded &&
-                                filteredCategories.length > 7 && (
-                                    <Button
-                                        size="sm"
-                                        variant="light"
-                                        className="mt-2"
-                                        onPress={() =>
-                                            setIsCategoryExpanded(true)
-                                        }
-                                    >
-                                        Show all ({filteredCategories.length})
-                                    </Button>
-                                )}
-                            {isCategoryExpanded && (
-                                <Button
-                                    size="sm"
-                                    variant="light"
-                                    className="mt-2"
-                                    onPress={() => setIsCategoryExpanded(false)}
-                                >
-                                    Show less
-                                </Button>
-                            )}
                         </div>
                     </ModalBody>
                     <ModalFooter
