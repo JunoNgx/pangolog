@@ -179,7 +179,7 @@ export function TransactionDialog({
     const isDeleting = deleteDime.isPending || deleteBuck.isPending;
 
     return (
-        <Modal isOpen={isOpen} onClose={handleClose}>
+        <Modal isOpen={isOpen} onClose={handleClose} classNames={{ closeButton: "cursor-pointer" }}>
             <ModalContent>
                 <form onSubmit={handleSubmit}>
                     <ModalHeader>
