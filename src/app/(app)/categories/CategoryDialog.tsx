@@ -17,8 +17,8 @@ import {
 } from "@heroui/react";
 import { useTheme } from "next-themes";
 import { type SubmitEventHandler, useEffect, useState } from "react";
-import { toast } from "sonner";
 import { HexColorPicker } from "react-colorful";
+import { toast } from "sonner";
 import type { Category } from "@/lib/db/types";
 import {
     useCreateCategory,
@@ -148,7 +148,11 @@ export function CategoryDialog({
     }
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose} classNames={{ closeButton: "cursor-pointer" }}>
+        <Modal
+            isOpen={isOpen}
+            onClose={onClose}
+            classNames={{ closeButton: "cursor-pointer" }}
+        >
             <ModalContent>
                 <form onSubmit={handleSubmit}>
                     <ModalHeader>
