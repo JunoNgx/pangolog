@@ -1,8 +1,7 @@
 "use client";
 
 import { useQueryClient } from "@tanstack/react-query";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { purgeSeedData } from "@/lib/db/seed";
+import { useCallback, useEffect, useRef } from "react";
 import { getOrCreatePangoFolder } from "@/lib/drive/client";
 import { syncAll } from "@/lib/drive/sync";
 import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
@@ -23,88 +22,48 @@ export function useSync() {
     const isSyncingRef = useRef(false);
     const queryClient = useQueryClient();
 
-    const seedResolverRef = useRef<((carryOver: boolean) => void) | null>(null);
-    const [isAwaitingSeedDecision, setIsAwaitingSeedDecision] = useState(false);
+    const sync = useCallback(async () => {
+        if (isSyncingRef.current) return;
+        isSyncingRef.current = true;
 
-    const resolveSeedDecision = useCallback((carryOver: boolean) => {
-        seedResolverRef.current?.(carryOver);
-    }, []);
+        const token = await getValidToken();
+        if (!token) {
+            isSyncingRef.current = false;
+            return;
+        }
 
-    const sync = useCallback(
-        async (options?: { skipSeedPrompt?: boolean }) => {
-            if (isSyncingRef.current) return;
-            isSyncingRef.current = true;
+        setSyncStatus("syncing");
+        setSyncError(null);
 
-            const token = await getValidToken();
-            if (!token) {
-                isSyncingRef.current = false;
-                return;
+        try {
+            let folderId = driveFolderId;
+            if (!folderId) {
+                folderId = await getOrCreatePangoFolder(token);
+                setDriveFolderId(folderId);
             }
 
-            const { seedIds, setSeedIds } = useLocalSettingsStore.getState();
-            if (seedIds) {
-                if (options?.skipSeedPrompt) {
-                    isSyncingRef.current = false;
-                    return;
-                }
-                if (seedResolverRef.current !== null) {
-                    isSyncingRef.current = false;
-                    return;
-                }
+            await syncAll(token, folderId);
+            await queryClient.invalidateQueries();
 
-                const carryOver = await new Promise<boolean>((resolve) => {
-                    seedResolverRef.current = resolve;
-                    setIsAwaitingSeedDecision(true);
-                });
-
-                setIsAwaitingSeedDecision(false);
-                seedResolverRef.current = null;
-
-                // Yield to let React flush the dialog close before continuing
-                await Promise.resolve();
-
-                if (carryOver) {
-                    setSeedIds(null);
-                } else {
-                    await purgeSeedData();
-                    await queryClient.invalidateQueries();
-                }
-            }
-
-            setSyncStatus("syncing");
-            setSyncError(null);
-
-            try {
-                let folderId = driveFolderId;
-                if (!folderId) {
-                    folderId = await getOrCreatePangoFolder(token);
-                    setDriveFolderId(folderId);
-                }
-
-                await syncAll(token, folderId);
-                await queryClient.invalidateQueries();
-
-                setSyncStatus("idle");
-                setLastSyncTime(new Date().toISOString());
-            } catch (err) {
-                setSyncStatus("error");
-                setSyncError(
-                    err instanceof Error ? err.message : "Sync failed.",
-                );
-            } finally {
-                isSyncingRef.current = false;
-            }
-        },
-        [
-            driveFolderId,
-            getValidToken,
-            queryClient,
-            setDriveFolderId,
-            setLastSyncTime,
-            setSyncError,
-            setSyncStatus,
-        ],
-    );
+            setSyncStatus("idle");
+            setLastSyncTime(new Date().toISOString());
+        } catch (err) {
+            setSyncStatus("error");
+            setSyncError(
+                err instanceof Error ? err.message : "Sync failed.",
+            );
+        } finally {
+            isSyncingRef.current = false;
+        }
+    }, [
+        driveFolderId,
+        getValidToken,
+        queryClient,
+        setDriveFolderId,
+        setLastSyncTime,
+        setSyncError,
+        setSyncStatus,
+    ]);
 
     const debouncedSync = useCallback(() => {
         if (debounceRef.current) clearTimeout(debounceRef.current);
@@ -120,7 +79,7 @@ export function useSync() {
         });
     }, [queryClient, debouncedSync]);
 
-    // Immediate sync on tab hide — skip seed prompt (user can't interact)
+    // Immediate sync on tab hide
     useEffect(() => {
         const handleVisibilityChange = () => {
             if (document.visibilityState !== "hidden") return;
@@ -128,7 +87,7 @@ export function useSync() {
                 clearTimeout(debounceRef.current);
                 debounceRef.current = null;
             }
-            sync({ skipSeedPrompt: true });
+            sync();
         };
         document.addEventListener("visibilitychange", handleVisibilityChange);
         return () =>
@@ -138,5 +97,5 @@ export function useSync() {
             );
     }, [sync]);
 
-    return { sync, isAwaitingSeedDecision, resolveSeedDecision };
+    return { sync };
 }
