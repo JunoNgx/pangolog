@@ -178,20 +178,20 @@
 - [ ] Error notifications (toast) — deferred to Phase 1h
 
 ### Phase 3e: Initialise demo data upon entering the app
-- [x] Should use the time user enters the app as creation datetime
-- [x] Categories
-    - [x] Food
-    - [x] Videogame
-    - [x] Grocery
-- [x] Small dimes
-    - [x] Eggs, $5, category Grocery
-    - [x] Sandwich, $10, category Food
-- [x] Big bucks
-    - [x] What Remains of Edith Finch, $20, Videogame
-- [x] Resolution with existing cloud data
-    - [x] Store the seed data ids for potential purging
-    - [x] New user, no GDrive, no problem
-    - [x] First sync: Confirm with user whether they want to carry over seed data.
+- [ ] Should use the time user enters the app as creation datetime
+- [ ] Categories
+    - [ ] Food
+    - [ ] Videogame
+    - [ ] Grocery
+- [ ] Small dimes
+    - [ ] Eggs, $5, category Grocery
+    - [ ] Sandwich, $10, category Food
+- [ ] Big bucks
+    - [ ] What Remains of Edith Finch, $20, Videogame
+- [ ] Resolution with existing cloud data
+    - [ ] Store the seed data ids for potential purging
+    - [ ] New user, no GDrive, no problem
+    - [ ] First sync: Confirm with user whether they want to carry over seed data.
         - [ ] Keep it: clear seed ids and sync
         - [ ] Discard: hard-delete seed data, clear seed ids, then sync clean data.
     - [ ] Returning user: seed, but upon connecting to Gdrive and triggering sync, the dialog is fired

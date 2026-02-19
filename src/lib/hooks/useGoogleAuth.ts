@@ -115,7 +115,7 @@ export function useGoogleAuth() {
         }
 
         return new Promise((resolve) => {
-            const client = window.google!.accounts.oauth2.initTokenClient({
+            const client = window.google?.accounts.oauth2.initTokenClient({
                 client_id: CLIENT_ID,
                 scope: SCOPE,
                 callback: (response) => {

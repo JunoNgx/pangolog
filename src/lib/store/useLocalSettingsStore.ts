@@ -4,12 +4,6 @@ import type { AuthToken } from "@/lib/auth/types";
 
 export type SyncStatus = "idle" | "syncing" | "error";
 
-export interface SeedIds {
-    categoryIds: string[];
-    dimeIds: string[];
-    buckIds: string[];
-}
-
 interface LocalSettingsStore {
     authToken: AuthToken | null;
     setAuthToken: (token: AuthToken | null) => void;
@@ -21,10 +15,6 @@ interface LocalSettingsStore {
     setSyncStatus: (status: SyncStatus) => void;
     syncError: string | null;
     setSyncError: (error: string | null) => void;
-    isSeeded: boolean;
-    setIsSeeded: (value: boolean) => void;
-    seedIds: SeedIds | null;
-    setSeedIds: (ids: SeedIds | null) => void;
     hasHydrated: boolean;
 }
 
@@ -41,10 +31,6 @@ export const useLocalSettingsStore = create<LocalSettingsStore>()(
             setSyncStatus: (status) => set({ syncStatus: status }),
             syncError: null,
             setSyncError: (error) => set({ syncError: error }),
-            isSeeded: false,
-            setIsSeeded: (value) => set({ isSeeded: value }),
-            seedIds: null,
-            setSeedIds: (ids) => set({ seedIds: ids }),
             hasHydrated: false,
         }),
         {
@@ -53,8 +39,6 @@ export const useLocalSettingsStore = create<LocalSettingsStore>()(
                 authToken: state.authToken,
                 driveFolderId: state.driveFolderId,
                 lastSyncTime: state.lastSyncTime,
-                isSeeded: state.isSeeded,
-                seedIds: state.seedIds,
             }),
             onRehydrateStorage: () => () => {
                 useLocalSettingsStore.setState({ hasHydrated: true });
