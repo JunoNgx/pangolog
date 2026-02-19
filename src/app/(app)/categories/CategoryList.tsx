@@ -3,12 +3,11 @@
 import { move } from "@dnd-kit/helpers";
 import { DragDropProvider } from "@dnd-kit/react";
 import { useSortable } from "@dnd-kit/react/sortable";
-import { Button, Chip, Skeleton } from "@heroui/react";
+import { Chip, Skeleton } from "@heroui/react";
 import { useState } from "react";
 import type { Category } from "@/lib/db/types";
 import {
     useCategories,
-    useDeleteCategory,
     useReorderCategories,
 } from "@/lib/hooks/useCategories";
 import { CategoryDialog } from "./CategoryDialog";
@@ -17,16 +16,12 @@ interface SortableCategoryItemProps {
     cat: Category;
     index: number;
     onEdit: (cat: Category) => void;
-    onDelete: (id: string) => void;
-    isDeleting: boolean;
 }
 
 function SortableCategoryItem({
     cat,
     index,
     onEdit,
-    onDelete,
-    isDeleting,
 }: SortableCategoryItemProps) {
     const { ref, handleRef, isDragging } = useSortable({
         id: cat.id,
@@ -37,25 +32,30 @@ function SortableCategoryItem({
     return (
         <li
             ref={ref}
+            onClick={() => onEdit(cat)}
             className={`
                 rounded-lg px-4 py-3
                 flex items-center gap-3
                 bg-background
                 border border-default-200
+                cursor-pointer hover:bg-default-50
                 ${isDragging ? "opacity-50" : ""}
             `}
         >
             <span
                 ref={handleRef}
+                onClick={(e) => e.stopPropagation()}
                 className="text-default-400 cursor-grab active:cursor-grabbing select-none font-mono"
             >
                 ⠿
             </span>
-            <span className="text-xl">{cat.icon || "·"}</span>
-            <span
-                className="h-4 w-4 rounded-full shrink-0"
-                style={{ backgroundColor: cat.colour }}
-            />
+            <span className="flex items-center gap-4 shrink-0">
+                <span
+                    className="h-6 w-6 rounded shrink-0"
+                    style={{ backgroundColor: cat.colour }}
+                />
+                <span className="text-xl leading-none">{cat.icon || "·"}</span>
+            </span>
             <span className="font-mono font-medium flex-1">{cat.name}</span>
             {cat.isIncomeOnly && (
                 <Chip size="sm" variant="flat" color="success">
@@ -67,25 +67,12 @@ function SortableCategoryItem({
                     buck
                 </Chip>
             )}
-            <Button size="sm" variant="light" onPress={() => onEdit(cat)}>
-                Edit
-            </Button>
-            <Button
-                size="sm"
-                variant="light"
-                color="danger"
-                isLoading={isDeleting}
-                onPress={() => onDelete(cat.id)}
-            >
-                Delete
-            </Button>
         </li>
     );
 }
 
 export function CategoryList() {
     const { data: categories, isLoading } = useCategories();
-    const deleteCategory = useDeleteCategory();
     const reorderCategories = useReorderCategories();
     const [editingCategory, setEditingCategory] = useState<
         Category | undefined
@@ -159,8 +146,6 @@ export function CategoryList() {
                             cat={cat}
                             index={index}
                             onEdit={handleEdit}
-                            onDelete={(id) => deleteCategory.mutate(id)}
-                            isDeleting={deleteCategory.isPending}
                         />
                     ))}
                 </ul>
