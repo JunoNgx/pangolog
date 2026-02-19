@@ -1,6 +1,7 @@
 "use client";
 
 import { Button, Input, Radio, RadioGroup } from "@heroui/react";
+import { useTheme } from "next-themes";
 import { useGoogleAuth } from "@/lib/hooks/useGoogleAuth";
 import { useSync } from "@/lib/hooks/useSync";
 import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
@@ -15,6 +16,7 @@ export default function SettingsPage() {
     } = useProfileSettingsStore();
     const { authToken, isConnected, isConnecting, error, connect, disconnect } =
         useGoogleAuth();
+    const { theme, setTheme } = useTheme();
     const { sync } = useSync();
     const { syncStatus, lastSyncTime, syncError } = useLocalSettingsStore();
 
@@ -28,6 +30,20 @@ export default function SettingsPage() {
     return (
         <div>
             <h2 className="font-mono text-xl font-bold mb-6">Settings</h2>
+
+            <section className="mb-8">
+                <h3 className="font-mono text-lg font-semibold mb-4">Theme</h3>
+                <RadioGroup
+                    orientation="horizontal"
+                    value={theme ?? "system"}
+                    onValueChange={setTheme}
+                    classNames={{ wrapper: "gap-6" }}
+                >
+                    <Radio value="light">Light</Radio>
+                    <Radio value="dark">Dark</Radio>
+                    <Radio value="system">System</Radio>
+                </RadioGroup>
+            </section>
 
             <section className="mb-8">
                 <h3 className="font-mono text-lg font-semibold mb-4">
