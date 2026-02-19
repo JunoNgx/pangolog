@@ -201,7 +201,7 @@ Approach:
     - Toggle switch: Small Dimes vs Big Bucks
     - Checkbox: (Small Dimes only) Also show Big Buck transactions
     - Calendar month picker: (Small Dimes only) Month to display Small Dimes transactions
-    - Accordion: Toggle filter transactions by categories
+    - Dropdown: Filter transactions by category. Includes "Uncategorised" option, Check all / Uncheck all utility buttons. Active filter indicated on trigger button.
     - Empty state: there is no transaction for this month/year
     - Item without category is marked `uncategorised`
 

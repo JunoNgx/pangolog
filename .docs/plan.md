@@ -70,7 +70,7 @@
         - [x] Edit transaction
         - [x] Soft delete (set deletedAt)
         - [x] Permanent delete (after 30 days)
-
+    - [x] Filter transactions by Categories (dropdown, includes Uncategorised, Check/Uncheck all)
 
 ### Phase 1g: implement default route and setup important settings
 - [x] User onboarding flow

@@ -2,12 +2,16 @@
 
 import { Button, Checkbox } from "@heroui/react";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { ToggleSwitch } from "@/components/ToggleSwitch";
 import { useBucks } from "@/lib/hooks/useBucks";
 import { useCategories } from "@/lib/hooks/useCategories";
 import { useDimes } from "@/lib/hooks/useDimes";
 import { useHotkey } from "@/lib/hooks/useHotkey";
-import { ToggleSwitch } from "@/components/ToggleSwitch";
 import { useLogStore } from "@/lib/store/useLogStore";
+import {
+    CategoryFilterDropdown,
+    UNCATEGORISED_ID,
+} from "./CategoryFilterDropdown";
 import { TransactionDialog } from "./TransactionDialog";
 import { TransactionList } from "./TransactionList";
 
@@ -21,10 +25,12 @@ export default function LogPage() {
         shouldIncludeBucksInDimes,
         selectedYear,
         selectedMonth,
+        selectedCategoryIds,
         setIsViewingBigBucks,
         setShouldIncludeBucksInDimes,
         setSelectedYear,
         setSelectedMonth,
+        setSelectedCategoryIds,
     } = useLogStore();
 
     const { data: dimes, isLoading: dimesLoading } = useDimes(
@@ -44,6 +50,16 @@ export default function LogPage() {
         }
         return base;
     }, [isViewingBigBucks, shouldIncludeBucksInDimes, dimes, bucks]);
+
+    const filteredTransactions = useMemo(() => {
+        if (selectedCategoryIds === null) return transactions;
+        return transactions.filter((tx) => {
+            if (tx.categoryId === null) {
+                return selectedCategoryIds.includes(UNCATEGORISED_ID);
+            }
+            return selectedCategoryIds.includes(tx.categoryId);
+        });
+    }, [transactions, selectedCategoryIds]);
 
     const isLoading = isViewingBigBucks
         ? bucksLoading
@@ -149,7 +165,9 @@ export default function LogPage() {
 
             <div className="flex flex-col gap-3 mb-4">
                 <div className="flex items-center gap-3">
-                    <span className="font-mono text-sm text-default-500">Viewing:</span>
+                    <span className="font-mono text-sm text-default-500">
+                        Viewing:
+                    </span>
                     <ToggleSwitch
                         isSelectingRight={isViewingBigBucks}
                         onValueChange={setIsViewingBigBucks}
@@ -174,10 +192,18 @@ export default function LogPage() {
                         </Checkbox>
                     </div>
                 )}
+
+                <div className="self-end">
+                    <CategoryFilterDropdown
+                        categories={categories ?? []}
+                        selectedIds={selectedCategoryIds}
+                        onChange={setSelectedCategoryIds}
+                    />
+                </div>
             </div>
 
             <TransactionList
-                transactions={transactions}
+                transactions={filteredTransactions}
                 categories={categories ?? []}
                 isLoading={isLoading}
             />
