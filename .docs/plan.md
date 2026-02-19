@@ -144,6 +144,9 @@
     - [x] Sync indicator
     - [x] Theme switcher
 
+### Phase 2g: Offline functionality
+- [ ] Implement service worker to cache app shell
+
 ## Phase 3: Drive sync
 
 ### Phase 3a: OAuth

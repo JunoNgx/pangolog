@@ -276,6 +276,17 @@ On Firefox Android, focusing an input inside a dialog scrolls it out of view abo
 ### UUID generation fallback for non-secure contexts
 `crypto.randomUUID()` requires a secure context (HTTPS). `localhost` qualifies, but accessing the app over HTTP via a local network IP (e.g. during development from a phone) does not. All record creation would fail silently in this case. A `generateId()` utility in `src/lib/db/uuid.ts` wraps `crypto.randomUUID()` with a `Math.random()`-based UUID v4 fallback for non-secure contexts. All DB create functions use this instead of calling `crypto.randomUUID()` directly.
 
+### Service worker considerations for offline support
+The PWA manifest is in place but no service worker is configured yet. Implementing one to cache the app shell involves the following considerations:
+
+1. **Stale app shell after deployment** — Users may keep running an old cached version after a new deployment until the browser's SW update cycle fires. Workbox handles this with a versioned precache manifest.
+2. **Development interference** — Service workers must be disabled in dev to avoid breaking Next.js hot reload, meaning offline behaviour can only be tested in a production build.
+3. **DB version mismatch** — An aggressively cached app shell can persist old schema versions longer, worsening the `VersionError` problem. The existing `forceDeleteDb()` fallback handles this.
+4. **OAuth popup compatibility** — The Google OAuth flow opens a popup to a different origin so the SW won't intercept it, but the callback page and `postMessage` flow should be smoke-tested after setup.
+5. **Next.js App Router compatibility** — `next-pwa` is largely unmaintained; the App Router-compatible fork is `@ducanh2912/next-pwa`. Alternatively, a hand-written `sw.js` with a `cache.addAll()` on install and a cache-first fetch strategy is viable for a solo project — the only maintenance cost is bumping a cache version constant on each deployment. Pin Next.js and the SW plugin versions and upgrade them together.
+
+A manual "Clear service worker cache" button in Settings (debug section) is a useful escape hatch during development and testing.
+
 ### Separation of Big Bucks and Small Dimes storage (vs `isBigBuck`)
 - Query patterns are separated
 - Storage strategy matches query patterns
