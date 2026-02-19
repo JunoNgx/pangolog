@@ -221,19 +221,26 @@ export function CategoryDialog({
                                                 color={colour}
                                                 onChange={setColour}
                                             />
-                                            <Input
-                                                label="Hex"
-                                                size="sm"
-                                                value={colour}
-                                                onValueChange={(v) =>
-                                                    setColour(
-                                                        v.startsWith("#")
-                                                            ? v
-                                                            : `#${v}`,
-                                                    )
-                                                }
-                                                maxLength={7}
-                                            />
+                                            <div className="flex gap-2">
+                                                <Input
+                                                    label="Hex"
+                                                    size="sm"
+                                                    value={colour}
+                                                    onValueChange={(v) =>
+                                                        setColour(
+                                                            v.startsWith("#")
+                                                                ? v
+                                                                : `#${v}`,
+                                                        )
+                                                    }
+                                                    maxLength={7}
+                                                    className="w-1/2"
+                                                />
+                                                <div
+                                                    className="w-1/2 rounded"
+                                                    style={{ backgroundColor: colour }}
+                                                />
+                                            </div>
                                         </div>
                                     </PopoverContent>
                                 </Popover>
