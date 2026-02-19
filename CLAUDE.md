@@ -114,6 +114,5 @@ Don't comment on the classes. Just keep one type of classes in its own line. Eac
 - Phase 3c (Sync logic): done
 - Phase 3d (Misc implementations): done
 - Phase 2f (header and utility panel layout): done
-- Phase 4a (JSON export): done (import not yet implemented)
-- Phase 4b (CSV export): done (import not yet implemented)
+- Phase 4a (JSON export/import): done (error reporting deferred)
 - Phase 3e (Seed data for new users): incomplete
