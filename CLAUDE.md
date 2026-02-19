@@ -91,6 +91,8 @@ Don't comment on the classes. Just keep one type of classes in its own line. Eac
 ## Known behaviours
 - Zustand `persist` middleware hydrates asynchronously - on first render, persisted state (e.g. `isSeeded`, `authToken`) is at its default value. Gate logic that depends on persisted state behind `hasHydrated` from `useLocalSettingsStore`.
 - React 18 automatic batching defers renders until the event loop yields. After calling a state setter inside an async function, use `await Promise.resolve()` to flush the render before continuing with heavy async work (e.g. Drive API calls).
+- `crypto.randomUUID()` requires a secure context (HTTPS). `localhost` qualifies but local network IP over HTTP does not. Use `generateId()` from `src/lib/db/uuid.ts` for all record ID generation.
+- After a full DB reset (`clearAllData`), the page must reload to clear the cached `dbPromise` module state, otherwise subsequent DB operations fail.
 
 ## Linting behaviour
 - This repository has a custom script `yarn efix` to fix linter issues. Run this instead of the usual standard linter script.
@@ -117,5 +119,5 @@ Don't comment on the classes. Just keep one type of classes in its own line. Eac
 - Phase 3c (Sync logic): done - includes settings.json sync (customCurrency, isPrefixCurrency)
 - Phase 3d (Misc implementations): done
 - Phase 3e (Seed data for new users): incomplete
-- Phase 1h (toast notifications): done - sonner; deletion undo, Google Drive connection, manual sync success/failure; auto-syncs are silent
+- Phase 1h (toast notifications): done - sonner; deletion undo, Google Drive connection, manual sync success/failure; auto-syncs are silent; DB mutation errors surface via toast
 - Phase 4a (JSON export/import): done - includes display settings; error reporting deferred

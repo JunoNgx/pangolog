@@ -1,8 +1,21 @@
 "use client";
 
-import { Button, Checkbox, Input, Radio, RadioGroup } from "@heroui/react";
+import {
+    Button,
+    Checkbox,
+    Input,
+    Modal,
+    ModalBody,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    Radio,
+    RadioGroup,
+} from "@heroui/react";
 import { useTheme } from "next-themes";
 import { useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
+import { clearAllData } from "@/lib/db/sync";
 import { exportJson } from "@/lib/export";
 import { useGoogleAuth } from "@/lib/hooks/useGoogleAuth";
 import { useSync } from "@/lib/hooks/useSync";
@@ -43,6 +56,18 @@ export default function SettingsClient() {
     const [isImporting, setIsImporting] = useState(false);
     const [mounted, setMounted] = useState(false);
     useEffect(() => setMounted(true), []);
+
+    const [isResetDialogOpen, setIsResetDialogOpen] = useState(false);
+    const [isResetting, setIsResetting] = useState(false);
+
+    async function handleReset() {
+        setIsResetting(true);
+        if (isConnected) disconnect();
+        await clearAllData();
+        toast.success("All data has been reset. Reloading...");
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+        window.location.reload();
+    }
 
     async function handleExportJson() {
         setIsExportingJson(true);
@@ -329,6 +354,58 @@ export default function SettingsClient() {
                     )}
                 </div>
             </section>
+
+            <section className="mt-12">
+                <h3 className="font-mono text-lg font-semibold mb-1 text-danger">
+                    Danger Zone
+                </h3>
+                <p className="font-mono text-xs text-default-400 mb-4">
+                    Disconnects Google Drive and permanently deletes all local
+                    data. Your data on Google Drive will remain intact. Use this
+                    to start fresh on this device. This cannot be undone.
+                </p>
+                <Button
+                    color="danger"
+                    variant="flat"
+                    onPress={() => setIsResetDialogOpen(true)}
+                >
+                    Reset all data
+                </Button>
+            </section>
+
+            <Modal
+                isOpen={isResetDialogOpen}
+                onClose={() => setIsResetDialogOpen(false)}
+                classNames={{ closeButton: "cursor-pointer" }}
+            >
+                <ModalContent>
+                    <ModalHeader className="font-mono">
+                        Reset all data?
+                    </ModalHeader>
+                    <ModalBody>
+                        <p className="font-mono text-sm text-default-600">
+                            This will disconnect Google Drive and permanently
+                            delete all local transactions, categories, and
+                            settings. This cannot be undone.
+                        </p>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button
+                            variant="light"
+                            onPress={() => setIsResetDialogOpen(false)}
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            color="danger"
+                            isLoading={isResetting}
+                            onPress={handleReset}
+                        >
+                            Reset
+                        </Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
         </div>
     );
 }

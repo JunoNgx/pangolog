@@ -262,6 +262,11 @@ Approach:
 
 ## Technical Decisions
 
+### Danger Zone reset action
+The settings page includes a "Danger Zone" section with a "Reset all data" button. On confirmation, it disconnects Google Drive, clears all local IndexedDB stores, shows a success toast, and reloads the page after 1.5 seconds. The page reload is necessary to ensure a clean module state - without it, a stale `dbPromise` can cause all subsequent DB operations to fail.
+
+`clearAllData()` first attempts a standard store-clear transaction. If `getDb()` fails (e.g. the stored DB is at a higher version than the code requests - a `VersionError`), it falls back to `forceDeleteDb()` which bypasses the version check and deletes the entire database. This handles cases where a user has a cached PWA build at a different schema version.
+
 ### UUID generation fallback for non-secure contexts
 `crypto.randomUUID()` requires a secure context (HTTPS). `localhost` qualifies, but accessing the app over HTTP via a local network IP (e.g. during development from a phone) does not. All record creation would fail silently in this case. A `generateId()` utility in `src/lib/db/uuid.ts` wraps `crypto.randomUUID()` with a `Math.random()`-based UUID v4 fallback for non-secure contexts. All DB create functions use this instead of calling `crypto.randomUUID()` directly.
 

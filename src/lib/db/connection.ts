@@ -47,6 +47,11 @@ function deleteDbRaw(): Promise<void> {
     });
 }
 
+export async function forceDeleteDb(): Promise<void> {
+    dbPromise = null;
+    await deleteDbRaw();
+}
+
 export function getDb(): Promise<IDBDatabase> {
     if (dbPromise) return dbPromise;
 
