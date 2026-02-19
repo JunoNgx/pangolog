@@ -21,6 +21,7 @@ import { HexColorPicker } from "react-colorful";
 import type { Category } from "@/lib/db/types";
 import {
     useCreateCategory,
+    useDeleteCategory,
     useUpdateCategory,
 } from "@/lib/hooks/useCategories";
 
@@ -65,6 +66,7 @@ export function CategoryDialog({
     const { resolvedTheme } = useTheme();
     const createCategory = useCreateCategory();
     const updateCategory = useUpdateCategory();
+    const deleteCategory = useDeleteCategory();
 
     const isEditing = !!category;
 
@@ -124,6 +126,11 @@ export function CategoryDialog({
     };
 
     const isPending = createCategory.isPending || updateCategory.isPending;
+
+    function handleDelete() {
+        if (!category) return;
+        deleteCategory.mutate(category.id, { onSuccess: handleClose });
+    }
 
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
@@ -247,6 +254,17 @@ export function CategoryDialog({
                         </Checkbox>
                     </ModalBody>
                     <ModalFooter>
+                        {isEditing && (
+                            <Button
+                                variant="light"
+                                color="danger"
+                                isLoading={deleteCategory.isPending}
+                                onPress={handleDelete}
+                                className="mr-auto"
+                            >
+                                Delete
+                            </Button>
+                        )}
                         <Button
                             type="submit"
                             color="primary"
