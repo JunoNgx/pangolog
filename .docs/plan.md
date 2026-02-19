@@ -210,19 +210,23 @@
 
 ## Phase 4: Data mobility
 
-### Phase 4a: Export
-- [ ] JSON export
-    - [ ] Complete data export
-    - [ ] Pretty print option
+### Phase 4a: JSON export/import
+- [x] JSON export
+    - [x] Complete data export
+    - [x] Pretty print option
+    - [x] Store both Transactions and Categories in a single file
+- [x] JSON import
+    - [x] Validate schema
+    - [x] Preview changes
+    - [x] Handle conflicts (overwrite/merge)
+- [x] Import summary
+    - [x] Show counts added/updated
+    - [ ] Error reporting
+
+### Phase 4b: CSV export/import
 - [ ] CSV export
     - [ ] Flatten nested data
     - [ ] Handle categories separately
-
-### Phase 4b: Import
-- [ ] JSON import
-    - [ ] Validate schema
-    - [ ] Preview changes
-    - [ ] Handle conflicts (overwrite/merge)
 - [ ] CSV import
     - [ ] Parse CSV with headers
     - [ ] Map to data model
