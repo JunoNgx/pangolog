@@ -66,32 +66,6 @@ export default function LogPage() {
         }
     }
 
-    const monthNames = [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
-    ];
-
-    const selectClasses = `
-        rounded-lg px-3 py-2
-        font-mono text-sm text-foreground
-        bg-default-100 border border-default-200
-        cursor-pointer
-    `;
-
-    const yearOptions = Array.from({ length: 21 }, (_, i) => {
-        return new Date().getFullYear() - 10 + i;
-    });
-
     function handleMonthSelect(e: React.ChangeEvent<HTMLSelectElement>) {
         setSelectedMonth(Number(e.target.value));
     }
@@ -114,14 +88,40 @@ export default function LogPage() {
         />
     );
 
+    const fallbackMonthNames = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+    ];
+
+    const fallbackSelectClasses = `
+        rounded-lg px-3 py-2
+        font-mono text-sm text-foreground
+        bg-default-100 border border-default-200
+        cursor-pointer
+    `;
+
+    const fallbackYearOptions = Array.from({ length: 21 }, (_, i) => {
+        return new Date().getFullYear() - 10 + i;
+    });
+
     const fallbackMonthSelector = (
         <div className="flex gap-1">
             <select
                 value={selectedMonth}
                 onChange={handleMonthSelect}
-                className={selectClasses}
+                className={fallbackSelectClasses}
             >
-                {monthNames.map((name, i) => (
+                {fallbackMonthNames.map((name, i) => (
                     <option key={name} value={i + 1}>
                         {name}
                     </option>
@@ -130,9 +130,9 @@ export default function LogPage() {
             <select
                 value={selectedYear}
                 onChange={handleYearSelect}
-                className={selectClasses}
+                className={fallbackSelectClasses}
             >
-                {yearOptions.map((y) => (
+                {fallbackYearOptions.map((y) => (
                     <option key={y} value={y}>
                         {y}
                     </option>
