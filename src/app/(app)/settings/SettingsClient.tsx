@@ -2,7 +2,7 @@
 
 import { Button, Checkbox, Input, Radio, RadioGroup } from "@heroui/react";
 import { useTheme } from "next-themes";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { exportJson } from "@/lib/export";
 import { useGoogleAuth } from "@/lib/hooks/useGoogleAuth";
 import { useSync } from "@/lib/hooks/useSync";
@@ -41,6 +41,8 @@ export default function SettingsClient() {
         null,
     );
     const [isImporting, setIsImporting] = useState(false);
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => setMounted(true), []);
 
     async function handleExportJson() {
         setIsExportingJson(true);
@@ -109,7 +111,7 @@ export default function SettingsClient() {
                 <h3 className="font-mono text-lg font-semibold mb-4">Theme</h3>
                 <RadioGroup
                     orientation="horizontal"
-                    value={theme ?? "system"}
+                    value={mounted ? (theme ?? "system") : "system"}
                     onValueChange={setTheme}
                     classNames={{ wrapper: "gap-6" }}
                 >
