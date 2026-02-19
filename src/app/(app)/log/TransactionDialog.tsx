@@ -274,7 +274,7 @@ export function TransactionDialog({
                                                     : cat.id,
                                             )
                                         }
-                                        startContent={
+                                        endContent={
                                             <span
                                                 className="h-3 w-3 rounded-full inline-block"
                                                 style={{
