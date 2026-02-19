@@ -192,14 +192,7 @@ export function TransactionDialog({
                         {isEditing ? "Edit Transaction" : "New Transaction"}
                     </ModalHeader>
                     <ModalBody className="gap-4">
-                        <div className="flex justify-between items-center gap-4">
-                            <ToggleSwitch
-                                isSelectingRight={isIncome}
-                                onValueChange={setIsIncome}
-                                leftLabel="Expense"
-                                rightLabel="Income"
-                            />
-
+                        <div className="flex justify-center items-center gap-4">
                             {!isEditing && (
                                 <ToggleSwitch
                                     isSelectingRight={isCreatingBuck}
@@ -208,6 +201,25 @@ export function TransactionDialog({
                                     rightLabel="Big buck"
                                 />
                             )}
+                        </div>
+
+                        <div className={`
+                            flex justify-around gap-8
+                            ${isEditing ? "" : "mt-5"}
+                        `}>
+                            <Input
+                                type="date"
+                                label="Date"
+                                value={transactedAt}
+                                onValueChange={setTransactedAt}
+                                isRequired
+                            />
+                            <ToggleSwitch
+                                isSelectingRight={isIncome}
+                                onValueChange={setIsIncome}
+                                leftLabel="Expense"
+                                rightLabel="Income"
+                            />
                         </div>
 
                         <Input
@@ -222,14 +234,6 @@ export function TransactionDialog({
                             classNames={{
                                 input: "text-2xl text-center font-mono",
                             }}
-                        />
-
-                        <Input
-                            type="date"
-                            label="Date"
-                            value={transactedAt}
-                            onValueChange={setTransactedAt}
-                            isRequired
                         />
 
                         <Input
