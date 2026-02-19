@@ -133,7 +133,7 @@ export function CategoryDialog({
     }
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal isOpen={isOpen} onClose={onClose} classNames={{ closeButton: "cursor-pointer" }}>
             <ModalContent>
                 <form onSubmit={handleSubmit}>
                     <ModalHeader>
