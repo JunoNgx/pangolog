@@ -242,6 +242,12 @@ export function TransactionDialog({
                             <p className="text-sm text-default-500 mb-2 font-mono">
                                 Category
                             </p>
+                            {filteredCategories.length === 0 && (
+                                <p className="text-sm text-default-400 font-mono">
+                                    No categories available. Add one from the
+                                    Categories menu.
+                                </p>
+                            )}
                             <div
                                 className={`flex flex-wrap gap-2 ${isCategoryExpanded ? "max-h-[50vh] overflow-y-auto" : ""}`}
                             >
