@@ -141,10 +141,12 @@ function SegmentBar({ label, slices }: SegmentBarProps) {
 export default function SummaryPage() {
     const {
         isYearly,
+        isViewingBucksOnly,
         includeBucks,
         selectedYear,
         selectedMonth,
         setIsYearly,
+        setIsViewingBucksOnly,
         setIncludeBucks,
         setSelectedYear,
         setSelectedMonth,
@@ -168,12 +170,18 @@ export default function SummaryPage() {
     );
 
     const transactions = useMemo<(Dime | Buck)[]>(() => {
+        if (isYearly && isViewingBucksOnly) return bucks ?? [];
         const dimes = isYearly ? (yearlyDimes ?? []) : (monthlyDimes ?? []);
-        if (isYearly && includeBucks) {
-            return [...dimes, ...(bucks ?? [])];
-        }
+        if (isYearly && includeBucks) return [...dimes, ...(bucks ?? [])];
         return dimes;
-    }, [isYearly, includeBucks, monthlyDimes, yearlyDimes, bucks]);
+    }, [
+        isYearly,
+        isViewingBucksOnly,
+        includeBucks,
+        monthlyDimes,
+        yearlyDimes,
+        bucks,
+    ]);
 
     const expenseSlices = useMemo(
         () => buildSlices(transactions, categoryMap, false),
@@ -297,9 +305,23 @@ export default function SummaryPage() {
                     />
                 </div>
 
+                {isYearly && (
+                    <div className="flex items-center gap-3">
+                        <span className="font-mono text-sm text-default-500">
+                            Type:
+                        </span>
+                        <ToggleSwitch
+                            isSelectingRight={isViewingBucksOnly}
+                            onValueChange={setIsViewingBucksOnly}
+                            leftLabel="Small Dimes"
+                            rightLabel="Big Bucks"
+                        />
+                    </div>
+                )}
+
                 <div className="flex items-center justify-between gap-4">
                     {monthPicker}
-                    {isYearly && (
+                    {isYearly && !isViewingBucksOnly && (
                         <Checkbox
                             isSelected={includeBucks}
                             onValueChange={setIncludeBucks}
