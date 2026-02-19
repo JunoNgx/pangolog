@@ -154,9 +154,10 @@ Approach:
 ## LocalStorage settings to be synced
 - `customCurrency`: string, custom currency set by user, empty by default.
 - `isPrefixCurrency`: boolean, whether to display the currency in front of the amount, to differentiate different conventions. E.g. $12 and 12 SGD.
+- `settingsUpdatedAt`: ISO timestamp, used for last-write-wins conflict resolution when syncing settings to Drive and JSON export/import.
 
 ## Storage approach
-- OAuth scope: `drive.file` + `drive.readonly` — `drive.readonly` enables cross-device file discovery (listing all files in the Pangolog folder); `drive.file` handles creating and updating files. Files remain visible in the user's Google Drive.
+- OAuth scope: `drive.file` + `drive.readonly` - `drive.readonly` enables cross-device file discovery (listing all files in the Pangolog folder); `drive.file` handles creating and updating files. Files remain visible in the user's Google Drive.
 - Files are stored in a dedicated `Pangolog` folder in the user's Drive root.
 - Settings are stored in `settings.json`.
 - Categories are stored in `categories.json`.

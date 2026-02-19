@@ -168,10 +168,12 @@
 - [x] Upload logic
     - [x] Serialize data to JSON
     - [x] Create/update Drive files
+    - [x] Upload display settings (customCurrency, isPrefixCurrency) to settings.json
 - [x] Download logic
     - [x] List files in Pangolog Drive folder
     - [x] Download and parse JSON
     - [x] Merge with local data
+    - [x] Merge display settings from settings.json (last-write-wins)
 - [x] Sync triggers
     - [x] 30s debounced after changes
     - [x] On visibilitychange (tab close)
@@ -189,7 +191,7 @@
 - [x] Connection status indicator (dot in navbar: green/blue/red)
 - [x] Last sync time display (settings page)
 - [x] Manual sync button (settings page)
-- [ ] Error notifications (toast) — deferred to Phase 1h
+- [ ] Error notifications (toast) - deferred to Phase 1h
 
 ### Phase 3e: Initialise demo data upon entering the app
 - [ ] Should use the time user enters the app as creation datetime
