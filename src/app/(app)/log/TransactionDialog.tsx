@@ -108,6 +108,7 @@ export function TransactionDialog({
 
 
     function handleClose() {
+        (document.activeElement as HTMLElement)?.blur();
         setAmount("");
         setTransactedAt(todayDateString());
         setIsIncome(false);
@@ -179,7 +180,7 @@ export function TransactionDialog({
     const isDeleting = deleteDime.isPending || deleteBuck.isPending;
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal isOpen={isOpen} onClose={handleClose}>
             <ModalContent>
                 <form onSubmit={handleSubmit}>
                     <ModalHeader>
@@ -308,7 +309,7 @@ export function TransactionDialog({
                             >
                                 {isEditing ? "Save" : "Create"}
                             </Button>
-                            <Button variant="light" onPress={onClose}>
+                            <Button variant="light" onPress={handleClose}>
                                 Cancel
                             </Button>
                         </div>
