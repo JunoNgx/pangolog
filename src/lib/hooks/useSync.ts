@@ -49,9 +49,7 @@ export function useSync() {
             setLastSyncTime(new Date().toISOString());
         } catch (err) {
             setSyncStatus("error");
-            setSyncError(
-                err instanceof Error ? err.message : "Sync failed.",
-            );
+            setSyncError(err instanceof Error ? err.message : "Sync failed.");
         } finally {
             isSyncingRef.current = false;
         }

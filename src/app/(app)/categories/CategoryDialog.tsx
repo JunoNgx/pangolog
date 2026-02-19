@@ -238,7 +238,9 @@ export function CategoryDialog({
                                                 />
                                                 <div
                                                     className="w-1/2 rounded"
-                                                    style={{ backgroundColor: colour }}
+                                                    style={{
+                                                        backgroundColor: colour,
+                                                    }}
                                                 />
                                             </div>
                                         </div>

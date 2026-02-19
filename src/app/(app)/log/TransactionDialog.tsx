@@ -106,7 +106,6 @@ export function TransactionDialog({
         });
     }, [categories, isCreatingBuck, isIncome]);
 
-
     function handleClose() {
         (document.activeElement as HTMLElement)?.blur();
         setAmount("");
@@ -198,10 +197,12 @@ export function TransactionDialog({
                             )}
                         </div>
 
-                        <div className={`
+                        <div
+                            className={`
                             flex justify-around gap-8
                             ${isEditing ? "" : "mt-5"}
-                        `}>
+                        `}
+                        >
                             <Input
                                 type="date"
                                 label="Date"
