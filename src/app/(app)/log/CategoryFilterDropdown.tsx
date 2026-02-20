@@ -5,6 +5,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@heroui/react";
+import { ChevronDown } from "lucide-react";
 import type { Category } from "@/lib/db/types";
 
 export const UNCATEGORISED_ID = "__uncategorised__";
@@ -54,6 +55,7 @@ export function CategoryFilterDropdown({
                     variant={isFiltered ? "solid" : "flat"}
                     color={isFiltered ? "primary" : "default"}
                     className="font-mono text-xs"
+                    endContent={<ChevronDown className="size-3" />}
                 >
                     {label}
                 </Button>
@@ -67,27 +69,27 @@ export function CategoryFilterDropdown({
                                 onValueChange={() =>
                                     handleToggle(UNCATEGORISED_ID)
                                 }
-                                size="lg"
+                                size="md"
                                 classNames={{
                                     base: "max-w-full",
-                                    label: "font-mono text-base text-default-500 truncate",
+                                    label: "font-mono text-sm text-default-500 truncate",
                                 }}
                             >
                                 Uncategorised
                             </Checkbox>
                         </li>
                         {categories.map((cat) => (
-                            <li key={cat.id} className="py-2">
+                            <li key={cat.id} className="py-1">
                                 <Checkbox
                                     isSelected={isChecked(cat.id)}
                                     onValueChange={() => handleToggle(cat.id)}
-                                    size="lg"
+                                    size="md"
                                     classNames={{
                                         base: "max-w-full",
-                                        label: "font-mono text-base truncate",
+                                        label: "font-mono text-sm truncate",
                                     }}
                                 >
-                                    <span className="text-lg">{cat.icon}</span>{" "}
+                                    <span className="text-base">{cat.icon}</span>{" "}
                                     {cat.name}
                                 </Checkbox>
                             </li>
