@@ -12,6 +12,10 @@
     body {
         @apply font-sans bg-background text-foreground;
     }
+
+    input, button, select, textarea {
+        font-family: inherit;
+    }
 }
 
 @layer components {
