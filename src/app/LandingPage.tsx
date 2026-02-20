@@ -11,7 +11,7 @@ export default function LandingPage() {
 
     return (
         <div className={containerClasses}>
-            <h1 className="text-4xl font-bold tracking-tight">pangolog</h1>
+            <h1 className="text-4xl font-bold tracking-tight">Pangolog</h1>
             <p className="text-default-500 text-center">
                 an offine-first and privacy-first minimalist expense tracker
             </p>
