@@ -42,14 +42,6 @@ function SortableCategoryItem({
                 ${isDragging ? "opacity-50" : ""}
             `}
         >
-            <button
-                type="button"
-                ref={handleRef}
-                onClick={(e) => e.stopPropagation()}
-                className="text-default-400 cursor-grab active:cursor-grabbing select-none bg-transparent p-0 border-0"
-            >
-                ⠿
-            </button>
             <span className="flex items-center gap-4 shrink-0">
                 <span
                     className="h-6 w-6 rounded shrink-0"
@@ -64,6 +56,14 @@ function SortableCategoryItem({
             {cat.isBuckOnly && (
                 <span className={`ChipLabel text-amber-500`}>BIG BUCK</span>
             )}
+            <button
+                type="button"
+                ref={handleRef}
+                onClick={(e) => e.stopPropagation()}
+                className="text-default-400 cursor-grab active:cursor-grabbing select-none bg-transparent p-0 border-0"
+            >
+                ⠿
+            </button>
         </li>
     );
 }
