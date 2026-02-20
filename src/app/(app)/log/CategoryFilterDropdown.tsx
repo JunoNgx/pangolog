@@ -89,7 +89,9 @@ export function CategoryFilterDropdown({
                                         label: "font-mono text-sm truncate",
                                     }}
                                 >
-                                    <span className="text-base">{cat.icon}</span>{" "}
+                                    <span className="text-base">
+                                        {cat.icon}
+                                    </span>{" "}
                                     {cat.name}
                                 </Checkbox>
                             </li>
