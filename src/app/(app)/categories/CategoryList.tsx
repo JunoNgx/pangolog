@@ -59,14 +59,15 @@ function SortableCategoryItem({
             </span>
             <span className="font-mono font-medium flex-1">{cat.name}</span>
             {cat.isIncomeOnly && (
-                <Chip size="sm" variant="flat" color="success">
-                    income
-                </Chip>
+                <span className={`ChipLabel text-green-600`}>
+                    INCOME
+                </span>
+
             )}
             {cat.isBuckOnly && (
-                <Chip size="sm" variant="flat" color="warning">
-                    buck
-                </Chip>
+                <span className={`ChipLabel text-amber-500`}>
+                    BIG BUCK
+                </span>
             )}
         </li>
     );

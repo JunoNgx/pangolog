@@ -13,3 +13,11 @@
         @apply bg-background text-foreground;
     }
 }
+
+@layer components {
+    .ChipLabel {
+        @apply w-min mx-2
+            self-center
+            font-mono text-center text-xs;
+    }
+}

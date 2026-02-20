@@ -199,13 +199,7 @@ function TransactionItem({
             </div>
 
             {isBigBuck && (
-                <span
-                    className={`
-                        w-min mx-2
-                        self-center
-                        font-mono text-center text-xs text-default-400
-                    `}
-                >
+                <span className={`ChipLabel text-amber-500`}>
                     BIG BUCK
                 </span>
             )}
