@@ -102,7 +102,7 @@ function SegmentBar({ label, slices }: SegmentBarProps) {
             <div className="flex rounded-md overflow-hidden h-5 mb-3">
                 {slices.map((slice) => (
                     <div
-                        key={slice.categoryId ?? "__other__"}
+                        key={slice.categoryId ?? `__${slice.name}__`}
                         style={{
                             width: `${slice.pct}%`,
                             backgroundColor: slice.colour,
@@ -114,7 +114,7 @@ function SegmentBar({ label, slices }: SegmentBarProps) {
             <ul className="flex flex-col gap-1">
                 {slices.map((slice) => (
                     <li
-                        key={slice.categoryId ?? "__other__"}
+                        key={slice.categoryId ?? `__${slice.name}__`}
                         className="flex items-center gap-2 font-mono text-xs"
                     >
                         <span
