@@ -99,7 +99,7 @@ function SegmentBar({ label, slices }: SegmentBarProps) {
             <p className="font-mono text-sm font-semibold text-default-500 mb-2">
                 {label}
             </p>
-            <div className="flex rounded-full overflow-hidden h-5 mb-3">
+            <div className="flex rounded-md overflow-hidden h-5 mb-3">
                 {slices.map((slice) => (
                     <div
                         key={slice.categoryId ?? "__other__"}
