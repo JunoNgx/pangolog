@@ -72,7 +72,12 @@ export function TransactionList({
     }
 
     const groupedByDateItems = displayedItems.reduce<
-        { date: Date; dateKey: string; dateText: string; items: (Dime | Buck)[] }[]
+        {
+            date: Date;
+            dateKey: string;
+            dateText: string;
+            items: (Dime | Buck)[];
+        }[]
     >((acc, tx) => {
         const date = new Date(tx.transactedAt);
         const dateText = date.toLocaleDateString("en-us", {
@@ -192,16 +197,16 @@ function TransactionItem({
                     <p className="text-default-400">no category</p>
                 )}
                 {hasDescription ? (
-                    <p className="font-sans text-default-500 truncate">{transaction.description}</p>
+                    <p className="font-sans text-default-500 truncate">
+                        {transaction.description}
+                    </p>
                 ) : (
                     <p className="text-default-400">no description</p>
                 )}
             </div>
 
             {isBigBuck && (
-                <span className={`ChipLabel text-amber-500`}>
-                    BIG BUCK
-                </span>
+                <span className={`ChipLabel text-amber-500`}>BIG BUCK</span>
             )}
 
             <span

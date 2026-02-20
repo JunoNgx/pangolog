@@ -250,7 +250,9 @@ export function CategoryDialog({
                                                         value={colour}
                                                         onValueChange={(v) =>
                                                             setColour(
-                                                                v.startsWith("#")
+                                                                v.startsWith(
+                                                                    "#",
+                                                                )
                                                                     ? v
                                                                     : `#${v}`,
                                                             )
@@ -261,7 +263,8 @@ export function CategoryDialog({
                                                     <div
                                                         className="w-8 shrink-0 rounded"
                                                         style={{
-                                                            backgroundColor: colour,
+                                                            backgroundColor:
+                                                                colour,
                                                         }}
                                                     />
                                                 </div>
@@ -270,7 +273,9 @@ export function CategoryDialog({
                                     </Popover>
                                     <button
                                         type="button"
-                                        onClick={() => setColour(randomHexColor())}
+                                        onClick={() =>
+                                            setColour(randomHexColor())
+                                        }
                                         className="aspect-square shrink-0 rounded-lg flex items-center justify-center bg-default-100 hover:bg-default-200 transition-colors text-default-500 cursor-pointer"
                                         title="Random colour"
                                     >
