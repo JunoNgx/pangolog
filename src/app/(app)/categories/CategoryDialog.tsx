@@ -239,6 +239,7 @@ export function CategoryDialog({
                                             <HexColorPicker
                                                 color={colour}
                                                 onChange={setColour}
+                                                style={{ width: "100%" }}
                                             />
                                             <div className="flex gap-2">
                                                 <Input

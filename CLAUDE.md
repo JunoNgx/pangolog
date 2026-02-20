@@ -93,6 +93,7 @@ Don't comment on the classes. Just keep one type of classes in its own line. Eac
 - React 18 automatic batching defers renders until the event loop yields. After calling a state setter inside an async function, use `await Promise.resolve()` to flush the render before continuing with heavy async work (e.g. Drive API calls).
 - `crypto.randomUUID()` requires a secure context (HTTPS). `localhost` qualifies but local network IP over HTTP does not. Use `generateId()` from `src/lib/db/uuid.ts` for all record ID generation.
 - After a full DB reset (`clearAllData`), the page must reload to clear the cached `dbPromise` module state, otherwise subsequent DB operations fail.
+- `HexColorPicker` from `react-colorful` has a fixed inline `width` (200px) by default. Override with `style={{ width: "100%" }}` to make it fill its container on mobile.
 
 ## Linting behaviour
 - This repository has a custom script `yarn efix` to fix linter issues. Run this instead of the usual standard linter script.
