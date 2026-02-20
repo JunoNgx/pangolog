@@ -25,7 +25,7 @@ export function useCreateCategory() {
         mutationFn: (input: CategoryInput) => createCategory(input),
         onSuccess: () =>
             queryClient.invalidateQueries({ queryKey: CATEGORIES_KEY }),
-        onError: () => toast.error("Failed to save category"),
+        onError: () => toast.error("Failed to save category", { duration: Infinity }),
     });
 }
 
@@ -36,7 +36,7 @@ export function useUpdateCategory() {
             updateCategory(id, input),
         onSuccess: () =>
             queryClient.invalidateQueries({ queryKey: CATEGORIES_KEY }),
-        onError: () => toast.error("Failed to update category"),
+        onError: () => toast.error("Failed to update category", { duration: Infinity }),
     });
 }
 
@@ -81,7 +81,7 @@ export function useDeleteCategory() {
         mutationFn: (id: string) => deleteCategory(id),
         onSuccess: () =>
             queryClient.invalidateQueries({ queryKey: CATEGORIES_KEY }),
-        onError: () => toast.error("Failed to delete category"),
+        onError: () => toast.error("Failed to delete category", { duration: Infinity }),
     });
 }
 
@@ -91,6 +91,6 @@ export function useRestoreCategory() {
         mutationFn: (id: string) => restoreCategory(id),
         onSuccess: () =>
             queryClient.invalidateQueries({ queryKey: CATEGORIES_KEY }),
-        onError: () => toast.error("Failed to undo deletion"),
+        onError: () => toast.error("Failed to undo deletion", { duration: Infinity }),
     });
 }
