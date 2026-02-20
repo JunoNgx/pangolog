@@ -31,7 +31,7 @@ function ThemedToaster() {
     return (
         <Toaster
             theme={resolvedTheme as "light" | "dark"}
-            toastOptions={{ classNames: { toast: "font-mono" } }}
+            toastOptions={{ classNames: { toast: "" } }}
         />
     );
 }

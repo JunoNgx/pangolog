@@ -54,7 +54,7 @@ export function CategoryFilterDropdown({
                     size="sm"
                     variant={isFiltered ? "solid" : "flat"}
                     color={isFiltered ? "primary" : "default"}
-                    className="font-mono text-xs"
+                    className="text-xs"
                     endContent={<ChevronDown className="size-3" />}
                 >
                     {label}
@@ -101,7 +101,7 @@ export function CategoryFilterDropdown({
                         <Button
                             size="sm"
                             variant="light"
-                            className="flex-1 font-mono text-xs"
+                            className="flex-1 text-xs"
                             onPress={() => onChange(null)}
                         >
                             Check all
@@ -109,7 +109,7 @@ export function CategoryFilterDropdown({
                         <Button
                             size="sm"
                             variant="light"
-                            className="flex-1 font-mono text-xs"
+                            className="flex-1 text-xs"
                             onPress={() => onChange([])}
                         >
                             Uncheck all

@@ -86,17 +86,17 @@ function SegmentBar({ label, slices }: SegmentBarProps) {
     if (slices.length === 0) {
         return (
             <div className="mb-6">
-                <p className="font-mono text-sm font-semibold text-default-500 mb-2">
+                <p className="text-sm font-semibold text-default-500 mb-2">
                     {label}
                 </p>
-                <p className="font-mono text-xs text-default-400">No data.</p>
+                <p className="text-xs text-default-400">No data.</p>
             </div>
         );
     }
 
     return (
         <div className="mb-6">
-            <p className="font-mono text-sm font-semibold text-default-500 mb-2">
+            <p className="text-sm font-semibold text-default-500 mb-2">
                 {label}
             </p>
             <div className="flex rounded-md overflow-hidden h-5 mb-3">
@@ -115,7 +115,7 @@ function SegmentBar({ label, slices }: SegmentBarProps) {
                 {slices.map((slice) => (
                     <li
                         key={slice.categoryId ?? `__${slice.name}__`}
-                        className={`flex items-center gap-2 font-mono text-md py-1 border-b border-dashed border-default-200`}
+                        className={`flex items-center gap-2 font-mono text-sm py-1 border-b border-dashed border-default-200`}
                     >
                         <span
                             className="shrink-0 w-2.5 h-2.5 rounded-full"
@@ -125,10 +125,10 @@ function SegmentBar({ label, slices }: SegmentBarProps) {
                             {slice.icon ? `${slice.icon} ` : ""}
                             {slice.name}
                         </span>
-                        <span className="text-default-500">
+                        <span className="font-mono text-default-500">
                             {formatAmount(slice.total)}
                         </span>
-                        <span className="text-default-400 w-10 text-right">
+                        <span className="font-mono text-default-400 w-10 text-right">
                             {slice.pct.toFixed(1)}%
                         </span>
                     </li>
@@ -212,7 +212,7 @@ export default function SummaryClient() {
 
     const selectClasses = `
         rounded-lg px-3 py-2
-        font-mono text-sm text-foreground
+        text-sm text-foreground
         bg-default-100 border border-default-200
         cursor-pointer
     `;
@@ -256,7 +256,7 @@ export default function SummaryClient() {
             className={`
                 w-42
                 rounded-lg px-3 py-2
-                font-mono text-sm text-foreground
+                text-sm text-foreground
                 bg-default-100 border border-default-200
                 cursor-pointer
             `}
@@ -290,13 +290,11 @@ export default function SummaryClient() {
 
     return (
         <div>
-            <h2 className="font-mono text-xl font-bold mb-4">Summary</h2>
+            <h2 className="text-xl font-bold mb-4">Summary</h2>
 
             <div className="flex flex-col gap-3 mb-6">
                 <div className="flex items-center gap-3">
-                    <span className="font-mono text-sm text-default-500">
-                        Viewing:
-                    </span>
+                    <span className="text-sm text-default-500">Viewing:</span>
                     <ToggleSwitch
                         isSelectingRight={isYearly}
                         onValueChange={setIsYearly}
@@ -307,9 +305,7 @@ export default function SummaryClient() {
 
                 {isYearly && (
                     <div className="flex items-center gap-3">
-                        <span className="font-mono text-sm text-default-500">
-                            Type:
-                        </span>
+                        <span className="text-sm text-default-500">Type:</span>
                         <ToggleSwitch
                             isSelectingRight={isViewingBucksOnly}
                             onValueChange={setIsViewingBucksOnly}
@@ -327,9 +323,7 @@ export default function SummaryClient() {
                             onValueChange={setIncludeBucks}
                             size="md"
                         >
-                            <span className="font-mono text-sm">
-                                Include Big Bucks
-                            </span>
+                            <span className="text-sm">Include Big Bucks</span>
                         </Checkbox>
                     )}
                 </div>

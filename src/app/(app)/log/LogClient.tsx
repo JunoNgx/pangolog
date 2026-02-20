@@ -99,7 +99,7 @@ export default function LogClient() {
             className={`
                 w-42
                 rounded-lg px-3 py-2
-                font-mono text-sm text-foreground
+                text-sm text-foreground
                 bg-default-100 border border-default-200
                 cursor-pointer
             `}
@@ -123,7 +123,7 @@ export default function LogClient() {
 
     const fallbackSelectClasses = `
         rounded-lg px-3 py-2
-        font-mono text-sm text-foreground
+        text-sm text-foreground
         bg-default-100 border border-default-200
         cursor-pointer
     `;
@@ -161,13 +161,11 @@ export default function LogClient() {
 
     return (
         <div>
-            <h2 className="font-mono text-xl font-bold mb-4">Transactions</h2>
+            <h2 className="text-xl font-bold mb-4">Transactions</h2>
 
             <div className="flex flex-col gap-3 mb-4">
                 <div className="flex items-center gap-3">
-                    <span className="font-mono text-sm text-default-500">
-                        Viewing:
-                    </span>
+                    <span className="text-sm text-default-500">Viewing:</span>
                     <ToggleSwitch
                         isSelectingRight={isViewingBigBucks}
                         onValueChange={setIsViewingBigBucks}
@@ -186,9 +184,7 @@ export default function LogClient() {
                             onValueChange={setShouldIncludeBucksInDimes}
                             size="md"
                         >
-                            <span className="font-mono text-sm">
-                                Include Big Bucks
-                            </span>
+                            <span className="text-sm">Include Big Bucks</span>
                         </Checkbox>
                     </div>
                 )}

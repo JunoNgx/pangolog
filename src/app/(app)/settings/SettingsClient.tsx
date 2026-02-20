@@ -130,10 +130,10 @@ export default function SettingsClient() {
 
     return (
         <div>
-            <h2 className="font-mono text-xl font-bold mb-6">Settings</h2>
+            <h2 className="text-xl font-bold mb-6">Settings</h2>
 
             <section className="mb-8">
-                <h3 className="font-mono text-lg font-semibold mb-4">Theme</h3>
+                <h3 className="text-lg font-semibold mb-4">Theme</h3>
                 <RadioGroup
                     orientation="horizontal"
                     value={mounted ? (theme ?? "system") : "system"}
@@ -147,14 +147,14 @@ export default function SettingsClient() {
             </section>
 
             <section className="mb-8">
-                <h3 className="font-mono text-lg font-semibold mb-4">
+                <h3 className="text-lg font-semibold mb-4">
                     Display Currency
                 </h3>
                 <div className="flex flex-col gap-4">
                     <Input
                         classNames={{
                             inputWrapper: "max-w-xs",
-                            description: "font-mono",
+                            description: "",
                         }}
                         label="Currency symbol"
                         placeholder="e.g. €, SGD, Gil"
@@ -180,7 +180,7 @@ export default function SettingsClient() {
             </section>
 
             <section className="mb-8">
-                <h3 className="font-mono text-lg font-semibold mb-4">
+                <h3 className="text-lg font-semibold mb-4">
                     Export Data
                 </h3>
                 <div className="flex flex-col gap-3">
@@ -198,12 +198,10 @@ export default function SettingsClient() {
                             onValueChange={setPrettyPrint}
                             size="sm"
                         >
-                            <span className="font-mono text-sm">
-                                Pretty print
-                            </span>
+                            <span className="text-sm">Pretty print</span>
                         </Checkbox>
                     </div>
-                    <p className="font-mono text-xs text-default-400">
+                    <p className="text-xs text-default-400">
                         Exports all transactions, categories, and display
                         settings into a single file. On import, records are
                         resolved by last-updated timestamp to avoid duplicates.
@@ -212,7 +210,7 @@ export default function SettingsClient() {
             </section>
 
             <section className="mb-8">
-                <h3 className="font-mono text-lg font-semibold mb-4">
+                <h3 className="text-lg font-semibold mb-4">
                     Import Data
                 </h3>
                 <div className="flex flex-col gap-3">
@@ -232,12 +230,10 @@ export default function SettingsClient() {
                         Import JSON
                     </Button>
                     {importError && (
-                        <p className="font-mono text-xs text-danger-500">
-                            {importError}
-                        </p>
+                        <p className="text-xs text-danger-500">{importError}</p>
                     )}
                     {importPreview && (
-                        <div className="flex flex-col gap-2 p-3 rounded-lg bg-default-100 font-mono text-sm">
+                        <div className="flex flex-col gap-2 p-3 rounded-lg bg-default-100 text-sm">
                             <p className="font-semibold text-default-700">
                                 Preview:
                             </p>
@@ -273,7 +269,7 @@ export default function SettingsClient() {
                         </div>
                     )}
                     {importResult && (
-                        <div className="flex flex-col gap-1 p-3 rounded-lg bg-success-50 font-mono text-sm">
+                        <div className="flex flex-col gap-1 p-3 rounded-lg bg-success-50 text-sm">
                             <p className="font-semibold text-success-700">
                                 Import complete.
                             </p>
@@ -300,17 +296,17 @@ export default function SettingsClient() {
                 </h3>
                 <div className="flex flex-col gap-3">
                     {lastSyncTime && (
-                        <p className="font-mono text-xs text-default-400">
+                        <p className="text-xs text-default-400">
                             Last synced:{" "}
                             {new Date(lastSyncTime).toLocaleString()}
                         </p>
                     )}
                     {isConnected ? (
                         <>
-                            <p className="font-mono text-sm text-success-500">
+                            <p className="text-sm text-success-500">
                                 Status: Connected as {authToken?.email}
                             </p>
-                            <p className="font-mono text-xs text-default-400">
+                            <p className="text-xs text-default-400">
                                 {syncStatus === "syncing" && "Syncing..."}
                                 {syncStatus === "error" &&
                                     `Error: ${syncError}`}
@@ -337,7 +333,7 @@ export default function SettingsClient() {
                         </>
                     ) : (
                         <>
-                            <p className="font-mono text-sm text-default-400">
+                            <p className="text-sm text-default-400">
                                 Status: Not connected
                             </p>
                             <Button
@@ -352,9 +348,7 @@ export default function SettingsClient() {
                         </>
                     )}
                     {error && (
-                        <p className="font-mono text-xs text-danger-500">
-                            {error}
-                        </p>
+                        <p className="text-xs text-danger-500">{error}</p>
                     )}
                 </div>
             </section>
@@ -363,7 +357,7 @@ export default function SettingsClient() {
                 <h3 className="font-mono text-lg font-semibold mb-1 text-danger">
                     Danger Zone
                 </h3>
-                <p className="font-mono text-xs text-default-400 mb-4">
+                <p className="text-xs text-default-400 mb-4">
                     Disconnects Google Drive and permanently deletes all local
                     data. Your data on Google Drive will remain intact. Use this
                     to start fresh on this device. This cannot be undone.
@@ -383,11 +377,9 @@ export default function SettingsClient() {
                 classNames={{ closeButton: "cursor-pointer" }}
             >
                 <ModalContent>
-                    <ModalHeader className="font-mono">
-                        Reset all data?
-                    </ModalHeader>
+                    <ModalHeader>Reset all data?</ModalHeader>
                     <ModalBody>
-                        <p className="font-mono text-sm text-default-600">
+                        <p className="text-sm text-default-600">
                             This will disconnect Google Drive and permanently
                             delete all local transactions, categories, and
                             settings. This cannot be undone.

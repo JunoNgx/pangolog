@@ -7,7 +7,6 @@ export default function LandingPage() {
     const containerClasses = `
         min-h-dvh
         flex flex-col items-center justify-center gap-6 p-8
-        font-mono
     `;
 
     return (
@@ -21,7 +20,7 @@ export default function LandingPage() {
                 href="/log"
                 color="primary"
                 size="lg"
-                className="mt-4 font-mono"
+                className="mt-4"
             >
                 Get Started
             </Button>
