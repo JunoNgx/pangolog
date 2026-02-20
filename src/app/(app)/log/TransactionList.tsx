@@ -72,7 +72,7 @@ export function TransactionList({
     }
 
     const groupedByDateItems = displayedItems.reduce<
-        { date: Date; dateKey: string; dateText: String, items: (Dime | Buck)[] }[]
+        { date: Date; dateKey: string; dateText: string; items: (Dime | Buck)[] }[]
     >((acc, tx) => {
         const date = new Date(tx.transactedAt);
         const dateText = date.toLocaleDateString("en-us", {
@@ -183,12 +183,7 @@ function TransactionItem({
                 }}
             />
 
-            <div
-                className={`
-                    grow-4
-                    ${isBigBuck ? "col-span-6" : "col-span-8"}
-                `}
-            >
+            <div className="grow-4 min-w-0">
                 {hasCategory ? (
                     <p className="font-mono font-medium text-default-900">
                         {category.icon || "·"} {category.name}
@@ -207,7 +202,7 @@ function TransactionItem({
                 <span
                     className={`
                         w-min mx-2
-                        justify-self-center self-center
+                        self-center
                         font-mono text-center text-xs text-default-400
                     `}
                 >
@@ -217,7 +212,7 @@ function TransactionItem({
 
             <span
                 className={`
-                    self-center justify-self-center
+                    self-center
                     font-mono font-medium
                     ${transaction.isIncome ? "text-success" : ""}
                 `}
