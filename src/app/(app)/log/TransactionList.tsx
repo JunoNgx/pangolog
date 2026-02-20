@@ -167,8 +167,8 @@ function TransactionItem({
         <li
             aria-label={ariaLabel}
             className={`
-                grid grid-cols-12 gap-1 relative
-                pt-0 pr-0 pl-2 pb-1 mb-1
+                flex gap-2 relative
+                pt-0 pr-1 pl-6 pb-1 mb-1
                 border-b-1 border-default-200 bg-background
                 cursor-pointer hover:border-default-400 transition
                 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary
@@ -185,30 +185,31 @@ function TransactionItem({
 
             <div
                 className={`
-                font-sans
-                ${isBigBuck ? "col-span-9" : "col-span-10"}
-            `}
+                    grow-4
+                    ${isBigBuck ? "col-span-6" : "col-span-8"}
+                `}
             >
                 {hasCategory ? (
-                    <div className="">
+                    <p className="font-mono font-medium text-default-900">
                         {category.icon || "·"} {category.name}
-                    </div>
+                    </p>
                 ) : (
-                    <div className="text-gray-500">no category</div>
+                    <p className="text-default-400">no category</p>
                 )}
                 {hasDescription ? (
-                    <div className="truncate">{transaction.description}</div>
+                    <p className="font-sans text-default-500 truncate">{transaction.description}</p>
                 ) : (
-                    <div className="text-gray-500">no description</div>
+                    <p className="text-default-400">no description</p>
                 )}
             </div>
 
             {isBigBuck && (
                 <span
                     className={`
-                    col-span-1 justify-self-center self-center
-                    font-mono text-center text-xs text-default-400
-                `}
+                        w-min mx-2
+                        justify-self-center self-center
+                        font-mono text-center text-xs text-default-400
+                    `}
                 >
                     BIG BUCK
                 </span>
@@ -216,7 +217,7 @@ function TransactionItem({
 
             <span
                 className={`
-                    col-span-2 self-center justify-self-center
+                    self-center justify-self-center
                     font-mono font-medium
                     ${transaction.isIncome ? "text-success" : ""}
                 `}
