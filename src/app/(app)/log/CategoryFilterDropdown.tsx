@@ -51,10 +51,8 @@ export function CategoryFilterDropdown({
         <Popover placement="bottom-end">
             <PopoverTrigger>
                 <Button
-                    size="md"
                     variant={isFiltered ? "solid" : "flat"}
                     color={isFiltered ? "primary" : "default"}
-                    className="text-xs"
                     endContent={<ChevronDown className="size-3" />}
                 >
                     {label}
