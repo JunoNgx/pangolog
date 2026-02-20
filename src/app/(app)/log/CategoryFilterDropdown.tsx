@@ -51,7 +51,7 @@ export function CategoryFilterDropdown({
         <Popover placement="bottom-end">
             <PopoverTrigger>
                 <Button
-                    size="sm"
+                    size="md"
                     variant={isFiltered ? "solid" : "flat"}
                     color={isFiltered ? "primary" : "default"}
                     className="text-xs"
