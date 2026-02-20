@@ -261,7 +261,7 @@ export function CategoryDialog({
                                                         className="flex-1"
                                                     />
                                                     <div
-                                                        className="w-8 shrink-0 rounded"
+                                                        className="flex-1 rounded"
                                                         style={{
                                                             backgroundColor:
                                                                 colour,
