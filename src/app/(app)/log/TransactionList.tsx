@@ -47,7 +47,10 @@ export function TransactionList({
         return (
             <ul className="flex flex-col gap-2">
                 {["s1", "s2", "s3", "s4", "s5", "s6", "s7"].map((key) => (
-                    <Skeleton key={key} className="h-12 w-full rounded-lg my-1" />
+                    <Skeleton
+                        key={key}
+                        className="h-12 w-full rounded-lg my-1"
+                    />
                 ))}
             </ul>
         );
