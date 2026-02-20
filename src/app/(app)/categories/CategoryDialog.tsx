@@ -15,6 +15,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@heroui/react";
+import { Shuffle } from "lucide-react";
 import { useTheme } from "next-themes";
 import { type SubmitEventHandler, useEffect, useState } from "react";
 import { HexColorPicker } from "react-colorful";
@@ -205,67 +206,77 @@ export function CategoryDialog({
                                     </PopoverContent>
                                 </Popover>
                             </div>
-                            <div className="flex w-1/2 flex-col gap-1">
+                            <div className="flex w-2/3 flex-col gap-1">
                                 <span className="text-xs text-foreground-500">
                                     Colour
                                 </span>
-                                <Popover placement="bottom-end">
-                                    <PopoverTrigger>
-                                        <button
-                                            type="button"
-                                            className={`
-                                                w-full rounded-lg
-                                                flex items-center gap-3 px-3 py-2
-                                                bg-default-100
-                                                hover:bg-default-200 transition-colors cursor-pointer
-                                            `}
-                                        >
-                                            <div
+                                <div className="flex gap-2">
+                                    <Popover placement="bottom-end">
+                                        <PopoverTrigger>
+                                            <button
+                                                type="button"
                                                 className={`
-                                                    size-6 shrink-0 rounded-full
-                                                    border border-default-300
+                                                    flex-1 rounded-lg
+                                                    flex items-center gap-3 px-3 py-2
+                                                    bg-default-100
+                                                    hover:bg-default-200 transition-colors cursor-pointer
                                                 `}
-                                                style={{
-                                                    backgroundColor: colour,
-                                                }}
-                                            />
-                                            <span className="text-sm text-foreground-500">
-                                                {colour}
-                                            </span>
-                                        </button>
-                                    </PopoverTrigger>
-                                    <PopoverContent>
-                                        <div className="flex flex-col gap-2 p-2">
-                                            <HexColorPicker
-                                                color={colour}
-                                                onChange={setColour}
-                                                style={{ width: "100%" }}
-                                            />
-                                            <div className="flex gap-2">
-                                                <Input
-                                                    label="Hex"
-                                                    size="sm"
-                                                    value={colour}
-                                                    onValueChange={(v) =>
-                                                        setColour(
-                                                            v.startsWith("#")
-                                                                ? v
-                                                                : `#${v}`,
-                                                        )
-                                                    }
-                                                    maxLength={7}
-                                                    className="w-1/2"
-                                                />
+                                            >
                                                 <div
-                                                    className="w-1/2 rounded"
+                                                    className={`
+                                                        size-6 shrink-0 rounded-full
+                                                        border border-default-300
+                                                    `}
                                                     style={{
                                                         backgroundColor: colour,
                                                     }}
                                                 />
+                                                <span className="text-sm text-foreground-500">
+                                                    {colour}
+                                                </span>
+                                            </button>
+                                        </PopoverTrigger>
+                                        <PopoverContent>
+                                            <div className="flex flex-col gap-2 p-2">
+                                                <HexColorPicker
+                                                    color={colour}
+                                                    onChange={setColour}
+                                                    style={{ width: "100%" }}
+                                                />
+                                                <div className="flex gap-2">
+                                                    <Input
+                                                        label="Hex"
+                                                        size="sm"
+                                                        value={colour}
+                                                        onValueChange={(v) =>
+                                                            setColour(
+                                                                v.startsWith("#")
+                                                                    ? v
+                                                                    : `#${v}`,
+                                                            )
+                                                        }
+                                                        maxLength={7}
+                                                        className="flex-1"
+                                                    />
+                                                    <div
+                                                        className="w-8 shrink-0 rounded"
+                                                        style={{
+                                                            backgroundColor: colour,
+                                                        }}
+                                                    />
+                                                </div>
                                             </div>
-                                        </div>
-                                    </PopoverContent>
-                                </Popover>
+                                        </PopoverContent>
+                                    </Popover>
+                                    <button
+                                        type="button"
+                                        onClick={() => setColour(randomHexColor())}
+                                        className="aspect-square shrink-0 rounded-lg flex items-center justify-center bg-default-100 hover:bg-default-200 transition-colors text-default-500 cursor-pointer"
+                                        title="Random colour"
+                                    >
+                                        <Shuffle size={16} />
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
