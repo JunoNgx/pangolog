@@ -184,7 +184,7 @@ export default function LogClient() {
                         <Checkbox
                             isSelected={shouldIncludeBucksInDimes}
                             onValueChange={setShouldIncludeBucksInDimes}
-                            size="sm"
+                            size="md"
                         >
                             <span className="font-mono text-sm">
                                 Include Big Bucks

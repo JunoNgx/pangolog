@@ -325,7 +325,7 @@ export default function SummaryClient() {
                         <Checkbox
                             isSelected={includeBucks}
                             onValueChange={setIncludeBucks}
-                            size="sm"
+                            size="md"
                         >
                             <span className="font-mono text-sm">
                                 Include Big Bucks
