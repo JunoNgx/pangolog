@@ -1,16 +1,16 @@
 import type { Metadata, Viewport } from "next";
-import localFont from "next/font/local";
+import { Geist_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import { Providers } from "./providers";
 import "./globals.css";
 
-const geistSans = localFont({
-    src: "./fonts/Geist-VariableFont_wght.ttf",
-    variable: "--font-geist-sans",
+const fontSans = Plus_Jakarta_Sans({
+    subsets: ["latin"],
+    variable: "--font-sans-var",
 });
 
-const geistMono = localFont({
-    src: "./fonts/GeistMono-VariableFont_wght.ttf",
-    variable: "--font-geist-mono",
+const fontMono = Geist_Mono({
+    subsets: ["latin"],
+    variable: "--font-mono-var",
 });
 
 export const metadata: Metadata = {
@@ -44,7 +44,7 @@ export default function RootLayout({
     return (
         <html lang="en" suppressHydrationWarning>
             <body
-                className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+                className={`${fontSans.variable} ${fontMono.variable} antialiased`}
             >
                 <Providers>{children}</Providers>
             </body>
