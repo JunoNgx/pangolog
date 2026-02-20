@@ -105,7 +105,7 @@ export function CategoryList() {
 
     if (isLoading) {
         return (
-            <ul className="flex flex-col gap-2 max-w-xl mx-auto">
+            <ul className="MainListContainer gap-2">
                 {["s1", "s2", "s3", "s4", "s5", "s6", "s7"].map((key) => (
                     <Skeleton key={key} className="h-12 w-full rounded-lg" />
                 ))}
@@ -131,7 +131,7 @@ export function CategoryList() {
     return (
         <>
             <DragDropProvider onDragEnd={handleDragEnd}>
-                <ul className="flex flex-col gap-2 max-w-xl mx-auto">
+                <ul className="MainListContainer gap-2">
                     {categories.map((cat, index) => (
                         <SortableCategoryItem
                             key={cat.id}

@@ -15,6 +15,10 @@
 }
 
 @layer components {
+    .MainListContainer {
+        @apply flex flex-col max-w-xl mx-auto;
+    }
+
     .ChipLabel {
         @apply w-min mx-2
             self-center
