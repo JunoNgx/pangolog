@@ -86,17 +86,17 @@ function SegmentBar({ label, slices }: SegmentBarProps) {
     if (slices.length === 0) {
         return (
             <div className="mb-6">
-                <p className="text-sm font-semibold text-default-500 mb-2">
+                <p className="font-semibold text-default-500 mb-2">
                     {label}
                 </p>
-                <p className="text-xs text-default-400">No data.</p>
+                <p className="text-sm text-default-400">No data.</p>
             </div>
         );
     }
 
     return (
         <div className="mb-6">
-            <p className="text-sm font-semibold text-default-500 mb-2">
+            <p className="font-semibold text-default-500 mb-2">
                 {label}
             </p>
             <div className="flex rounded-md overflow-hidden h-5 mb-3">
