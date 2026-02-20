@@ -71,31 +71,34 @@ export function TransactionList({
         );
     }
 
-    const grouped = displayedItems.reduce<
-        { dateKey: string; date: Date; items: (Dime | Buck)[] }[]
+    const groupedByDateItems = displayedItems.reduce<
+        { date: Date; dateKey: string; dateText: String, items: (Dime | Buck)[] }[]
     >((acc, tx) => {
         const date = new Date(tx.transactedAt);
+        const dateText = date.toLocaleDateString("en-us", {
+            day: "numeric",
+            month: "short",
+            year: "numeric",
+        });
         const dateKey = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
-        const last = acc[acc.length - 1];
-        if (last?.dateKey === dateKey) {
-            last.items.push(tx);
-        } else {
-            acc.push({ dateKey, date, items: [tx] });
+
+        const lastGroup = acc[acc.length - 1];
+        if (lastGroup?.dateKey === dateKey) {
+            lastGroup.items.push(tx);
+            return acc;
         }
+
+        acc.push({ date, dateKey, dateText, items: [tx] });
         return acc;
     }, []);
 
     return (
         <>
             <ul className="flex flex-col">
-                {grouped.map(({ dateKey, date, items }) => (
+                {groupedByDateItems.map(({ dateKey, dateText, items }) => (
                     <li key={dateKey}>
                         <p className="font-mono text-xs text-default-400 px-1 pt-3 pb-1">
-                            {date.toLocaleDateString("en-us", {
-                                day: "numeric",
-                                month: "short",
-                                year: "numeric",
-                            })}
+                            {dateText}
                         </p>
                         <ul>
                             {items.map((tx) => {
