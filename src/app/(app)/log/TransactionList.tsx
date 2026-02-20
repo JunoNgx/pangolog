@@ -45,7 +45,7 @@ export function TransactionList({
 
     if (isLoading) {
         return (
-            <ul className="flex flex-col gap-2">
+            <ul className="flex flex-col gap-2 max-w-xl mx-auto">
                 {["s1", "s2", "s3", "s4", "s5", "s6", "s7"].map((key) => (
                     <Skeleton
                         key={key}
@@ -94,7 +94,7 @@ export function TransactionList({
 
     return (
         <>
-            <ul className="flex flex-col">
+            <ul className="flex flex-col max-w-xl mx-auto">
                 {groupedByDateItems.map(({ dateKey, dateText, items }) => (
                     <li key={dateKey}>
                         <h3 className="px-1 pt-6 pb-1 font-mono text-sm text-default-400">
