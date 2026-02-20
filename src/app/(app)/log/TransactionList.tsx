@@ -59,7 +59,7 @@ export function TransactionList({
     if (!displayedItems.length) {
         return (
             <>
-                <p className="text-center text-default-400 py-12 font-mono">
+                <p className="text-center text-default-400 py-12">
                     No transactions yet. Tap + to add one.
                 </p>
                 <TransactionDialog
@@ -102,7 +102,7 @@ export function TransactionList({
             <ul className="MainListContainer">
                 {groupedByDateItems.map(({ dateKey, dateText, items }) => (
                     <li key={dateKey}>
-                        <h3 className="px-1 pt-6 pb-1 font-mono text-sm text-default-400">
+                        <h3 className="px-1 pt-6 pb-1 text-sm text-default-400">
                             {dateText}
                         </h3>
                         <ul>
@@ -194,7 +194,7 @@ function TransactionItem({
                         {category.icon || "·"} {category.name}
                     </p>
                 ) : (
-                    <p className="font-mono text-default-400">no category</p>
+                    <p className="text-default-400">no category</p>
                 )}
                 {hasDescription ? (
                     <p className="text-default-500 truncate">

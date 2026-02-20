@@ -33,10 +33,7 @@ export function AppNavbar() {
                     border-b border-default-200
                 `}
             >
-                <NextLink
-                    href="/"
-                    className="font-mono font-bold text-lg mr-6 shrink-0"
-                >
+                <NextLink href="/" className="font-bold text-lg mr-6 shrink-0">
                     Pangolog
                 </NextLink>
                 <nav className="flex items-center gap-1 flex-1">
@@ -44,7 +41,7 @@ export function AppNavbar() {
                         const isActive = pathname === item.href;
                         const linkClass = `
                             flex items-center gap-2 px-3 py-1.5 rounded-md
-                            text-sm font-mono
+                            text-sm
                             transition-colors
                             ${isActive ? "bg-primary/10 text-primary" : "text-default-500 hover:bg-default-100 hover:text-foreground"}
                         `;
@@ -95,9 +92,7 @@ export function AppNavbar() {
                             aria-current={isActive ? "page" : undefined}
                         >
                             <item.icon size={20} />
-                            <span className="text-xs font-mono">
-                                {item.label}
-                            </span>
+                            <span className="text-xs">{item.label}</span>
                         </NextLink>
                     );
                 })}

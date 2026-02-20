@@ -288,11 +288,11 @@ export function TransactionDialog({
                         />
 
                         <div>
-                            <p className="text-sm text-default-500 mb-2 font-mono">
+                            <p className="text-sm text-default-500 mb-2">
                                 Category
                             </p>
                             {filteredCategories.length === 0 && (
-                                <p className="text-sm text-default-400 font-mono">
+                                <p className="text-sm text-default-400">
                                     No categories available. Add one from the
                                     Categories menu.
                                 </p>
@@ -300,6 +300,7 @@ export function TransactionDialog({
                             <div className="flex flex-wrap gap-2 max-h-36 overflow-y-auto p-1">
                                 {filteredCategories.map((cat) => (
                                     <Button
+                                        className="font-mono"
                                         key={cat.id}
                                         size="sm"
                                         variant={

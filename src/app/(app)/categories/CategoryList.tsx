@@ -46,7 +46,7 @@ function SortableCategoryItem({
                 type="button"
                 ref={handleRef}
                 onClick={(e) => e.stopPropagation()}
-                className="text-default-400 cursor-grab active:cursor-grabbing select-none font-mono bg-transparent p-0 border-0"
+                className="text-default-400 cursor-grab active:cursor-grabbing select-none bg-transparent p-0 border-0"
             >
                 ⠿
             </button>
@@ -111,7 +111,7 @@ export function CategoryList() {
     if (!categories?.length) {
         return (
             <>
-                <p className="text-center text-default-400 py-12 font-mono">
+                <p className="text-center text-default-400 py-12">
                     No categories yet. Tap + to create one.
                 </p>
                 <CategoryDialog

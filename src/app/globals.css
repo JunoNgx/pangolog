@@ -13,7 +13,10 @@
         @apply font-sans bg-background text-foreground;
     }
 
-    input, button, select, textarea {
+    input,
+    button,
+    select,
+    textarea {
         font-family: inherit;
     }
 }
