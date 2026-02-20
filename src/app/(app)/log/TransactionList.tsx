@@ -173,7 +173,7 @@ function TransactionItem({
             aria-label={ariaLabel}
             className={`
                 flex gap-2 relative
-                pt-0 pr-1 pl-6 pb-1 mb-1
+                pt-1 pr-2 pl-6 pb-1 mt-3
                 border-b-1 border-default-200 bg-background
                 cursor-pointer hover:border-default-400 transition
                 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary
@@ -182,7 +182,7 @@ function TransactionItem({
             onKeyDown={handleKeyDown}
         >
             <div
-                className="absolute left-1 w-1 h-full"
+                className="absolute left-1 bottom-0 top-0 w-1 h-full"
                 style={{
                     backgroundColor: category?.colour,
                 }}
@@ -190,18 +190,18 @@ function TransactionItem({
 
             <div className="grow-4 min-w-0">
                 {hasCategory ? (
-                    <p className="font-mono font-medium text-default-900">
+                    <p className="font-mono text-default-700">
                         {category.icon || "·"} {category.name}
                     </p>
                 ) : (
-                    <p className="text-default-400">no category</p>
+                    <p className="text-default-400">(no category)</p>
                 )}
                 {hasDescription ? (
-                    <p className="text-default-500 truncate">
+                    <p className="text-default-400 truncate">
                         {transaction.description}
                     </p>
                 ) : (
-                    <p className="text-default-400">no description</p>
+                    <p className="text-default-400">(no description)</p>
                 )}
             </div>
 
