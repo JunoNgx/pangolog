@@ -8,7 +8,7 @@ export default function manifest(): MetadataRoute.Manifest {
             "an offine-first and privacy-first minimalist expense tracker",
         start_url: "/log",
         display: "standalone",
-        background_color: "#000000",
+        background_color: "#f59e0b",
         theme_color: "#000000",
         icons: [
             {
