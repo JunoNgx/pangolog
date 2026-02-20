@@ -152,12 +152,15 @@ export default function SettingsClient() {
                 </h3>
                 <div className="flex flex-col gap-4">
                     <Input
+                        classNames={{
+                            inputWrapper: "max-w-xs",
+                            description: "font-mono",
+                        }}
                         label="Currency symbol"
                         placeholder="e.g. €, SGD, Gil"
                         description="Cosmetic only, so feel free to use orens, woolong, or bottle caps to your heart's content. Long texts might not look good in this UI, but that's your life decision."
                         value={customCurrency}
                         onValueChange={setCustomCurrency}
-                        className="max-w-xs"
                     />
                     <RadioGroup
                         label="Position"
