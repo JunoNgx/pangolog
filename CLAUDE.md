@@ -94,6 +94,7 @@ Don't comment on the classes. Just keep one type of classes in its own line. Eac
 - `crypto.randomUUID()` requires a secure context (HTTPS). `localhost` qualifies but local network IP over HTTP does not. Use `generateId()` from `src/lib/db/uuid.ts` for all record ID generation.
 - After a full DB reset (`clearAllData`), the page must reload to clear the cached `dbPromise` module state, otherwise subsequent DB operations fail.
 - `HexColorPicker` from `react-colorful` has a fixed inline `width` (200px) by default. Override with `style={{ width: "100%" }}` to make it fill its container on mobile.
+- Next.js re-injects `viewport` metadata (including `themeColor`) into `<head>` on every client-side navigation, overwriting any dynamically-set `<meta name="theme-color">`. Do not define `themeColor` in the `viewport` export if it is managed dynamically (e.g. by `ThemeColorSync` in `providers.tsx`).
 
 ## Linting behaviour
 - This repository has a custom script `yarn efix` to fix linter issues. Run this instead of the usual standard linter script.
