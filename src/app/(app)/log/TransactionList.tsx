@@ -71,23 +71,49 @@ export function TransactionList({
         );
     }
 
+    const grouped = displayedItems.reduce<
+        { dateKey: string; date: Date; items: (Dime | Buck)[] }[]
+    >((acc, tx) => {
+        const date = new Date(tx.transactedAt);
+        const dateKey = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+        const last = acc[acc.length - 1];
+        if (last?.dateKey === dateKey) {
+            last.items.push(tx);
+        } else {
+            acc.push({ dateKey, date, items: [tx] });
+        }
+        return acc;
+    }, []);
+
     return (
         <>
-            <ul className="flex flex-col gap-2">
-                {displayedItems.map((tx) => {
-                    const cat = tx.categoryId
-                        ? categoryMap.get(tx.categoryId)
-                        : undefined;
-
-                    return (
-                        <TransactionItem
-                            key={tx.id}
-                            transaction={tx}
-                            category={cat}
-                            openEditDialog={openEditDialog}
-                        />
-                    );
-                })}
+            <ul className="flex flex-col">
+                {grouped.map(({ dateKey, date, items }) => (
+                    <li key={dateKey}>
+                        <p className="font-mono text-xs text-default-400 px-1 pt-3 pb-1">
+                            {date.toLocaleDateString("en-us", {
+                                day: "numeric",
+                                month: "short",
+                                year: "numeric",
+                            })}
+                        </p>
+                        <ul>
+                            {items.map((tx) => {
+                                const cat = tx.categoryId
+                                    ? categoryMap.get(tx.categoryId)
+                                    : undefined;
+                                return (
+                                    <TransactionItem
+                                        key={tx.id}
+                                        transaction={tx}
+                                        category={cat}
+                                        openEditDialog={openEditDialog}
+                                    />
+                                );
+                            })}
+                        </ul>
+                    </li>
+                ))}
             </ul>
             <TransactionDialog
                 isOpen={isDialogOpen}
@@ -156,25 +182,8 @@ function TransactionItem({
 
             <div
                 className={`
-                    flex flex-col justify-around items-center col-span-2
-                    font-sans
-                    md:col-span-1
-                `}
-            >
-                <p className="font-mono font-medium text-[24px] leading-none">
-                    {txDay}
-                </p>
-                <p className="text-xs">{txMonth}</p>
-            </div>
-
-            <div
-                className={`
                 font-sans
-                ${
-                    isBigBuck
-                        ? "col-span-7 md:col-span-8"
-                        : "col-span-8 md:col-span-9"
-                }
+                ${isBigBuck ? "col-span-9" : "col-span-10"}
             `}
             >
                 {hasCategory ? (
