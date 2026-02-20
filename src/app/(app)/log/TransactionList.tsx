@@ -76,9 +76,9 @@ export function TransactionList({
     >((acc, tx) => {
         const date = new Date(tx.transactedAt);
         const dateText = date.toLocaleDateString("en-us", {
+            weekday: "short",
             day: "numeric",
             month: "short",
-            year: "numeric",
         });
         const dateKey = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
 
@@ -97,9 +97,9 @@ export function TransactionList({
             <ul className="flex flex-col">
                 {groupedByDateItems.map(({ dateKey, dateText, items }) => (
                     <li key={dateKey}>
-                        <p className="font-mono text-xs text-default-400 px-1 pt-3 pb-1">
+                        <h3 className="px-1 pt-6 pb-1 font-mono text-sm text-default-400">
                             {dateText}
-                        </p>
+                        </h3>
                         <ul>
                             {items.map((tx) => {
                                 const cat = tx.categoryId
