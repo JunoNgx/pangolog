@@ -153,8 +153,8 @@ export default function SettingsClient() {
                 <div className="flex flex-col gap-4">
                     <Input
                         label="Currency symbol"
-                        placeholder="e.g. $, EUR, VND"
-                        description="Cosmetic only - no conversion is applied."
+                        placeholder="e.g. €, SGD, Gil"
+                        description="Cosmetic only, so feel free to use orens, woolong, or bottle caps to your heart's content. Long texts might not look good in this UI, but that's your life decision."
                         value={customCurrency}
                         onValueChange={setCustomCurrency}
                         className="max-w-xs"
