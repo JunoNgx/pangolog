@@ -102,7 +102,7 @@ export function TransactionList({
             <ul className="MainListContainer">
                 {groupedByDateItems.map(({ dateKey, dateText, items }) => (
                     <li key={dateKey}>
-                        <h3 className="px-1 pt-6 pb-1 text-sm text-default-400">
+                        <h3 className="mt-6 mb-0 text-sm text-default-400">
                             {dateText}
                         </h3>
                         <ul>
@@ -173,7 +173,7 @@ function TransactionItem({
             aria-label={ariaLabel}
             className={`
                 flex gap-2 relative
-                pt-1 pr-2 pl-6 pb-1 mt-3
+                pt-1 pr-2 pl-6 pb-1 mt-2
                 border-b-1 border-default-200 bg-background
                 cursor-pointer hover:border-default-400 transition
                 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary
