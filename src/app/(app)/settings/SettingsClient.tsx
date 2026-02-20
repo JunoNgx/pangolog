@@ -154,6 +154,7 @@ export default function SettingsClient() {
                     <Input
                         label="Currency symbol"
                         placeholder="e.g. $, EUR, VND"
+                        description="Cosmetic only - no conversion is applied."
                         value={customCurrency}
                         onValueChange={setCustomCurrency}
                         className="max-w-xs"
