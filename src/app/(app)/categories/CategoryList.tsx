@@ -3,7 +3,7 @@
 import { move } from "@dnd-kit/helpers";
 import { DragDropProvider } from "@dnd-kit/react";
 import { useSortable } from "@dnd-kit/react/sortable";
-import { Chip, Skeleton } from "@heroui/react";
+import { Skeleton } from "@heroui/react";
 import { useState } from "react";
 import type { Category } from "@/lib/db/types";
 import { useCategories, useReorderCategories } from "@/lib/hooks/useCategories";
@@ -59,15 +59,10 @@ function SortableCategoryItem({
             </span>
             <span className="font-mono font-medium flex-1">{cat.name}</span>
             {cat.isIncomeOnly && (
-                <span className={`ChipLabel text-green-600`}>
-                    INCOME
-                </span>
-
+                <span className={`ChipLabel text-green-600`}>INCOME</span>
             )}
             {cat.isBuckOnly && (
-                <span className={`ChipLabel text-amber-500`}>
-                    BIG BUCK
-                </span>
+                <span className={`ChipLabel text-amber-500`}>BIG BUCK</span>
             )}
         </li>
     );
