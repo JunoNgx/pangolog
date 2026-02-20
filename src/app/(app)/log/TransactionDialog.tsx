@@ -283,6 +283,8 @@ export function TransactionDialog({
                             label="Description"
                             value={description}
                             onValueChange={setDescription}
+                            maxLength={60}
+                            description={`${description.length}/60`}
                         />
 
                         <div>
