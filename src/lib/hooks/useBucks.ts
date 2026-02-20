@@ -23,7 +23,7 @@ export function useCreateBuck() {
     return useMutation({
         mutationFn: (input: BuckInput) => createBuck(input),
         onSuccess: () => queryClient.invalidateQueries({ queryKey: BUCKS_KEY }),
-        onError: () => toast.error("Failed to save transaction"),
+        onError: () => toast.error("Failed to save transaction", { duration: Infinity }),
     });
 }
 
@@ -33,7 +33,7 @@ export function useUpdateBuck() {
         mutationFn: ({ id, input }: { id: string; input: BuckUpdate }) =>
             updateBuck(id, input),
         onSuccess: () => queryClient.invalidateQueries({ queryKey: BUCKS_KEY }),
-        onError: () => toast.error("Failed to update transaction"),
+        onError: () => toast.error("Failed to update transaction", { duration: Infinity }),
     });
 }
 
@@ -42,7 +42,7 @@ export function useDeleteBuck() {
     return useMutation({
         mutationFn: (id: string) => deleteBuck(id),
         onSuccess: () => queryClient.invalidateQueries({ queryKey: BUCKS_KEY }),
-        onError: () => toast.error("Failed to delete transaction"),
+        onError: () => toast.error("Failed to delete transaction", { duration: Infinity }),
     });
 }
 
@@ -51,6 +51,6 @@ export function useRestoreBuck() {
     return useMutation({
         mutationFn: (id: string) => restoreBuck(id),
         onSuccess: () => queryClient.invalidateQueries({ queryKey: BUCKS_KEY }),
-        onError: () => toast.error("Failed to undo deletion"),
+        onError: () => toast.error("Failed to undo deletion", { duration: Infinity }),
     });
 }

@@ -31,7 +31,7 @@ export function useCreateDime() {
     return useMutation({
         mutationFn: (input: DimeInput) => createDime(input),
         onSuccess: () => queryClient.invalidateQueries({ queryKey: DIMES_KEY }),
-        onError: () => toast.error("Failed to save transaction"),
+        onError: () => toast.error("Failed to save transaction", { duration: Infinity }),
     });
 }
 
@@ -41,7 +41,7 @@ export function useUpdateDime() {
         mutationFn: ({ id, input }: { id: string; input: DimeUpdate }) =>
             updateDime(id, input),
         onSuccess: () => queryClient.invalidateQueries({ queryKey: DIMES_KEY }),
-        onError: () => toast.error("Failed to update transaction"),
+        onError: () => toast.error("Failed to update transaction", { duration: Infinity }),
     });
 }
 
@@ -50,7 +50,7 @@ export function useDeleteDime() {
     return useMutation({
         mutationFn: (id: string) => deleteDime(id),
         onSuccess: () => queryClient.invalidateQueries({ queryKey: DIMES_KEY }),
-        onError: () => toast.error("Failed to delete transaction"),
+        onError: () => toast.error("Failed to delete transaction", { duration: Infinity }),
     });
 }
 
@@ -59,6 +59,6 @@ export function useRestoreDime() {
     return useMutation({
         mutationFn: (id: string) => restoreDime(id),
         onSuccess: () => queryClient.invalidateQueries({ queryKey: DIMES_KEY }),
-        onError: () => toast.error("Failed to undo deletion"),
+        onError: () => toast.error("Failed to undo deletion", { duration: Infinity }),
     });
 }
