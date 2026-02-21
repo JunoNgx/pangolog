@@ -60,7 +60,7 @@ export function TransactionList({
         return (
             <>
                 <p className="text-center text-default-400 py-12">
-                    No transactions yet. Tap + to add one.
+                    Nothing to show.
                 </p>
                 <TransactionDialog
                     isOpen={isDialogOpen}

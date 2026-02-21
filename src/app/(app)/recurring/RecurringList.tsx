@@ -85,7 +85,7 @@ export function RecurringList({
         return (
             <>
                 <p className="text-center text-default-400 py-12">
-                    No recurring rules yet. Tap + to create one.
+                    Nothing to show.
                 </p>
                 <RecurringRuleDialog
                     isOpen={isDialogOpen}
