@@ -268,6 +268,7 @@ Approach:
 
 - Dialog: add/edit recurring transactions
     - Regular settings for transactions
+        - Should be `isBigBuck` by default
     - Settings specific for recurring transactions
 
 - Settings view
