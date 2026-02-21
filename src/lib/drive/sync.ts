@@ -2,12 +2,14 @@ import {
     bulkPutBucks,
     bulkPutCategories,
     bulkPutDimes,
+    bulkPutRecurringRules,
     getAllBucksForSync,
     getAllCategoriesForSync,
     getAllDimesForSync,
+    getAllRecurringRulesForSync,
     purgeExpiredRecords,
 } from "@/lib/db/sync";
-import type { Buck, Category, Dime } from "@/lib/db/types";
+import type { Buck, Category, Dime, RecurringRule } from "@/lib/db/types";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
 import {
     buckFileName,
@@ -15,6 +17,7 @@ import {
     dimeFileName,
     downloadFile,
     listFiles,
+    RECURRING_RULES_FILE,
     SETTINGS_FILE,
     trashFile,
     upsertFile,
@@ -62,11 +65,13 @@ function mergeRecords<T extends { id: string; updatedAt: string }>(
 export async function syncAll(token: string, folderId: string): Promise<void> {
     await purgeExpiredRecords();
 
-    const [localDimes, localBucks, localCategories] = await Promise.all([
-        getAllDimesForSync(),
-        getAllBucksForSync(),
-        getAllCategoriesForSync(),
-    ]);
+    const [localDimes, localBucks, localCategories, localRules] =
+        await Promise.all([
+            getAllDimesForSync(),
+            getAllBucksForSync(),
+            getAllCategoriesForSync(),
+            getAllRecurringRulesForSync(),
+        ]);
 
     const driveFiles = await listFiles(token, folderId);
 
@@ -120,6 +125,12 @@ export async function syncAll(token: string, folderId: string): Promise<void> {
         await bulkPutCategories(mergeRecords(localCategories, remote));
     }
 
+    const rulesFileId = driveFileMap.get(RECURRING_RULES_FILE);
+    if (rulesFileId) {
+        const remote = await downloadFile<RecurringRule[]>(token, rulesFileId);
+        await bulkPutRecurringRules(mergeRecords(localRules, remote));
+    }
+
     const localDimesByMonth = groupBy(localDimes, (d) =>
         dimeFileName(d.year, d.month),
     );
@@ -158,16 +169,21 @@ export async function syncAll(token: string, folderId: string): Promise<void> {
 
     // --- Upload merged local data ---
 
-    const [mergedDimes, mergedBucks, mergedCategories] = await Promise.all([
-        getAllDimesForSync(),
-        getAllBucksForSync(),
-        getAllCategoriesForSync(),
-    ]);
+    const [mergedDimes, mergedBucks, mergedCategories, mergedRules] =
+        await Promise.all([
+            getAllDimesForSync(),
+            getAllBucksForSync(),
+            getAllCategoriesForSync(),
+            getAllRecurringRulesForSync(),
+        ]);
 
     const uploads: Promise<void>[] = [];
 
     uploads.push(
         upsertFile(token, folderId, CATEGORIES_FILE, mergedCategories),
+    );
+    uploads.push(
+        upsertFile(token, folderId, RECURRING_RULES_FILE, mergedRules),
     );
 
     const mergedDimesByMonth = groupBy(mergedDimes, (d) =>
