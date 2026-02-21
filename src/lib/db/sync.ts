@@ -4,7 +4,7 @@ import type { Buck, Category, Dime, RecurringRule } from "./types";
 const PURGE_DAYS = 30;
 
 async function purgeStore(
-    storeName: "dimes" | "bucks" | "categories",
+    storeName: "dimes" | "bucks" | "categories" | "recurring-rules",
     cutoffIso: string,
 ): Promise<void> {
     const db = await getDb();
@@ -37,6 +37,7 @@ export async function purgeExpiredRecords(): Promise<void> {
         purgeStore("dimes", cutoffIso),
         purgeStore("bucks", cutoffIso),
         purgeStore("categories", cutoffIso),
+        purgeStore("recurring-rules", cutoffIso),
     ]);
 }
 
@@ -85,12 +86,13 @@ export async function clearAllData(): Promise<void> {
         const db = await getDb();
         await new Promise<void>((resolve, reject) => {
             const tx = db.transaction(
-                ["dimes", "bucks", "categories"],
+                ["dimes", "bucks", "categories", "recurring-rules"],
                 "readwrite",
             );
             tx.objectStore("dimes").clear();
             tx.objectStore("bucks").clear();
             tx.objectStore("categories").clear();
+            tx.objectStore("recurring-rules").clear();
             tx.oncomplete = () => resolve();
             tx.onerror = () => reject(tx.error);
         });
