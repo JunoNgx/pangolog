@@ -225,7 +225,6 @@ export function CategoryDialog({
                                                 <div
                                                     className={`
                                                         size-6 shrink-0 rounded-full
-                                                        border border-default-300
                                                     `}
                                                     style={{
                                                         backgroundColor: colour,
