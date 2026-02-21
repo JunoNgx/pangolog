@@ -235,7 +235,47 @@ export function RecurringRuleDialog({
                             : "New Recurring Rule"}
                     </ModalHeader>
                     <ModalBody className="gap-4">
-                        <div className="flex justify-around gap-8 mt-2">
+                        {isEditing && rule && (
+                            <div className="flex items-center justify-between p-3 rounded-lg bg-default-50 border border-default-200">
+                                <div className="flex flex-col gap-1">
+                                    <Switch
+                                        isSelected={isActive}
+                                        onValueChange={setIsActive}
+                                        color="success"
+                                    >
+                                        <span className="text-sm font-medium">
+                                            {isActive ? "Active" : "Paused"}
+                                        </span>
+                                    </Switch>
+                                </div>
+                                <div className="flex flex-col items-end gap-1 text-xs font-mono text-default-400">
+                                    <span>
+                                        Next:{" "}
+                                        {new Date(
+                                            rule.nextGenerationAt,
+                                        ).toLocaleDateString("en-us", {
+                                            day: "numeric",
+                                            month: "short",
+                                            year: "numeric",
+                                        })}
+                                    </span>
+                                    <span>
+                                        Last:{" "}
+                                        {rule.lastGeneratedAt
+                                            ? new Date(
+                                                  rule.lastGeneratedAt,
+                                              ).toLocaleDateString("en-us", {
+                                                  day: "numeric",
+                                                  month: "short",
+                                                  year: "numeric",
+                                              })
+                                            : "Never"}
+                                    </span>
+                                </div>
+                            </div>
+                        )}
+
+                        <div className="flex justify-between gap-4 mt-2">
                             <ToggleSwitch
                                 isSelectingRight={isIncome}
                                 onValueChange={setIsIncome}
@@ -353,42 +393,6 @@ export function RecurringRuleDialog({
                                 ))}
                             </div>
                         </div>
-
-                        {isEditing && rule && (
-                            <div className="flex items-center justify-between">
-                                <Switch
-                                    isSelected={isActive}
-                                    onValueChange={setIsActive}
-                                    size="sm"
-                                >
-                                    <span className="text-sm">Active</span>
-                                </Switch>
-                                <div className="flex flex-col items-end gap-1 text-xs font-mono text-default-400">
-                                    <span>
-                                        Next:{" "}
-                                        {new Date(
-                                            rule.nextGenerationAt,
-                                        ).toLocaleDateString("en-us", {
-                                            day: "numeric",
-                                            month: "short",
-                                            year: "numeric",
-                                        })}
-                                    </span>
-                                    <span>
-                                        Last:{" "}
-                                        {rule.lastGeneratedAt
-                                            ? new Date(
-                                                  rule.lastGeneratedAt,
-                                              ).toLocaleDateString("en-us", {
-                                                  day: "numeric",
-                                                  month: "short",
-                                                  year: "numeric",
-                                              })
-                                            : "Never"}
-                                    </span>
-                                </div>
-                            </div>
-                        )}
                     </ModalBody>
                     <ModalFooter
                         className={isEditing ? "justify-between" : undefined}
