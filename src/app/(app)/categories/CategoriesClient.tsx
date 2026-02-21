@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@heroui/react";
+import { Plus } from "lucide-react";
 import { useCallback, useState } from "react";
 import { useHotkey } from "@/lib/hooks/useHotkey";
 import { CategoryDialog } from "./CategoryDialog";
@@ -17,10 +18,10 @@ export default function CategoriesClient() {
             <CategoryList />
             <Button
                 color="primary"
-                className="fixed bottom-20 md:bottom-6 right-6 z-50 h-14 w-14 min-w-0 text-2xl"
+                className="fixed bottom-20 md:bottom-6 right-6 z-50 h-14 w-14 min-w-0"
                 onPress={() => setIsCreateOpen(true)}
             >
-                +
+                <Plus />
             </Button>
             <CategoryDialog
                 isOpen={isCreateOpen}
