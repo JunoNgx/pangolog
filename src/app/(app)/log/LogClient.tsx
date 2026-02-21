@@ -255,21 +255,16 @@ export default function LogClient() {
             />
 
             <Tooltip
-                content={
-                    <span className="text-center">
-                        Log a new transaction
-                        <br />
-                        (Ctrl/Cmd + Enter)
-                    </span>
-                }
+                content={<span className="text-center">Ctrl/Cmd + Enter</span>}
                 placement="left"
             >
                 <Button
                     color="primary"
-                    className="fixed bottom-20 md:bottom-6 right-6 z-50 h-14 w-14 min-w-0"
+                    className="fixed bottom-20 md:bottom-6 right-6 z-50 h-14 min-w-0"
                     onPress={() => setIsCreateOpen(true)}
                 >
                     <Plus />
+                    <span className="hidden md:inline">Log transaction</span>
                 </Button>
             </Tooltip>
             <TransactionDialog

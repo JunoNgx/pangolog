@@ -20,21 +20,16 @@ export default function CategoriesClient() {
             </p>
             <CategoryList />
             <Tooltip
-                content={
-                    <span className="text-center">
-                        Add a new category
-                        <br />
-                        (Ctrl/Cmd + Enter)
-                    </span>
-                }
+                content={<span className="text-center">Ctrl/Cmd + Enter</span>}
                 placement="left"
             >
                 <Button
                     color="primary"
-                    className="fixed bottom-20 md:bottom-6 right-6 z-50 h-14 w-14 min-w-0"
+                    className="fixed bottom-20 md:bottom-6 right-6 z-50 h-14 min-w-0"
                     onPress={() => setIsCreateOpen(true)}
                 >
                     <Plus />
+                    <span className="hidden md:inline">Add category</span>
                 </Button>
             </Tooltip>
             <CategoryDialog
