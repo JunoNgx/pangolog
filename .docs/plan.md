@@ -245,9 +245,9 @@
 ## Phase 5: Recurring transactions
 
 ### Phase 5a: DB implementation
-- [ ] Implementation of IndexedDB models
-- [ ] Implementation of indexes
-- [ ] Implementation of CRUD hooks
+- [x] Implementation of IndexedDB models
+- [x] Implementation of indexes
+- [x] Implementation of CRUD hooks
 
 ### Phase 5b: route
 - [ ] Implement route `/recurring`
