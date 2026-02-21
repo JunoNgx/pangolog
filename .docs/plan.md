@@ -265,6 +265,10 @@
 - [ ] Dialog UI to create/edit
 - [ ] Sorting option UI
 
+### Phase 5e: Export/Import
+- [ ] Update import logic
+- [ ] Update exoprt logic
+
 ### Phase 5e: Sync logic
 - [ ] Upload logic
 - [ ] Download logic
