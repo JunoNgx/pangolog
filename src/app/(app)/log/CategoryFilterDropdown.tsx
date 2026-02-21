@@ -14,14 +14,26 @@ interface CategoryFilterDropdownProps {
     categories: Category[];
     selectedIds: string[] | null;
     onChange: (ids: string[] | null) => void;
+    activeCategoryIds: Set<string>;
+    hasUncategorised: boolean;
+    buckCategoryIds: Set<string>;
 }
 
 export function CategoryFilterDropdown({
     categories,
     selectedIds,
     onChange,
+    activeCategoryIds,
+    hasUncategorised,
+    buckCategoryIds,
 }: CategoryFilterDropdownProps) {
-    const allIds = [UNCATEGORISED_ID, ...categories.map((c) => c.id)];
+    const activeCategories = categories.filter((c) =>
+        activeCategoryIds.has(c.id),
+    );
+    const allIds = [
+        ...(hasUncategorised ? [UNCATEGORISED_ID] : []),
+        ...activeCategories.map((c) => c.id),
+    ];
     const totalCount = allIds.length;
     const selectedCount =
         selectedIds === null ? totalCount : selectedIds.length;
@@ -61,22 +73,24 @@ export function CategoryFilterDropdown({
             <PopoverContent className="p-0">
                 <div className="flex flex-col w-64">
                     <ul className="flex flex-col max-h-64 overflow-y-auto px-2 py-1">
-                        <li className="py-1">
-                            <Checkbox
-                                isSelected={isChecked(UNCATEGORISED_ID)}
-                                onValueChange={() =>
-                                    handleToggle(UNCATEGORISED_ID)
-                                }
-                                size="md"
-                                classNames={{
-                                    base: "max-w-full",
-                                    label: "font-mono text-default-500 truncate",
-                                }}
-                            >
-                                Uncategorised
-                            </Checkbox>
-                        </li>
-                        {categories.map((cat) => (
+                        {hasUncategorised && (
+                            <li className="py-1">
+                                <Checkbox
+                                    isSelected={isChecked(UNCATEGORISED_ID)}
+                                    onValueChange={() =>
+                                        handleToggle(UNCATEGORISED_ID)
+                                    }
+                                    size="md"
+                                    classNames={{
+                                        base: "max-w-full",
+                                        label: "font-mono text-default-500 truncate",
+                                    }}
+                                >
+                                    Uncategorised
+                                </Checkbox>
+                            </li>
+                        )}
+                        {activeCategories.map((cat) => (
                             <li key={cat.id} className="py-1">
                                 <Checkbox
                                     isSelected={isChecked(cat.id)}
@@ -91,6 +105,11 @@ export function CategoryFilterDropdown({
                                         {cat.icon}
                                     </span>{" "}
                                     {cat.name}
+                                    {buckCategoryIds.has(cat.id) && (
+                                        <span className="ml-2 text-xs font-mono font-medium text-amber-500">
+                                            B
+                                        </span>
+                                    )}
                                 </Checkbox>
                             </li>
                         ))}
