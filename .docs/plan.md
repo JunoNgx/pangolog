@@ -250,7 +250,8 @@
 - [x] Implementation of CRUD hooks
 
 ### Phase 5b: route
-- [ ] Implement route `/recurring`
+- [x] Implement route `/recurring`
+- [x] Add navbar entry
 
 ### Phase 5c: runner hook
 - [ ] Implement RecurringRulesManager
