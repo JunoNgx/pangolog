@@ -59,3 +59,31 @@ export type CategoryInput = Omit<
 export type CategoryUpdate = Partial<
     Omit<Category, "id" | "createdAt" | "updatedAt" | "deletedAt">
 >;
+
+export interface RecurringRule {
+    id: string;
+    createdAt: string;
+    updatedAt: string;
+    deletedAt: string | null;
+    categoryId: string | null;
+    amount: number;
+    description: string;
+    isIncome: boolean;
+    isBigBuck: boolean;
+    frequency: "daily" | "weekly" | "monthly" | "yearly";
+    dayOfWeek: number | null;
+    dayOfMonth: number | null;
+    monthOfYear: number | null;
+    lastGeneratedAt: string | null;
+    nextGenerationAt: string;
+    isActive: boolean;
+}
+
+export type RecurringRuleInput = Omit<
+    RecurringRule,
+    "id" | "createdAt" | "updatedAt" | "deletedAt" | "lastGeneratedAt"
+>;
+
+export type RecurringRuleUpdate = Partial<
+    Omit<RecurringRule, "id" | "createdAt" | "updatedAt" | "deletedAt">
+>;
