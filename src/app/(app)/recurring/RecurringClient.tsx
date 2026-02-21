@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Tooltip } from "@heroui/react";
+import { Button, Checkbox, Tooltip } from "@heroui/react";
 import { ArrowDownAZ, ArrowUpAZ, Plus } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
 import { useCategories } from "@/lib/hooks/useCategories";
@@ -14,8 +14,7 @@ type SortBy =
     | "amount"
     | "nextGenerationAt"
     | "frequency"
-    | "description"
-    | "isActive";
+    | "description";
 
 const SORT_OPTIONS: { value: SortBy; label: string }[] = [
     { value: "createdAt", label: "Date created" },
@@ -23,7 +22,6 @@ const SORT_OPTIONS: { value: SortBy; label: string }[] = [
     { value: "nextGenerationAt", label: "Next due" },
     { value: "frequency", label: "Frequency" },
     { value: "description", label: "Description" },
-    { value: "isActive", label: "Active status" },
 ];
 
 const FREQUENCY_ORDER = { daily: 0, weekly: 1, monthly: 2, yearly: 3 };
@@ -32,6 +30,10 @@ export default function RecurringClient() {
     const [isCreateOpen, setIsCreateOpen] = useState(false);
     const [sortBy, setSortBy] = useState<SortBy>("nextGenerationAt");
     const [sortAsc, setSortAsc] = useState(true);
+    const [hideInactive, setHideInactive] = useState(false);
+    const [showDimes, setShowDimes] = useState(true);
+    const [showBucks, setShowBucks] = useState(true);
+    const [showIncome, setShowIncome] = useState(true);
 
     const openCreateDialog = useCallback(() => setIsCreateOpen(true), []);
     useHotkey("Enter", openCreateDialog, { ctrlOrMeta: true });
@@ -42,32 +44,42 @@ export default function RecurringClient() {
     const sortedRules = useMemo(() => {
         if (!rules) return [];
         const dir = sortAsc ? 1 : -1;
-        return [...rules].sort((a, b) => {
-            switch (sortBy) {
-                case "createdAt":
-                    return dir * a.createdAt.localeCompare(b.createdAt);
-                case "amount":
-                    return dir * (a.amount - b.amount);
-                case "nextGenerationAt":
-                    return (
-                        dir *
-                        a.nextGenerationAt.localeCompare(b.nextGenerationAt)
-                    );
-                case "frequency":
-                    return (
-                        dir *
-                        (FREQUENCY_ORDER[a.frequency] -
-                            FREQUENCY_ORDER[b.frequency])
-                    );
-                case "description":
-                    return dir * a.description.localeCompare(b.description);
-                case "isActive":
-                    return dir * (Number(a.isActive) - Number(b.isActive));
-                default:
-                    return 0;
-            }
-        });
-    }, [rules, sortBy, sortAsc]);
+        return [...rules]
+            .filter((r) => !hideInactive || r.isActive)
+            .filter((r) => (r.isBigBuck ? showBucks : showDimes))
+            .filter((r) => showIncome || !r.isIncome)
+            .sort((a, b) => {
+                switch (sortBy) {
+                    case "createdAt":
+                        return dir * a.createdAt.localeCompare(b.createdAt);
+                    case "amount":
+                        return dir * (a.amount - b.amount);
+                    case "nextGenerationAt":
+                        return (
+                            dir *
+                            a.nextGenerationAt.localeCompare(b.nextGenerationAt)
+                        );
+                    case "frequency":
+                        return (
+                            dir *
+                            (FREQUENCY_ORDER[a.frequency] -
+                                FREQUENCY_ORDER[b.frequency])
+                        );
+                    case "description":
+                        return dir * a.description.localeCompare(b.description);
+                    default:
+                        return 0;
+                }
+            });
+    }, [
+        rules,
+        sortBy,
+        sortAsc,
+        hideInactive,
+        showDimes,
+        showBucks,
+        showIncome,
+    ]);
 
     function handleSortChange(e: React.ChangeEvent<HTMLSelectElement>) {
         setSortBy(e.target.value as SortBy);
@@ -84,38 +96,60 @@ export default function RecurringClient() {
         <div>
             <h2 className="text-xl font-bold mb-4">Recurring Transactions</h2>
 
-            <div className="flex items-center justify-end gap-2 mb-4">
-                <span className="text-sm text-default-500">Sort by</span>
-                <select
-                    value={sortBy}
-                    onChange={handleSortChange}
-                    className={selectClasses}
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-4">
+                <Checkbox isSelected={showDimes} onValueChange={setShowDimes}>
+                    <span className="text-sm text-default-500">
+                        Small dimes
+                    </span>
+                </Checkbox>
+                <Checkbox isSelected={showBucks} onValueChange={setShowBucks}>
+                    <span className="text-sm text-default-500">Big bucks</span>
+                </Checkbox>
+                <Checkbox isSelected={showIncome} onValueChange={setShowIncome}>
+                    <span className="text-sm text-default-500">Income</span>
+                </Checkbox>
+                <Checkbox
+                    isSelected={hideInactive}
+                    onValueChange={setHideInactive}
                 >
-                    {SORT_OPTIONS.map((opt) => (
-                        <option key={opt.value} value={opt.value}>
-                            {opt.label}
-                        </option>
-                    ))}
-                </select>
-                <button
-                    type="button"
-                    onClick={() => setSortAsc((prev) => !prev)}
-                    className={`
+                    <span className="text-sm text-default-500">
+                        Hide inactive
+                    </span>
+                </Checkbox>
+                <div className="flex items-center gap-2 ml-auto">
+                    <span className="text-sm text-default-500">Sort by</span>
+                    <select
+                        value={sortBy}
+                        onChange={handleSortChange}
+                        className={selectClasses}
+                    >
+                        {SORT_OPTIONS.map((opt) => (
+                            <option key={opt.value} value={opt.value}>
+                                {opt.label}
+                            </option>
+                        ))}
+                    </select>
+                    <button
+                        type="button"
+                        onClick={() => setSortAsc((prev) => !prev)}
+                        className={`
                         rounded-lg p-2
                         bg-default-100 border border-default-200
                         text-foreground
                         cursor-pointer hover:bg-default-200
                     `}
-                    aria-label={sortAsc ? "Sort descending" : "Sort ascending"}
-                >
-                    {sortAsc ? (
-                        <ArrowUpAZ size={16} />
-                    ) : (
-                        <ArrowDownAZ size={16} />
-                    )}
-                </button>
+                        aria-label={
+                            sortAsc ? "Sort descending" : "Sort ascending"
+                        }
+                    >
+                        {sortAsc ? (
+                            <ArrowUpAZ size={16} />
+                        ) : (
+                            <ArrowDownAZ size={16} />
+                        )}
+                    </button>
+                </div>
             </div>
-
             <RecurringList
                 rules={sortedRules}
                 categories={categories ?? []}
