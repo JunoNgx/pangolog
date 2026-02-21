@@ -44,7 +44,7 @@ function SortableCategoryItem({
         >
             <span className="flex items-center gap-4 shrink-0">
                 <span
-                    className="h-6 w-6 rounded shrink-0"
+                    className="h-4 w-4 rounded-full shrink-0"
                     style={{ backgroundColor: cat.colour }}
                 />
                 <span className="text-xl leading-none">{cat.icon || "·"}</span>
