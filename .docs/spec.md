@@ -291,6 +291,9 @@ Approach:
             - Implication: For users who do not use the app frequently, gap in history is silently lost.
             - User should be warned of this implication somewhere.
 
+### Monthly/yearly day clamping
+For monthly and yearly rules, if `dayOfMonth` exceeds the number of days in the target month (e.g. the 31st in April, or the 29th in a non-leap February), the date is clamped to the last day of that month. This is computed as `Math.min(dayOfMonth, lastDayOfMonth)`.
+
 ## Technical Decisions
 
 ### Danger Zone reset action

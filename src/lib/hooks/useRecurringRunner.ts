@@ -21,12 +21,26 @@ function computeNextDate(from: Date, rule: RecurringRule): Date {
             break;
         case "monthly":
             next.setMonth(next.getMonth() + 1);
-            if (rule.dayOfMonth !== null) next.setDate(rule.dayOfMonth);
+            if (rule.dayOfMonth !== null) {
+                const lastDay = new Date(
+                    next.getFullYear(),
+                    next.getMonth() + 1,
+                    0,
+                ).getDate();
+                next.setDate(Math.min(rule.dayOfMonth, lastDay));
+            }
             break;
         case "yearly":
             next.setFullYear(next.getFullYear() + 1);
             if (rule.monthOfYear !== null) next.setMonth(rule.monthOfYear - 1);
-            if (rule.dayOfMonth !== null) next.setDate(rule.dayOfMonth);
+            if (rule.dayOfMonth !== null) {
+                const lastDay = new Date(
+                    next.getFullYear(),
+                    next.getMonth() + 1,
+                    0,
+                ).getDate();
+                next.setDate(Math.min(rule.dayOfMonth, lastDay));
+            }
             break;
     }
     return next;
