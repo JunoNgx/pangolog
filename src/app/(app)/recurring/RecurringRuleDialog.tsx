@@ -12,6 +12,7 @@ import {
 } from "@heroui/react";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
+import { CategoryPicker } from "@/components/CategoryPicker";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
 import type { RecurringRule } from "@/lib/db/types";
 import { useCategories } from "@/lib/hooks/useCategories";
@@ -236,11 +237,13 @@ export function RecurringRuleDialog({
                     </ModalHeader>
                     <ModalBody className="gap-4">
                         {isEditing && rule && (
-                            <div className={`
+                            <div
+                                className={`
                                 p-3 rounded-lg border
                                 flex items-center justify-between
                                 bg-default-50 border-default-200
-                            `}>
+                            `}
+                            >
                                 <div className="flex flex-col gap-1">
                                     <Switch
                                         isSelected={isActive}
@@ -279,10 +282,12 @@ export function RecurringRuleDialog({
                             </div>
                         )}
 
-                        <div className={`
+                        <div
+                            className={`
                             flex gap-4 mt-2
                             ${isEditing ? "justify-around" : "justify-between"}
-                        `}>
+                        `}
+                        >
                             <ToggleSwitch
                                 isSelectingRight={isIncome}
                                 onValueChange={setIsIncome}
@@ -354,52 +359,11 @@ export function RecurringRuleDialog({
 
                         <p className="text-xs font-mono -mt-2">{repeatLabel}</p>
 
-                        <div>
-                            <p className="text-sm text-default-500 mb-2">
-                                Category
-                            </p>
-                            {filteredCategories.length === 0 && (
-                                <p className="text-sm text-default-400">
-                                    No categories available. Add one from the
-                                    Categories menu.
-                                </p>
-                            )}
-                            <div className="flex flex-wrap gap-2 max-h-36 overflow-y-auto p-1">
-                                {filteredCategories.map((cat) => (
-                                    <Button
-                                        key={cat.id}
-                                        size="sm"
-                                        variant={
-                                            categoryId === cat.id
-                                                ? "solid"
-                                                : "flat"
-                                        }
-                                        color={
-                                            categoryId === cat.id
-                                                ? "primary"
-                                                : "default"
-                                        }
-                                        onPress={() =>
-                                            setCategoryId(
-                                                categoryId === cat.id
-                                                    ? null
-                                                    : cat.id,
-                                            )
-                                        }
-                                        endContent={
-                                            <span
-                                                className="h-3 w-3 rounded-full inline-block"
-                                                style={{
-                                                    backgroundColor: cat.colour,
-                                                }}
-                                            />
-                                        }
-                                    >
-                                        {cat.icon} {cat.name}
-                                    </Button>
-                                ))}
-                            </div>
-                        </div>
+                        <CategoryPicker
+                            categories={filteredCategories}
+                            selectedId={categoryId}
+                            onChange={setCategoryId}
+                        />
                     </ModalBody>
                     <ModalFooter
                         className={isEditing ? "justify-between" : undefined}

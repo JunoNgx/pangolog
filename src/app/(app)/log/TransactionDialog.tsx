@@ -12,6 +12,7 @@ import {
 import type React from "react";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
+import { CategoryPicker } from "@/components/CategoryPicker";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
 import type { Buck, Dime } from "@/lib/db/types";
 import {
@@ -290,53 +291,11 @@ export function TransactionDialog({
                             description={`${description.length}/60`}
                         />
 
-                        <div>
-                            <p className="text-sm text-default-500 mb-2">
-                                Category
-                            </p>
-                            {filteredCategories.length === 0 && (
-                                <p className="text-sm text-default-400">
-                                    No categories available. Add one from the
-                                    Categories menu.
-                                </p>
-                            )}
-                            <div className="flex flex-wrap gap-2 max-h-36 overflow-y-auto p-1">
-                                {filteredCategories.map((cat) => (
-                                    <Button
-                                        className=""
-                                        key={cat.id}
-                                        size="sm"
-                                        variant={
-                                            categoryId === cat.id
-                                                ? "solid"
-                                                : "flat"
-                                        }
-                                        color={
-                                            categoryId === cat.id
-                                                ? "primary"
-                                                : "default"
-                                        }
-                                        onPress={() =>
-                                            setCategoryId(
-                                                categoryId === cat.id
-                                                    ? null
-                                                    : cat.id,
-                                            )
-                                        }
-                                        endContent={
-                                            <span
-                                                className="h-3 w-3 rounded-full inline-block"
-                                                style={{
-                                                    backgroundColor: cat.colour,
-                                                }}
-                                            />
-                                        }
-                                    >
-                                        {cat.icon} {cat.name}
-                                    </Button>
-                                ))}
-                            </div>
-                        </div>
+                        <CategoryPicker
+                            categories={filteredCategories}
+                            selectedId={categoryId}
+                            onChange={setCategoryId}
+                        />
                     </ModalBody>
                     <ModalFooter
                         className={isEditing ? "justify-between" : undefined}
