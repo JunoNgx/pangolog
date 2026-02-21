@@ -10,6 +10,10 @@ import { useGoogleAuth } from "./useGoogleAuth";
 
 const DEBOUNCE_MS = 30_000;
 
+function isAuthError(err: unknown): boolean {
+    return err instanceof Error && err.message.includes("401");
+}
+
 export function useSync() {
     const {
         driveFolderId,
@@ -17,6 +21,7 @@ export function useSync() {
         setSyncStatus,
         setLastSyncTime,
         setSyncError,
+        setAuthToken,
     } = useLocalSettingsStore();
     const { getValidToken } = useGoogleAuth();
     const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -51,6 +56,34 @@ export function useSync() {
                 setLastSyncTime(new Date().toISOString());
                 if (!silent) toast.success("Sync complete");
             } catch (err) {
+                if (isAuthError(err)) {
+                    const freshToken = await getValidToken();
+                    if (freshToken) {
+                        try {
+                            const retryFolderId =
+                                driveFolderId ??
+                                (await getOrCreatePangoFolder(freshToken));
+                            await syncAll(freshToken, retryFolderId);
+                            await queryClient.invalidateQueries();
+                            setSyncStatus("idle");
+                            setLastSyncTime(new Date().toISOString());
+                            if (!silent) toast.success("Sync complete");
+                            return;
+                        } catch {
+                            // retry also failed, fall through to disconnect
+                        }
+                    }
+                    setAuthToken(null);
+                    setSyncStatus("error");
+                    setSyncError(
+                        "Session expired. Please reconnect Google Drive.",
+                    );
+                    toast.error(
+                        "Google Drive session expired. Please reconnect in Settings.",
+                        { duration: Infinity },
+                    );
+                    return;
+                }
                 const message =
                     err instanceof Error ? err.message : "Sync failed.";
                 setSyncStatus("error");
@@ -64,6 +97,7 @@ export function useSync() {
             driveFolderId,
             getValidToken,
             queryClient,
+            setAuthToken,
             setDriveFolderId,
             setLastSyncTime,
             setSyncError,

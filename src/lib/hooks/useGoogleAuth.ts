@@ -8,7 +8,7 @@ import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
 const CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ?? "";
 const SCOPE =
     "https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/drive.readonly email";
-const TOKEN_EXPIRY_BUFFER_MS = 5 * 60 * 1000;
+const TOKEN_EXPIRY_BUFFER_MS = 10 * 60 * 1000;
 
 function loadGis(): Promise<void> {
     if (window.google?.accounts?.oauth2) return Promise.resolve();
