@@ -9,6 +9,7 @@ import { useCategories } from "@/lib/hooks/useCategories";
 import { useDimes } from "@/lib/hooks/useDimes";
 import { useHotkey } from "@/lib/hooks/useHotkey";
 import { useLogStore } from "@/lib/store/useLogStore";
+import { formatAmount } from "@/lib/utils";
 import {
     CategoryFilterDropdown,
     UNCATEGORISED_ID,
@@ -225,7 +226,17 @@ export default function LogClient() {
                     </select>
                 )}
 
-                <div className="self-end">
+                <div className="flex items-center justify-between">
+                    <span className="flex gap-2">
+                        <span className="text-default-500">Total expense:</span>
+                        <span className="font-mono font-medium">
+                            {formatAmount(
+                                filteredTransactions
+                                    .filter((tx) => !tx.isIncome)
+                                    .reduce((sum, tx) => sum + tx.amount, 0),
+                            )}
+                        </span>
+                    </span>
                     <CategoryFilterDropdown
                         categories={categories ?? []}
                         selectedIds={selectedCategoryIds}
