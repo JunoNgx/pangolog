@@ -254,11 +254,11 @@
 - [x] Add navbar entry
 
 ### Phase 5c: runner hook
-- [ ] Implement RecurringRulesManager
-    - [ ] Look for rules with `nextGenerationAt` in the past
-    - [ ] Advance `nextGenerationAt` until it reaches the future
-    - [ ] Create one single item for each rule, ignoring previous gaps
-    - [ ] Invalidate TanStackQuery cache after creation to refresh the data immediately
+- [x] Implement RecurringRulesManager
+    - [x] Look for rules with `nextGenerationAt` in the past
+    - [x] Advance `nextGenerationAt` until it reaches the future
+    - [x] Create one single item for each rule, ignoring previous gaps
+    - [x] Invalidate TanStackQuery cache after creation to refresh the data immediately
 
 ### Phase 5d: UI
 - [ ] Overview list of items
