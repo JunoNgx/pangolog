@@ -14,7 +14,10 @@ export default function CategoriesClient() {
 
     return (
         <div>
-            <h2 className="text-xl font-bold mb-4">Categories</h2>
+            <h2 className="text-xl font-bold mb-1">Categories</h2>
+            <p className="text-sm text-default-400 mb-4">
+                Drag to reorder. Order is reflected when choosing a category.
+            </p>
             <CategoryList />
             <Tooltip
                 content={
