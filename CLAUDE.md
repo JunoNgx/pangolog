@@ -126,3 +126,4 @@ Don't comment on the classes. Just keep one type of classes in its own line. Eac
 - Phase 5a (recurring rules DB layer): done - RecurringRule types, DB v2 with indexes, CRUD functions, hooks
 - Phase 5b (recurring route): done - /recurring route, placeholder client, navbar entry with Repeat icon
 - Phase 5c (recurring runner): done - useRecurringRunner hook, RecurringRulesManager component mounted in layout; monthly/yearly dayOfMonth is clamped to last day of month to handle short months (e.g. 31st in April)
+- Phase 5d (recurring UI): done - RecurringList, RecurringRuleDialog, RecurringClient with sort/filter controls; CategoryPicker extracted as shared component
