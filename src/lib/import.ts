@@ -2,11 +2,13 @@ import {
     bulkPutBucks,
     bulkPutCategories,
     bulkPutDimes,
+    bulkPutRecurringRules,
     getAllBucksForSync,
     getAllCategoriesForSync,
     getAllDimesForSync,
+    getAllRecurringRulesForSync,
 } from "./db/sync";
-import type { Buck, Category, Dime } from "./db/types";
+import type { Buck, Category, Dime, RecurringRule } from "./db/types";
 import { useProfileSettingsStore } from "./store/useProfileSettingsStore";
 
 interface ImportSettings {
@@ -21,6 +23,7 @@ export interface ImportData {
     dimes: Dime[];
     bucks: Buck[];
     categories: Category[];
+    recurringRules?: RecurringRule[];
 }
 
 export interface ImportPreview {
@@ -30,6 +33,8 @@ export interface ImportPreview {
     bucksUpdated: number;
     categoriesAdded: number;
     categoriesUpdated: number;
+    rulesAdded: number;
+    rulesUpdated: number;
     errors: string[];
 }
 
@@ -52,20 +57,26 @@ export function validateImportData(data: unknown): data is ImportData {
     if (!data.dimes.every(hasRequiredFields)) return false;
     if (!data.bucks.every(hasRequiredFields)) return false;
     if (!data.categories.every(hasRequiredFields)) return false;
+    if (data.recurringRules !== undefined) {
+        if (!Array.isArray(data.recurringRules)) return false;
+        if (!data.recurringRules.every(hasRequiredFields)) return false;
+    }
     return true;
 }
 
 export async function previewImport(data: ImportData): Promise<ImportPreview> {
-    const [existingDimes, existingBucks, existingCategories] =
+    const [existingDimes, existingBucks, existingCategories, existingRules] =
         await Promise.all([
             getAllDimesForSync(),
             getAllBucksForSync(),
             getAllCategoriesForSync(),
+            getAllRecurringRulesForSync(),
         ]);
 
     const dimeMap = new Map(existingDimes.map((d) => [d.id, d]));
     const buckMap = new Map(existingBucks.map((b) => [b.id, b]));
     const categoryMap = new Map(existingCategories.map((c) => [c.id, c]));
+    const ruleMap = new Map(existingRules.map((r) => [r.id, r]));
 
     let dimesAdded = 0;
     let dimesUpdated = 0;
@@ -100,6 +111,17 @@ export async function previewImport(data: ImportData): Promise<ImportPreview> {
         }
     }
 
+    let rulesAdded = 0;
+    let rulesUpdated = 0;
+    for (const rule of data.recurringRules ?? []) {
+        const existing = ruleMap.get(rule.id);
+        if (!existing) {
+            rulesAdded++;
+        } else if (rule.updatedAt > existing.updatedAt) {
+            rulesUpdated++;
+        }
+    }
+
     return {
         dimesAdded,
         dimesUpdated,
@@ -107,6 +129,8 @@ export async function previewImport(data: ImportData): Promise<ImportPreview> {
         bucksUpdated,
         categoriesAdded,
         categoriesUpdated,
+        rulesAdded,
+        rulesUpdated,
         errors: [],
     };
 }
@@ -114,16 +138,18 @@ export async function previewImport(data: ImportData): Promise<ImportPreview> {
 export async function executeImport(data: ImportData): Promise<ImportPreview> {
     const preview = await previewImport(data);
 
-    const [existingDimes, existingBucks, existingCategories] =
+    const [existingDimes, existingBucks, existingCategories, existingRules] =
         await Promise.all([
             getAllDimesForSync(),
             getAllBucksForSync(),
             getAllCategoriesForSync(),
+            getAllRecurringRulesForSync(),
         ]);
 
     const dimeMap = new Map(existingDimes.map((d) => [d.id, d]));
     const buckMap = new Map(existingBucks.map((b) => [b.id, b]));
     const categoryMap = new Map(existingCategories.map((c) => [c.id, c]));
+    const ruleMap = new Map(existingRules.map((r) => [r.id, r]));
 
     const dimesToPut = data.dimes.filter((d) => {
         const existing = dimeMap.get(d.id);
@@ -140,10 +166,16 @@ export async function executeImport(data: ImportData): Promise<ImportPreview> {
         return !existing || c.updatedAt > existing.updatedAt;
     });
 
+    const rulesToPut = (data.recurringRules ?? []).filter((r) => {
+        const existing = ruleMap.get(r.id);
+        return !existing || r.updatedAt > existing.updatedAt;
+    });
+
     await Promise.all([
         bulkPutDimes(dimesToPut),
         bulkPutBucks(bucksToPut),
         bulkPutCategories(categoriesToPut),
+        bulkPutRecurringRules(rulesToPut),
     ]);
 
     if (data.settings) {
