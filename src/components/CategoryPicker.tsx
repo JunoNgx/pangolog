@@ -39,7 +39,8 @@ export function CategoryPicker({
                             />
                         }
                     >
-                        {cat.icon} {cat.name}
+                        <span>{cat.icon}</span>
+                        <span>{cat.name}</span>
                     </Button>
                 ))}
             </div>
