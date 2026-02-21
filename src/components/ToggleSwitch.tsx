@@ -65,9 +65,6 @@ export function ToggleSwitch({
                 onClick={() => !isDisabled && onValueChange(false)}
                 onKeyDown={handleLeftLabelKeyDown}
             >
-                {/* {!isSelectingRightActive && (
-                    <span className="text-xs" aria-hidden="true">✓</span>
-                )} */}
                 {leftLabel}
             </span>
 
@@ -109,9 +106,6 @@ export function ToggleSwitch({
                 onClick={() => !isDisabled && onValueChange(true)}
                 onKeyDown={handleRightLabelKeyDown}
             >
-                {/* {isSelectingRightActive && (
-                    <span className="text-xs" aria-hidden="true">✓</span>
-                )} */}
                 {rightLabel}
             </span>
         </fieldset>
