@@ -49,7 +49,7 @@ function SortableCategoryItem({
                 />
                 <span className="text-xl leading-none">{cat.icon || "·"}</span>
             </span>
-            <span className="font-mono font-medium flex-1">{cat.name}</span>
+            <span className="flex-1">{cat.name}</span>
             {cat.isIncomeOnly && (
                 <span className={`ChipLabel text-green-600`}>INCOME</span>
             )}

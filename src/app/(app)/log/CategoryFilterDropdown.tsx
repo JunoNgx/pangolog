@@ -83,7 +83,7 @@ export function CategoryFilterDropdown({
                                     size="md"
                                     classNames={{
                                         base: "max-w-full",
-                                        label: "font-mono truncate",
+                                        label: "truncate",
                                     }}
                                 >
                                     Uncategorised
@@ -98,7 +98,7 @@ export function CategoryFilterDropdown({
                                     size="md"
                                     classNames={{
                                         base: "max-w-full",
-                                        label: "font-mono truncate",
+                                        label: "truncate",
                                     }}
                                 >
                                     <span className="text-base">
@@ -106,7 +106,7 @@ export function CategoryFilterDropdown({
                                     </span>{" "}
                                     {cat.name}
                                     {buckCategoryIds.has(cat.id) && (
-                                        <span className="ml-2 text-xs font-mono font-medium text-amber-500">
+                                        <span className="ml-2 text-xs font-medium text-amber-500">
                                             B
                                         </span>
                                     )}
