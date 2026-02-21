@@ -1,9 +1,8 @@
 "use client";
 
-import { Skeleton, Switch } from "@heroui/react";
+import { Skeleton } from "@heroui/react";
 import { useState } from "react";
 import type { Category, RecurringRule } from "@/lib/db/types";
-import { useUpdateRecurringRule } from "@/lib/hooks/useRecurringRules";
 import { formatAmount } from "@/lib/utils";
 import { RecurringRuleDialog } from "./RecurringRuleDialog";
 
@@ -129,16 +128,6 @@ interface RecurringItemProps {
 }
 
 function RecurringItem({ rule, category, onEdit }: RecurringItemProps) {
-    const updateRule = useUpdateRecurringRule();
-
-    function handleToggleActive(e: React.MouseEvent) {
-        e.stopPropagation();
-    }
-
-    function handleIsActiveChange(value: boolean) {
-        updateRule.mutate({ id: rule.id, input: { isActive: value } });
-    }
-
     return (
         <li
             onClick={() => onEdit(rule)}
@@ -174,6 +163,15 @@ function RecurringItem({ rule, category, onEdit }: RecurringItemProps) {
             </div>
 
             <div className="flex flex-col items-end gap-1 shrink-0">
+                {rule.isBigBuck && (
+                    <span className="ChipLabel text-amber-500">BUCK</span>
+                )}
+                {!rule.isActive && (
+                    <span className="ChipLabel text-default-400">PAUSED</span>
+                )}
+            </div>
+
+            <div className="flex flex-col items-end gap-1 shrink-0">
                 <span
                     className={`
                         font-mono font-medium text-sm
@@ -187,14 +185,6 @@ function RecurringItem({ rule, category, onEdit }: RecurringItemProps) {
                     {formatFrequency(rule)}
                 </span>
             </div>
-
-            <Switch
-                isSelected={rule.isActive}
-                onValueChange={handleIsActiveChange}
-                size="sm"
-                aria-label="Toggle active"
-                onClick={handleToggleActive}
-            />
         </li>
     );
 }
