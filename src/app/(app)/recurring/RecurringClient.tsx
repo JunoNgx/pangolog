@@ -9,13 +9,21 @@ import { useRecurringRules } from "@/lib/hooks/useRecurringRules";
 import { RecurringList } from "./RecurringList";
 import { RecurringRuleDialog } from "./RecurringRuleDialog";
 
-type SortBy = "createdAt" | "amount" | "nextGenerationAt" | "frequency";
+type SortBy =
+    | "createdAt"
+    | "amount"
+    | "nextGenerationAt"
+    | "frequency"
+    | "description"
+    | "isActive";
 
 const SORT_OPTIONS: { value: SortBy; label: string }[] = [
     { value: "createdAt", label: "Date created" },
     { value: "amount", label: "Amount" },
     { value: "nextGenerationAt", label: "Next due" },
     { value: "frequency", label: "Frequency" },
+    { value: "description", label: "Description" },
+    { value: "isActive", label: "Active status" },
 ];
 
 const FREQUENCY_ORDER = { daily: 0, weekly: 1, monthly: 2, yearly: 3 };
@@ -51,6 +59,10 @@ export default function RecurringClient() {
                         (FREQUENCY_ORDER[a.frequency] -
                             FREQUENCY_ORDER[b.frequency])
                     );
+                case "description":
+                    return dir * a.description.localeCompare(b.description);
+                case "isActive":
+                    return dir * (Number(a.isActive) - Number(b.isActive));
                 default:
                     return 0;
             }
