@@ -243,7 +243,30 @@
     - [ ] Error reporting
 
 ## Phase 5: Recurring transactions
-- [ ] Recurring rules UI
+
+### Phase 5a: DB implementation
+- [ ] Implementation of IndexedDB models
+- [ ] Implementation of indexes
+- [ ] Implementation of CRUD hooks
+
+### Phase 5b: route
+- [ ] Implement route `/recurring`
+
+### Phase 5c: runner hook
+- [ ] Implement RecurringRulesManager
+    - [ ] Look for rules with `nextGenerationAt` in the past
+    - [ ] Advance `nextGenerationAt` until it reaches the future
+    - [ ] Create one single item for each rule, ignoring previous gaps
+    - [ ] Invalidate TanStackQuery cache after creation to refresh the data immediately
+
+### Phase 5d: UI
+- [ ] Overview list of items
+- [ ] Dialog UI to create/edit
+- [ ] Sorting option UI
+
+### Phase 5e: Sync logic
+- [ ] Upload logic
+- [ ] Download logic
 
 ## Phase 6: Additional features
 - [ ] Magic input for quick adding
