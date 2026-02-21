@@ -124,3 +124,4 @@ Don't comment on the classes. Just keep one type of classes in its own line. Eac
 - Phase 1h (toast notifications): done - sonner; deletion undo, Google Drive connection, manual sync success/failure; auto-syncs are silent; DB mutation errors surface via toast
 - Phase 4a (JSON export/import): done - includes display settings; error reporting deferred
 - Phase 5a (recurring rules DB layer): done - RecurringRule types, DB v2 with indexes, CRUD functions, hooks
+- Phase 5b (recurring route): done - /recurring route, placeholder client, navbar entry with Repeat icon
