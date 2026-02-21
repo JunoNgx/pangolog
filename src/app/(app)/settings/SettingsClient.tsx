@@ -243,6 +243,10 @@ export default function SettingsClient() {
                                 Categories: +{importPreview.categoriesAdded}{" "}
                                 new, {importPreview.categoriesUpdated} updated
                             </p>
+                            <p className="text-default-600">
+                                Recurring rules: +{importPreview.rulesAdded}{" "}
+                                new, {importPreview.rulesUpdated} updated
+                            </p>
                             <div className="flex gap-2 mt-1">
                                 <Button
                                     size="sm"
@@ -278,6 +282,10 @@ export default function SettingsClient() {
                             <p className="text-success-600">
                                 Categories: +{importResult.categoriesAdded} new,{" "}
                                 {importResult.categoriesUpdated} updated
+                            </p>
+                            <p className="text-success-600">
+                                Recurring rules: +{importResult.rulesAdded} new,{" "}
+                                {importResult.rulesUpdated} updated
                             </p>
                         </div>
                     )}

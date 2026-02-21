@@ -1,5 +1,5 @@
 import { forceDeleteDb, getDb } from "./connection";
-import type { Buck, Category, Dime } from "./types";
+import type { Buck, Category, Dime, RecurringRule } from "./types";
 
 const PURGE_DAYS = 30;
 
@@ -70,6 +70,16 @@ export async function getAllCategoriesForSync(): Promise<Category[]> {
     });
 }
 
+export async function getAllRecurringRulesForSync(): Promise<RecurringRule[]> {
+    const db = await getDb();
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction("recurring-rules", "readonly");
+        const request = tx.objectStore("recurring-rules").getAll();
+        request.onsuccess = () => resolve(request.result as RecurringRule[]);
+        request.onerror = () => reject(request.error);
+    });
+}
+
 export async function clearAllData(): Promise<void> {
     try {
         const db = await getDb();
@@ -117,6 +127,19 @@ export async function bulkPutCategories(categories: Category[]): Promise<void> {
         const tx = db.transaction("categories", "readwrite");
         const store = tx.objectStore("categories");
         for (const category of categories) store.put(category);
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
+    });
+}
+
+export async function bulkPutRecurringRules(
+    rules: RecurringRule[],
+): Promise<void> {
+    const db = await getDb();
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction("recurring-rules", "readwrite");
+        const store = tx.objectStore("recurring-rules");
+        for (const rule of rules) store.put(rule);
         tx.oncomplete = () => resolve();
         tx.onerror = () => reject(tx.error);
     });

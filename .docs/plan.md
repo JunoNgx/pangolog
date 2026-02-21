@@ -266,10 +266,10 @@
 - [x] Sorting option UI
 
 ### Phase 5e: Export/Import
-- [ ] Update import logic
-- [ ] Update exoprt logic
+- [x] Update import logic
+- [x] Update export logic
 
-### Phase 5e: Sync logic
+### Phase 5f: Sync logic
 - [ ] Upload logic
 - [ ] Download logic
 

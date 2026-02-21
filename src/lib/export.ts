@@ -2,6 +2,7 @@ import {
     getAllBucksForSync,
     getAllCategoriesForSync,
     getAllDimesForSync,
+    getAllRecurringRulesForSync,
 } from "./db/sync";
 import { useProfileSettingsStore } from "./store/useProfileSettingsStore";
 
@@ -24,10 +25,11 @@ function triggerDownload(
 }
 
 export async function exportJson(prettyPrint: boolean): Promise<void> {
-    const [dimes, bucks, categories] = await Promise.all([
+    const [dimes, bucks, categories, recurringRules] = await Promise.all([
         getAllDimesForSync(),
         getAllBucksForSync(),
         getAllCategoriesForSync(),
+        getAllRecurringRulesForSync(),
     ]);
 
     const { customCurrency, isPrefixCurrency, settingsUpdatedAt } =
@@ -43,6 +45,7 @@ export async function exportJson(prettyPrint: boolean): Promise<void> {
         dimes: dimes.filter((d) => d.deletedAt === null),
         bucks: bucks.filter((b) => b.deletedAt === null),
         categories: categories.filter((c) => c.deletedAt === null),
+        recurringRules: recurringRules.filter((r) => r.deletedAt === null),
     };
 
     const content = prettyPrint
