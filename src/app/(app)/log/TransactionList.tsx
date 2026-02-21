@@ -1,7 +1,6 @@
 "use client";
 
 import { Skeleton } from "@heroui/react";
-import type React from "react";
 import { useState } from "react";
 import type { Buck, Category, Dime } from "@/lib/db/types";
 import { formatAmount } from "@/lib/utils";
@@ -162,68 +161,65 @@ function TransactionItem({
         .filter(Boolean)
         .join(", ");
 
-    function handleKeyDown(e: React.KeyboardEvent<HTMLLIElement>) {
-        if (e.key !== "Enter" && e.key !== " ") return;
-        e.preventDefault();
-        openEditDialog(transaction);
-    }
-
     return (
-        <li
-            aria-label={ariaLabel}
-            className={`
-                flex gap-2 relative
-                pt-1 pr-2 pl-6 pb-1 mt-2
-                border-b-1 border-default-200 bg-background
-                cursor-pointer hover:border-default-400 transition
-                focus:outline-none focus-visible:ring-2 focus-visible:ring-primary
-            `}
-            onClick={() => openEditDialog(transaction)}
-            onKeyDown={handleKeyDown}
-        >
-            <div
-                className="absolute left-1 bottom-0 top-0 w-1 h-full"
-                style={{
-                    backgroundColor: category?.colour,
-                }}
-            />
+        <li>
+            <button
+                type="button"
+                aria-label={ariaLabel}
+                onClick={() => openEditDialog(transaction)}
+                className="
+                    w-full text-left
+                    flex gap-2 relative
+                    pt-1 pr-2 pl-6 pb-1 mt-2
+                    border-b-1 border-default-200 bg-background
+                    cursor-pointer hover:border-default-400 transition
+                    focus:outline-none focus-visible:ring-2 focus-visible:ring-primary
+                "
+            >
+                <div
+                    className="absolute left-1 bottom-0 top-0 w-1 h-full"
+                    style={{
+                        backgroundColor: category?.colour,
+                    }}
+                />
 
-            <div className="grow-4 min-w-0">
-                {hasCategory ? (
-                    <p>
-                        <span className="mr-1">{category.icon || "·"}</span>
-                        <span className="text-default-700">
-                            {category.name}
-                        </span>
-                    </p>
-                ) : (
-                    <p className="text-default-400">(no category)</p>
+                <div className="grow-4 min-w-0">
+                    {hasCategory ? (
+                        <p>
+                            <span className="mr-1">{category.icon || "·"}</span>
+                            <span className="text-default-700">
+                                {category.name}
+                            </span>
+                        </p>
+                    ) : (
+                        <p className="text-default-400">(no category)</p>
+                    )}
+                    {hasDescription ? (
+                        <p className="font-mono text-sm text-default-400 truncate">
+                            {transaction.description}
+                        </p>
+                    ) : (
+                        <p className="font-mono text-sm text-default-400">
+                            (no description)
+                        </p>
+                    )}
+                </div>
+
+                {isBigBuck && (
+                    <span className={`ChipLabel text-amber-500`}>BIG BUCK</span>
                 )}
-                {hasDescription ? (
-                    <p className="font-mono text-sm text-default-400 truncate">
-                        {transaction.description}
-                    </p>
-                ) : (
-                    <p className="font-mono text-sm text-default-400">
-                        (no description)
-                    </p>
-                )}
-            </div>
 
-            {isBigBuck && (
-                <span className={`ChipLabel text-amber-500`}>BIG BUCK</span>
-            )}
-
-            <span
-                className={`
+                <span
+                    className={`
                     self-center
                     font-mono font-medium
                     ${transaction.isIncome ? "text-success" : ""}
                 `}
-            >
-                {transaction.isIncome ? "+" : ""}
-                {amountDisplay}
-            </span>
+                >
+                    {transaction.isIncome ? "+" : ""}
+                    {amountDisplay}
+                </span>
+            </button>
         </li>
     );
 }

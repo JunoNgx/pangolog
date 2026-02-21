@@ -131,79 +131,81 @@ function RecurringItem({ rule, category, onEdit }: RecurringItemProps) {
     const hasIndicator = rule.isBigBuck || !rule.isActive;
 
     return (
-        <li
-            onClick={() => onEdit(rule)}
-            onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") onEdit(rule);
-            }}
-            className={`
-                rounded-lg px-4 py-3
-                flex items-center gap-3
-                bg-background
-                border border-default-200
-                cursor-pointer hover:bg-default-50
-                ${!rule.isActive ? "opacity-50" : ""}
-            `}
-        >
-            <div
-                className="w-1 self-stretch rounded-full shrink-0"
-                style={{ backgroundColor: category?.colour }}
-            />
+        <li>
+            <button
+                type="button"
+                onClick={() => onEdit(rule)}
+                className={`
+                    w-full text-left
+                    rounded-lg px-4 py-3
+                    flex items-center gap-3
+                    bg-background
+                    border border-default-200
+                    cursor-pointer hover:bg-default-50
+                    focus:outline-none focus-visible:ring-2 focus-visible:ring-primary
+                    ${!rule.isActive ? "opacity-50" : ""}
+                `}
+            >
+                <div
+                    className="w-1 self-stretch rounded-full shrink-0"
+                    style={{ backgroundColor: category?.colour }}
+                />
 
-            <div className="flex-1 min-w-0">
-                <p>
-                    <span className="mr-1">{category?.icon ?? "·"}</span>
-                    <span className="text-default-700">
-                        {category?.name ?? "(no category)"}
-                    </span>
-                </p>
-                {rule.description && (
-                    <p
+                <div className="flex-1 min-w-0">
+                    <p>
+                        <span className="mr-1">{category?.icon ?? "·"}</span>
+                        <span className="text-default-700">
+                            {category?.name ?? "(no category)"}
+                        </span>
+                    </p>
+                    {rule.description && (
+                        <p
+                            className={`
+                                font-mono text-sm text-default-400 truncate
+                                ${!hasIndicator ? "mt-1" : ""}
+                            `}
+                        >
+                            {rule.description}
+                        </p>
+                    )}
+                    {hasIndicator && (
+                        <div className="flex gap-4 mt-1">
+                            {rule.isBigBuck && (
+                                <span className="ChipLabel mx-0 text-amber-500">
+                                    BUCK
+                                </span>
+                            )}
+                            {!rule.isActive && (
+                                <span className="ChipLabel mx-0 text-default-400">
+                                    PAUSED
+                                </span>
+                            )}
+                        </div>
+                    )}
+                </div>
+
+                <div className="flex flex-col items-end gap-1 shrink-0">
+                    <span
                         className={`
-                            font-mono text-sm text-default-400 truncate
-                            ${!hasIndicator ? "mt-1" : ""}
+                            font-mono font-medium text-sm
+                            ${rule.isIncome ? "text-success" : ""}
                         `}
                     >
-                        {rule.description}
-                    </p>
-                )}
-                {hasIndicator && (
-                    <div className="flex gap-4 mt-1">
-                        {rule.isBigBuck && (
-                            <span className="ChipLabel mx-0 text-amber-500">
-                                BUCK
-                            </span>
+                        {rule.isIncome ? "+" : ""}
+                        {formatAmount(rule.amount)}
+                    </span>
+                    <span className="text-xs text-default-400 font-mono">
+                        {formatFrequency(rule)}
+                    </span>
+                    <span className="text-xs text-default-400 font-mono">
+                        Next:{" "}
+                        {new Date(rule.nextGenerationAt).toLocaleDateString(
+                            "en-us",
+                            { day: "numeric", month: "short", year: "numeric" },
                         )}
-                        {!rule.isActive && (
-                            <span className="ChipLabel mx-0 text-default-400">
-                                PAUSED
-                            </span>
-                        )}
-                    </div>
-                )}
-            </div>
-
-            <div className="flex flex-col items-end gap-1 shrink-0">
-                <span
-                    className={`
-                        font-mono font-medium text-sm
-                        ${rule.isIncome ? "text-success" : ""}
-                    `}
-                >
-                    {rule.isIncome ? "+" : ""}
-                    {formatAmount(rule.amount)}
-                </span>
-                <span className="text-xs text-default-400 font-mono">
-                    {formatFrequency(rule)}
-                </span>
-                <span className="text-xs text-default-400 font-mono">
-                    Next:{" "}
-                    {new Date(rule.nextGenerationAt).toLocaleDateString(
-                        "en-us",
-                        { day: "numeric", month: "short", year: "numeric" },
-                    )}
-                </span>
-            </div>
+                    </span>
+                </div>
+            </button>
         </li>
     );
 }

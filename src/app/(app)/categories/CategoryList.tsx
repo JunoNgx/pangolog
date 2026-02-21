@@ -30,38 +30,47 @@ function SortableCategoryItem({
     return (
         <li
             ref={ref}
-            onClick={() => onEdit(cat)}
-            onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") onEdit(cat);
-            }}
             className={`
-                rounded-lg px-4 py-3
-                flex items-center gap-3
+                rounded-lg
+                flex items-center
                 bg-background
                 border border-default-200
-                cursor-pointer hover:bg-default-50
+                overflow-hidden
                 ${isDragging ? "opacity-50" : ""}
             `}
         >
-            <span className="flex items-center gap-4 shrink-0">
-                <span
-                    className="h-4 w-4 rounded-full shrink-0"
-                    style={{ backgroundColor: cat.colour }}
-                />
-                <span className="text-xl leading-none">{cat.icon || "·"}</span>
-            </span>
-            <span className="flex-1">{cat.name}</span>
-            {cat.isIncomeOnly && (
-                <span className={`ChipLabel text-green-600`}>INCOME</span>
-            )}
-            {cat.isBuckOnly && (
-                <span className={`ChipLabel text-amber-500`}>BIG BUCK</span>
-            )}
+            <button
+                type="button"
+                onClick={() => onEdit(cat)}
+                className="
+                    flex-1 min-w-0 px-4 py-3 text-left
+                    flex items-center gap-3
+                    cursor-pointer hover:bg-default-50
+                    focus:outline-none focus-visible:ring-2 focus-visible:ring-primary
+                "
+            >
+                <span className="flex items-center gap-4 shrink-0">
+                    <span
+                        className="h-4 w-4 rounded-full shrink-0"
+                        style={{ backgroundColor: cat.colour }}
+                    />
+                    <span className="text-xl leading-none">
+                        {cat.icon || "·"}
+                    </span>
+                </span>
+                <span className="flex-1">{cat.name}</span>
+                {cat.isIncomeOnly && (
+                    <span className={`ChipLabel text-green-600`}>INCOME</span>
+                )}
+                {cat.isBuckOnly && (
+                    <span className={`ChipLabel text-amber-500`}>BIG BUCK</span>
+                )}
+            </button>
             <button
                 type="button"
                 ref={handleRef}
                 onClick={(e) => e.stopPropagation()}
-                className="text-default-400 cursor-grab active:cursor-grabbing select-none bg-transparent p-0 border-0"
+                className="py-3 pr-4 text-default-400 cursor-grab active:cursor-grabbing select-none bg-transparent border-0"
             >
                 <GripVertical />
             </button>
