@@ -270,6 +270,3 @@
 
 ## Phase 6: Additional features
 - [ ] Magic input for quick adding
-
-## Phase 7: Amendment
-- [ ] Should rename `createdAt` to `transactionDatetime`
