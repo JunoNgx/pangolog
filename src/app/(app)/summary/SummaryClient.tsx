@@ -118,7 +118,7 @@ function SegmentBar({ label, slices, total }: SegmentBarProps) {
                     />
                 ))}
             </div>
-            <ul className="flex flex-col gap-1">
+            <ul className="MainListContainer gap-1">
                 {slices.map((slice) => (
                     <li
                         key={slice.categoryId ?? `__${slice.name}__`}
