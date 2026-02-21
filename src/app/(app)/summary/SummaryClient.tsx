@@ -10,7 +10,6 @@ import { useDimes, useDimesByYear } from "@/lib/hooks/useDimes";
 import { useSummaryStore } from "@/lib/store/useSummaryStore";
 import { formatAmount } from "@/lib/utils";
 
-const MIN_PCT = 3;
 const OTHER_COLOUR = "#9ca3af";
 
 interface CategorySlice {
@@ -44,16 +43,10 @@ function buildSlices(
     if (grandTotal === 0) return { slices: [], total: 0 };
 
     const slices: CategorySlice[] = [];
-    let otherTotal = 0;
 
     for (const [categoryId, total] of totalsById) {
         const pct = (total / grandTotal) * 100;
         const cat = categoryId ? categoryMap.get(categoryId) : undefined;
-
-        if (pct < MIN_PCT) {
-            otherTotal += total;
-            continue;
-        }
 
         slices.push({
             categoryId,
@@ -66,18 +59,6 @@ function buildSlices(
     }
 
     slices.sort((a, b) => b.total - a.total);
-
-    if (otherTotal > 0) {
-        const otherPct = (otherTotal / grandTotal) * 100;
-        slices.push({
-            categoryId: null,
-            name: "Other",
-            icon: "",
-            colour: OTHER_COLOUR,
-            total: otherTotal,
-            pct: otherPct,
-        });
-    }
 
     return { slices, total: grandTotal };
 }
