@@ -128,6 +128,8 @@ interface RecurringItemProps {
 }
 
 function RecurringItem({ rule, category, onEdit }: RecurringItemProps) {
+    const hasIndicator = rule.isBigBuck || !rule.isActive;
+
     return (
         <li
             onClick={() => onEdit(rule)}
@@ -156,18 +158,28 @@ function RecurringItem({ rule, category, onEdit }: RecurringItemProps) {
                     </span>
                 </p>
                 {rule.description && (
-                    <p className="font-mono text-sm text-default-400 truncate">
+                    <p
+                        className={`
+                            font-mono text-sm text-default-400 truncate
+                            ${!hasIndicator ? "mt-1" : ""}
+                        `}
+                    >
                         {rule.description}
                     </p>
                 )}
-            </div>
-
-            <div className="flex flex-col items-end gap-1 shrink-0">
-                {rule.isBigBuck && (
-                    <span className="ChipLabel text-amber-500">BUCK</span>
-                )}
-                {!rule.isActive && (
-                    <span className="ChipLabel text-default-400">PAUSED</span>
+                {hasIndicator && (
+                    <div className="flex gap-4 mt-1">
+                        {rule.isBigBuck && (
+                            <span className="ChipLabel mx-0 text-amber-500">
+                                BUCK
+                            </span>
+                        )}
+                        {!rule.isActive && (
+                            <span className="ChipLabel mx-0 text-default-400">
+                                PAUSED
+                            </span>
+                        )}
+                    </div>
                 )}
             </div>
 
@@ -183,6 +195,13 @@ function RecurringItem({ rule, category, onEdit }: RecurringItemProps) {
                 </span>
                 <span className="text-xs text-default-400 font-mono">
                     {formatFrequency(rule)}
+                </span>
+                <span className="text-xs text-default-400 font-mono">
+                    Next:{" "}
+                    {new Date(rule.nextGenerationAt).toLocaleDateString(
+                        "en-us",
+                        { day: "numeric", month: "short", year: "numeric" },
+                    )}
                 </span>
             </div>
         </li>
