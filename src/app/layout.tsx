@@ -1,14 +1,16 @@
 import type { Metadata, Viewport } from "next";
-import { Geist_Mono, Plus_Jakarta_Sans } from "next/font/google";
+import { Outfit, Geist_Mono } from "next/font/google";
 import { Providers } from "./providers";
 import "./globals.css";
 
-const fontSans = Plus_Jakarta_Sans({
+const fontSans = Outfit({
+    weight: "400",
     subsets: ["latin"],
     variable: "--font-sans-var",
 });
 
 const fontMono = Geist_Mono({
+    weight: "400",
     subsets: ["latin"],
     variable: "--font-mono-var",
 });

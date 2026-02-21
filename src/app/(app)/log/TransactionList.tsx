@@ -190,18 +190,19 @@ function TransactionItem({
 
             <div className="grow-4 min-w-0">
                 {hasCategory ? (
-                    <p className="font-mono text-default-700">
-                        {category.icon || "·"} {category.name}
+                    <p>
+                        <span className="mr-1">{category.icon || "·"}</span>
+                        <span className="text-default-700">{category.name}</span>
                     </p>
                 ) : (
                     <p className="text-default-400">(no category)</p>
                 )}
                 {hasDescription ? (
-                    <p className="text-default-400 truncate">
+                    <p className="font-mono text-sm text-default-400 truncate">
                         {transaction.description}
                     </p>
                 ) : (
-                    <p className="text-default-400">(no description)</p>
+                    <p className="font-mono text-sm text-default-400">(no description)</p>
                 )}
             </div>
 

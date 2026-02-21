@@ -280,6 +280,9 @@ export function TransactionDialog({
                         />
 
                         <Input
+                            classNames={{
+                                input: "font-mono",
+                            }}
                             label="Description"
                             value={description}
                             onValueChange={setDescription}
@@ -300,7 +303,7 @@ export function TransactionDialog({
                             <div className="flex flex-wrap gap-2 max-h-36 overflow-y-auto p-1">
                                 {filteredCategories.map((cat) => (
                                     <Button
-                                        className="font-mono"
+                                        className=""
                                         key={cat.id}
                                         size="sm"
                                         variant={
