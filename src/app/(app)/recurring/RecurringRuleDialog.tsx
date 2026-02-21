@@ -24,7 +24,15 @@ import {
 
 type Frequency = "daily" | "weekly" | "monthly" | "yearly";
 
-const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const DAY_NAMES = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+];
 const MONTH_NAMES = [
     "Jan",
     "Feb",
@@ -88,7 +96,7 @@ export function RecurringRuleDialog({
     const [amount, setAmount] = useState("");
     const [description, setDescription] = useState("");
     const [isIncome, setIsIncome] = useState(false);
-    const [isBigBuck, setIsBigBuck] = useState(false);
+    const [isBigBuck, setIsBigBuck] = useState(true);
     const [categoryId, setCategoryId] = useState<string | null>(null);
     const [frequency, setFrequency] = useState<Frequency>("monthly");
     const [startDate, setStartDate] = useState(todayDateString());
@@ -116,7 +124,7 @@ export function RecurringRuleDialog({
             setAmount("");
             setDescription("");
             setIsIncome(false);
-            setIsBigBuck(false);
+            setIsBigBuck(true);
             setCategoryId(null);
             setFrequency("monthly");
             setStartDate(todayDateString());
@@ -142,7 +150,7 @@ export function RecurringRuleDialog({
         setAmount("");
         setDescription("");
         setIsIncome(false);
-        setIsBigBuck(false);
+        setIsBigBuck(true);
         setCategoryId(null);
         setFrequency("monthly");
         setStartDate(todayDateString());
@@ -271,13 +279,14 @@ export function RecurringRuleDialog({
                             description={`${description.length}/60`}
                         />
 
-                        <div className="flex gap-3 items-end">
+                        <div className="flex gap-3 items-end justify-between">
                             <Input
                                 type="date"
                                 label="Start date"
                                 value={startDate}
                                 onValueChange={setStartDate}
                                 isRequired
+                                className="w-1/2"
                             />
                             <div className="flex flex-col gap-1 shrink-0">
                                 <span className="text-sm text-default-500">
@@ -296,9 +305,7 @@ export function RecurringRuleDialog({
                             </div>
                         </div>
 
-                        <p className="text-xs text-default-400 font-mono -mt-2">
-                            {repeatLabel}
-                        </p>
+                        <p className="text-xs font-mono -mt-2">{repeatLabel}</p>
 
                         <div>
                             <p className="text-sm text-default-500 mb-2">
@@ -347,14 +354,40 @@ export function RecurringRuleDialog({
                             </div>
                         </div>
 
-                        {isEditing && (
-                            <Switch
-                                isSelected={isActive}
-                                onValueChange={setIsActive}
-                                size="sm"
-                            >
-                                <span className="text-sm">Active</span>
-                            </Switch>
+                        {isEditing && rule && (
+                            <div className="flex items-center justify-between">
+                                <Switch
+                                    isSelected={isActive}
+                                    onValueChange={setIsActive}
+                                    size="sm"
+                                >
+                                    <span className="text-sm">Active</span>
+                                </Switch>
+                                <div className="flex flex-col items-end gap-1 text-xs font-mono text-default-400">
+                                    <span>
+                                        Next:{" "}
+                                        {new Date(
+                                            rule.nextGenerationAt,
+                                        ).toLocaleDateString("en-us", {
+                                            day: "numeric",
+                                            month: "short",
+                                            year: "numeric",
+                                        })}
+                                    </span>
+                                    <span>
+                                        Last:{" "}
+                                        {rule.lastGeneratedAt
+                                            ? new Date(
+                                                  rule.lastGeneratedAt,
+                                              ).toLocaleDateString("en-us", {
+                                                  day: "numeric",
+                                                  month: "short",
+                                                  year: "numeric",
+                                              })
+                                            : "Never"}
+                                    </span>
+                                </div>
+                            </div>
                         )}
                     </ModalBody>
                     <ModalFooter
