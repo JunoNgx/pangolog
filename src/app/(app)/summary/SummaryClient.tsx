@@ -129,7 +129,9 @@ function SegmentBar({ label, slices, total }: SegmentBarProps) {
                             style={{ backgroundColor: slice.colour }}
                         />
                         <span className="flex-1 text-default-700">
-                            <span className="mr-1">{slice.icon ? `${slice.icon} ` : ""}</span>
+                            <span className="mr-1">
+                                {slice.icon ? `${slice.icon} ` : ""}
+                            </span>
                             {slice.name}
                         </span>
                         <span className="font-mono text-default-500">

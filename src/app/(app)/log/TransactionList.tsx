@@ -192,7 +192,9 @@ function TransactionItem({
                 {hasCategory ? (
                     <p>
                         <span className="mr-1">{category.icon || "·"}</span>
-                        <span className="text-default-700">{category.name}</span>
+                        <span className="text-default-700">
+                            {category.name}
+                        </span>
                     </p>
                 ) : (
                     <p className="text-default-400">(no category)</p>
@@ -202,7 +204,9 @@ function TransactionItem({
                         {transaction.description}
                     </p>
                 ) : (
-                    <p className="font-mono text-sm text-default-400">(no description)</p>
+                    <p className="font-mono text-sm text-default-400">
+                        (no description)
+                    </p>
                 )}
             </div>
 
