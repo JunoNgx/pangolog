@@ -1,6 +1,7 @@
 "use client";
 
 import { Button, Checkbox } from "@heroui/react";
+import { Plus } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
 import { useBucks } from "@/lib/hooks/useBucks";
@@ -230,10 +231,10 @@ export default function LogClient() {
 
             <Button
                 color="primary"
-                className="fixed bottom-20 md:bottom-6 right-6 z-50 h-14 w-14 min-w-0 text-2xl"
+                className="fixed bottom-20 md:bottom-6 right-6 z-50 h-14 w-14 min-w-0"
                 onPress={() => setIsCreateOpen(true)}
             >
-                +
+                <Plus />
             </Button>
             <TransactionDialog
                 isOpen={isCreateOpen}
