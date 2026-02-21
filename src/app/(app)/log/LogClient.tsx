@@ -61,6 +61,27 @@ export default function LogClient() {
         });
     }, [transactions, selectedCategoryIds]);
 
+    const activeCategoryIds = useMemo(() => {
+        const ids = new Set<string>();
+        for (const tx of transactions) {
+            if (tx.categoryId) ids.add(tx.categoryId);
+        }
+        return ids;
+    }, [transactions]);
+
+    const hasUncategorised = useMemo(
+        () => transactions.some((tx) => tx.categoryId === null),
+        [transactions],
+    );
+
+    const buckCategoryIds = useMemo(() => {
+        const ids = new Set<string>();
+        for (const tx of bucks ?? []) {
+            if (tx.categoryId) ids.add(tx.categoryId);
+        }
+        return ids;
+    }, [bucks]);
+
     const isLoading = isViewingBigBucks
         ? bucksLoading
         : dimesLoading || (shouldIncludeBucksInDimes && bucksLoading);
@@ -194,6 +215,9 @@ export default function LogClient() {
                         categories={categories ?? []}
                         selectedIds={selectedCategoryIds}
                         onChange={setSelectedCategoryIds}
+                        activeCategoryIds={activeCategoryIds}
+                        hasUncategorised={hasUncategorised}
+                        buckCategoryIds={buckCategoryIds}
                     />
                 </div>
             </div>
