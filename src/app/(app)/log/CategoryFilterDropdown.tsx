@@ -83,7 +83,7 @@ export function CategoryFilterDropdown({
                                     size="md"
                                     classNames={{
                                         base: "max-w-full",
-                                        label: "font-mono text-default-500 truncate",
+                                        label: "font-mono truncate",
                                     }}
                                 >
                                     Uncategorised
