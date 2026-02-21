@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@heroui/react";
+import { Button, Tooltip } from "@heroui/react";
 import { Plus } from "lucide-react";
 import { useCallback, useState } from "react";
 import { useHotkey } from "@/lib/hooks/useHotkey";
@@ -16,13 +16,24 @@ export default function CategoriesClient() {
         <div>
             <h2 className="text-xl font-bold mb-4">Categories</h2>
             <CategoryList />
-            <Button
-                color="primary"
-                className="fixed bottom-20 md:bottom-6 right-6 z-50 h-14 w-14 min-w-0"
-                onPress={() => setIsCreateOpen(true)}
+            <Tooltip
+                content={
+                    <span className="text-center">
+                        Add a new category
+                        <br />
+                        (Ctrl/Cmd + Enter)
+                    </span>
+                }
+                placement="left"
             >
-                <Plus />
-            </Button>
+                <Button
+                    color="primary"
+                    className="fixed bottom-20 md:bottom-6 right-6 z-50 h-14 w-14 min-w-0"
+                    onPress={() => setIsCreateOpen(true)}
+                >
+                    <Plus />
+                </Button>
+            </Tooltip>
             <CategoryDialog
                 isOpen={isCreateOpen}
                 onClose={() => setIsCreateOpen(false)}

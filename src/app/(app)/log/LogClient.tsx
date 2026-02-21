@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Checkbox } from "@heroui/react";
+import { Button, Checkbox, Tooltip } from "@heroui/react";
 import { Plus } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
@@ -254,13 +254,24 @@ export default function LogClient() {
                 isLoading={isLoading}
             />
 
-            <Button
-                color="primary"
-                className="fixed bottom-20 md:bottom-6 right-6 z-50 h-14 w-14 min-w-0"
-                onPress={() => setIsCreateOpen(true)}
+            <Tooltip
+                content={
+                    <span className="text-center">
+                        Log a new transaction
+                        <br />
+                        (Ctrl/Cmd + Enter)
+                    </span>
+                }
+                placement="left"
             >
-                <Plus />
-            </Button>
+                <Button
+                    color="primary"
+                    className="fixed bottom-20 md:bottom-6 right-6 z-50 h-14 w-14 min-w-0"
+                    onPress={() => setIsCreateOpen(true)}
+                >
+                    <Plus />
+                </Button>
+            </Tooltip>
             <TransactionDialog
                 isOpen={isCreateOpen}
                 onClose={() => setIsCreateOpen(false)}
