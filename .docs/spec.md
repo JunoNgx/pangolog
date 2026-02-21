@@ -133,7 +133,6 @@ Approach:
 - `isIncome`: boolean
 - `isBigBuck`: boolean
 - `frequency`: 'daily' | 'weekly' | 'monthly' | 'yearly'
-- `interval`: integer (e.g., 2 for every 2 weeks)
 - `dayOfWeek`: integer (0-6, for weekly)
 - `dayOfMonth`: integer (1-31, for monthly)
 - `monthOfYear`: integer (1-12, for yearly)
@@ -161,6 +160,7 @@ Approach:
 - Files are stored in a dedicated `Pangolog` folder in the user's Drive root.
 - Settings are stored in `settings.json`.
 - Categories are stored in `categories.json`.
+- RecurringRules are stored in `recurring-rules.json`.
 - Small dime transactions are stored on a monthly basis, e.g. `2026-02.json`.
 - Big bucks are stored separately on a yearly basis, e.g. `2026-bucks.json`.
 
@@ -256,9 +256,40 @@ Approach:
     - Checkbox: is income-only category
     - Checkbox: is big buck-only category
 
+- Recurring transactions view
+    - Overview of list of recurring transaction rules
+        - Category, description, amount, frequency
+        - Switch to turn the on/off
+    - Sorting option:
+        - `createdAt`
+        - `amount`
+        - `nextGeneratedAt`
+        - `frequency`
+
+- Dialog: add/edit recurring transactions
+    - Regular settings for transactions
+    - Settings specific for recurring transactions
+
 - Settings view
     - Custom display currency unit
     - Configuring Drive sync
+
+## Recurring expenses
+- Frequency choices: daily, weekly, monthly, yearly
+- `nextGenerationdAt` is calculated upon changes in:
+    - `frequency`
+    - `dayOfWeek`
+    - `dayOfMonth`
+    - `dayOfYear`
+- Execution logic:
+    - Upon startup, `visibilitychange` (similar to sync)
+    - Query items with `nextGeneratedAt` older than current time
+    - Iterate over matching rule, loop this:
+        - Create the transaction
+        - Advance `nextGenerationAt` until `nextGenerationAt` is in the future
+        - IMPORTANT: create only one new row per execution
+            - Implication: For users who do not use the app frequently, gap in history is silently lost.
+            - User should be warned of this implication somewhere.
 
 ## Technical Decisions
 
