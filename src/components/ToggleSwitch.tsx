@@ -55,7 +55,7 @@ export function ToggleSwitch({
                     text-sm text-right
                     hover:bg-default-100 transition-all cursor-pointer
                     focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-300 focus-visible:ring-offset-2
-                    ${!isSelectingRightActive ? "text-default-600" : "text-default-300"}
+                    ${!isSelectingRightActive ? "" : "text-default-400"}
                     ${isDisabled ? "cursor-not-allowed opacity-50" : ""}
                 `}
                 tabIndex={isSelectingRightActive ? 0 : -1}
@@ -99,7 +99,7 @@ export function ToggleSwitch({
                     text-sm
                     hover:bg-default-100 transition-all cursor-pointer
                     focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-300 focus-visible:ring-offset-2
-                    ${isSelectingRightActive ? "text-default-600" : "text-default-300"}
+                    ${isSelectingRightActive ? "" : "text-default-400"}
                     ${isDisabled ? "cursor-not-allowed opacity-50" : ""}
                 `}
                 tabIndex={!isSelectingRightActive ? 0 : -1}
