@@ -147,9 +147,7 @@ export default function SettingsClient() {
             </section>
 
             <section className="mb-8">
-                <h3 className="text-lg font-semibold mb-4">
-                    Display Currency
-                </h3>
+                <h3 className="text-lg font-semibold mb-4">Display Currency</h3>
                 <div className="flex flex-col gap-4">
                     <Input
                         classNames={{
@@ -180,9 +178,7 @@ export default function SettingsClient() {
             </section>
 
             <section className="mb-8">
-                <h3 className="text-lg font-semibold mb-4">
-                    Export Data
-                </h3>
+                <h3 className="text-lg font-semibold mb-4">Export Data</h3>
                 <div className="flex flex-col gap-3">
                     <div className="flex items-center gap-3">
                         <Button
@@ -210,9 +206,7 @@ export default function SettingsClient() {
             </section>
 
             <section className="mb-8">
-                <h3 className="text-lg font-semibold mb-4">
-                    Import Data
-                </h3>
+                <h3 className="text-lg font-semibold mb-4">Import Data</h3>
                 <div className="flex flex-col gap-3">
                     <input
                         ref={fileInputRef}
