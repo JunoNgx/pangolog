@@ -190,6 +190,10 @@ Approach:
     - Current route is indicated
     - Mobile layout: floating at the bottom of the viewport
 
+- These routes are not included in navbar:
+    - `/` (root)
+    - `/help`
+
 ### Utility panel
 - Position: to the right of the header
     - Sync indicator
@@ -274,6 +278,44 @@ Approach:
 - Settings view
     - Custom display currency unit
     - Configuring Drive sync
+
+### Help page
+
+#### Availability
+- Accessible from route `/`
+- Route is not included in navbar, UI to access this is only available from `/` (root) and `/settings`
+
+#### Layout
+- Basic and simple read-only text content
+- Floating button to return to settings
+    - Decision to make: Should it consistently return to `/settings`, or detect the referrer?
+
+#### Content
+- App overview
+- System requirement
+- Basic concepts
+    - Small Dimes
+    - Big Bucks
+    - Categories
+- Pages overview
+    - Transactions
+    - Categories
+    - Summary
+    - Recurring rules
+    - Settings
+- Hotkey shortcut: Ctrl/Cmd + Enter in the three lists
+- Recurring rules
+    - Creation-triggering events/logic (`visibilitychange)
+    - Quirk: if not used for a long time, will skip previous possible entries, and only create the newest possible entry.
+- Sync
+    - Enable/disable via Settings menu
+    - Storage structure
+        - Folder: `Pangolog`
+        - `YYYY-MM.json`
+        - `YYYY-bucks.json`
+        - `settings.json`
+        - `recurring-rules.json`
+        - Sync-triggering events/logic (`visibilitychange`)
 
 ## Recurring expenses
 - Frequency choices: daily, weekly, monthly, yearly
