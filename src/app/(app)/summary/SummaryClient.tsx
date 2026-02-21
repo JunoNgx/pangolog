@@ -22,11 +22,16 @@ interface CategorySlice {
     pct: number;
 }
 
+interface SliceResult {
+    slices: CategorySlice[];
+    total: number;
+}
+
 function buildSlices(
     transactions: (Dime | Buck)[],
     categoryMap: Map<string, Category>,
     isIncome: boolean,
-): CategorySlice[] {
+): SliceResult {
     const filtered = transactions.filter((t) => t.isIncome === isIncome);
 
     const totalsById = new Map<string | null, number>();
@@ -36,7 +41,7 @@ function buildSlices(
     }
 
     const grandTotal = [...totalsById.values()].reduce((a, b) => a + b, 0);
-    if (grandTotal === 0) return [];
+    if (grandTotal === 0) return { slices: [], total: 0 };
 
     const slices: CategorySlice[] = [];
     let otherTotal = 0;
@@ -74,21 +79,20 @@ function buildSlices(
         });
     }
 
-    return slices;
+    return { slices, total: grandTotal };
 }
 
 interface SegmentBarProps {
     label: string;
     slices: CategorySlice[];
+    total: number;
 }
 
-function SegmentBar({ label, slices }: SegmentBarProps) {
+function SegmentBar({ label, slices, total }: SegmentBarProps) {
     if (slices.length === 0) {
         return (
             <div className="mb-6">
-                <p className="font-semibold text-default-500 mb-2">
-                    {label}
-                </p>
+                <p className="font-semibold text-default-500 mb-2">{label}</p>
                 <p className="text-sm text-default-400">No data.</p>
             </div>
         );
@@ -96,9 +100,12 @@ function SegmentBar({ label, slices }: SegmentBarProps) {
 
     return (
         <div className="mb-6">
-            <p className="font-semibold text-default-500 mb-2">
-                {label}
-            </p>
+            <div className="flex items-baseline justify-between mb-2">
+                <p className="font-semibold text-default-500">{label}</p>
+                <p className="font-mono text-sm font-semibold text-default-700">
+                    {formatAmount(total)}
+                </p>
+            </div>
             <div className="flex rounded-md overflow-hidden h-5 mb-3">
                 {slices.map((slice) => (
                     <div
@@ -183,11 +190,11 @@ export default function SummaryClient() {
         bucks,
     ]);
 
-    const expenseSlices = useMemo(
+    const { slices: expenseSlices, total: expenseTotal } = useMemo(
         () => buildSlices(transactions, categoryMap, false),
         [transactions, categoryMap],
     );
-    const incomeSlices = useMemo(
+    const { slices: incomeSlices, total: incomeTotal } = useMemo(
         () => buildSlices(transactions, categoryMap, true),
         [transactions, categoryMap],
     );
@@ -329,8 +336,16 @@ export default function SummaryClient() {
                 </div>
             </div>
 
-            <SegmentBar label="Expenses" slices={expenseSlices} />
-            <SegmentBar label="Income" slices={incomeSlices} />
+            <SegmentBar
+                label="Expenses"
+                slices={expenseSlices}
+                total={expenseTotal}
+            />
+            <SegmentBar
+                label="Income"
+                slices={incomeSlices}
+                total={incomeTotal}
+            />
         </div>
     );
 }
