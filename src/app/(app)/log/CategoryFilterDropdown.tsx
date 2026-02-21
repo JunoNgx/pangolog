@@ -1,11 +1,6 @@
-import {
-    Button,
-    Checkbox,
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@heroui/react";
+import { Button, Popover, PopoverContent, PopoverTrigger } from "@heroui/react";
 import { ChevronDown } from "lucide-react";
+import { Checkbox } from "@/components/Checkbox";
 import type { Category } from "@/lib/db/types";
 
 export const UNCATEGORISED_ID = "__uncategorised__";

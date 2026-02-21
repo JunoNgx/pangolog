@@ -40,7 +40,7 @@ export function AppNavbar() {
                     {navItems.map((item) => {
                         const isActive = pathname === item.href;
                         const linkClass = `
-                            flex items-center gap-2 px-3 py-1.5 rounded-md
+                            flex items-center gap-2 px-3 py-1.5 round-none
                             text-sm
                             transition-colors
                             ${isActive ? "bg-primary/10 text-primary" : "text-default-500 hover:bg-default-100 hover:text-foreground"}
@@ -82,7 +82,7 @@ export function AppNavbar() {
                     const itemClass = `
                         flex flex-col items-center justify-center flex-1 gap-1
                         transition-colors
-                        ${isActive ? "bg-primary/10 text-primary rounded-lg" : "text-default-400"}
+                        ${isActive ? "bg-primary/10 text-primary" : "text-default-400"}
                     `;
                     return (
                         <NextLink

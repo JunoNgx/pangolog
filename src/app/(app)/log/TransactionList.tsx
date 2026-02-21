@@ -49,7 +49,7 @@ export function TransactionList({
                 {["s1", "s2", "s3", "s4", "s5", "s6", "s7"].map((key) => (
                     <Skeleton
                         key={key}
-                        className="h-12 w-full rounded-lg my-1"
+                        className="h-12 w-full my-1"
                     />
                 ))}
             </ul>

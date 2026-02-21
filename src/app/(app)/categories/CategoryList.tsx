@@ -34,7 +34,7 @@ function SortableCategoryItem({
                 if (e.key === "Enter" || e.key === " ") onEdit(cat);
             }}
             className={`
-                rounded-lg px-4 py-3
+                px-4 py-3
                 flex items-center gap-3
                 bg-background
                 border border-default-200
@@ -102,7 +102,7 @@ export function CategoryList() {
         return (
             <ul className="MainListContainer gap-2">
                 {["s1", "s2", "s3", "s4", "s5", "s6", "s7"].map((key) => (
-                    <Skeleton key={key} className="h-12 w-full rounded-lg" />
+                    <Skeleton key={key} className="h-12 w-full" />
                 ))}
             </ul>
         );

@@ -1,7 +1,7 @@
 "use client";
 
-import { Checkbox } from "@heroui/react";
 import { useEffect, useMemo, useState } from "react";
+import { Checkbox } from "@/components/Checkbox";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
 import type { Buck, Category, Dime } from "@/lib/db/types";
 import { useBucks } from "@/lib/hooks/useBucks";
@@ -106,7 +106,7 @@ function SegmentBar({ label, slices, total }: SegmentBarProps) {
                     {formatAmount(total)}
                 </p>
             </div>
-            <div className="flex rounded-md overflow-hidden h-5 mb-3">
+            <div className="flex overflow-hidden h-5 mb-3">
                 {slices.map((slice) => (
                     <div
                         key={slice.categoryId ?? `__${slice.name}__`}
@@ -129,7 +129,9 @@ function SegmentBar({ label, slices, total }: SegmentBarProps) {
                             style={{ backgroundColor: slice.colour }}
                         />
                         <span className="flex-1 text-default-700">
-                            <span className="mr-1">{slice.icon ? `${slice.icon} ` : ""}</span>
+                            <span className="mr-1">
+                                {slice.icon ? `${slice.icon} ` : ""}
+                            </span>
                             {slice.name}
                         </span>
                         <span className="font-mono text-default-500">
@@ -218,7 +220,7 @@ export default function SummaryClient() {
     }
 
     const selectClasses = `
-        rounded-lg px-3 py-2
+        px-3 py-2
         text-sm text-foreground
         bg-default-100 border border-default-200
         cursor-pointer
@@ -262,7 +264,7 @@ export default function SummaryClient() {
             onChange={(e) => handleMonthChange(e.target.value)}
             className={`
                 w-42
-                rounded-lg px-3 py-2
+                px-3 py-2
                 text-sm text-foreground
                 bg-default-100 border border-default-200
                 cursor-pointer

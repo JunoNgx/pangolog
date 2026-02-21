@@ -51,7 +51,7 @@ export function ToggleSwitch({
             <span
                 id={leftLabelId}
                 className={`
-                    flex items-center gap-1 px-2 py-1 rounded
+                    flex items-center gap-1 px-2 py-1
                     text-sm text-right
                     hover:bg-default-100 transition-all cursor-pointer
                     focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-300 focus-visible:ring-offset-2
@@ -82,10 +82,11 @@ export function ToggleSwitch({
                         ${isDisabled ? "opacity-50 cursor-not-allowed" : ""}
                     `,
                     wrapper: `
+                        rounded-none
                         bg-primary
                         group-data-[selected=true]:bg-primary
                     `,
-                    thumb: "bg-white",
+                    thumb: "rounded-none bg-white",
                 }}
                 aria-label={`${leftLabel} ${rightLabel} toggle`}
                 aria-labelledby={`${leftLabelId} ${rightLabelId}`}
@@ -95,7 +96,7 @@ export function ToggleSwitch({
             <span
                 id={rightLabelId}
                 className={`
-                    flex items-center gap-1 px-2 py-1 rounded
+                    flex items-center gap-1 px-2 py-1
                     text-sm
                     hover:bg-default-100 transition-all cursor-pointer
                     focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-300 focus-visible:ring-offset-2

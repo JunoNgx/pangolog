@@ -4,7 +4,6 @@ import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import {
     Button,
-    Checkbox,
     Input,
     Modal,
     ModalBody,
@@ -20,6 +19,7 @@ import { useTheme } from "next-themes";
 import { type SubmitEventHandler, useEffect, useState } from "react";
 import { HexColorPicker } from "react-colorful";
 import { toast } from "sonner";
+import { Checkbox } from "@/components/Checkbox";
 import type { Category } from "@/lib/db/types";
 import {
     useCreateCategory,
@@ -181,7 +181,6 @@ export function CategoryDialog({
                                         <button
                                             type="button"
                                             className={`
-                                                rounded-lg
                                                 flex items-center justify-center px-3 py-2
                                                 bg-default-100
                                                 hover:bg-default-200 transition-colors cursor-pointer
@@ -216,7 +215,7 @@ export function CategoryDialog({
                                             <button
                                                 type="button"
                                                 className={`
-                                                    flex-1 rounded-lg
+                                                    flex-1
                                                     flex items-center gap-3 px-3 py-2
                                                     bg-default-100
                                                     hover:bg-default-200 transition-colors cursor-pointer
@@ -260,7 +259,7 @@ export function CategoryDialog({
                                                         className="flex-1"
                                                     />
                                                     <div
-                                                        className="flex-1 rounded"
+                                                        className="flex-1"
                                                         style={{
                                                             backgroundColor:
                                                                 colour,
@@ -275,7 +274,7 @@ export function CategoryDialog({
                                         onClick={() =>
                                             setColour(randomHexColor())
                                         }
-                                        className="aspect-square shrink-0 rounded-lg flex items-center justify-center bg-default-100 hover:bg-default-200 transition-colors text-default-500 cursor-pointer"
+                                        className="aspect-square shrink-0 flex items-center justify-center bg-default-100 hover:bg-default-200 transition-colors text-default-500 cursor-pointer"
                                         title="Random colour"
                                     >
                                         <Shuffle size={16} />

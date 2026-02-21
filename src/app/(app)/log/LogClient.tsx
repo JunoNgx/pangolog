@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Checkbox } from "@heroui/react";
+import { Button } from "@heroui/react";
 import { Plus } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
@@ -15,6 +15,7 @@ import {
 } from "./CategoryFilterDropdown";
 import { TransactionDialog } from "./TransactionDialog";
 import { TransactionList } from "./TransactionList";
+import { Checkbox } from "@/components/Checkbox";
 
 export default function LogClient() {
     const [isCreateOpen, setIsCreateOpen] = useState(false);
@@ -120,7 +121,7 @@ export default function LogClient() {
             onChange={(e) => handleMonthChange(e.target.value)}
             className={`
                 w-42
-                rounded-lg px-3 py-2
+                px-3 py-2
                 text-sm text-foreground
                 bg-default-100 border border-default-200
                 cursor-pointer
@@ -144,7 +145,7 @@ export default function LogClient() {
     ];
 
     const fallbackSelectClasses = `
-        rounded-lg px-3 py-2
+        px-3 py-2
         text-sm text-foreground
         bg-default-100 border border-default-200
         cursor-pointer

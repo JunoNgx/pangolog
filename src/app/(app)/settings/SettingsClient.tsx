@@ -2,19 +2,19 @@
 
 import {
     Button,
-    Checkbox,
     Input,
     Modal,
     ModalBody,
     ModalContent,
     ModalFooter,
     ModalHeader,
-    Radio,
     RadioGroup,
 } from "@heroui/react";
 import { useTheme } from "next-themes";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
+import { Checkbox } from "@/components/Checkbox";
+import { Radio } from "@/components/Radio";
 import { clearAllData } from "@/lib/db/sync";
 import { exportJson } from "@/lib/export";
 import { useGoogleAuth } from "@/lib/hooks/useGoogleAuth";
@@ -147,9 +147,7 @@ export default function SettingsClient() {
             </section>
 
             <section className="mb-8">
-                <h3 className="text-lg font-semibold mb-4">
-                    Display Currency
-                </h3>
+                <h3 className="text-lg font-semibold mb-4">Display Currency</h3>
                 <div className="flex flex-col gap-4">
                     <Input
                         classNames={{
@@ -180,9 +178,7 @@ export default function SettingsClient() {
             </section>
 
             <section className="mb-8">
-                <h3 className="text-lg font-semibold mb-4">
-                    Export Data
-                </h3>
+                <h3 className="text-lg font-semibold mb-4">Export Data</h3>
                 <div className="flex flex-col gap-3">
                     <div className="flex items-center gap-3">
                         <Button
@@ -210,9 +206,7 @@ export default function SettingsClient() {
             </section>
 
             <section className="mb-8">
-                <h3 className="text-lg font-semibold mb-4">
-                    Import Data
-                </h3>
+                <h3 className="text-lg font-semibold mb-4">Import Data</h3>
                 <div className="flex flex-col gap-3">
                     <input
                         ref={fileInputRef}
@@ -233,7 +227,7 @@ export default function SettingsClient() {
                         <p className="text-xs text-danger-500">{importError}</p>
                     )}
                     {importPreview && (
-                        <div className="flex flex-col gap-2 p-3 rounded-lg bg-default-100 text-sm">
+                        <div className="flex flex-col gap-2 p-3 bg-default-100 text-sm">
                             <p className="font-semibold text-default-700">
                                 Preview:
                             </p>
@@ -269,7 +263,7 @@ export default function SettingsClient() {
                         </div>
                     )}
                     {importResult && (
-                        <div className="flex flex-col gap-1 p-3 rounded-lg bg-success-50 text-sm">
+                        <div className="flex flex-col gap-1 p-3 bg-success-50 text-sm">
                             <p className="font-semibold text-success-700">
                                 Import complete.
                             </p>
