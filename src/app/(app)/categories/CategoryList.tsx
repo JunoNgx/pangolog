@@ -8,6 +8,7 @@ import { useState } from "react";
 import type { Category } from "@/lib/db/types";
 import { useCategories, useReorderCategories } from "@/lib/hooks/useCategories";
 import { CategoryDialog } from "./CategoryDialog";
+import { GripVertical } from "lucide-react";
 
 interface SortableCategoryItemProps {
     cat: Category;
@@ -62,7 +63,7 @@ function SortableCategoryItem({
                 onClick={(e) => e.stopPropagation()}
                 className="text-default-400 cursor-grab active:cursor-grabbing select-none bg-transparent p-0 border-0"
             >
-                ⠿
+                <GripVertical />
             </button>
         </li>
     );
