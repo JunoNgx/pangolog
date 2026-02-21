@@ -274,7 +274,7 @@ export function TransactionDialog({
                                 base: "my-2",
                                 input: `
                                     text-4xl text-center font-mono
-                                    ${isIncome ? "text-success" : "text-foreground"}
+                                    ${isIncome ? "!text-success" : "!text-foreground"}
                                 `,
                             }}
                         />
