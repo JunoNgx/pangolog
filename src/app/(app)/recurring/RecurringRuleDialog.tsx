@@ -279,7 +279,10 @@ export function RecurringRuleDialog({
                             </div>
                         )}
 
-                        <div className="flex justify-between gap-4 mt-2">
+                        <div className={`
+                            flex gap-4 mt-2
+                            ${isEditing ? "justify-around" : "justify-between"}
+                        `}>
                             <ToggleSwitch
                                 isSelectingRight={isIncome}
                                 onValueChange={setIsIncome}
