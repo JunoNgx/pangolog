@@ -261,9 +261,9 @@
     - [x] Invalidate TanStackQuery cache after creation to refresh the data immediately
 
 ### Phase 5d: UI
-- [ ] Overview list of items
-- [ ] Dialog UI to create/edit
-- [ ] Sorting option UI
+- [x] Overview list of items
+- [x] Dialog UI to create/edit
+- [x] Sorting option UI
 
 ### Phase 5e: Export/Import
 - [ ] Update import logic
