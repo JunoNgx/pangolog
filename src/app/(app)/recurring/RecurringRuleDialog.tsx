@@ -236,7 +236,11 @@ export function RecurringRuleDialog({
                     </ModalHeader>
                     <ModalBody className="gap-4">
                         {isEditing && rule && (
-                            <div className="flex items-center justify-between p-3 rounded-lg bg-default-50 border border-default-200">
+                            <div className={`
+                                p-3 rounded-lg border
+                                flex items-center justify-between
+                                bg-default-50 border-default-200
+                            `}>
                                 <div className="flex flex-col gap-1">
                                     <Switch
                                         isSelected={isActive}
