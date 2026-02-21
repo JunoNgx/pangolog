@@ -4,11 +4,11 @@ import { move } from "@dnd-kit/helpers";
 import { DragDropProvider } from "@dnd-kit/react";
 import { useSortable } from "@dnd-kit/react/sortable";
 import { Skeleton } from "@heroui/react";
+import { GripVertical } from "lucide-react";
 import { useState } from "react";
 import type { Category } from "@/lib/db/types";
 import { useCategories, useReorderCategories } from "@/lib/hooks/useCategories";
 import { CategoryDialog } from "./CategoryDialog";
-import { GripVertical } from "lucide-react";
 
 interface SortableCategoryItemProps {
     cat: Category;
