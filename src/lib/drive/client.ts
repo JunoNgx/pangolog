@@ -15,6 +15,7 @@ export function buckFileName(year: number): string {
 }
 
 export const CATEGORIES_FILE = "categories.json";
+export const RECURRING_RULES_FILE = "recurring-rules.json";
 export const SETTINGS_FILE = "settings.json";
 
 // --- Types ---

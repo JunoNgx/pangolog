@@ -128,3 +128,4 @@ Don't comment on the classes. Just keep one type of classes in its own line. Eac
 - Phase 5c (recurring runner): done - useRecurringRunner hook, RecurringRulesManager component mounted in layout; monthly/yearly dayOfMonth is clamped to last day of month to handle short months (e.g. 31st in April)
 - Phase 5d (recurring UI): done - RecurringList, RecurringRuleDialog, RecurringClient with sort/filter controls; CategoryPicker extracted as shared component
 - Phase 5e (recurring export/import): done - recurringRules field added to export; import handles it as optional for backwards compatibility with old export files
+- Phase 5f (recurring sync): done - recurring-rules.json synced to Drive alongside categories; mergeRecords last-write-wins applies

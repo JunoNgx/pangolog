@@ -270,8 +270,8 @@
 - [x] Update export logic
 
 ### Phase 5f: Sync logic
-- [ ] Upload logic
-- [ ] Download logic
+- [x] Upload logic
+- [x] Download logic
 
 ## Phase 6: Additional features
 - [ ] Magic input for quick adding
