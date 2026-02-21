@@ -211,6 +211,20 @@ export default function LogClient() {
                     </div>
                 )}
 
+                {isViewingBigBucks && (
+                    <select
+                        value={selectedYear}
+                        onChange={handleYearSelect}
+                        className={`self-start ${fallbackSelectClasses}`}
+                    >
+                        {fallbackYearOptions.map((y) => (
+                            <option key={y} value={y}>
+                                {y}
+                            </option>
+                        ))}
+                    </select>
+                )}
+
                 <div className="self-end">
                     <CategoryFilterDropdown
                         categories={categories ?? []}
