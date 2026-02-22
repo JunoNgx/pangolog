@@ -20,7 +20,9 @@ export function CategoryPicker({
     const [isExpanded, setIsExpanded] = useState(false);
 
     const hasMore = categories.length > COLLAPSED_LIMIT;
-    const displayedCategories = isExpanded ? categories : categories.slice(0, COLLAPSED_LIMIT);
+    const displayedCategories = isExpanded
+        ? categories
+        : categories.slice(0, COLLAPSED_LIMIT);
 
     return (
         <div>
