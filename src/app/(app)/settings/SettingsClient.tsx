@@ -195,6 +195,9 @@ export default function SettingsClient() {
                             size="sm"
                         >
                             <span className="text-sm">Pretty print</span>
+                            <p className="text-xs text-default-400">
+                                Human-readable formatting.
+                            </p>
                         </Checkbox>
                     </div>
                     <p className="text-xs text-default-400">
