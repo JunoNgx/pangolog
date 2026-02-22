@@ -57,6 +57,7 @@ Approach:
 - Transactions are not hard-deleted. Use `deletedAt`.
 - Deleted transactions remain stored to facilitate deletion propagation.
 - Data with `deletedAt` older than 30 days are removed on both local and cloud instance.
+- On a Drive API 401, a forced GIS token refresh is attempted. If the refresh fails (e.g. mobile PWA WebView isolation), the sync is silently skipped and the user stays connected. Logout only occurs if a genuinely fresh token is obtained but Drive still rejects it.
 
 ### Error recovery strategies
 - Exponential backoff (30s, 60s, 120s, 300s)
