@@ -133,17 +133,66 @@ export default function SettingsClient() {
             <h2 className="text-xl font-bold mb-6">Settings</h2>
 
             <section className="mb-8">
-                <h3 className="text-lg font-semibold mb-4">Theme</h3>
-                <RadioGroup
-                    orientation="horizontal"
-                    value={mounted ? (theme ?? "system") : "system"}
-                    onValueChange={setTheme}
-                    classNames={{ wrapper: "gap-6" }}
-                >
-                    <Radio value="light">Light</Radio>
-                    <Radio value="dark">Dark</Radio>
-                    <Radio value="system">System</Radio>
-                </RadioGroup>
+                <h3 className="font-mono text-lg font-semibold mb-4">
+                    Google Drive Sync
+                </h3>
+                <div className="flex flex-col gap-3">
+                    {lastSyncTime && (
+                        <p className="text-xs text-default-400">
+                            Last synced:{" "}
+                            {new Date(lastSyncTime).toLocaleString()}
+                        </p>
+                    )}
+                    {isConnected ? (
+                        <>
+                            <p className="text-sm text-success-500">
+                                Status: Connected as {authToken?.email}
+                            </p>
+                            <p className="text-xs text-default-400">
+                                {syncStatus === "syncing" && "Syncing..."}
+                                {syncStatus === "error" &&
+                                    `Error: ${syncError}`}
+                            </p>
+                            <div className="flex gap-2">
+                                <Button
+                                    color="primary"
+                                    variant="flat"
+                                    className="max-w-xs"
+                                    isLoading={syncStatus === "syncing"}
+                                    onPress={() => sync()}
+                                >
+                                    Sync now
+                                </Button>
+                                <Button
+                                    color="danger"
+                                    variant="flat"
+                                    className="max-w-xs"
+                                    onPress={disconnect}
+                                >
+                                    Disconnect
+                                </Button>
+                            </div>
+                        </>
+                    ) : (
+                        <>
+                            <p className="text-sm text-default-400">
+                                Status: Not connected
+                            </p>
+                            <Button
+                                color="primary"
+                                variant="flat"
+                                className="max-w-xs"
+                                isLoading={isConnecting}
+                                onPress={connect}
+                            >
+                                Connect Google Drive
+                            </Button>
+                        </>
+                    )}
+                    {error && (
+                        <p className="text-xs text-danger-500">{error}</p>
+                    )}
+                </div>
             </section>
 
             <section className="mb-8">
@@ -175,6 +224,20 @@ export default function SettingsClient() {
                         Preview: {preview}
                     </p>
                 </div>
+            </section>
+
+            <section className="mb-8">
+                <h3 className="text-lg font-semibold mb-4">Theme</h3>
+                <RadioGroup
+                    orientation="horizontal"
+                    value={mounted ? (theme ?? "system") : "system"}
+                    onValueChange={setTheme}
+                    classNames={{ wrapper: "gap-6" }}
+                >
+                    <Radio value="light">Light</Radio>
+                    <Radio value="dark">Dark</Radio>
+                    <Radio value="system">System</Radio>
+                </RadioGroup>
             </section>
 
             <section className="mb-8">
@@ -291,69 +354,6 @@ export default function SettingsClient() {
                                 {importResult.rulesUpdated} updated
                             </p>
                         </div>
-                    )}
-                </div>
-            </section>
-
-            <section>
-                <h3 className="font-mono text-lg font-semibold mb-4">
-                    Google Drive Sync
-                </h3>
-                <div className="flex flex-col gap-3">
-                    {lastSyncTime && (
-                        <p className="text-xs text-default-400">
-                            Last synced:{" "}
-                            {new Date(lastSyncTime).toLocaleString()}
-                        </p>
-                    )}
-                    {isConnected ? (
-                        <>
-                            <p className="text-sm text-success-500">
-                                Status: Connected as {authToken?.email}
-                            </p>
-                            <p className="text-xs text-default-400">
-                                {syncStatus === "syncing" && "Syncing..."}
-                                {syncStatus === "error" &&
-                                    `Error: ${syncError}`}
-                            </p>
-                            <div className="flex gap-2">
-                                <Button
-                                    color="primary"
-                                    variant="flat"
-                                    className="max-w-xs"
-                                    isLoading={syncStatus === "syncing"}
-                                    onPress={() => sync()}
-                                >
-                                    Sync now
-                                </Button>
-                                <Button
-                                    color="danger"
-                                    variant="flat"
-                                    className="max-w-xs"
-                                    onPress={disconnect}
-                                >
-                                    Disconnect
-                                </Button>
-                            </div>
-                        </>
-                    ) : (
-                        <>
-                            <p className="text-sm text-default-400">
-                                Status: Not connected
-                            </p>
-                            <Button
-                                color="primary"
-                                variant="flat"
-                                className="max-w-xs"
-                                isLoading={isConnecting}
-                                onPress={connect}
-                            >
-                                Connect Google Drive
-                            </Button>
-                        </>
-                    )}
-                    {error && (
-                        <p className="text-xs text-danger-500">{error}</p>
                     )}
                 </div>
             </section>
