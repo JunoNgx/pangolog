@@ -2,7 +2,8 @@
 
 import { Button, Checkbox, Tooltip } from "@heroui/react";
 import { ArrowDownAZ, ArrowUpAZ, Plus } from "lucide-react";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { createAction } from "@/lib/createAction";
 import { useCategories } from "@/lib/hooks/useCategories";
 import { useHotkey } from "@/lib/hooks/useHotkey";
 import { useRecurringRules } from "@/lib/hooks/useRecurringRules";
@@ -38,6 +39,10 @@ export default function RecurringClient() {
 
     const openCreateDialog = useCallback(() => setIsCreateOpen(true), []);
     useHotkey("Enter", openCreateDialog, { ctrlOrMeta: true });
+    useEffect(
+        () => createAction.register(openCreateDialog),
+        [openCreateDialog],
+    );
 
     const { data: rules, isLoading } = useRecurringRules();
     const { data: categories } = useCategories();
