@@ -279,9 +279,9 @@
 ## Phase 7: Help route
 
 ### Phase 7a: Technical part
-- [ ] Implementation of route `/help`
-- [ ] UI to access route from settings route `/settings`
-- [ ] UI to return to previous page
+- [x] Implementation of route `/help`
+- [x] UI to access route from settings route `/settings`
+- [x] UI to return to previous page
 
 ### Phase 7b: Content
 - [ ] Implement content

@@ -358,6 +358,21 @@ export default function SettingsClient() {
                 </div>
             </section>
 
+            <section className="mt-12 mb-8">
+                <h3 className="text-lg font-semibold mb-1">Help &amp; Info</h3>
+                <p className="text-xs text-default-400 mb-4">
+                    Overview of concepts, pages, hotkeys, and sync behaviour.
+                </p>
+                <Button
+                    as="a"
+                    href="/help"
+                    color="primary"
+                    variant="flat"
+                >
+                    View manual
+                </Button>
+            </section>
+
             <section className="mt-12">
                 <h3 className="font-mono text-lg font-semibold mb-1 text-danger">
                     Danger Zone

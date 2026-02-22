@@ -131,3 +131,4 @@ Don't comment on the classes. Just keep one type of classes in its own line. Eac
 - Phase 5d (recurring UI): done - RecurringList, RecurringRuleDialog, RecurringClient with sort/filter controls; CategoryPicker extracted as shared component
 - Phase 5e (recurring export/import): done - recurringRules field added to export; import handles it as optional for backwards compatibility with old export files
 - Phase 5f (recurring sync): done - recurring-rules.json synced to Drive alongside categories; mergeRecords last-write-wins applies
+- Phase 7a (help route): done - /help route outside (app) group (no navbar), floating back button via router.back(), "View manual" button in settings
