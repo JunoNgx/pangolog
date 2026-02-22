@@ -36,23 +36,15 @@ type GroupedItem =
     | { type: "header"; group: string }
     | { type: "command"; cmd: Command; idx: number };
 
-function nextTheme(current: string | undefined): "light" | "dark" | "system" {
-    if (current === "light") return "dark";
-    if (current === "dark") return "system";
-    return "light";
-}
-
-function themeIcon(current: string | undefined) {
-    if (current === "dark") return <Moon size={16} />;
-    if (current === "system") return <Monitor size={16} />;
-    return <Sun size={16} />;
-}
-
-function themeLabel(current: string | undefined): string {
-    if (current === "light") return "Switch to dark theme";
-    if (current === "dark") return "Switch to system theme";
-    return "Switch to light theme";
-}
+const THEME_OPTIONS = [
+    { value: "light" as const, label: "Switch to light theme", Icon: Sun },
+    { value: "dark" as const, label: "Switch to dark theme", Icon: Moon },
+    {
+        value: "system" as const,
+        label: "Switch to system theme",
+        Icon: Monitor,
+    },
+];
 
 export function CommandPalette() {
     const [isOpen, setIsOpen] = useState(false);
@@ -175,13 +167,13 @@ export function CommandPalette() {
                 icon: <Download size={16} />,
                 action: () => exportJson(true),
             },
-            {
-                id: "theme",
+            ...THEME_OPTIONS.filter((t) => t.value !== theme).map((t) => ({
+                id: `theme-${t.value}`,
                 group: "Actions",
-                label: themeLabel(theme),
-                icon: themeIcon(theme),
-                action: () => setTheme(nextTheme(theme)),
-            },
+                label: t.label,
+                icon: <t.Icon size={16} />,
+                action: () => setTheme(t.value),
+            })),
         ];
 
         return [...navigate, ...create, ...actions];
@@ -269,7 +261,7 @@ export function CommandPalette() {
                         onKeyDown={handleKeyDown}
                         classNames={{
                             inputWrapper:
-                                "shadow-none border-b border-default-200 rounded-none rounded-t-xl bg-transparent px-4",
+                                "shadow-none border-b border-default-200 rounded-none rounded-t-xl bg-transparent px-4 data-[focus-visible=true]:ring-0 data-[focus-visible=true]:ring-offset-0",
                         }}
                         variant="flat"
                     />
