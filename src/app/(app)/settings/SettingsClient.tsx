@@ -374,6 +374,22 @@ export default function SettingsClient() {
                 </Button>
             </section>
 
+            {/* DEBUG */}
+            <section className="mt-8">
+                <h3 className="text-lg font-semibold mb-1">
+                    Debug
+                </h3>
+                <Button
+                    variant="flat"
+                    onPress={() => toast("Debug toast notification", {
+                        duration: Infinity
+                    })}
+                >
+                    Trigger toast
+                </Button>
+            </section>
+            {/* END DEBUG */}
+
             <section className="mt-8">
                 <h3 className="text-lg font-semibold mb-1 text-danger">
                     Danger Zone
