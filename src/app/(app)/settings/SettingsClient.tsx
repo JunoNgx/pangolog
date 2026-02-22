@@ -132,8 +132,9 @@ export default function SettingsClient() {
         <div>
             <h2 className="text-xl font-bold mb-6">Settings</h2>
 
-            <section className="mb-8">
-                <h3 className="font-mono text-lg font-semibold mb-4">
+            <div className="MainListContainer gap-8">
+            <section>
+                <h3 className="text-lg font-semibold mb-4">
                     Google Drive Sync
                 </h3>
                 <div className="flex flex-col gap-3">
@@ -181,7 +182,7 @@ export default function SettingsClient() {
                             <Button
                                 color="primary"
                                 variant="flat"
-                                className="max-w-xs"
+                                className="self-start"
                                 isLoading={isConnecting}
                                 onPress={connect}
                             >
@@ -195,7 +196,7 @@ export default function SettingsClient() {
                 </div>
             </section>
 
-            <section className="mb-8">
+            <section>
                 <h3 className="text-lg font-semibold mb-4">Display Currency</h3>
                 <div className="flex flex-col gap-4">
                     <Input
@@ -226,7 +227,7 @@ export default function SettingsClient() {
                 </div>
             </section>
 
-            <section className="mb-8">
+            <section>
                 <h3 className="text-lg font-semibold mb-4">Theme</h3>
                 <RadioGroup
                     orientation="horizontal"
@@ -240,7 +241,7 @@ export default function SettingsClient() {
                 </RadioGroup>
             </section>
 
-            <section className="mb-8">
+            <section>
                 <h3 className="text-lg font-semibold mb-4">Export Data</h3>
                 <div className="flex flex-col gap-3">
                     <div className="flex items-center gap-3">
@@ -271,7 +272,7 @@ export default function SettingsClient() {
                 </div>
             </section>
 
-            <section className="mb-8">
+            <section>
                 <h3 className="text-lg font-semibold mb-4">Import Data</h3>
                 <div className="flex flex-col gap-3">
                     <input
@@ -284,7 +285,7 @@ export default function SettingsClient() {
                     <Button
                         color="primary"
                         variant="flat"
-                        className="max-w-xs"
+                        className="self-start"
                         onPress={() => fileInputRef.current?.click()}
                     >
                         Import JSON
@@ -358,7 +359,7 @@ export default function SettingsClient() {
                 </div>
             </section>
 
-            <section className="mt-12 mb-8">
+            <section>
                 <h3 className="text-lg font-semibold mb-1">Help &amp; Info</h3>
                 <p className="text-xs text-default-400 mb-4">
                     Overview of concepts, pages, hotkeys, and sync behaviour.
@@ -373,8 +374,8 @@ export default function SettingsClient() {
                 </Button>
             </section>
 
-            <section className="mt-12">
-                <h3 className="font-mono text-lg font-semibold mb-1 text-danger">
+            <section className="mt-8">
+                <h3 className="text-lg font-semibold mb-1 text-danger">
                     Danger Zone
                 </h3>
                 <p className="text-xs text-default-400 mb-4">
@@ -390,6 +391,7 @@ export default function SettingsClient() {
                     Reset all data
                 </Button>
             </section>
+            </div>
 
             <Modal
                 isOpen={isResetDialogOpen}
