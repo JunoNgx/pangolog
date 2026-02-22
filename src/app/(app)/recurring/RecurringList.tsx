@@ -3,24 +3,10 @@
 import { Skeleton } from "@heroui/react";
 import { useState } from "react";
 import type { Category, RecurringRule } from "@/lib/db/types";
-import { formatAmount } from "@/lib/utils";
+import { formatAmount, MONTH_NAMES } from "@/lib/utils";
 import { RecurringRuleDialog } from "./RecurringRuleDialog";
 
 const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-const MONTH_NAMES = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-];
 
 function formatFrequency(rule: RecurringRule): string {
     switch (rule.frequency) {

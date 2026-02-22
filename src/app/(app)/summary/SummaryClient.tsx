@@ -1,14 +1,15 @@
 "use client";
 
 import { Checkbox } from "@heroui/react";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
+import { MonthYearPicker } from "@/components/MonthYearPicker";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
 import type { Buck, Category, Dime } from "@/lib/db/types";
 import { useBucks } from "@/lib/hooks/useBucks";
 import { useCategories } from "@/lib/hooks/useCategories";
 import { useDimes, useDimesByYear } from "@/lib/hooks/useDimes";
 import { useSummaryStore } from "@/lib/store/useSummaryStore";
-import { formatAmount } from "@/lib/utils";
+import { formatAmount, SELECT_CLASSES, YEAR_OPTIONS } from "@/lib/utils";
 
 const OTHER_COLOUR = "#9ca3af";
 
@@ -147,13 +148,6 @@ export default function SummaryClient() {
     const { data: yearlyDimes } = useDimesByYear(selectedYear);
     const { data: bucks } = useBucks(selectedYear);
 
-    const [supportsMonthInput, setSupportsMonthInput] = useState(true);
-    useEffect(() => {
-        const input = document.createElement("input");
-        input.type = "month";
-        setSupportsMonthInput(input.type === "month");
-    }, []);
-
     const categoryMap = useMemo(
         () => new Map((categories ?? []).map((c) => [c.id, c])),
         [categories],
@@ -180,102 +174,6 @@ export default function SummaryClient() {
     const { slices: incomeSlices, total: incomeTotal } = useMemo(
         () => buildSlices(transactions, categoryMap, true),
         [transactions, categoryMap],
-    );
-
-    const monthValue = `${selectedYear}-${String(selectedMonth).padStart(2, "0")}`;
-
-    function handleMonthChange(value: string) {
-        const [y, m] = value.split("-").map(Number);
-        if (y && m) {
-            setSelectedYear(y);
-            setSelectedMonth(m);
-        }
-    }
-
-    function handleMonthSelect(e: React.ChangeEvent<HTMLSelectElement>) {
-        setSelectedMonth(Number(e.target.value));
-    }
-
-    function handleYearSelect(e: React.ChangeEvent<HTMLSelectElement>) {
-        setSelectedYear(Number(e.target.value));
-    }
-
-    const selectClasses = `
-        rounded-lg px-3 py-2
-        text-sm text-foreground
-        bg-default-100 border border-default-200
-        cursor-pointer
-    `;
-
-    const yearOptions = Array.from({ length: 21 }, (_, i) => {
-        return new Date().getFullYear() - 10 + i;
-    });
-
-    const monthNames = [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
-    ];
-
-    const monthPicker = isYearly ? (
-        <select
-            value={selectedYear}
-            onChange={handleYearSelect}
-            className={selectClasses}
-        >
-            {yearOptions.map((y) => (
-                <option key={y} value={y}>
-                    {y}
-                </option>
-            ))}
-        </select>
-    ) : supportsMonthInput ? (
-        <input
-            type="month"
-            value={monthValue}
-            onChange={(e) => handleMonthChange(e.target.value)}
-            className={`
-                w-42
-                rounded-lg px-3 py-2
-                text-sm text-foreground
-                bg-default-100 border border-default-200
-                cursor-pointer
-            `}
-        />
-    ) : (
-        <div className="flex gap-1">
-            <select
-                value={selectedMonth}
-                onChange={handleMonthSelect}
-                className={selectClasses}
-            >
-                {monthNames.map((name, i) => (
-                    <option key={name} value={i + 1}>
-                        {name}
-                    </option>
-                ))}
-            </select>
-            <select
-                value={selectedYear}
-                onChange={handleYearSelect}
-                className={selectClasses}
-            >
-                {yearOptions.map((y) => (
-                    <option key={y} value={y}>
-                        {y}
-                    </option>
-                ))}
-            </select>
-        </div>
     );
 
     return (
@@ -306,7 +204,28 @@ export default function SummaryClient() {
                 )}
 
                 <div className="flex items-center justify-between gap-4">
-                    {monthPicker}
+                    {isYearly ? (
+                        <select
+                            value={selectedYear}
+                            onChange={(e) =>
+                                setSelectedYear(Number(e.target.value))
+                            }
+                            className={SELECT_CLASSES}
+                        >
+                            {YEAR_OPTIONS.map((y) => (
+                                <option key={y} value={y}>
+                                    {y}
+                                </option>
+                            ))}
+                        </select>
+                    ) : (
+                        <MonthYearPicker
+                            selectedYear={selectedYear}
+                            selectedMonth={selectedMonth}
+                            onYearChange={setSelectedYear}
+                            onMonthChange={setSelectedMonth}
+                        />
+                    )}
                     {isYearly && !isViewingBucksOnly && (
                         <Checkbox
                             isSelected={includeBucks}

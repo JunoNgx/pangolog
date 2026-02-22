@@ -28,6 +28,11 @@ import {
     useRestoreDime,
     useUpdateDime,
 } from "@/lib/hooks/useDimes";
+import {
+    fromDateInputValue,
+    toDateInputValue,
+    todayDateString,
+} from "@/lib/utils";
 
 interface TransactionDialogProps {
     isOpen: boolean;
@@ -38,26 +43,6 @@ interface TransactionDialogProps {
 
 function isDime(tx: Dime | Buck): tx is Dime {
     return "month" in tx;
-}
-
-function todayDateString(): string {
-    const d = new Date();
-    const year = d.getFullYear();
-    const month = String(d.getMonth() + 1).padStart(2, "0");
-    const day = String(d.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-}
-
-function toDateInputValue(isoString: string): string {
-    const d = new Date(isoString);
-    const year = d.getFullYear();
-    const month = String(d.getMonth() + 1).padStart(2, "0");
-    const day = String(d.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-}
-
-function fromDateInputValue(dateStr: string): string {
-    return new Date(`${dateStr}T12:00:00`).toISOString();
 }
 
 export function TransactionDialog({
