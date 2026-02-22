@@ -275,7 +275,7 @@ export function CommandPalette() {
                     />
                     <div
                         ref={scrollRef}
-                        className="overflow-y-auto max-h-72 pb-2"
+                        className="overflow-y-auto max-h-128 pb-2"
                     >
                         {filteredCommands.length === 0 && (
                             <p className="text-sm text-default-400 text-center py-6">
