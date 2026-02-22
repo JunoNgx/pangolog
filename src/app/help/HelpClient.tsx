@@ -21,13 +21,7 @@ function Section({
     );
 }
 
-function Term({
-    name,
-    children,
-}: {
-    name: string;
-    children: React.ReactNode;
-}) {
+function Term({ name, children }: { name: string; children: React.ReactNode }) {
     return (
         <div className="mb-3">
             <p className="font-mono text-sm font-medium text-foreground mb-1">
@@ -69,8 +63,8 @@ export default function HelpClient() {
                 <Term name="Categories">
                     Labels attached to transactions. Each category has a name,
                     colour, and emoji icon. Categories can be marked as
-                    income-only or Big Bucks-only to filter them from
-                    irrelevant pickers.
+                    income-only or Big Bucks-only to filter them from irrelevant
+                    pickers.
                 </Term>
             </Section>
 
@@ -78,8 +72,8 @@ export default function HelpClient() {
                 <Term name="Transactions">
                     View and manage Small Dimes or Big Bucks. Switch between
                     modes with the toggle. Filter by month (Dimes) or year
-                    (Bucks). Optionally include Big Bucks alongside Dimes for
-                    a combined view.
+                    (Bucks). Optionally include Big Bucks alongside Dimes for a
+                    combined view.
                 </Term>
                 <Term name="Categories">
                     Create, edit, and reorder categories. Drag to change
@@ -102,12 +96,19 @@ export default function HelpClient() {
             </Section>
 
             <Section title="Keyboard shortcuts">
+                <p className="text-sm text-default-500 mb-3">
+                    <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
+                        Ctrl/Cmd + K
+                    </kbd>{" "}
+                    opens the command palette for quick navigation and actions
+                    anywhere in the app.
+                </p>
                 <p className="text-sm text-default-500">
                     <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
                         Ctrl/Cmd + Enter
-                    </kbd>
-                    {" "}opens the create dialog on the Transactions, Categories,
-                    and Recurring rules pages.
+                    </kbd>{" "}
+                    opens the create dialog on the Transactions, Categories, and
+                    Recurring rules pages.
                 </p>
             </Section>
 
@@ -128,12 +129,12 @@ export default function HelpClient() {
             <Section title="Google Drive sync">
                 <p className="text-sm text-default-500 mb-3">
                     Sync is optional and can be enabled or disabled from
-                    Settings. When connected, data is synced automatically
-                    after changes and whenever the app becomes visible again.
-                    Syncing is debounced - the app waits 30 seconds after the
-                    last change before uploading, rather than sending a
-                    request on every edit. This reduces unnecessary API calls
-                    and avoids hitting Google Drive&apos;s rate limits.
+                    Settings. When connected, data is synced automatically after
+                    changes and whenever the app becomes visible again. Syncing
+                    is debounced - the app waits 30 seconds after the last
+                    change before uploading, rather than sending a request on
+                    every edit. This reduces unnecessary API calls and avoids
+                    hitting Google Drive&apos;s rate limits.
                 </p>
                 <p className="text-sm text-default-500 mb-3">
                     Conflicts are resolved by last-write-wins using the

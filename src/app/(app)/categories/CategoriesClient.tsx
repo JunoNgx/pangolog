@@ -2,7 +2,8 @@
 
 import { Button, Tooltip } from "@heroui/react";
 import { Plus } from "lucide-react";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { createAction } from "@/lib/createAction";
 import { useHotkey } from "@/lib/hooks/useHotkey";
 import { CategoryDialog } from "./CategoryDialog";
 import { CategoryList } from "./CategoryList";
@@ -11,6 +12,10 @@ export default function CategoriesClient() {
     const [isCreateOpen, setIsCreateOpen] = useState(false);
     const openCreateDialog = useCallback(() => setIsCreateOpen(true), []);
     useHotkey("Enter", openCreateDialog, { ctrlOrMeta: true });
+    useEffect(
+        () => createAction.register(openCreateDialog),
+        [openCreateDialog],
+    );
 
     return (
         <div>

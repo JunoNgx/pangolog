@@ -2,9 +2,10 @@
 
 import { Button, Checkbox, Tooltip } from "@heroui/react";
 import { Plus } from "lucide-react";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { MonthYearPicker } from "@/components/MonthYearPicker";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
+import { createAction } from "@/lib/createAction";
 import { useBucks } from "@/lib/hooks/useBucks";
 import { useCategories } from "@/lib/hooks/useCategories";
 import { useDimes } from "@/lib/hooks/useDimes";
@@ -22,6 +23,10 @@ export default function LogClient() {
     const [isCreateOpen, setIsCreateOpen] = useState(false);
     const openCreateDialog = useCallback(() => setIsCreateOpen(true), []);
     useHotkey("Enter", openCreateDialog, { ctrlOrMeta: true });
+    useEffect(
+        () => createAction.register(openCreateDialog),
+        [openCreateDialog],
+    );
 
     const {
         isViewingBigBucks,

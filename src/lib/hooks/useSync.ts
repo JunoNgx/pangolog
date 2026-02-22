@@ -10,11 +10,14 @@ import { useGoogleAuth } from "./useGoogleAuth";
 
 const DEBOUNCE_MS = 30_000;
 
+// Module-level flag prevents concurrent syncs across hook instances.
+let isSyncing = false;
+
 function isAuthError(err: unknown): boolean {
     return err instanceof Error && err.message.includes("401");
 }
 
-export function useSync() {
+export function useSyncFn() {
     const {
         driveFolderId,
         setDriveFolderId,
@@ -24,18 +27,16 @@ export function useSync() {
         setAuthToken,
     } = useLocalSettingsStore();
     const { getValidToken } = useGoogleAuth();
-    const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-    const isSyncingRef = useRef(false);
     const queryClient = useQueryClient();
 
     const sync = useCallback(
         async (silent = false) => {
-            if (isSyncingRef.current) return;
-            isSyncingRef.current = true;
+            if (isSyncing) return;
+            isSyncing = true;
 
             const token = await getValidToken();
             if (!token) {
-                isSyncingRef.current = false;
+                isSyncing = false;
                 return;
             }
 
@@ -90,7 +91,7 @@ export function useSync() {
                 setSyncError(message);
                 toast.error(`Sync failed: ${message}`, { duration: Infinity });
             } finally {
-                isSyncingRef.current = false;
+                isSyncing = false;
             }
         },
         [
@@ -104,6 +105,14 @@ export function useSync() {
             setSyncStatus,
         ],
     );
+
+    return { sync };
+}
+
+export function useSync() {
+    const { sync } = useSyncFn();
+    const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const queryClient = useQueryClient();
 
     const debouncedSync = useCallback(() => {
         if (debounceRef.current) clearTimeout(debounceRef.current);
