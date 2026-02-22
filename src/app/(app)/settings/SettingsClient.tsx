@@ -156,6 +156,14 @@ export default function SettingsClient() {
                             </p>
                             <div className="flex gap-2">
                                 <Button
+                                    color="danger"
+                                    variant="flat"
+                                    className="max-w-xs"
+                                    onPress={disconnect}
+                                >
+                                    Disconnect
+                                </Button>
+                                <Button
                                     color="primary"
                                     variant="flat"
                                     className="max-w-xs"
@@ -163,14 +171,6 @@ export default function SettingsClient() {
                                     onPress={() => sync()}
                                 >
                                     Sync now
-                                </Button>
-                                <Button
-                                    color="danger"
-                                    variant="flat"
-                                    className="max-w-xs"
-                                    onPress={disconnect}
-                                >
-                                    Disconnect
                                 </Button>
                             </div>
                         </>
