@@ -21,6 +21,13 @@
     }
 }
 
+/* Push toasts above the mobile bottom navbar (h-16 = 4rem) */
+@media (max-width: 767px) {
+    [data-sonner-toaster] {
+        --offset: 80px !important;
+    }
+}
+
 @layer components {
     .MainListContainer {
         @apply flex flex-col max-w-lg mx-auto;
