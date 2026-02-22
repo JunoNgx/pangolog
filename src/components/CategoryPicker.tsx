@@ -1,7 +1,10 @@
 "use client";
 
 import { Button } from "@heroui/react";
+import { useState } from "react";
 import type { Category } from "@/lib/db/types";
+
+const COLLAPSED_LIMIT = 10;
 
 interface CategoryPickerProps {
     categories: Category[];
@@ -14,6 +17,11 @@ export function CategoryPicker({
     selectedId,
     onChange,
 }: CategoryPickerProps) {
+    const [isExpanded, setIsExpanded] = useState(false);
+
+    const hasMore = categories.length > COLLAPSED_LIMIT;
+    const displayedCategories = isExpanded ? categories : categories.slice(0, COLLAPSED_LIMIT);
+
     return (
         <div>
             <p className="text-sm text-default-500 mb-2">Category</p>
@@ -22,8 +30,8 @@ export function CategoryPicker({
                     No categories available. Add one from the Categories menu.
                 </p>
             )}
-            <div className="flex flex-wrap gap-2 max-h-36 overflow-y-auto p-1">
-                {categories.map((cat) => (
+            <div className="flex flex-wrap gap-2">
+                {displayedCategories.map((cat) => (
                     <Button
                         key={cat.id}
                         size="sm"
@@ -43,6 +51,17 @@ export function CategoryPicker({
                         <span>{cat.name}</span>
                     </Button>
                 ))}
+                {hasMore && (
+                    <Button
+                        size="sm"
+                        variant="light"
+                        onPress={() => setIsExpanded((prev) => !prev)}
+                    >
+                        {isExpanded
+                            ? "Show less"
+                            : `+${categories.length - COLLAPSED_LIMIT} more`}
+                    </Button>
+                )}
             </div>
         </div>
     );
