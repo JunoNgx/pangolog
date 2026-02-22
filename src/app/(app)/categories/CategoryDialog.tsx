@@ -152,7 +152,10 @@ export function CategoryDialog({
         <Modal
             isOpen={isOpen}
             onClose={onClose}
-            classNames={{ closeButton: "cursor-pointer" }}
+            classNames={{
+                closeButton: "cursor-pointer",
+                body: "overflow-y-auto max-h-[calc(var(--visual-viewport-height,100svh)-10rem)]",
+            }}
         >
             <ModalContent>
                 <form onSubmit={handleSubmit}>
