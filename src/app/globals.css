@@ -23,7 +23,7 @@
 
 @layer components {
     .MainListContainer {
-        @apply flex flex-col max-w-xl mx-auto;
+        @apply flex flex-col max-w-lg mx-auto;
     }
 
     .ChipLabel {
