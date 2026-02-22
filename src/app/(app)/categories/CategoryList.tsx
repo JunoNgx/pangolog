@@ -35,7 +35,6 @@ function SortableCategoryItem({
                 flex items-center
                 bg-background
                 border border-default-200
-                overflow-hidden
                 hover:bg-default-50
                 ${isDragging ? "opacity-50" : ""}
             `}
