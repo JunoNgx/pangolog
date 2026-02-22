@@ -112,7 +112,6 @@ export function useGoogleAuth() {
         if (isTokenValid(authToken)) return authToken.accessToken;
 
         if (!window.google || !CLIENT_ID) {
-            setAuthToken(null);
             return null;
         }
 
@@ -123,7 +122,6 @@ export function useGoogleAuth() {
                 scope: SCOPE,
                 callback: (response) => {
                     if (response.error) {
-                        setAuthToken(null);
                         resolve(null);
                         return;
                     }
@@ -136,7 +134,6 @@ export function useGoogleAuth() {
                     resolve(updated.accessToken);
                 },
                 error_callback: () => {
-                    setAuthToken(null);
                     resolve(null);
                 },
             });
