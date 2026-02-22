@@ -347,6 +347,20 @@ The settings page includes a "Danger Zone" section with a "Reset all data" butto
 ### Keyboard flash on Android when closing dialog via backdrop tap
 On Android (Chrome and Firefox), tapping the backdrop to dismiss a dialog causes the virtual keyboard to flash briefly before disappearing. This happens because the input blur fires mid-close-animation, after the dismiss has already begun. The fix: `handleBackdropTouchStart` on the Modal detects a touch outside `[role="dialog"]` (i.e. the backdrop) and calls `blur()` on `touchstart`. Since `touchstart` precedes the `click` that triggers `onClose`, the keyboard has a full touch event cycle to dismiss before the modal begins closing.
 
+### Dialog body scrolling on mobile (keyboard-aware max-height)
+
+When the soft keyboard opens on mobile, the dialog content can overflow the visible area. The naive fixes - `vh`, `dvh`, `svh` - don't reliably reflect the visible area above the keyboard across browsers. We tried capping the modal's `base` slot, overriding `scrollBehavior`, and a JS `visualViewport` listener writing a custom `--vh` property, all to varying degrees of broken.
+
+The actual fix came from inspecting HeroUI's source: it already tracks `window.visualViewport.height` internally via a `useViewportSize` hook, and writes it to `--visual-viewport-height` on the modal wrapper, updated on every `visualViewport` resize event. That variable is the real source of truth for the visible area above the keyboard. Capping the body slot against it works correctly:
+
+```tsx
+classNames={{
+    body: "overflow-y-auto max-h-[calc(var(--visual-viewport-height,100svh)-10rem)]",
+}}
+```
+
+The `10rem` covers the modal header, footer, and padding. `100svh` is the fallback before HeroUI has written the variable on first render - `svh` works here because it is defined as the viewport height with all browser UI (including the keyboard) expanded.
+
 ### Known issue: dialog input scroll on Firefox Android
 On Firefox Android, focusing an input inside a dialog scrolls it out of view above the fixed bottom navbar. A potential fix: disable `autoFocus` on touch devices via a `useIsPointerFine` hook that checks the `(pointer: fine)` media query. Not applied - the issue is intermittent and unconfirmed on other mobile browsers.
 
