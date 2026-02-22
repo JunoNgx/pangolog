@@ -37,7 +37,7 @@ export function AppNavbar() {
                 <NextLink href="/" className="font-bold text-lg mr-6 shrink-0">
                     Pangolog
                 </NextLink>
-                <nav className="flex items-center gap-1 flex-1">
+                <nav className="flex items-center gap-1 ml-auto">
                     {navItems.map((item) => {
                         const isActive = pathname === item.href;
                         const linkClass = `
