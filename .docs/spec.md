@@ -182,6 +182,11 @@ Approach:
     - Green: synced
     - Blue: sync in progress
     - Red: encountering error, with message
+- Command palette (Cmd/Ctrl+K): global quick-access overlay with filtered command list
+    - Navigate: Go to Log, Categories, Summary, Recurring, Settings, Help
+    - Create: context-aware (New transaction / New category / New recurring rule) - only shown on routes with a create dialog; wired via a module-level `createAction` registry
+    - Actions: Sync now (only when Drive connected), Export JSON, theme switcher (shows the two non-active theme options)
+    - Keyboard navigation: ArrowUp/Down moves selection, Enter executes, Escape closes
 
 ### Navbar
 - A list of to the app's routes (e.g. `/log`, `/settings`)
@@ -302,7 +307,9 @@ Approach:
     - Summary
     - Recurring rules
     - Settings
-- Hotkey shortcut: Ctrl/Cmd + Enter in the three lists
+- Hotkey shortcuts:
+    - Ctrl/Cmd + K: open command palette (global)
+    - Ctrl/Cmd + Enter: open create dialog on Log, Categories, and Recurring rules pages
 - Recurring rules
     - Creation-triggering events/logic (`visibilitychange)
     - Quirk: if not used for a long time, will skip previous possible entries, and only create the newest possible entry.
