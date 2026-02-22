@@ -6,6 +6,7 @@ import { useCallback, useMemo, useState } from "react";
 import { useCategories } from "@/lib/hooks/useCategories";
 import { useHotkey } from "@/lib/hooks/useHotkey";
 import { useRecurringRules } from "@/lib/hooks/useRecurringRules";
+import { SELECT_CLASSES } from "@/lib/utils";
 import { RecurringList } from "./RecurringList";
 import { RecurringRuleDialog } from "./RecurringRuleDialog";
 
@@ -85,13 +86,6 @@ export default function RecurringClient() {
         setSortBy(e.target.value as SortBy);
     }
 
-    const selectClasses = `
-        self-start rounded-lg px-3 py-2
-        text-sm text-foreground
-        bg-default-100 border border-default-200
-        cursor-pointer
-    `;
-
     return (
         <div>
             <h2 className="text-xl font-bold mb-4">Recurring Transactions</h2>
@@ -121,7 +115,7 @@ export default function RecurringClient() {
                     <select
                         value={sortBy}
                         onChange={handleSortChange}
-                        className={selectClasses}
+                        className={`self-start ${SELECT_CLASSES}`}
                     >
                         {SORT_OPTIONS.map((opt) => (
                             <option key={opt.value} value={opt.value}>

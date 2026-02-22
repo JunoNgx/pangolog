@@ -22,6 +22,13 @@ import {
     useRestoreRecurringRule,
     useUpdateRecurringRule,
 } from "@/lib/hooks/useRecurringRules";
+import {
+    fromDateInputValue,
+    MONTH_NAMES,
+    SELECT_CLASSES,
+    toDateInputValue,
+    todayDateString,
+} from "@/lib/utils";
 
 type Frequency = "daily" | "weekly" | "monthly" | "yearly";
 
@@ -34,40 +41,6 @@ const DAY_NAMES = [
     "Friday",
     "Saturday",
 ];
-const MONTH_NAMES = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-];
-
-function todayDateString(): string {
-    const d = new Date();
-    const y = d.getFullYear();
-    const m = String(d.getMonth() + 1).padStart(2, "0");
-    const day = String(d.getDate()).padStart(2, "0");
-    return `${y}-${m}-${day}`;
-}
-
-function toDateInputValue(isoString: string): string {
-    const d = new Date(isoString);
-    const y = d.getFullYear();
-    const m = String(d.getMonth() + 1).padStart(2, "0");
-    const day = String(d.getDate()).padStart(2, "0");
-    return `${y}-${m}-${day}`;
-}
-
-function fromDateInputValue(dateStr: string): string {
-    return new Date(`${dateStr}T12:00:00`).toISOString();
-}
 
 function getRepeatLabel(frequency: Frequency, dateStr: string): string {
     const date = new Date(`${dateStr}T12:00:00`);
@@ -215,13 +188,6 @@ export function RecurringRuleDialog({
     const isDeleting = deleteRule.isPending;
     const repeatLabel = getRepeatLabel(frequency, startDate);
 
-    const selectClasses = `
-        rounded-lg px-3 py-2
-        text-sm text-foreground
-        bg-default-100 border border-default-200
-        cursor-pointer
-    `;
-
     return (
         <Modal
             isOpen={isOpen}
@@ -350,7 +316,7 @@ export function RecurringRuleDialog({
                                 <select
                                     value={frequency}
                                     onChange={handleFrequencyChange}
-                                    className={selectClasses}
+                                    className={SELECT_CLASSES}
                                 >
                                     <option value="daily">Daily</option>
                                     <option value="weekly">Weekly</option>

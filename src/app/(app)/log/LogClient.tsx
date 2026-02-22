@@ -2,14 +2,15 @@
 
 import { Button, Checkbox, Tooltip } from "@heroui/react";
 import { Plus } from "lucide-react";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
+import { MonthYearPicker } from "@/components/MonthYearPicker";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
 import { useBucks } from "@/lib/hooks/useBucks";
 import { useCategories } from "@/lib/hooks/useCategories";
 import { useDimes } from "@/lib/hooks/useDimes";
 import { useHotkey } from "@/lib/hooks/useHotkey";
 import { useLogStore } from "@/lib/store/useLogStore";
-import { formatAmount } from "@/lib/utils";
+import { formatAmount, SELECT_CLASSES, YEAR_OPTIONS } from "@/lib/utils";
 import {
     CategoryFilterDropdown,
     UNCATEGORISED_ID,
@@ -88,100 +89,6 @@ export default function LogClient() {
         ? bucksLoading
         : dimesLoading || (shouldIncludeBucksInDimes && bucksLoading);
 
-    const [supportsMonthInput, setSupportsMonthInput] = useState(true);
-
-    useEffect(() => {
-        const input = document.createElement("input");
-        input.type = "month";
-        setSupportsMonthInput(input.type === "month");
-    }, []);
-
-    const monthValue = `${selectedYear}-${String(selectedMonth).padStart(2, "0")}`;
-
-    function handleMonthChange(value: string) {
-        const [y, m] = value.split("-").map(Number);
-        if (y && m) {
-            setSelectedYear(y);
-            setSelectedMonth(m);
-        }
-    }
-
-    function handleMonthSelect(e: React.ChangeEvent<HTMLSelectElement>) {
-        setSelectedMonth(Number(e.target.value));
-    }
-
-    function handleYearSelect(e: React.ChangeEvent<HTMLSelectElement>) {
-        setSelectedYear(Number(e.target.value));
-    }
-
-    const standardMonthSelector = (
-        <input
-            type="month"
-            value={monthValue}
-            onChange={(e) => handleMonthChange(e.target.value)}
-            className={`
-                w-42
-                rounded-lg px-3 py-2
-                text-sm text-foreground
-                bg-default-100 border border-default-200
-                cursor-pointer
-            `}
-        />
-    );
-
-    const fallbackMonthNames = [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
-    ];
-
-    const fallbackSelectClasses = `
-        rounded-lg px-3 py-2
-        text-sm text-foreground
-        bg-default-100 border border-default-200
-        cursor-pointer
-    `;
-
-    const fallbackYearOptions = Array.from({ length: 21 }, (_, i) => {
-        return new Date().getFullYear() - 10 + i;
-    });
-
-    const fallbackMonthSelector = (
-        <div className="flex gap-1">
-            <select
-                value={selectedMonth}
-                onChange={handleMonthSelect}
-                className={fallbackSelectClasses}
-            >
-                {fallbackMonthNames.map((name, i) => (
-                    <option key={name} value={i + 1}>
-                        {name}
-                    </option>
-                ))}
-            </select>
-            <select
-                value={selectedYear}
-                onChange={handleYearSelect}
-                className={fallbackSelectClasses}
-            >
-                {fallbackYearOptions.map((y) => (
-                    <option key={y} value={y}>
-                        {y}
-                    </option>
-                ))}
-            </select>
-        </div>
-    );
-
     return (
         <div>
             <h2 className="text-xl font-bold mb-4">Transactions</h2>
@@ -199,9 +106,12 @@ export default function LogClient() {
 
                 {!isViewingBigBucks && (
                     <div className="flex items-center justify-between gap-4">
-                        {supportsMonthInput
-                            ? standardMonthSelector
-                            : fallbackMonthSelector}
+                        <MonthYearPicker
+                            selectedYear={selectedYear}
+                            selectedMonth={selectedMonth}
+                            onYearChange={setSelectedYear}
+                            onMonthChange={setSelectedMonth}
+                        />
                         <Checkbox
                             isSelected={shouldIncludeBucksInDimes}
                             onValueChange={setShouldIncludeBucksInDimes}
@@ -215,10 +125,12 @@ export default function LogClient() {
                 {isViewingBigBucks && (
                     <select
                         value={selectedYear}
-                        onChange={handleYearSelect}
-                        className={`self-start ${fallbackSelectClasses}`}
+                        onChange={(e) =>
+                            setSelectedYear(Number(e.target.value))
+                        }
+                        className={`self-start ${SELECT_CLASSES}`}
                     >
-                        {fallbackYearOptions.map((y) => (
+                        {YEAR_OPTIONS.map((y) => (
                             <option key={y} value={y}>
                                 {y}
                             </option>
