@@ -107,39 +107,43 @@ export function useGoogleAuth() {
         setAuthToken(null);
     }, [authToken, setAuthToken]);
 
-    const getValidToken = useCallback(async (): Promise<string | null> => {
-        if (!authToken) return null;
-        if (isTokenValid(authToken)) return authToken.accessToken;
+    const getValidToken = useCallback(
+        async (forceRefresh = false): Promise<string | null> => {
+            if (!authToken) return null;
+            if (!forceRefresh && isTokenValid(authToken))
+                return authToken.accessToken;
 
-        if (!window.google || !CLIENT_ID) {
-            return null;
-        }
+            if (!window.google || !CLIENT_ID) {
+                return null;
+            }
 
-        const google = window.google;
-        return new Promise((resolve) => {
-            const client = google.accounts.oauth2.initTokenClient({
-                client_id: CLIENT_ID,
-                scope: SCOPE,
-                callback: (response) => {
-                    if (response.error) {
+            const google = window.google;
+            return new Promise((resolve) => {
+                const client = google.accounts.oauth2.initTokenClient({
+                    client_id: CLIENT_ID,
+                    scope: SCOPE,
+                    callback: (response) => {
+                        if (response.error) {
+                            resolve(null);
+                            return;
+                        }
+                        const updated: AuthToken = {
+                            ...authToken,
+                            accessToken: response.access_token,
+                            expiresAt: Date.now() + response.expires_in * 1000,
+                        };
+                        setAuthToken(updated);
+                        resolve(updated.accessToken);
+                    },
+                    error_callback: () => {
                         resolve(null);
-                        return;
-                    }
-                    const updated: AuthToken = {
-                        ...authToken,
-                        accessToken: response.access_token,
-                        expiresAt: Date.now() + response.expires_in * 1000,
-                    };
-                    setAuthToken(updated);
-                    resolve(updated.accessToken);
-                },
-                error_callback: () => {
-                    resolve(null);
-                },
+                    },
+                });
+                client.requestAccessToken({ prompt: "" });
             });
-            client.requestAccessToken({ prompt: "" });
-        });
-    }, [authToken, setAuthToken]);
+        },
+        [authToken, setAuthToken],
+    );
 
     return {
         authToken,

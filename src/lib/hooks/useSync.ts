@@ -58,21 +58,27 @@ export function useSyncFn() {
                 if (!silent) toast.success("Sync complete");
             } catch (err) {
                 if (isAuthError(err)) {
-                    const freshToken = await getValidToken();
-                    if (freshToken) {
-                        try {
-                            const retryFolderId =
-                                driveFolderId ??
-                                (await getOrCreatePangoFolder(freshToken));
-                            await syncAll(freshToken, retryFolderId);
-                            await queryClient.invalidateQueries();
-                            setSyncStatus("idle");
-                            setLastSyncTime(new Date().toISOString());
-                            if (!silent) toast.success("Sync complete");
-                            return;
-                        } catch {
-                            // retry also failed, fall through to disconnect
-                        }
+                    // Force a GIS refresh regardless of local token validity -
+                    // the 401 means the token is actually expired (e.g. clock skew).
+                    const freshToken = await getValidToken(true);
+                    if (!freshToken) {
+                        // Silent refresh failed (e.g. mobile PWA WebView limitation).
+                        // Stay connected and silently skip - next sync will retry.
+                        setSyncStatus("idle");
+                        return;
+                    }
+                    try {
+                        const retryFolderId =
+                            driveFolderId ??
+                            (await getOrCreatePangoFolder(freshToken));
+                        await syncAll(freshToken, retryFolderId);
+                        await queryClient.invalidateQueries();
+                        setSyncStatus("idle");
+                        setLastSyncTime(new Date().toISOString());
+                        if (!silent) toast.success("Sync complete");
+                        return;
+                    } catch {
+                        // Fresh token was still rejected - genuine revocation.
                     }
                     setAuthToken(null);
                     setSyncStatus("error");
