@@ -21,11 +21,8 @@
     }
 }
 
-/* Push toasts above the mobile bottom navbar (h-16 = 4rem) */
-@media (max-width: 767px) {
-    [data-sonner-toaster] {
-        --offset: 80px !important;
-    }
+[data-sonner-toaster] {
+    --mobile-offset-bottom: 80px !important;
 }
 
 @layer components {
