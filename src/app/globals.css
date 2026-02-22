@@ -21,10 +21,6 @@
     }
 }
 
-[data-sonner-toaster] {
-    --mobile-offset-bottom: 80px !important;
-}
-
 @layer components {
     .MainListContainer {
         @apply flex flex-col max-w-lg mx-auto;
