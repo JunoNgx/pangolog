@@ -32,6 +32,7 @@ function ThemedToaster() {
         <Toaster
             theme={resolvedTheme as "light" | "dark"}
             toastOptions={{ classNames: { toast: "" } }}
+            mobileOffset={{ bottom: "80px" }}
         />
     );
 }
