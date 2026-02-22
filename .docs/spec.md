@@ -287,8 +287,7 @@ Approach:
 
 #### Layout
 - Basic and simple read-only text content
-- Floating button to return to settings
-    - Decision to make: Should it consistently return to `/settings`, or detect the referrer?
+- Floating button to return to previous page via `router.back()`
 
 #### Content
 - App overview
