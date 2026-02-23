@@ -398,3 +398,7 @@ A manual "Clear service worker cache" button in Settings (debug section) is a us
 Dimes and Bucks don't record `transactedAt` (this always default to noon). This leads to cases where one transaction is recorded after another, but their display sequence is shuffled in the group (of the same date). This can be confusing and disorientating.
 
 Suggestion: Record current local time upon creating the transaction.
+
+### #2 Hydration error
+
+The custom currency is causing hydration error in the `/log` route, at the total expense count.
