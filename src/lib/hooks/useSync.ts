@@ -63,8 +63,8 @@ export function useSyncFn() {
 
                 setSyncStatus("idle");
                 setLastSyncTime(new Date().toISOString());
+                addLoggerEntry("Sync attempt is successful, will trigger toast if not silent", "sync:success",  silent);
                 if (!silent) {
-                    addLoggerEntry("Sync attempt is successful, triggering toast to inform user", "sync:success");
                     toast.success("Sync complete");
                 }
             } catch (err) {
