@@ -3,6 +3,12 @@ import { persist } from "zustand/middleware";
 import type { AuthToken } from "@/lib/auth/types";
 
 export type SyncStatus = "idle" | "syncing" | "error";
+export type LoggerEntry = {
+    datetime: string;
+    message: string;
+    logcode?: string;
+    data?: any;
+};
 
 interface LocalSettingsStore {
     authToken: AuthToken | null;
@@ -16,6 +22,8 @@ interface LocalSettingsStore {
     syncError: string | null;
     setSyncError: (error: string | null) => void;
     hasHydrated: boolean;
+    loggerEntries: LoggerEntry[];
+    setLoggerEntries: (entries: LoggerEntry[]) => void;
 }
 
 export const useLocalSettingsStore = create<LocalSettingsStore>()(
@@ -32,6 +40,8 @@ export const useLocalSettingsStore = create<LocalSettingsStore>()(
             syncError: null,
             setSyncError: (error) => set({ syncError: error }),
             hasHydrated: false,
+            loggerEntries: [],
+            setLoggerEntries: (entries) => set({ loggerEntries: entries }),
         }),
         {
             name: "pangolog-local-settings",
