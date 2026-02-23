@@ -6,11 +6,11 @@ import {
 } from "@/lib/store/useLocalSettingsStore";
 
 export function useLogger() {
-    const loggerEntries = useLocalSettingsStore((state) => state.loggerEntries);
     const setLoggerEntries = useLocalSettingsStore((state) => state.setLoggerEntries);
 
     function getLoggerEntries() {
-        return [...loggerEntries];
+        const currentEntries = useLocalSettingsStore.getState().loggerEntries;
+        return [...currentEntries];
     }
 
     function addLoggerEntry(
@@ -32,7 +32,9 @@ export function useLogger() {
             logcode,
             data,
         };
-        setLoggerEntries([...loggerEntries, newEntry]);
+
+        const currentEntries = useLocalSettingsStore.getState().loggerEntries;
+        setLoggerEntries([...currentEntries, newEntry]);
     }
 
     function clearLoggerEntries() {
