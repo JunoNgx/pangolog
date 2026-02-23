@@ -28,6 +28,7 @@ import {
 } from "@/lib/import";
 import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
+import { useLogger } from "@/lib/hooks/useLogger";
 
 export default function SettingsClient() {
     const {
@@ -41,6 +42,7 @@ export default function SettingsClient() {
     const { theme, setTheme } = useTheme();
     const { sync } = useSync();
     const { syncStatus, lastSyncTime, syncError } = useLocalSettingsStore();
+    const { getLoggerEntries, addLoggerEntry, clearLoggerEntries } = useLogger();
 
     const [prettyPrint, setPrettyPrint] = useState(true);
     const [isExportingJson, setIsExportingJson] = useState(false);
@@ -127,6 +129,47 @@ export default function SettingsClient() {
             ? `${customCurrency}${previewAmount}`
             : `${previewAmount} ${customCurrency}`
         : previewAmount;
+
+    function handleAddDebugLoggerEntry() {
+        addLoggerEntry(
+            "settings:debug",
+            "User presses the debug log button"
+        );
+    };
+
+    function handleClearDebugLoggerEntry() {
+        clearLoggerEntries();
+    };
+
+    async function handleCopyDebugLoggerEntries() {
+        const entries = getLoggerEntries();
+        const content = JSON.stringify(entries, null, 2);
+        try {
+            console.log("Logger content: ", content);
+            await navigator.clipboard.writeText(content);
+        } catch (error) {
+            toast.error(`Unable to copy Logger content to clipboard: ${error}`, {
+                duration: Infinity,
+            });
+        }
+    };
+
+    function handleDumpDebugLoggerContent() {
+        const entries = getLoggerEntries();
+        const jsonString = JSON.stringify(entries, null, 2);
+
+        const blob = new Blob([jsonString], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+
+        const todayDateStr = new Date().toISOString().split("T")[0];
+        link.href = url;
+        link.download = `pangolog-logdump-${todayDateStr}.json`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    };
 
     return (
         <div>
@@ -391,6 +434,38 @@ export default function SettingsClient() {
                         }
                     >
                         Trigger toast
+                    </Button>
+
+                    <Button
+                        className="block mt-2"
+                        variant="flat"
+                        onPress={handleCopyDebugLoggerEntries}
+                    >
+                        Copy Logger content
+                    </Button>
+                    <Button
+                        className="block mt-2"
+                        variant="flat"
+                        onPress={handleDumpDebugLoggerContent}
+                    >
+                        Dump log
+                    </Button>
+
+                    <Button
+                        className="block mt-12"
+                        variant="flat"
+                        onPress={handleAddDebugLoggerEntry}
+                    >
+                        Add Logger entry
+                    </Button>
+
+                    <Button
+                        className="block mt-12"
+                        color="danger"
+                        variant="flat"
+                        onPress={handleClearDebugLoggerEntry}
+                    >
+                        Clear Logger entries
                     </Button>
                 </section>
                 {/* END DEBUG */}
