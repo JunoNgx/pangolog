@@ -390,3 +390,11 @@ A manual "Clear service worker cache" button in Settings (debug section) is a us
 - Storage strategy matches query patterns
 - Indexes are simpler and more efficient
 - Reduce metadata requires for Google Drive files
+
+## Current issue
+
+### #1 Transaction time
+
+Dimes and Bucks don't record `transactedAt` (this always default to noon). This leads to cases where one transaction is recorded after another, but their display sequence is shuffled in the group (of the same date). This can be confusing and disorientating.
+
+Suggestion: Record current local time upon creating the transaction.
