@@ -4,6 +4,7 @@ import { useCallback, useState } from "react";
 import { toast } from "sonner";
 import type { AuthToken } from "@/lib/auth/types";
 import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
+import { useLogger } from "./useLogger";
 
 const CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ?? "";
 const SCOPE =
@@ -41,6 +42,8 @@ export function useGoogleAuth() {
     const [isConnecting, setIsConnecting] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
+    const { addLoggerEntry } = useLogger();
+
     const isConnected = authToken !== null && isTokenValid(authToken);
 
     const connect = useCallback(async () => {
@@ -48,6 +51,8 @@ export function useGoogleAuth() {
             setError("Google Client ID is not configured.");
             return;
         }
+
+        addLoggerEntry("Executing connect() from useGoogleAuth", "connect");
 
         setIsConnecting(true);
         setError(null);
@@ -77,6 +82,9 @@ export function useGoogleAuth() {
                         expiresAt: Date.now() + response.expires_in * 1000,
                         email,
                     });
+
+                    addLoggerEntry("Attempt to connect to Google is successful", "connect:success");
+
                     toast.success(`Connected as ${email}`);
                 } catch {
                     setError("Failed to retrieve user information.");
@@ -105,13 +113,31 @@ export function useGoogleAuth() {
         if (!authToken) return;
         window.google?.accounts.oauth2.revoke(authToken.accessToken);
         setAuthToken(null);
+
+        addLoggerEntry("disconnect", "disconnect");
     }, [authToken, setAuthToken]);
 
     const getValidToken = useCallback(
         async (forceRefresh = false): Promise<string | null> => {
-            if (!authToken) return null;
-            if (!forceRefresh && isTokenValid(authToken))
+            addLoggerEntry("Executing getValidToken() from useGoogleAuth", "token:attempt", {
+                authToken,
+                forceRefresh,
+            });
+
+            if (!authToken) {
+                addLoggerEntry(
+                    "Exiting getValidToken() due to missing authToken",
+                    "token:exit"
+                );
+                return null;
+            }
+            if (!forceRefresh && isTokenValid(authToken)) {
+                addLoggerEntry(
+                    "Exiting getValidToken() due not !forceRefresh && isTokenValid(authToken)",
+                    "token:exit"
+                );
                 return authToken.accessToken;
+            }
 
             if (!window.google || !CLIENT_ID) {
                 return null;
@@ -123,19 +149,44 @@ export function useGoogleAuth() {
                     client_id: CLIENT_ID,
                     scope: SCOPE,
                     callback: (response) => {
+                        addLoggerEntry(
+                            "Executing token initialisation callback",
+                            "initTokenClient",
+                            response
+                        );
                         if (response.error) {
+                            addLoggerEntry(
+                                "Exiting callback due to error",
+                                "initTokenClient:exit",
+                                response.error
+                            );
+
                             resolve(null);
                             return;
                         }
+
                         const updated: AuthToken = {
                             ...authToken,
                             accessToken: response.access_token,
                             expiresAt: Date.now() + response.expires_in * 1000,
                         };
                         setAuthToken(updated);
+                        addLoggerEntry(
+                            "Token successfully retrieved",
+                            "initTokenClient:success"
+                        );
                         resolve(updated.accessToken);
                     },
-                    error_callback: () => {
+                    error_callback: (error) => {
+                        addLoggerEntry(
+                            "Error encountered during token init callback",
+                            "initTokenClient:error",
+                            error
+                        );
+                        toast.error(
+                            `Error encountered while initialising token ${JSON.stringify(error)}`,
+                            { duration: Infinity }
+                        );
                         resolve(null);
                     },
                 });
