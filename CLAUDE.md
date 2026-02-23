@@ -40,6 +40,7 @@ Personal expense tracker PWA. See `.docs/spec.md` and `.docs/plan.md` for full d
 
 ## Maintainer's preferences
 - Use 4 space indentation
+- Variable names for boolean type must always have the appropriate prefix (e.g. is-, should-, does-, has-). There is no exception.
 - Prioritise using guard clause and early termination. Avoid `else` and deeply nested codes.
 - Use only `yarn` to manage packages
 - Use `camelCase` for hooks and `PascalCase` for components
