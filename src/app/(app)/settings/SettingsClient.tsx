@@ -133,280 +133,286 @@ export default function SettingsClient() {
             <h2 className="text-xl font-bold mb-6">Settings</h2>
 
             <div className="MainListContainer gap-8">
-            <section>
-                <h3 className="text-lg font-semibold mb-4">
-                    Google Drive Sync
-                </h3>
-                <div className="flex flex-col gap-3">
-                    {lastSyncTime && (
-                        <p className="text-xs text-default-400">
-                            Last synced:{" "}
-                            {new Date(lastSyncTime).toLocaleString()}
-                        </p>
-                    )}
-                    {isConnected ? (
-                        <>
-                            <p className="text-sm text-success-500">
-                                Status: Connected as {authToken?.email}
-                            </p>
+                <section>
+                    <h3 className="text-lg font-semibold mb-4">
+                        Google Drive Sync
+                    </h3>
+                    <div className="flex flex-col gap-3">
+                        {lastSyncTime && (
                             <p className="text-xs text-default-400">
-                                {syncStatus === "syncing" && "Syncing..."}
-                                {syncStatus === "error" &&
-                                    `Error: ${syncError}`}
+                                Last synced:{" "}
+                                {new Date(lastSyncTime).toLocaleString()}
                             </p>
-                            <div className="flex gap-2">
-                                <Button
-                                    color="danger"
-                                    variant="flat"
-                                    className="max-w-xs"
-                                    onPress={disconnect}
-                                >
-                                    Disconnect
-                                </Button>
+                        )}
+                        {isConnected ? (
+                            <>
+                                <p className="text-sm text-success-500">
+                                    Status: Connected as {authToken?.email}
+                                </p>
+                                <p className="text-xs text-default-400">
+                                    {syncStatus === "syncing" && "Syncing..."}
+                                    {syncStatus === "error" &&
+                                        `Error: ${syncError}`}
+                                </p>
+                                <div className="flex gap-2">
+                                    <Button
+                                        color="danger"
+                                        variant="flat"
+                                        className="max-w-xs"
+                                        onPress={disconnect}
+                                    >
+                                        Disconnect
+                                    </Button>
+                                    <Button
+                                        color="primary"
+                                        variant="flat"
+                                        className="max-w-xs"
+                                        isLoading={syncStatus === "syncing"}
+                                        onPress={() => sync()}
+                                    >
+                                        Sync now
+                                    </Button>
+                                </div>
+                            </>
+                        ) : (
+                            <>
+                                <p className="text-sm text-default-400">
+                                    Status: Not connected
+                                </p>
                                 <Button
                                     color="primary"
                                     variant="flat"
-                                    className="max-w-xs"
-                                    isLoading={syncStatus === "syncing"}
-                                    onPress={() => sync()}
+                                    className="self-start"
+                                    isLoading={isConnecting}
+                                    onPress={connect}
                                 >
-                                    Sync now
+                                    Connect Google Drive
                                 </Button>
-                            </div>
-                        </>
-                    ) : (
-                        <>
-                            <p className="text-sm text-default-400">
-                                Status: Not connected
-                            </p>
+                            </>
+                        )}
+                        {error && (
+                            <p className="text-xs text-danger-500">{error}</p>
+                        )}
+                    </div>
+                </section>
+
+                <section>
+                    <h3 className="text-lg font-semibold mb-4">
+                        Display Currency
+                    </h3>
+                    <div className="flex flex-col gap-4">
+                        <Input
+                            classNames={{
+                                inputWrapper: "max-w-xs",
+                                description: "",
+                            }}
+                            label="Currency symbol"
+                            placeholder="e.g. €, SGD, Gil"
+                            description="Cosmetic only, so feel free to use orens, woolong, or bottle caps to your heart's content. Long texts might not look good in this UI, but that's your life decision."
+                            value={customCurrency}
+                            onValueChange={setCustomCurrency}
+                        />
+                        <RadioGroup
+                            label="Position"
+                            orientation="horizontal"
+                            value={isPrefixCurrency ? "prefix" : "suffix"}
+                            onValueChange={(v) =>
+                                setIsPrefixCurrency(v === "prefix")
+                            }
+                        >
+                            <Radio value="prefix">Prefix ($12)</Radio>
+                            <Radio value="suffix">Suffix (12 SGD)</Radio>
+                        </RadioGroup>
+                        <p className="font-mono text-sm text-default-500">
+                            Preview: {preview}
+                        </p>
+                    </div>
+                </section>
+
+                <section>
+                    <h3 className="text-lg font-semibold mb-4">Theme</h3>
+                    <RadioGroup
+                        orientation="horizontal"
+                        value={mounted ? (theme ?? "system") : "system"}
+                        onValueChange={setTheme}
+                        classNames={{ wrapper: "gap-6" }}
+                    >
+                        <Radio value="light">Light</Radio>
+                        <Radio value="dark">Dark</Radio>
+                        <Radio value="system">System</Radio>
+                    </RadioGroup>
+                </section>
+
+                <section>
+                    <h3 className="text-lg font-semibold mb-4">Export Data</h3>
+                    <div className="flex flex-col gap-3">
+                        <div className="flex items-center gap-3">
                             <Button
                                 color="primary"
                                 variant="flat"
-                                className="self-start"
-                                isLoading={isConnecting}
-                                onPress={connect}
+                                isLoading={isExportingJson}
+                                onPress={handleExportJson}
                             >
-                                Connect Google Drive
+                                Export JSON
                             </Button>
-                        </>
-                    )}
-                    {error && (
-                        <p className="text-xs text-danger-500">{error}</p>
-                    )}
-                </div>
-            </section>
+                            <Checkbox
+                                isSelected={prettyPrint}
+                                onValueChange={setPrettyPrint}
+                                size="sm"
+                            >
+                                <span className="text-sm">Pretty print</span>
+                                <p className="text-xs text-default-400">
+                                    Human-readable formatting.
+                                </p>
+                            </Checkbox>
+                        </div>
+                        <p className="text-xs text-default-400">
+                            Exports all transactions, categories, and display
+                            settings into a single file. On import, records are
+                            resolved by last-updated timestamp to avoid
+                            duplicates.
+                        </p>
+                    </div>
+                </section>
 
-            <section>
-                <h3 className="text-lg font-semibold mb-4">Display Currency</h3>
-                <div className="flex flex-col gap-4">
-                    <Input
-                        classNames={{
-                            inputWrapper: "max-w-xs",
-                            description: "",
-                        }}
-                        label="Currency symbol"
-                        placeholder="e.g. €, SGD, Gil"
-                        description="Cosmetic only, so feel free to use orens, woolong, or bottle caps to your heart's content. Long texts might not look good in this UI, but that's your life decision."
-                        value={customCurrency}
-                        onValueChange={setCustomCurrency}
-                    />
-                    <RadioGroup
-                        label="Position"
-                        orientation="horizontal"
-                        value={isPrefixCurrency ? "prefix" : "suffix"}
-                        onValueChange={(v) =>
-                            setIsPrefixCurrency(v === "prefix")
-                        }
-                    >
-                        <Radio value="prefix">Prefix ($12)</Radio>
-                        <Radio value="suffix">Suffix (12 SGD)</Radio>
-                    </RadioGroup>
-                    <p className="font-mono text-sm text-default-500">
-                        Preview: {preview}
-                    </p>
-                </div>
-            </section>
-
-            <section>
-                <h3 className="text-lg font-semibold mb-4">Theme</h3>
-                <RadioGroup
-                    orientation="horizontal"
-                    value={mounted ? (theme ?? "system") : "system"}
-                    onValueChange={setTheme}
-                    classNames={{ wrapper: "gap-6" }}
-                >
-                    <Radio value="light">Light</Radio>
-                    <Radio value="dark">Dark</Radio>
-                    <Radio value="system">System</Radio>
-                </RadioGroup>
-            </section>
-
-            <section>
-                <h3 className="text-lg font-semibold mb-4">Export Data</h3>
-                <div className="flex flex-col gap-3">
-                    <div className="flex items-center gap-3">
+                <section>
+                    <h3 className="text-lg font-semibold mb-4">Import Data</h3>
+                    <div className="flex flex-col gap-3">
+                        <input
+                            ref={fileInputRef}
+                            type="file"
+                            accept=".json"
+                            className="hidden"
+                            onChange={handleFileChange}
+                        />
                         <Button
                             color="primary"
                             variant="flat"
-                            isLoading={isExportingJson}
-                            onPress={handleExportJson}
+                            className="self-start"
+                            onPress={() => fileInputRef.current?.click()}
                         >
-                            Export JSON
+                            Import JSON
                         </Button>
-                        <Checkbox
-                            isSelected={prettyPrint}
-                            onValueChange={setPrettyPrint}
-                            size="sm"
-                        >
-                            <span className="text-sm">Pretty print</span>
-                            <p className="text-xs text-default-400">
-                                Human-readable formatting.
+                        {importError && (
+                            <p className="text-xs text-danger-500">
+                                {importError}
                             </p>
-                        </Checkbox>
-                    </div>
-                    <p className="text-xs text-default-400">
-                        Exports all transactions, categories, and display
-                        settings into a single file. On import, records are
-                        resolved by last-updated timestamp to avoid duplicates.
-                    </p>
-                </div>
-            </section>
-
-            <section>
-                <h3 className="text-lg font-semibold mb-4">Import Data</h3>
-                <div className="flex flex-col gap-3">
-                    <input
-                        ref={fileInputRef}
-                        type="file"
-                        accept=".json"
-                        className="hidden"
-                        onChange={handleFileChange}
-                    />
-                    <Button
-                        color="primary"
-                        variant="flat"
-                        className="self-start"
-                        onPress={() => fileInputRef.current?.click()}
-                    >
-                        Import JSON
-                    </Button>
-                    {importError && (
-                        <p className="text-xs text-danger-500">{importError}</p>
-                    )}
-                    {importPreview && (
-                        <div className="flex flex-col gap-2 p-3 rounded-lg bg-default-100 text-sm">
-                            <p className="font-semibold text-default-700">
-                                Preview:
-                            </p>
-                            <p className="text-default-600">
-                                Dimes: +{importPreview.dimesAdded} new,{" "}
-                                {importPreview.dimesUpdated} updated
-                            </p>
-                            <p className="text-default-600">
-                                Bucks: +{importPreview.bucksAdded} new,{" "}
-                                {importPreview.bucksUpdated} updated
-                            </p>
-                            <p className="text-default-600">
-                                Categories: +{importPreview.categoriesAdded}{" "}
-                                new, {importPreview.categoriesUpdated} updated
-                            </p>
-                            <p className="text-default-600">
-                                Recurring rules: +{importPreview.rulesAdded}{" "}
-                                new, {importPreview.rulesUpdated} updated
-                            </p>
-                            <div className="flex gap-2 mt-1">
-                                <Button
-                                    size="sm"
-                                    color="primary"
-                                    isLoading={isImporting}
-                                    onPress={handleConfirmImport}
-                                >
-                                    Confirm
-                                </Button>
-                                <Button
-                                    size="sm"
-                                    variant="light"
-                                    onPress={handleCancelImport}
-                                >
-                                    Cancel
-                                </Button>
+                        )}
+                        {importPreview && (
+                            <div className="flex flex-col gap-2 p-3 rounded-lg bg-default-100 text-sm">
+                                <p className="font-semibold text-default-700">
+                                    Preview:
+                                </p>
+                                <p className="text-default-600">
+                                    Dimes: +{importPreview.dimesAdded} new,{" "}
+                                    {importPreview.dimesUpdated} updated
+                                </p>
+                                <p className="text-default-600">
+                                    Bucks: +{importPreview.bucksAdded} new,{" "}
+                                    {importPreview.bucksUpdated} updated
+                                </p>
+                                <p className="text-default-600">
+                                    Categories: +{importPreview.categoriesAdded}{" "}
+                                    new, {importPreview.categoriesUpdated}{" "}
+                                    updated
+                                </p>
+                                <p className="text-default-600">
+                                    Recurring rules: +{importPreview.rulesAdded}{" "}
+                                    new, {importPreview.rulesUpdated} updated
+                                </p>
+                                <div className="flex gap-2 mt-1">
+                                    <Button
+                                        size="sm"
+                                        color="primary"
+                                        isLoading={isImporting}
+                                        onPress={handleConfirmImport}
+                                    >
+                                        Confirm
+                                    </Button>
+                                    <Button
+                                        size="sm"
+                                        variant="light"
+                                        onPress={handleCancelImport}
+                                    >
+                                        Cancel
+                                    </Button>
+                                </div>
                             </div>
-                        </div>
-                    )}
-                    {importResult && (
-                        <div className="flex flex-col gap-1 p-3 rounded-lg bg-success-50 text-sm">
-                            <p className="font-semibold text-success-700">
-                                Import complete.
-                            </p>
-                            <p className="text-success-600">
-                                Dimes: +{importResult.dimesAdded} new,{" "}
-                                {importResult.dimesUpdated} updated
-                            </p>
-                            <p className="text-success-600">
-                                Bucks: +{importResult.bucksAdded} new,{" "}
-                                {importResult.bucksUpdated} updated
-                            </p>
-                            <p className="text-success-600">
-                                Categories: +{importResult.categoriesAdded} new,{" "}
-                                {importResult.categoriesUpdated} updated
-                            </p>
-                            <p className="text-success-600">
-                                Recurring rules: +{importResult.rulesAdded} new,{" "}
-                                {importResult.rulesUpdated} updated
-                            </p>
-                        </div>
-                    )}
-                </div>
-            </section>
+                        )}
+                        {importResult && (
+                            <div className="flex flex-col gap-1 p-3 rounded-lg bg-success-50 text-sm">
+                                <p className="font-semibold text-success-700">
+                                    Import complete.
+                                </p>
+                                <p className="text-success-600">
+                                    Dimes: +{importResult.dimesAdded} new,{" "}
+                                    {importResult.dimesUpdated} updated
+                                </p>
+                                <p className="text-success-600">
+                                    Bucks: +{importResult.bucksAdded} new,{" "}
+                                    {importResult.bucksUpdated} updated
+                                </p>
+                                <p className="text-success-600">
+                                    Categories: +{importResult.categoriesAdded}{" "}
+                                    new, {importResult.categoriesUpdated}{" "}
+                                    updated
+                                </p>
+                                <p className="text-success-600">
+                                    Recurring rules: +{importResult.rulesAdded}{" "}
+                                    new, {importResult.rulesUpdated} updated
+                                </p>
+                            </div>
+                        )}
+                    </div>
+                </section>
 
-            <section>
-                <h3 className="text-lg font-semibold mb-1">Help &amp; Info</h3>
-                <p className="text-xs text-default-400 mb-4">
-                    Overview of concepts, pages, hotkeys, and sync behaviour.
-                </p>
-                <Button
-                    as="a"
-                    href="/help"
-                    color="primary"
-                    variant="flat"
-                >
-                    View manual
-                </Button>
-            </section>
+                <section>
+                    <h3 className="text-lg font-semibold mb-1">
+                        Help &amp; Info
+                    </h3>
+                    <p className="text-xs text-default-400 mb-4">
+                        Overview of concepts, pages, hotkeys, and sync
+                        behaviour.
+                    </p>
+                    <Button as="a" href="/help" color="primary" variant="flat">
+                        View manual
+                    </Button>
+                </section>
 
-            {/* DEBUG */}
-            <section className="mt-8">
-                <h3 className="text-lg font-semibold mb-1">
-                    Debug
-                </h3>
-                <Button
-                    variant="flat"
-                    onPress={() => toast("Debug toast notification", {
-                        duration: Infinity
-                    })}
-                >
-                    Trigger toast
-                </Button>
-            </section>
-            {/* END DEBUG */}
+                {/* DEBUG */}
+                <section className="mt-8">
+                    <h3 className="text-lg font-semibold mb-1">Debug</h3>
+                    <Button
+                        variant="flat"
+                        onPress={() =>
+                            toast("Debug toast notification", {
+                                duration: Infinity,
+                            })
+                        }
+                    >
+                        Trigger toast
+                    </Button>
+                </section>
+                {/* END DEBUG */}
 
-            <section className="mt-8">
-                <h3 className="text-lg font-semibold mb-1 text-danger">
-                    Danger Zone
-                </h3>
-                <p className="text-xs text-default-400 mb-4">
-                    Disconnects Google Drive and permanently deletes all local
-                    data. Your data on Google Drive will remain intact. Use this
-                    to start fresh on this device. This cannot be undone.
-                </p>
-                <Button
-                    color="danger"
-                    variant="flat"
-                    onPress={() => setIsResetDialogOpen(true)}
-                >
-                    Reset all data
-                </Button>
-            </section>
+                <section className="mt-8">
+                    <h3 className="text-lg font-semibold mb-1 text-danger">
+                        Danger Zone
+                    </h3>
+                    <p className="text-xs text-default-400 mb-4">
+                        Disconnects Google Drive and permanently deletes all
+                        local data. Your data on Google Drive will remain
+                        intact. Use this to start fresh on this device. This
+                        cannot be undone.
+                    </p>
+                    <Button
+                        color="danger"
+                        variant="flat"
+                        onPress={() => setIsResetDialogOpen(true)}
+                    >
+                        Reset all data
+                    </Button>
+                </section>
             </div>
 
             <Modal
