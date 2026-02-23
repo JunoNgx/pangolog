@@ -402,3 +402,19 @@ Suggestion: Record current local time upon creating the transaction.
 ### #2 Hydration error
 
 The custom currency is causing hydration error in the `/log` route, at the total expense count.
+
+### #3 Recurring rule computeNextDate
+
+IsoString becomes universal time after being converted. Is it possible for the day to roll backward or forward during the timezone conversion, and cause multiple entries be created in the same day, for daily recurring rules?
+
+Consider this:
+- Condition for a new entry is met, and new Transaction is created.
+- In `processRule`:
+    - `computeNextDate()` generates the next date. For example, Feb 2nd.
+    - `current.toISOString` ISO-ifies the model and convert to universal time
+        - Is it possible for timezone difference to cause the day of this datetime to become Feb 1st?
+    - `nextGenerationAt` now have the Feb 1st date, causing duplication.
+
+Suggestion:
+1. Use a library like Luxon instead of native `new Date()`.
+2. Use dumb string, storing only `YYYY-MM-DD`.
