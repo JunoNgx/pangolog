@@ -425,16 +425,6 @@ All timestamps (`transactedAt`, `createdAt`, `updatedAt`, etc.) are UTC ISO stri
 
 ## Current issue
 
-### #1 Transaction time
-
-Dimes and Bucks don't record `transactedAt` (this always default to noon). This leads to cases where one transaction is recorded after another, but their display sequence is shuffled in the group (of the same date). This can be confusing and disorientating.
-
-Suggestion: Record current local time upon creating the transaction.
-
-### #2 Hydration error
-
-The custom currency is causing hydration error in the `/log` route, at the total expense count.
-
 ### #3 Recurring rule computeNextDate
 
 IsoString becomes universal time after being converted. Is it possible for the day to roll backward or forward during the timezone conversion, and cause multiple entries be created in the same day, for daily recurring rules?
