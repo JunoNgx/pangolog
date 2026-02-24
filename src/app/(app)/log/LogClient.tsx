@@ -146,7 +146,10 @@ export default function LogClient() {
                 <div className="flex items-center justify-between">
                     <span className="flex gap-2">
                         <span className="text-default-500">Total expense:</span>
-                        <span className="font-mono font-medium">
+                        <span
+                            className="font-mono font-medium"
+                            suppressHydrationWarning
+                        >
                             {formatAmount(
                                 filteredTransactions
                                     .filter((tx) => !tx.isIncome)
