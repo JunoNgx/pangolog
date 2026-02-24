@@ -435,12 +435,25 @@ All timestamps (`transactedAt`, `createdAt`, `updatedAt`, etc.) are UTC ISO stri
 
 ## Under consideration
 
-### Authorization Code Flow for persistent Google Drive sessions
+### Authorization Code Flow with PKCE for persistent Google Drive sessions
 
-The current GIS Token Model causes sessions to expire on mobile PWA because silent token refresh relies on browser cookies, which are inaccessible in a sandboxed WebView. This is mitigated with a reconnect toast and a notice in Settings, but users still need to manually reconnect periodically.
+#### Current implementation: OAuth 2.0 Implicit Flow (GIS Token Model)
 
-The standard solution is the Authorization Code Flow: the user authenticates once, the server exchanges the authorization code for a refresh token, stores it in an HTTP-only encrypted cookie, and silently renews the access token server-side on every expiry. Mobile PWA sandboxing is irrelevant because the refresh happens on the server.
+The app uses the GIS Token Model (`initTokenClient`), which is an implementation of the OAuth 2.0 **Implicit Flow**. GIS issues a short-lived access token (~1 hour) directly to the browser. There is no refresh token. To renew, GIS performs a silent refresh via a hidden iframe that relies on the user's Google session cookie. This works on desktop browsers but fails on mobile PWA, where the WebView is sandboxed from the system browser's cookie store. The Implicit Flow is now deprecated by the OAuth 2.0 Security Best Current Practice (RFC 9700).
 
-Implementation would require two Next.js API routes (`/api/auth/callback` and `/api/auth/refresh`), a library for cookie encryption (`iron-session` or `jose`), and a secret key stored as a Vercel environment variable. The app would no longer be purely static.
+The current mitigation is a persistent reconnect toast when `getValidToken()` fails while the user is connected, plus a notice in Settings. Users on mobile still need to manually reconnect periodically.
 
-**Why it hasn't been done:** The trade-off does not currently favour it. The reconnect friction is tolerable for a personal small-scale app - the toast is clear, the action is simple, and expectations are set in Settings. The Authorization Code Flow is a meaningful architectural shift (introducing a backend dependency) to solve a problem that is already workable. Worth revisiting if reconnecting becomes a frequent enough annoyance in daily use.
+#### The modern standard: Authorization Code Flow with PKCE
+
+The recommended replacement is the **Authorization Code Flow with PKCE** (Proof Key for Code Exchange), using GIS's `initCodeClient`. The flow:
+
+1. Client initiates OAuth via `initCodeClient`. GIS redirects the user through the consent screen and returns a one-time **authorization code**.
+2. The code is sent to a Next.js API route (`/api/auth/callback`), which exchanges it with Google using the code, a **client secret** (server-only env var), and the PKCE verifier. Google returns an access token and a **refresh token**.
+3. The refresh token is encrypted and stored in an **HTTP-only cookie** (using `iron-session`), never exposed to the browser.
+4. When the access token expires, the client calls `/api/auth/refresh`. The server reads the cookie, calls Google's token endpoint with the refresh token, and returns a new access token. Mobile PWA sandboxing is irrelevant - the refresh is entirely server-side.
+
+PKCE prevents authorization code interception: the client generates a random secret, sends a hash of it with the auth request, then proves knowledge of the original when exchanging the code. This makes the flow safe even without a client secret, though having one adds an extra layer.
+
+Required changes: `GOOGLE_CLIENT_SECRET` and `COOKIE_SECRET` env vars on Vercel, `iron-session` package, two API routes (~30-40 lines each), and reworking `useGoogleAuth.ts` to use `initCodeClient` and call `/api/auth/refresh` instead of GIS silent refresh. The rest of the app (`useSync`, etc.) would be unaffected.
+
+**Why it hasn't been done:** The trade-off does not currently favour it. The reconnect friction is tolerable for a personal small-scale app - the toast is clear, the action is simple, and expectations are set in Settings. This is a meaningful architectural shift that introduces a backend dependency and removes the purely static hosting model. Worth revisiting if reconnecting becomes a frequent enough annoyance in daily use.
