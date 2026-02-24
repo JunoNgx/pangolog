@@ -26,16 +26,6 @@ function isTokenValid(token: AuthToken): boolean {
     return token.expiresAt - TOKEN_EXPIRY_BUFFER_MS > Date.now();
 }
 
-async function fetchUserEmail(accessToken: string): Promise<string> {
-    const response = await fetch(
-        "https://www.googleapis.com/oauth2/v3/userinfo",
-        { headers: { Authorization: `Bearer ${accessToken}` } },
-    );
-    if (!response.ok) throw new Error("Failed to fetch user info");
-    const data = await response.json();
-    return data.email as string;
-}
-
 export function useGoogleAuth() {
     const { authToken, setAuthToken } = useLocalSettingsStore();
     const [isConnecting, setIsConnecting] = useState(false);
@@ -60,9 +50,10 @@ export function useGoogleAuth() {
             return;
         }
 
-        const client = window.google?.accounts.oauth2.initTokenClient({
+        const client = window.google?.accounts.oauth2.initCodeClient({
             client_id: CLIENT_ID,
             scope: SCOPE,
+            ux_mode: "popup",
             callback: async (response) => {
                 if (response.error) {
                     setError(response.error_description ?? response.error);
@@ -70,16 +61,29 @@ export function useGoogleAuth() {
                     return;
                 }
                 try {
-                    const email = await fetchUserEmail(response.access_token);
+                    const res = await fetch("/api/auth/callback", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ code: response.code }),
+                    });
+                    if (!res.ok) {
+                        const data = await res.json();
+                        throw new Error(data.error ?? "Authentication failed.");
+                    }
+                    const data = await res.json();
                     setAuthToken({
                         id: "google",
-                        accessToken: response.access_token,
-                        expiresAt: Date.now() + response.expires_in * 1000,
-                        email,
+                        accessToken: data.accessToken,
+                        expiresAt: data.expiresAt,
+                        email: data.email,
                     });
-                    toast.success(`Connected as ${email}`);
-                } catch {
-                    setError("Failed to retrieve user information.");
+                    toast.success(`Connected as ${data.email}`);
+                } catch (err) {
+                    setError(
+                        err instanceof Error
+                            ? err.message
+                            : "Authentication failed.",
+                    );
                 } finally {
                     setIsConnecting(false);
                 }
@@ -98,14 +102,13 @@ export function useGoogleAuth() {
             return;
         }
 
-        client.requestAccessToken();
+        client.requestCode();
     }, [setAuthToken]);
 
-    const disconnect = useCallback(() => {
-        if (!authToken) return;
-        window.google?.accounts.oauth2.revoke(authToken.accessToken);
+    const disconnect = useCallback(async () => {
+        await fetch("/api/auth/logout", { method: "POST" });
         setAuthToken(null);
-    }, [authToken, setAuthToken]);
+    }, [setAuthToken]);
 
     const getValidToken = useCallback(
         async (shouldForceRefresh = false): Promise<string | null> => {
@@ -114,35 +117,17 @@ export function useGoogleAuth() {
                 return authToken.accessToken;
             }
 
-            if (!window.google || !CLIENT_ID) {
-                return null;
-            }
+            const res = await fetch("/api/auth/refresh", { method: "POST" });
+            if (!res.ok) return null;
 
-            const google = window.google;
-            return new Promise((resolve) => {
-                const client = google.accounts.oauth2.initTokenClient({
-                    client_id: CLIENT_ID,
-                    scope: SCOPE,
-                    callback: (response) => {
-                        if (response.error) {
-                            resolve(null);
-                            return;
-                        }
-
-                        const updated: AuthToken = {
-                            ...authToken,
-                            accessToken: response.access_token,
-                            expiresAt: Date.now() + response.expires_in * 1000,
-                        };
-                        setAuthToken(updated);
-                        resolve(updated.accessToken);
-                    },
-                    error_callback: () => {
-                        resolve(null);
-                    },
-                });
-                client.requestAccessToken({ prompt: "" });
-            });
+            const data = await res.json();
+            const updated: AuthToken = {
+                ...authToken,
+                accessToken: data.accessToken,
+                expiresAt: data.expiresAt,
+            };
+            setAuthToken(updated);
+            return updated.accessToken;
         },
         [authToken, setAuthToken],
     );
