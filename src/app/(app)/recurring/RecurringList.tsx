@@ -185,10 +185,13 @@ function RecurringItem({ rule, category, onEdit }: RecurringItemProps) {
                     </span>
                     <span className="text-xs text-default-400 font-mono">
                         Next:{" "}
-                        {new Date(rule.nextGenerationAt).toLocaleDateString(
-                            "en-us",
-                            { day: "numeric", month: "short", year: "numeric" },
-                        )}
+                        {new Date(
+                            `${rule.nextGenerationAt.slice(0, 10)}T00:00:00`,
+                        ).toLocaleDateString("en-us", {
+                            day: "numeric",
+                            month: "short",
+                            year: "numeric",
+                        })}
                     </span>
                 </div>
             </button>

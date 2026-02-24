@@ -53,9 +53,20 @@ function toNoonLocalISO(date: Date): string {
     return new Date(`${y}-${m}-${d}T12:00:00`).toISOString();
 }
 
+function toLocalDateString(date: Date): string {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, "0");
+    const d = String(date.getDate()).padStart(2, "0");
+    return `${y}-${m}-${d}`;
+}
+
+function parseGenerationDate(dateStr: string): Date {
+    return new Date(`${dateStr.slice(0, 10)}T00:00:00`);
+}
+
 async function processRule(rule: RecurringRule): Promise<void> {
     const now = new Date();
-    let current = new Date(rule.nextGenerationAt);
+    let current = parseGenerationDate(rule.nextGenerationAt);
     let previous = current;
 
     while (current <= now) {
@@ -78,7 +89,7 @@ async function processRule(rule: RecurringRule): Promise<void> {
     }
 
     await updateRecurringRule(rule.id, {
-        nextGenerationAt: current.toISOString(),
+        nextGenerationAt: toLocalDateString(current),
         lastGeneratedAt: now.toISOString(),
     });
 }

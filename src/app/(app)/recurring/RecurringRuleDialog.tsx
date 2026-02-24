@@ -22,13 +22,7 @@ import {
     useRestoreRecurringRule,
     useUpdateRecurringRule,
 } from "@/lib/hooks/useRecurringRules";
-import {
-    fromDateInputValue,
-    MONTH_NAMES,
-    SELECT_CLASSES,
-    toDateInputValue,
-    todayDateString,
-} from "@/lib/utils";
+import { MONTH_NAMES, SELECT_CLASSES, todayDateString } from "@/lib/utils";
 
 type Frequency = "daily" | "weekly" | "monthly" | "yearly";
 
@@ -92,7 +86,7 @@ export function RecurringRuleDialog({
             setIsBigBuck(rule.isBigBuck);
             setCategoryId(rule.categoryId);
             setFrequency(rule.frequency);
-            setStartDate(toDateInputValue(rule.nextGenerationAt));
+            setStartDate(rule.nextGenerationAt.slice(0, 10));
             setIsActive(rule.isActive);
         } else {
             setAmount("");
@@ -152,7 +146,7 @@ export function RecurringRuleDialog({
             dayOfWeek: date.getDay(),
             dayOfMonth: date.getDate(),
             monthOfYear: date.getMonth() + 1,
-            nextGenerationAt: fromDateInputValue(startDate),
+            nextGenerationAt: startDate,
             isActive,
         };
 
@@ -228,7 +222,7 @@ export function RecurringRuleDialog({
                                     <span>
                                         Next:{" "}
                                         {new Date(
-                                            rule.nextGenerationAt,
+                                            `${rule.nextGenerationAt.slice(0, 10)}T00:00:00`,
                                         ).toLocaleDateString("en-us", {
                                             day: "numeric",
                                             month: "short",
