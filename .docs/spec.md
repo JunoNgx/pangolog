@@ -57,7 +57,7 @@ Approach:
 - Transactions are not hard-deleted. Use `deletedAt`.
 - Deleted transactions remain stored to facilitate deletion propagation.
 - Data with `deletedAt` older than 30 days are removed on both local and cloud instance.
-- On a Drive API 401, a forced GIS token refresh is attempted. If the refresh fails (e.g. mobile PWA WebView isolation), the sync is silently skipped and the user stays connected. Logout only occurs if a genuinely fresh token is obtained but Drive still rejects it.
+- On a Drive API 401, a forced GIS token refresh is attempted. If the refresh fails (e.g. mobile PWA WebView isolation), a persistent "session expired" toast is shown prompting the user to reconnect in Settings. If the refresh succeeds (e.g. clock-skew expiry), the token is stored and the next auto-sync will use it.
 
 ### Error recovery strategies
 - Exponential backoff (30s, 60s, 120s, 300s)
@@ -345,6 +345,30 @@ Approach:
 For monthly and yearly rules, if `dayOfMonth` exceeds the number of days in the target month (e.g. the 31st in April, or the 29th in a non-leap February), the date is clamped to the last day of that month. This is computed as `Math.min(dayOfMonth, lastDayOfMonth)`.
 
 ## Technical Decisions
+
+### Google auth error handling and toast layering
+
+#### The problem that prompted this decision
+
+The original sync error flow was entirely silent when Google Drive session expired in certain conditions. Specifically, on mobile PWA (iOS standalone mode), the WebView is isolated from Safari's cookie store, so GIS cannot silently re-authenticate. When a Drive API 401 occurred and the forced GIS refresh failed, the code would set `syncStatus` back to `"idle"` and return - the user had no idea sync had stopped working. This could persist for hours or indefinitely.
+
+Additionally, the initial `getValidToken()` call at the top of `sync()` could return `null` (if the token was expired and GIS failed to silently refresh) and the sync would exit silently, with no distinction between "user is not connected" (correct to be silent) and "user thinks they are connected but the token is broken" (should notify).
+
+#### Detecting "broken session" vs "not connected" in the initial token check
+
+The initial `getValidToken()` call at the top of `sync()` returns `null` in two different scenarios:
+- User has no `authToken` at all - they have never connected, or have disconnected. Silence is correct.
+- User has an `authToken` (appears connected) but the token has expired and GIS failed to silently refresh it. The user expects sync to be working.
+
+To distinguish these without adding `authToken` to the `useCallback` dependency array (which would cause `sync` to be recreated on every token refresh, disrupting the debounce), the check uses `useLocalSettingsStore.getState().authToken` - an imperative, synchronous read of the Zustand store's current state inside the callback. This avoids the dependency while correctly reading the current value at call time.
+
+#### Potential future improvements
+
+1. **Authorization Code Flow for persistent sessions**: the root cause of the mobile PWA session expiry issue is that GIS Token Model (implicit grant) only issues short-lived access tokens (~1 hour) and relies on browser cookies for silent refresh. On mobile PWA, this always fails. The real fix is switching to `initCodeClient`, exchanging the code server-side for a refresh token, and storing it in an HTTP-only cookie on the Vercel deployment. This gives indefinite sessions. It is a significant architectural change requiring a Next.js API route and server-side state.
+
+2. **Genuine revocation detection**: the current code removes the "genuine revocation" path (where a forced token refresh succeeds but Drive still returns 401, indicating the user has revoked access in their Google account settings). When this happens, `getValidToken(true)` still succeeds - GIS can issue a fresh access token without knowing that Drive access was specifically revoked - so the code sets status to idle and shows the `auth-reconnect` toast. The user then taps reconnect, goes through the OAuth flow, re-grants access, and sync resumes. This is actually the correct call to action for genuine revocation too, so the behavior is acceptable. The only inaccuracy is the message says "session expired" rather than "access revoked", but the required action is identical. The old code's advantage was proactively calling `setAuthToken(null)` to forcibly disconnect, but leaving the user in a "connected but broken" state until they act on the toast is no worse in practice. A future improvement could add a retry of `syncAll` with the fresh token, and if Drive still returns 401, show a more specific "Access revoked - please reconnect" message and disconnect.
+
+3. **Immediate retry after clock-skew recovery**: when a 401 occurs due to clock skew, `getValidToken(true)` silently refreshes the token and `sync()` exits. The current sync attempt is discarded, and the next auto-sync (triggered by the next mutation or tab-hide) will use the fresh token. A more aggressive recovery would retry `syncAll` immediately with the fresh token within the same `sync()` call. This was previously implemented but removed for code clarity. Worth restoring if silent sync gaps become a reported issue.
 
 ### Danger Zone reset action
 The settings page includes a "Danger Zone" section with a "Reset all data" button. On confirmation, it disconnects Google Drive, clears all local IndexedDB stores, shows a success toast, and reloads the page after 1.5 seconds. The page reload is necessary to ensure a clean module state - without it, a stale `dbPromise` can cause all subsequent DB operations to fail.

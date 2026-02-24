@@ -24,7 +24,6 @@ export function useSyncFn() {
         setSyncStatus,
         setLastSyncTime,
         setSyncError,
-        setAuthToken,
     } = useLocalSettingsStore();
 
     const { getValidToken } = useGoogleAuth();
@@ -37,6 +36,12 @@ export function useSyncFn() {
 
             const token = await getValidToken();
             if (!token) {
+                if (useLocalSettingsStore.getState().authToken) {
+                    toast.error(
+                        "Google Drive session expired. Please reconnect in Settings.",
+                        { id: "auth-reconnect", duration: Infinity },
+                    );
+                }
                 isSyncing = false;
                 return;
             }
@@ -56,47 +61,36 @@ export function useSyncFn() {
 
                 setSyncStatus("idle");
                 setLastSyncTime(new Date().toISOString());
+                toast.dismiss("auth-reconnect");
                 if (!silent) {
                     toast.success("Sync complete");
                 }
             } catch (err) {
-                if (isAuthError(err)) {
-                    // Force a GIS refresh regardless of local token validity -
-                    // the 401 means the token is actually expired (e.g. clock skew).
-                    const freshToken = await getValidToken(true);
-                    if (!freshToken) {
-                        setSyncStatus("idle");
-                        return;
-                    }
-                    try {
-                        const retryFolderId =
-                            driveFolderId ??
-                            (await getOrCreatePangoFolder(freshToken));
-                        await syncAll(freshToken, retryFolderId);
-                        await queryClient.invalidateQueries();
-                        setSyncStatus("idle");
-                        setLastSyncTime(new Date().toISOString());
-                        if (!silent) toast.success("Sync complete");
-                        return;
-                    } catch {
-                        // Fresh token was still rejected - genuine revocation.
-                    }
-                    setAuthToken(null);
+                if (!isAuthError(err)) {
+                    const message =
+                        err instanceof Error ? err.message : "Sync failed.";
                     setSyncStatus("error");
-                    setSyncError(
-                        "Session expired. Please reconnect Google Drive.",
-                    );
+                    setSyncError(message);
+                    toast.error(`Sync failed: ${message}`, {
+                        duration: Infinity,
+                    });
+                    return;
+                }
+
+                // Drive returned 401 - attempt a silent token refresh.
+                // Recovers from clock-skew expiry without user interaction.
+                // The refreshed token will be picked up by the next sync.
+                const freshToken = await getValidToken(true);
+                if (!freshToken) {
+                    setSyncStatus("idle");
                     toast.error(
                         "Google Drive session expired. Please reconnect in Settings.",
-                        { duration: Infinity },
+                        { id: "auth-reconnect", duration: Infinity },
                     );
                     return;
                 }
-                const message =
-                    err instanceof Error ? err.message : "Sync failed.";
-                setSyncStatus("error");
-                setSyncError(message);
-                toast.error(`Sync failed: ${message}`, { duration: Infinity });
+
+                setSyncStatus("idle");
             } finally {
                 isSyncing = false;
             }
@@ -105,7 +99,6 @@ export function useSyncFn() {
             driveFolderId,
             getValidToken,
             queryClient,
-            setAuthToken,
             setDriveFolderId,
             setLastSyncTime,
             setSyncError,
