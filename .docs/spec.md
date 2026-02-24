@@ -432,3 +432,15 @@ All timestamps (`transactedAt`, `createdAt`, `updatedAt`, etc.) are UTC ISO stri
 `transactedAt` on create/edit uses `resolveTransactedAt()`: today's date gets the actual current time so same-day transactions sort chronologically; past/future dates get noon; edits preserve the original time, or retain the original time-of-day if only the date changes.
 
 `nextGenerationAt` on recurring rules is stored as a plain `YYYY-MM-DD` local date string rather than a UTC ISO string. The original ISO format caused a domain mismatch: `computeNextDate` advances local dates, but the old comparison (`nextGenerationAt <= new Date().toISOString()`) was in UTC space. For UTC+ users, local noon on day N stores as UTC day N-1, so after advancing to N+1 the UTC time could still fall on day N and fire the rule again. Storing a plain date and comparing with `todayDateString()` removes the mismatch entirely. ISO-format records left over from before the fix are handled transparently via `.slice(0, 10)`. Luxon and the Temporal API polyfill were considered but rejected - both add significant bundle weight for a problem that is isolated to one file.
+
+## Under consideration
+
+### Authorization Code Flow for persistent Google Drive sessions
+
+The current GIS Token Model causes sessions to expire on mobile PWA because silent token refresh relies on browser cookies, which are inaccessible in a sandboxed WebView. This is mitigated with a reconnect toast and a notice in Settings, but users still need to manually reconnect periodically.
+
+The standard solution is the Authorization Code Flow: the user authenticates once, the server exchanges the authorization code for a refresh token, stores it in an HTTP-only encrypted cookie, and silently renews the access token server-side on every expiry. Mobile PWA sandboxing is irrelevant because the refresh happens on the server.
+
+Implementation would require two Next.js API routes (`/api/auth/callback` and `/api/auth/refresh`), a library for cookie encryption (`iron-session` or `jose`), and a secret key stored as a Vercel environment variable. The app would no longer be purely static.
+
+**Why it hasn't been done:** The trade-off does not currently favour it. The reconnect friction is tolerable for a personal small-scale app - the toast is clear, the action is simple, and expectations are set in Settings. The Authorization Code Flow is a meaningful architectural shift (introducing a backend dependency) to solve a problem that is already workable. Worth revisiting if reconnecting becomes a frequent enough annoyance in daily use.
