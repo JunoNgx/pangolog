@@ -415,6 +415,15 @@ A manual "Clear service worker cache" button in Settings (debug section) is a us
 - Indexes are simpler and more efficient
 - Reduce metadata requires for Google Drive files
 
+### transactedAt resolution on create/edit
+
+The date picker in `TransactionDialog` only captures a `YYYY-MM-DD` string. `resolveTransactedAt()` decides what ISO timestamp to store:
+
+- **Create, date = today**: uses `new Date().toISOString()` so same-day transactions sort chronologically by actual creation time.
+- **Create, past/future date**: uses noon (`fromDateInputValue`) - no real-time reference is available for days other than today.
+- **Edit, date unchanged**: preserves the original `transactedAt` exactly - no information is lost.
+- **Edit, date changed**: applies the new local date while retaining the original local time-of-day (hours/minutes/seconds), so moving a transaction to another day does not silently reset its time to noon.
+
 ## Current issue
 
 ### #1 Transaction time

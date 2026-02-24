@@ -125,13 +125,34 @@ export function TransactionDialog({
         }
     }
 
+    function resolveTransactedAt(): string {
+        if (isEditing && transaction) {
+            const originalDateStr = toDateInputValue(transaction.transactedAt);
+            if (transactedAt === originalDateStr)
+                return transaction.transactedAt;
+            const orig = new Date(transaction.transactedAt);
+            const [year, month, day] = transactedAt.split("-").map(Number);
+            return new Date(
+                year,
+                month - 1,
+                day,
+                orig.getHours(),
+                orig.getMinutes(),
+                orig.getSeconds(),
+                orig.getMilliseconds(),
+            ).toISOString();
+        }
+        if (transactedAt === todayDateString()) return new Date().toISOString();
+        return fromDateInputValue(transactedAt);
+    }
+
     function handleSubmit(e: React.SyntheticEvent) {
         e.preventDefault();
         const amountMinor = Math.round(Number.parseFloat(amount) * 100);
         if (Number.isNaN(amountMinor) || amountMinor <= 0) return;
 
         const input = {
-            transactedAt: fromDateInputValue(transactedAt),
+            transactedAt: resolveTransactedAt(),
             amount: amountMinor,
             isIncome,
             categoryId,
