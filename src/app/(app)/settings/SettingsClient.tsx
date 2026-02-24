@@ -257,10 +257,6 @@ export default function SettingsClient() {
                         {error && (
                             <p className="text-xs text-danger-500">{error}</p>
                         )}
-                        <p className="text-xs text-default-400">
-                            Sessions expire periodically and may require
-                            reconnecting, especially on mobile.
-                        </p>
                     </div>
                 </section>
 
