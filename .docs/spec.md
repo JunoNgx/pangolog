@@ -415,14 +415,13 @@ A manual "Clear service worker cache" button in Settings (debug section) is a us
 - Indexes are simpler and more efficient
 - Reduce metadata requires for Google Drive files
 
-### transactedAt resolution on create/edit
+### Date and timestamp handling
 
-The date picker in `TransactionDialog` only captures a `YYYY-MM-DD` string. `resolveTransactedAt()` decides what ISO timestamp to store:
+All timestamps (`transactedAt`, `createdAt`, `updatedAt`, etc.) are UTC ISO strings written from local `Date` constructors and read back with local getters (`getFullYear`, `getMonth`, `getDate`). The round-trip is consistent, so grouping and indexing by local date is always correct.
 
-- **Create, date = today**: uses `new Date().toISOString()` so same-day transactions sort chronologically by actual creation time.
-- **Create, past/future date**: uses noon (`fromDateInputValue`) - no real-time reference is available for days other than today.
-- **Edit, date unchanged**: preserves the original `transactedAt` exactly - no information is lost.
-- **Edit, date changed**: applies the new local date while retaining the original local time-of-day (hours/minutes/seconds), so moving a transaction to another day does not silently reset its time to noon.
+`transactedAt` on create/edit uses `resolveTransactedAt()`: today's date gets the actual current time so same-day transactions sort chronologically; past/future dates get noon; edits preserve the original time, or retain the original time-of-day if only the date changes.
+
+`nextGenerationAt` on recurring rules is stored as a plain `YYYY-MM-DD` local date string rather than a UTC ISO string. The original ISO format caused a domain mismatch: `computeNextDate` advances local dates, but the old comparison (`nextGenerationAt <= new Date().toISOString()`) was in UTC space. For UTC+ users, local noon on day N stores as UTC day N-1, so after advancing to N+1 the UTC time could still fall on day N and fire the rule again. Storing a plain date and comparing with `todayDateString()` removes the mismatch entirely. ISO-format records left over from before the fix are handled transparently via `.slice(0, 10)`. Luxon and the Temporal API polyfill were considered but rejected - both add significant bundle weight for a problem that is isolated to one file.
 
 ## Current issue
 

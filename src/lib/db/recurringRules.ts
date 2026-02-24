@@ -1,3 +1,4 @@
+import { todayDateString } from "../utils";
 import { getDb } from "./connection";
 import type {
     RecurringRule,
@@ -140,18 +141,20 @@ export async function getAllRecurringRules(): Promise<RecurringRule[]> {
 
 export async function getDueRecurringRules(): Promise<RecurringRule[]> {
     const db = await getDb();
-    const now = new Date().toISOString();
+    const today = todayDateString();
 
     return new Promise((resolve, reject) => {
         const tx = db.transaction("recurring-rules", "readonly");
         const store = tx.objectStore("recurring-rules");
-        const index = store.index("nextGenerationAt");
-        const request = index.getAll(IDBKeyRange.upperBound(now));
+        const request = store.getAll();
 
         request.onerror = () => reject(request.error);
         request.onsuccess = () => {
             const results: RecurringRule[] = request.result.filter(
-                (r: RecurringRule) => r.deletedAt === null && r.isActive,
+                (r: RecurringRule) =>
+                    r.deletedAt === null &&
+                    r.isActive &&
+                    r.nextGenerationAt.slice(0, 10) <= today,
             );
             resolve(results);
         };
