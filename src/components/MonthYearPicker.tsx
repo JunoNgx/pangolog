@@ -16,7 +16,7 @@ export function MonthYearPicker({
     onYearChange,
     onMonthChange,
 }: MonthYearPickerProps) {
-    const [supportsMonthInput, setSupportsMonthInput] = useState(true);
+    const [doesSupportMonthInput, setSupportsMonthInput] = useState(true);
 
     useEffect(() => {
         const input = document.createElement("input");
@@ -42,7 +42,7 @@ export function MonthYearPicker({
         onYearChange(Number(e.target.value));
     }
 
-    if (supportsMonthInput) {
+    if (doesSupportMonthInput) {
         return (
             <input
                 type="month"

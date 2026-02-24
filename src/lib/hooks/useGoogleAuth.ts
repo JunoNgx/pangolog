@@ -108,9 +108,9 @@ export function useGoogleAuth() {
     }, [authToken, setAuthToken]);
 
     const getValidToken = useCallback(
-        async (forceRefresh = false): Promise<string | null> => {
+        async (shouldForceRefresh = false): Promise<string | null> => {
             if (!authToken) return null;
-            if (!forceRefresh && isTokenValid(authToken)) {
+            if (!shouldForceRefresh && isTokenValid(authToken)) {
                 return authToken.accessToken;
             }
 
