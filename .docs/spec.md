@@ -432,21 +432,3 @@ All timestamps (`transactedAt`, `createdAt`, `updatedAt`, etc.) are UTC ISO stri
 `transactedAt` on create/edit uses `resolveTransactedAt()`: today's date gets the actual current time so same-day transactions sort chronologically; past/future dates get noon; edits preserve the original time, or retain the original time-of-day if only the date changes.
 
 `nextGenerationAt` on recurring rules is stored as a plain `YYYY-MM-DD` local date string rather than a UTC ISO string. The original ISO format caused a domain mismatch: `computeNextDate` advances local dates, but the old comparison (`nextGenerationAt <= new Date().toISOString()`) was in UTC space. For UTC+ users, local noon on day N stores as UTC day N-1, so after advancing to N+1 the UTC time could still fall on day N and fire the rule again. Storing a plain date and comparing with `todayDateString()` removes the mismatch entirely. ISO-format records left over from before the fix are handled transparently via `.slice(0, 10)`. Luxon and the Temporal API polyfill were considered but rejected - both add significant bundle weight for a problem that is isolated to one file.
-
-## Current issue
-
-### #3 Recurring rule computeNextDate
-
-IsoString becomes universal time after being converted. Is it possible for the day to roll backward or forward during the timezone conversion, and cause multiple entries be created in the same day, for daily recurring rules?
-
-Consider this:
-- Condition for a new entry is met, and new Transaction is created.
-- In `processRule`:
-    - `computeNextDate()` generates the next date. For example, Feb 2nd.
-    - `current.toISOString` ISO-ifies the model and convert to universal time
-        - Is it possible for timezone difference to cause the day of this datetime to become Feb 1st?
-    - `nextGenerationAt` now have the Feb 1st date, causing duplication.
-
-Suggestion:
-1. Use a library like Luxon instead of native `new Date()`.
-2. Use dumb string, storing only `YYYY-MM-DD`.
