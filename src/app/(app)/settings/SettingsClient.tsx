@@ -42,8 +42,7 @@ export default function SettingsClient() {
     const { theme, setTheme } = useTheme();
     const { sync } = useSync();
     const { syncStatus, lastSyncTime, syncError } = useLocalSettingsStore();
-    const { getLoggerEntries, addLoggerEntry, clearLoggerEntries } =
-        useLogger();
+    const { getLoggerEntries, clearLoggerEntries } = useLogger();
 
     const [isPrettyPrint, setIsPrettyPrint] = useState(true);
     const [isExportingJson, setIsExportingJson] = useState(false);
@@ -62,6 +61,25 @@ export default function SettingsClient() {
 
     const [isResetDialogOpen, setIsResetDialogOpen] = useState(false);
     const [isResetting, setIsResetting] = useState(false);
+
+    const [isDebugVisible, setIsDebugVisible] = useState(false);
+    const headingTapCountRef = useRef(0);
+    const headingTapTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
+        null,
+    );
+
+    function handleHeadingTap() {
+        headingTapCountRef.current += 1;
+        if (headingTapTimeoutRef.current)
+            clearTimeout(headingTapTimeoutRef.current);
+        headingTapTimeoutRef.current = setTimeout(() => {
+            headingTapCountRef.current = 0;
+        }, 1500);
+        if (headingTapCountRef.current >= 5) {
+            headingTapCountRef.current = 0;
+            setIsDebugVisible((prev) => !prev);
+        }
+    }
 
     async function handleReset() {
         setIsResetting(true);
@@ -131,10 +149,6 @@ export default function SettingsClient() {
             : `${previewAmount} ${customCurrency}`
         : previewAmount;
 
-    function handleAddDebugLoggerEntry() {
-        addLoggerEntry("settings:debug", "User presses the debug log button");
-    }
-
     function handleClearDebugLoggerEntry() {
         clearLoggerEntries();
     }
@@ -174,7 +188,13 @@ export default function SettingsClient() {
 
     return (
         <div>
-            <h2 className="text-xl font-bold mb-6">Settings</h2>
+            <h2
+                className="text-xl font-bold mb-6"
+                onClick={handleHeadingTap}
+                onKeyDown={handleHeadingTap}
+            >
+                Settings
+            </h2>
 
             <div className="MainListContainer gap-8">
                 <section>
@@ -424,51 +444,45 @@ export default function SettingsClient() {
                 </section>
 
                 {/* DEBUG */}
-                <section className="mt-8">
-                    <h3 className="text-lg font-semibold mb-1">Debug</h3>
-                    <Button
-                        variant="flat"
-                        onPress={() =>
-                            toast("Debug toast notification", {
-                                duration: Infinity,
-                            })
-                        }
-                    >
-                        Trigger toast
-                    </Button>
+                {isDebugVisible && (
+                    <section className="mt-8">
+                        <h3 className="text-lg font-semibold mb-1">Debug</h3>
+                        <Button
+                            variant="flat"
+                            onPress={() =>
+                                toast("Debug toast notification", {
+                                    duration: Infinity,
+                                })
+                            }
+                        >
+                            Trigger toast
+                        </Button>
 
-                    <Button
-                        className="block mt-2"
-                        variant="flat"
-                        onPress={handleCopyDebugLoggerEntries}
-                    >
-                        Copy Logger content
-                    </Button>
-                    <Button
-                        className="block mt-2"
-                        variant="flat"
-                        onPress={handleDumpDebugLoggerContent}
-                    >
-                        Dump log
-                    </Button>
+                        <Button
+                            className="block mt-2"
+                            variant="flat"
+                            onPress={handleCopyDebugLoggerEntries}
+                        >
+                            Copy Logger content
+                        </Button>
+                        <Button
+                            className="block mt-2"
+                            variant="flat"
+                            onPress={handleDumpDebugLoggerContent}
+                        >
+                            Dump log
+                        </Button>
 
-                    <Button
-                        className="block mt-12"
-                        variant="flat"
-                        onPress={handleAddDebugLoggerEntry}
-                    >
-                        Add Logger entry
-                    </Button>
-
-                    <Button
-                        className="block mt-12"
-                        color="danger"
-                        variant="flat"
-                        onPress={handleClearDebugLoggerEntry}
-                    >
-                        Clear Logger entries
-                    </Button>
-                </section>
+                        <Button
+                            className="block mt-12"
+                            color="danger"
+                            variant="flat"
+                            onPress={handleClearDebugLoggerEntry}
+                        >
+                            Clear Logger entries
+                        </Button>
+                    </section>
+                )}
                 {/* END DEBUG */}
 
                 <section className="mt-8">
