@@ -19,14 +19,14 @@ const themes = [
 
 export function ThemeSwitcher() {
     const { theme, setTheme } = useTheme();
-    const [mounted, setMounted] = useState(false);
+    const [isMounted, setMounted] = useState(false);
     const CurrentIcon = themes.find((t) => t.key === theme)?.icon ?? Monitor;
 
     useEffect(() => {
         setMounted(true);
     }, []);
 
-    if (!mounted) {
+    if (!isMounted) {
         return (
             <Button isIconOnly variant="light" size="sm" aria-label="Theme">
                 <div className="size-4.5" />

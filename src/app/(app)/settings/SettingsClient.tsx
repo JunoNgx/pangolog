@@ -18,6 +18,7 @@ import { toast } from "sonner";
 import { clearAllData } from "@/lib/db/sync";
 import { exportJson } from "@/lib/export";
 import { useGoogleAuth } from "@/lib/hooks/useGoogleAuth";
+import { useLogger } from "@/lib/hooks/useLogger";
 import { useSync } from "@/lib/hooks/useSync";
 import {
     executeImport,
@@ -28,7 +29,6 @@ import {
 } from "@/lib/import";
 import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
-import { useLogger } from "@/lib/hooks/useLogger";
 
 export default function SettingsClient() {
     const {
@@ -42,9 +42,10 @@ export default function SettingsClient() {
     const { theme, setTheme } = useTheme();
     const { sync } = useSync();
     const { syncStatus, lastSyncTime, syncError } = useLocalSettingsStore();
-    const { getLoggerEntries, addLoggerEntry, clearLoggerEntries } = useLogger();
+    const { getLoggerEntries, addLoggerEntry, clearLoggerEntries } =
+        useLogger();
 
-    const [prettyPrint, setPrettyPrint] = useState(true);
+    const [isPrettyPrint, setIsPrettyPrint] = useState(true);
     const [isExportingJson, setIsExportingJson] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [importData, setImportData] = useState<ImportData | null>(null);
@@ -56,8 +57,8 @@ export default function SettingsClient() {
         null,
     );
     const [isImporting, setIsImporting] = useState(false);
-    const [mounted, setMounted] = useState(false);
-    useEffect(() => setMounted(true), []);
+    const [isMounted, setIsMounted] = useState(false);
+    useEffect(() => setIsMounted(true), []);
 
     const [isResetDialogOpen, setIsResetDialogOpen] = useState(false);
     const [isResetting, setIsResetting] = useState(false);
@@ -73,7 +74,7 @@ export default function SettingsClient() {
 
     async function handleExportJson() {
         setIsExportingJson(true);
-        await exportJson(prettyPrint);
+        await exportJson(isPrettyPrint);
         setIsExportingJson(false);
     }
 
@@ -131,15 +132,12 @@ export default function SettingsClient() {
         : previewAmount;
 
     function handleAddDebugLoggerEntry() {
-        addLoggerEntry(
-            "settings:debug",
-            "User presses the debug log button"
-        );
-    };
+        addLoggerEntry("settings:debug", "User presses the debug log button");
+    }
 
     function handleClearDebugLoggerEntry() {
         clearLoggerEntries();
-    };
+    }
 
     async function handleCopyDebugLoggerEntries() {
         const entries = getLoggerEntries();
@@ -148,11 +146,14 @@ export default function SettingsClient() {
             console.log("Logger content: ", content);
             await navigator.clipboard.writeText(content);
         } catch (error) {
-            toast.error(`Unable to copy Logger content to clipboard: ${error}`, {
-                duration: Infinity,
-            });
+            toast.error(
+                `Unable to copy Logger content to clipboard: ${error}`,
+                {
+                    duration: Infinity,
+                },
+            );
         }
-    };
+    }
 
     function handleDumpDebugLoggerContent() {
         const entries = getLoggerEntries();
@@ -169,7 +170,7 @@ export default function SettingsClient() {
         link.click();
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
-    };
+    }
 
     return (
         <div>
@@ -276,7 +277,7 @@ export default function SettingsClient() {
                     <h3 className="text-lg font-semibold mb-4">Theme</h3>
                     <RadioGroup
                         orientation="horizontal"
-                        value={mounted ? (theme ?? "system") : "system"}
+                        value={isMounted ? (theme ?? "system") : "system"}
                         onValueChange={setTheme}
                         classNames={{ wrapper: "gap-6" }}
                     >
@@ -299,8 +300,8 @@ export default function SettingsClient() {
                                 Export JSON
                             </Button>
                             <Checkbox
-                                isSelected={prettyPrint}
-                                onValueChange={setPrettyPrint}
+                                isSelected={isPrettyPrint}
+                                onValueChange={setIsPrettyPrint}
                                 size="sm"
                             >
                                 <span className="text-sm">Pretty print</span>

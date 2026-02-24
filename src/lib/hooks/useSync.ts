@@ -30,7 +30,7 @@ export function useSyncFn() {
     const queryClient = useQueryClient();
 
     const sync = useCallback(
-        async (silent = false) => {
+        async (isSilent = false) => {
             if (isSyncing) return;
             isSyncing = true;
 
@@ -62,7 +62,7 @@ export function useSyncFn() {
                 setSyncStatus("idle");
                 setLastSyncTime(new Date().toISOString());
                 toast.dismiss("auth-reconnect");
-                if (!silent) {
+                if (!isSilent) {
                     toast.success("Sync complete");
                 }
             } catch (err) {
@@ -77,7 +77,7 @@ export function useSyncFn() {
                     return;
                 }
 
-                // Drive returned 401 - attempt a silent token refresh.
+                // Drive returned 401 - attempt a isSilent token refresh.
                 // Recovers from clock-skew expiry without user interaction.
                 // The refreshed token will be picked up by the next sync.
                 const freshToken = await getValidToken(true);
