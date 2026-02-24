@@ -71,9 +71,7 @@ export function useSyncFn() {
                         err instanceof Error ? err.message : "Sync failed.";
                     setSyncStatus("error");
                     setSyncError(message);
-                    toast.error(`Sync failed: ${message}`, {
-                        duration: Infinity,
-                    });
+                    toast.error(`Sync failed: ${message}`);
                     return;
                 }
 
