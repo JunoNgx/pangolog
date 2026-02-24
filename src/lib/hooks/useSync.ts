@@ -7,7 +7,6 @@ import { getOrCreatePangoFolder } from "@/lib/drive/client";
 import { syncAll } from "@/lib/drive/sync";
 import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
 import { useGoogleAuth } from "./useGoogleAuth";
-import { useLogger } from "./useLogger";
 
 const DEBOUNCE_MS = 30_000;
 
@@ -28,8 +27,6 @@ export function useSyncFn() {
         setAuthToken,
     } = useLocalSettingsStore();
 
-    const { addLoggerEntry } = useLogger();
-
     const { getValidToken } = useGoogleAuth();
     const queryClient = useQueryClient();
 
@@ -38,11 +35,8 @@ export function useSyncFn() {
             if (isSyncing) return;
             isSyncing = true;
 
-            addLoggerEntry("Executing sync() from useSync", "sync:attempt");
-
             const token = await getValidToken();
             if (!token) {
-                addLoggerEntry("Token is falsy, exiting sync function", "sync:attempt");
                 isSyncing = false;
                 return;
             }
@@ -51,7 +45,6 @@ export function useSyncFn() {
             setSyncError(null);
 
             try {
-                addLoggerEntry("Attempt to sync", "sync:attempt");
                 let folderId = driveFolderId;
                 if (!folderId) {
                     folderId = await getOrCreatePangoFolder(token);
@@ -63,27 +56,19 @@ export function useSyncFn() {
 
                 setSyncStatus("idle");
                 setLastSyncTime(new Date().toISOString());
-                addLoggerEntry("Sync attempt is successful, will trigger toast if not silent", "sync:success",  silent);
                 if (!silent) {
                     toast.success("Sync complete");
                 }
             } catch (err) {
-                addLoggerEntry("Error encountered during sync", "sync:error", err);
-
                 if (isAuthError(err)) {
-                    addLoggerEntry("Sync error is auth error, attempting to recover by getting new token with forceRefresh", "sync:retry");
                     // Force a GIS refresh regardless of local token validity -
                     // the 401 means the token is actually expired (e.g. clock skew).
                     const freshToken = await getValidToken(true);
                     if (!freshToken) {
-                        // Silent refresh failed (e.g. mobile PWA WebView limitation).
-                        // Stay connected and silently skip - next sync will retry.
-                        addLoggerEntry("New token is falsy, exiting sync function", "sync:retry");
                         setSyncStatus("idle");
                         return;
                     }
                     try {
-                        addLoggerEntry("Retrying with new token", "sync:retry");
                         const retryFolderId =
                             driveFolderId ??
                             (await getOrCreatePangoFolder(freshToken));
@@ -93,11 +78,9 @@ export function useSyncFn() {
                         setLastSyncTime(new Date().toISOString());
                         if (!silent) toast.success("Sync complete");
                         return;
-                    } catch(error) {
-                        addLoggerEntry("Error encountered with new token, likely genuine revocation", "sync:retry:error", error);
+                    } catch {
                         // Fresh token was still rejected - genuine revocation.
                     }
-                    addLoggerEntry("Setting auth token to null, informing user of session expiry", "sync:error");
                     setAuthToken(null);
                     setSyncStatus("error");
                     setSyncError(
