@@ -43,15 +43,22 @@ Run `yarn && yarn dev` from the root directory.
 
 ## Environment variable
 
-This project only requires environment variable if user chooses to sync data with Google Drive.
+This project only requires environment variable if user chooses to sync data with Google Drive. The required variables are:
+- `NEXT_PUBLIC_GOOGLE_CLIENT_ID`
+- `GOOGLE_CLIENT_SECRET`
+- `IRON_SESSION_SECRET`
 
-What you need:
+You would need
 - A Google Clould project with Drive API enabled
-- An OAuth 2.0 client ID
-    - Type `Web application`
-    - Configured `Authorised JavaScript origins`, typically `http://localhost:3000` if you are running locally
-    - Publishing to production, or configured test users
-- Setup environment variable `NEXT_PUBLIC_GOOGLE_CLIENT_ID`
+- An OAuth 2.0 client ID, can typically be found in:
+    - Google Cloud Console > APIs & Services > Credentials
+    - Your OAuth 2.0 Client ID (exiting or new)
+        - Type `Web application`
+        - Configured `Authorised JavaScript origins`, typically `http://localhost:3000` if you are running locally, otherwise your deployed URL
+        - Publishing to production, or configured test users
+    - For `NEXT_PUBLIC_GOOGLE_CLIENT_ID`: use client ID
+    - For `GOOGLE_CLIENT_SECRET`: use a secret under the Client secrets section
+- Execute in a terminal `openssl rand -base64 32` and use the output for `IRON_SESSION_SECRET`
 
 ## Support and Contribution
 

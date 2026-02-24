@@ -30,6 +30,24 @@ export interface GisTokenError {
     message?: string;
 }
 
+export interface GisCodeClientConfig {
+    client_id: string;
+    scope: string;
+    ux_mode: "popup" | "redirect";
+    callback: (response: GisCodeResponse) => void;
+    error_callback?: (error: GisTokenError) => void;
+}
+
+export interface GisCodeClient {
+    requestCode: () => void;
+}
+
+export interface GisCodeResponse {
+    code: string;
+    error?: string;
+    error_description?: string;
+}
+
 declare global {
     interface Window {
         google?: {
@@ -38,6 +56,9 @@ declare global {
                     initTokenClient: (
                         config: GisTokenClientConfig,
                     ) => GisTokenClient;
+                    initCodeClient: (
+                        config: GisCodeClientConfig,
+                    ) => GisCodeClient;
                     revoke: (token: string, callback?: () => void) => void;
                 };
             };

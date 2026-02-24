@@ -57,7 +57,7 @@ Approach:
 - Transactions are not hard-deleted. Use `deletedAt`.
 - Deleted transactions remain stored to facilitate deletion propagation.
 - Data with `deletedAt` older than 30 days are removed on both local and cloud instance.
-- On a Drive API 401, a forced GIS token refresh is attempted. If the refresh fails (e.g. mobile PWA WebView isolation), a persistent "session expired" toast is shown prompting the user to reconnect in Settings. If the refresh succeeds (e.g. clock-skew expiry), the token is stored and the next auto-sync will use it.
+- On a Drive API 401, a forced server-side token refresh is attempted via `POST /api/auth/refresh`. If the refresh fails (cookie missing or refresh token revoked), sync resets to idle silently and the user remains shown as connected. If the forced refresh succeeds but Drive still returns 401 (genuine revocation), `setAuthToken(null)` is called and a "please reconnect" toast is shown.
 
 ### Error recovery strategies
 - Exponential backoff (30s, 60s, 120s, 300s)
@@ -346,39 +346,42 @@ For monthly and yearly rules, if `dayOfMonth` exceeds the number of days in the 
 
 ## Technical Decisions
 
-### Google auth: GIS token model and session expiry
+### Google auth: Authorization Code Flow with iron-session
 
-#### How the current auth model works
+#### How the auth model works
 
-The app uses the **GIS Token Model** (implicit grant via `initTokenClient`). When the user connects, GIS issues a short-lived **access token** (~1 hour) directly in the browser. There is no refresh token. To get a new access token after expiry, GIS performs a silent refresh - it opens a hidden iframe to `accounts.google.com` and relies on the user's existing Google session cookie to issue a new token without prompting the user.
+The app uses the **Authorization Code Flow** via GIS `initCodeClient`. When the user connects:
 
-This works on desktop browsers. On mobile PWA, the WebView is sandboxed from the system browser's cookie store, so the Google session cookie is not accessible and silent refresh fails. When this happens, `getValidToken()` returns `null`, sync exits silently, and the user's data stops syncing - potentially indefinitely without them knowing.
+1. GIS opens a consent popup and returns a one-time **authorization code** to the browser callback.
+2. The code is posted to `POST /api/auth/callback`, which exchanges it with Google server-side (using `client_id`, `client_secret`, and `redirect_uri: "postmessage"`) for an access token and a **refresh token**.
+3. The server fetches the user's email from the Google userinfo endpoint, stores the refresh token in an encrypted HTTP-only cookie (`pangolog-session`) via `iron-session`, and returns `{ accessToken, expiresAt, email }` to the client.
+4. The client stores `{ id, accessToken, expiresAt, email }` in Zustand (`authToken`).
 
-#### Current mitigation: reconnect toast
+#### Token refresh
 
-When `getValidToken()` returns `null` and the user has a stored `authToken` (i.e. they believe they are connected), a persistent toast is shown: "Google Drive session expired. Please reconnect in Settings." This distinguishes the "broken session" case from "user has never connected" (where silence is correct).
+When the access token is expired (or a Drive API 401 triggers a forced refresh), the client calls `POST /api/auth/refresh`. The server reads the `pangolog-session` cookie, exchanges the stored refresh token with Google, and returns a new `{ accessToken, expiresAt }`. The client updates the Zustand store. No GIS interaction is required - the refresh is entirely server-side, so mobile PWA WebView sandboxing is irrelevant.
 
-To avoid adding `authToken` to the `useCallback` dependency array - which would recreate `sync` on every token refresh and disrupt debouncing - the check reads the store imperatively: `useLocalSettingsStore.getState().authToken`.
+If `/api/auth/refresh` returns a non-ok response (cookie missing or refresh token revoked), `getValidToken()` returns `null` and `useSync` handles it per its existing logic.
 
-On a Drive API 401, `getValidToken(true)` is called to force a refresh. If it succeeds, the failure was likely clock skew and the next sync attempt will use the fresh token. If it fails, the same reconnect toast is shown.
+#### Disconnect
 
-Genuine access revocation (user revokes in Google account settings) is not explicitly detected - `getValidToken(true)` can still succeed even when Drive access is revoked, because GIS issues tokens without knowing about Drive-specific revocation. The reconnect toast is shown regardless, which prompts the correct action (re-authorising), so the behaviour is acceptable even if the message says "expired" rather than "revoked".
+`POST /api/auth/logout` destroys the `pangolog-session` cookie. No Google token revocation is performed - a soft disconnect is sufficient for a personal app. The client sets `authToken` to `null`.
 
-#### How other apps solve this: Authorization Code Flow
+#### Why no explicit PKCE verifier
 
-Most production apps that integrate Google Drive use the **Authorization Code Flow** (`initCodeClient`) instead:
+Since `client_secret` is kept server-side and the code exchange happens server-to-server, the secret itself provides the security guarantee that PKCE is designed for in public clients. GIS `initCodeClient` with `ux_mode: "popup"` and server-side exchange is the standard pattern for confidential clients.
 
-1. The user goes through OAuth and the browser receives a one-time **authorization code**.
-2. That code is sent to a server, which exchanges it with Google for both an access token and a **refresh token**.
-3. The refresh token is stored server-side and never expires unless the user revokes access.
-4. When the access token expires, the server uses the refresh token to silently issue a new one - mobile PWA sandboxing is irrelevant since it happens server-side.
+#### Known limitation: immediate retry after 401
 
-This app intentionally avoids this approach. It is designed to be fully client-side with no server state beyond static hosting. The Authorization Code Flow requires a backend - at minimum an API route to handle the code exchange and securely store the refresh token. Introducing a backend just for token management would undermine that constraint.
+When a Drive API 401 triggers `getValidToken(true)` and the refresh succeeds, the current sync attempt is still discarded. The next auto-sync will use the fresh token. A more aggressive approach would retry `syncAll` immediately, but this was omitted for code clarity.
 
-#### Other known limitations
+#### Previous implementation: GIS Token Model (Implicit Flow)
 
-- **Immediate retry after clock-skew recovery**: when a 401 is caused by clock skew, the current sync attempt is discarded after `getValidToken(true)` refreshes the token. The next auto-sync will succeed. A more aggressive approach would retry `syncAll` immediately with the fresh token, but this was removed for code clarity.
-- **Genuine revocation detection**: could be improved by retrying `syncAll` with the fresh token after a forced refresh - if Drive still returns 401, the access was genuinely revoked and a more specific message could be shown before disconnecting.
+The app originally used the **GIS Token Model** (`initTokenClient`), an implementation of the OAuth 2.0 Implicit Flow. GIS issued a short-lived access token (~1 hour) directly to the browser with no refresh token. Renewal was done via GIS silent refresh - a hidden iframe to `accounts.google.com` that relied on the user's Google session cookie.
+
+This worked on desktop but failed on mobile PWA, where the WebView is sandboxed from the system browser's cookie store, making the Google session cookie inaccessible. When silent refresh failed, `getValidToken()` returned `null` and sync stopped silently. The mitigation was a persistent "session expired" toast prompting the user to reconnect in Settings - functional but required periodic manual reconnection on mobile.
+
+The Implicit Flow is deprecated by OAuth 2.0 Security Best Current Practice (RFC 9700). It was replaced by the Authorization Code Flow described above.
 
 ### Danger Zone reset action
 The settings page includes a "Danger Zone" section with a "Reset all data" button. On confirmation, it disconnects Google Drive, clears all local IndexedDB stores, shows a success toast, and reloads the page after 1.5 seconds. The page reload is necessary to ensure a clean module state - without it, a stale `dbPromise` can cause all subsequent DB operations to fail.
@@ -433,27 +436,3 @@ All timestamps (`transactedAt`, `createdAt`, `updatedAt`, etc.) are UTC ISO stri
 
 `nextGenerationAt` on recurring rules is stored as a plain `YYYY-MM-DD` local date string rather than a UTC ISO string. The original ISO format caused a domain mismatch: `computeNextDate` advances local dates, but the old comparison (`nextGenerationAt <= new Date().toISOString()`) was in UTC space. For UTC+ users, local noon on day N stores as UTC day N-1, so after advancing to N+1 the UTC time could still fall on day N and fire the rule again. Storing a plain date and comparing with `todayDateString()` removes the mismatch entirely. ISO-format records left over from before the fix are handled transparently via `.slice(0, 10)`. Luxon and the Temporal API polyfill were considered but rejected - both add significant bundle weight for a problem that is isolated to one file.
 
-## Under consideration
-
-### Authorization Code Flow with PKCE for persistent Google Drive sessions
-
-#### Current implementation: OAuth 2.0 Implicit Flow (GIS Token Model)
-
-The app uses the GIS Token Model (`initTokenClient`), which is an implementation of the OAuth 2.0 **Implicit Flow**. GIS issues a short-lived access token (~1 hour) directly to the browser. There is no refresh token. To renew, GIS performs a silent refresh via a hidden iframe that relies on the user's Google session cookie. This works on desktop browsers but fails on mobile PWA, where the WebView is sandboxed from the system browser's cookie store. The Implicit Flow is now deprecated by the OAuth 2.0 Security Best Current Practice (RFC 9700).
-
-The current mitigation is a persistent reconnect toast when `getValidToken()` fails while the user is connected, plus a notice in Settings. Users on mobile still need to manually reconnect periodically.
-
-#### The modern standard: Authorization Code Flow with PKCE
-
-The recommended replacement is the **Authorization Code Flow with PKCE** (Proof Key for Code Exchange), using GIS's `initCodeClient`. The flow:
-
-1. Client initiates OAuth via `initCodeClient`. GIS redirects the user through the consent screen and returns a one-time **authorization code**.
-2. The code is sent to a Next.js API route (`/api/auth/callback`), which exchanges it with Google using the code, a **client secret** (server-only env var), and the PKCE verifier. Google returns an access token and a **refresh token**.
-3. The refresh token is encrypted and stored in an **HTTP-only cookie** (using `iron-session`), never exposed to the browser.
-4. When the access token expires, the client calls `/api/auth/refresh`. The server reads the cookie, calls Google's token endpoint with the refresh token, and returns a new access token. Mobile PWA sandboxing is irrelevant - the refresh is entirely server-side.
-
-PKCE prevents authorization code interception: the client generates a random secret, sends a hash of it with the auth request, then proves knowledge of the original when exchanging the code. This makes the flow safe even without a client secret, though having one adds an extra layer.
-
-Required changes: `GOOGLE_CLIENT_SECRET` and `COOKIE_SECRET` env vars on Vercel, `iron-session` package, two API routes (~30-40 lines each), and reworking `useGoogleAuth.ts` to use `initCodeClient` and call `/api/auth/refresh` instead of GIS silent refresh. The rest of the app (`useSync`, etc.) would be unaffected.
-
-**Why it hasn't been done:** The trade-off does not currently favour it. The reconnect friction is tolerable for a personal small-scale app - the toast is clear, the action is simple, and expectations are set in Settings. This is a meaningful architectural shift that introduces a backend dependency and removes the purely static hosting model. Worth revisiting if reconnecting becomes a frequent enough annoyance in daily use.
