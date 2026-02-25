@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@heroui/react";
+import { Plus } from "lucide-react";
 import { useState } from "react";
 import type { Category } from "@/lib/db/types";
 
@@ -10,12 +11,14 @@ interface CategoryPickerProps {
     categories: Category[];
     selectedId: string | null;
     onChange: (id: string | null) => void;
+    onAdd?: () => void;
 }
 
 export function CategoryPicker({
     categories,
     selectedId,
     onChange,
+    onAdd,
 }: CategoryPickerProps) {
     const [isExpanded, setIsExpanded] = useState(false);
 
@@ -26,10 +29,29 @@ export function CategoryPicker({
 
     return (
         <div>
-            <p className="text-sm text-default-500 mb-2">Category</p>
+            <div className="flex items-center justify-between mb-2">
+                <p className="text-sm text-default-500">Category</p>
+                {onAdd && (
+                    <button
+                        type="button"
+                        onClick={onAdd}
+                        className={`
+                            rounded px-1.5 py-0.5
+                            flex items-center gap-1
+                            text-xs text-default-400
+                            hover:text-default-600 hover:bg-default-100 transition-colors cursor-pointer
+                        `}
+                    >
+                        <Plus size={12} />
+                        Add
+                    </button>
+                )}
+            </div>
             {categories.length === 0 && (
                 <p className="text-sm text-default-400">
-                    No categories available. Add one from the Categories menu.
+                    {onAdd
+                        ? "No categories yet. Press Add to create one."
+                        : "No categories available. Add one from the Categories menu."}
                 </p>
             )}
             <div className="flex flex-wrap gap-2">

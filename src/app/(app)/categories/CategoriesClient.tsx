@@ -3,9 +3,9 @@
 import { Button, Tooltip } from "@heroui/react";
 import { Plus } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
+import { CategoryDialog } from "@/components/CategoryDialog";
 import { createAction } from "@/lib/createAction";
 import { useHotkey } from "@/lib/hooks/useHotkey";
-import { CategoryDialog } from "./CategoryDialog";
 import { CategoryList } from "./CategoryList";
 
 export default function CategoriesClient() {
