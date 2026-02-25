@@ -284,8 +284,24 @@ export default function SettingsClient() {
                                 setIsPrefixCurrency(v === "prefix")
                             }
                         >
-                            <Radio value="prefix">Prefix ($12)</Radio>
-                            <Radio value="suffix">Suffix (12 SGD)</Radio>
+                            <Radio
+                                value="prefix"
+                                classNames={{
+                                    wrapper: "rounded-none",
+                                    control: "rounded-none",
+                                }}
+                            >
+                                Prefix ($12)
+                            </Radio>
+                            <Radio
+                                value="suffix"
+                                classNames={{
+                                    wrapper: "rounded-none",
+                                    control: "rounded-none",
+                                }}
+                            >
+                                Suffix (12 SGD)
+                            </Radio>
                         </RadioGroup>
                         <p className="font-mono text-sm text-default-500">
                             Preview: {preview}
@@ -301,9 +317,33 @@ export default function SettingsClient() {
                         onValueChange={setTheme}
                         classNames={{ wrapper: "gap-6" }}
                     >
-                        <Radio value="light">Light</Radio>
-                        <Radio value="dark">Dark</Radio>
-                        <Radio value="system">System</Radio>
+                        <Radio
+                            value="light"
+                            classNames={{
+                                wrapper: "rounded-none",
+                                control: "rounded-none",
+                            }}
+                        >
+                            Light
+                        </Radio>
+                        <Radio
+                            value="dark"
+                            classNames={{
+                                wrapper: "rounded-none",
+                                control: "rounded-none",
+                            }}
+                        >
+                            Dark
+                        </Radio>
+                        <Radio
+                            value="system"
+                            classNames={{
+                                wrapper: "rounded-none",
+                                control: "rounded-none",
+                            }}
+                        >
+                            System
+                        </Radio>
                     </RadioGroup>
                 </section>
 
