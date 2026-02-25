@@ -36,6 +36,7 @@
 @layer utilities {
     /* Set in `@layer utilities` to overring HeroUI's classes */
     .FloatingActionButton {
-        @apply fixed bottom-21 right-3 md:bottom-6 md:right-6 z-50 h-14 min-w-0 rounded-lg;
+        @apply md:bottom-6 md:right-6 md:rounded-lg
+            fixed bottom-4 right-4 z-50 h-14 min-w-0 rounded-full;
     }
 }
