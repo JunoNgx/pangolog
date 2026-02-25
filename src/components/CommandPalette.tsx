@@ -5,17 +5,17 @@ import {
     BookOpen,
     Download,
     Feather,
+    Layers,
     Monitor,
     Moon,
     PieChart,
     Plus,
     RefreshCw,
-    Repeat,
     Settings,
     Sun,
     Tag,
 } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useTheme } from "next-themes";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createAction } from "@/lib/createAction";
@@ -54,6 +54,7 @@ export function CommandPalette() {
 
     const router = useRouter();
     const pathname = usePathname();
+    const searchParams = useSearchParams();
     const { isConnected } = useGoogleAuth();
     const { sync } = useSyncFn();
     const { theme, setTheme } = useTheme();
@@ -79,26 +80,19 @@ export function CommandPalette() {
                 action: () => createAction.trigger(),
             };
         }
-        if (pathname === "/categories") {
+        if (pathname === "/manage") {
+            const tab = searchParams.get("tab") ?? "categories";
             return {
                 id: "create",
                 group: "Create",
-                label: "New category",
-                icon: <Plus size={16} />,
-                action: () => createAction.trigger(),
-            };
-        }
-        if (pathname === "/recurring") {
-            return {
-                id: "create",
-                group: "Create",
-                label: "New recurring rule",
+                label:
+                    tab === "recurring" ? "New recurring rule" : "New category",
                 icon: <Plus size={16} />,
                 action: () => createAction.trigger(),
             };
         }
         return null;
-    }, [pathname]);
+    }, [pathname, searchParams]);
 
     const commands = useMemo((): Command[] => {
         const navigate: Command[] = [
@@ -110,13 +104,6 @@ export function CommandPalette() {
                 action: () => router.push("/log"),
             },
             {
-                id: "nav-categories",
-                group: "Navigate",
-                label: "Go to Categories",
-                icon: <Tag size={16} />,
-                action: () => router.push("/categories"),
-            },
-            {
                 id: "nav-summary",
                 group: "Navigate",
                 label: "Go to Summary",
@@ -124,11 +111,18 @@ export function CommandPalette() {
                 action: () => router.push("/summary"),
             },
             {
+                id: "nav-categories",
+                group: "Navigate",
+                label: "Go to Categories",
+                icon: <Tag size={16} />,
+                action: () => router.push("/manage?tab=categories"),
+            },
+            {
                 id: "nav-recurring",
                 group: "Navigate",
                 label: "Go to Recurring",
-                icon: <Repeat size={16} />,
-                action: () => router.push("/recurring"),
+                icon: <Layers size={16} />,
+                action: () => router.push("/manage?tab=recurring"),
             },
             {
                 id: "nav-settings",

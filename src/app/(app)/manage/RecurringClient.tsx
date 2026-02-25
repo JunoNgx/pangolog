@@ -93,8 +93,6 @@ export default function RecurringClient() {
 
     return (
         <div>
-            <h2 className="text-xl font-bold mb-4">Recurring Transactions</h2>
-
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-4">
                 <Checkbox isSelected={showDimes} onValueChange={setShowDimes}>
                     <span className="text-sm text-default-500">
