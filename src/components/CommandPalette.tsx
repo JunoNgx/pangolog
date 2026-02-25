@@ -113,14 +113,14 @@ export function CommandPalette() {
             {
                 id: "nav-categories",
                 group: "Navigate",
-                label: "Go to Categories",
+                label: "Go to Manage > Categories",
                 icon: <Tag size={16} />,
                 action: () => router.push("/manage?tab=categories"),
             },
             {
                 id: "nav-recurring",
                 group: "Navigate",
-                label: "Go to Recurring",
+                label: "Go to Manage > Recurring Rules",
                 icon: <Layers size={16} />,
                 action: () => router.push("/manage?tab=recurring"),
             },
