@@ -19,4 +19,11 @@ export default heroui({
             },
         },
     },
+    layout: {
+        radius: {
+            small: "0px",
+            medium: "0px",
+            large: "0px",
+        },
+    },
 });
