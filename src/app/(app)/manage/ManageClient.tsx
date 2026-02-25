@@ -13,7 +13,7 @@ export default function ManageClient() {
     const activeTab = (searchParams.get("tab") ?? "categories") as TabKey;
 
     function handleTabChange(key: React.Key) {
-        router.replace(`/manage?tab=${key}`);
+        router.replace(`/manage?tab=${String(key)}`);
     }
 
     return (
