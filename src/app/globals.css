@@ -6,6 +6,10 @@
 @theme inline {
     --font-sans: var(--font-sans-var);
     --font-mono: var(--font-mono-var);
+
+    --radius-sm: 0;
+    --radius-md: 0;
+    --radius-lg: 0;
 }
 
 @layer base {
@@ -37,6 +41,6 @@
     /* Set in `@layer utilities` to overring HeroUI's classes */
     .FloatingActionButton {
         @apply md:bottom-6 md:right-6 md:rounded-lg
-            fixed bottom-4 right-4 z-50 h-14 min-w-0 rounded-full;
+            fixed bottom-4 right-4 z-50 h-14 min-w-0;
     }
 }
