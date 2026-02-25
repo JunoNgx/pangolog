@@ -12,6 +12,7 @@ import {
 } from "@heroui/react";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
+import { CategoryDialog } from "@/components/CategoryDialog";
 import { CategoryPicker } from "@/components/CategoryPicker";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
 import type { RecurringRule } from "@/lib/db/types";
@@ -69,6 +70,7 @@ export function RecurringRuleDialog({
     const [frequency, setFrequency] = useState<Frequency>("monthly");
     const [startDate, setStartDate] = useState(todayDateString());
     const [isActive, setIsActive] = useState(true);
+    const [isCategoryDialogOpen, setIsCategoryDialogOpen] = useState(false);
 
     const { data: categories } = useCategories();
     const createRule = useCreateRecurringRule();
@@ -183,179 +185,194 @@ export function RecurringRuleDialog({
     const repeatLabel = getRepeatLabel(frequency, startDate);
 
     return (
-        <Modal
-            isOpen={isOpen}
-            onClose={handleClose}
-            classNames={{
-                closeButton: "cursor-pointer",
-                body: "overflow-y-auto max-h-[calc(var(--visual-viewport-height,100svh)-10rem)]",
-            }}
-        >
-            <ModalContent>
-                <form onSubmit={handleSubmit}>
-                    <ModalHeader>
-                        {isEditing
-                            ? "Edit Recurring Rule"
-                            : "New Recurring Rule"}
-                    </ModalHeader>
-                    <ModalBody className="gap-4">
-                        {isEditing && rule && (
-                            <div
-                                className={`
+        <>
+            <Modal
+                isOpen={isOpen}
+                onClose={handleClose}
+                classNames={{
+                    closeButton: "cursor-pointer",
+                    body: "overflow-y-auto max-h-[calc(var(--visual-viewport-height,100svh)-10rem)]",
+                }}
+            >
+                <ModalContent>
+                    <form onSubmit={handleSubmit}>
+                        <ModalHeader>
+                            {isEditing
+                                ? "Edit Recurring Rule"
+                                : "New Recurring Rule"}
+                        </ModalHeader>
+                        <ModalBody className="gap-4">
+                            {isEditing && rule && (
+                                <div
+                                    className={`
                                 p-3 rounded-lg border
                                 flex items-center justify-between
                                 bg-default-50 border-default-200
                             `}
-                            >
-                                <div className="flex flex-col gap-1">
-                                    <Switch
-                                        isSelected={isActive}
-                                        onValueChange={setIsActive}
-                                        color="success"
-                                    >
-                                        <span className="text-sm font-medium">
-                                            {isActive ? "Active" : "Paused"}
+                                >
+                                    <div className="flex flex-col gap-1">
+                                        <Switch
+                                            isSelected={isActive}
+                                            onValueChange={setIsActive}
+                                            color="success"
+                                        >
+                                            <span className="text-sm font-medium">
+                                                {isActive ? "Active" : "Paused"}
+                                            </span>
+                                        </Switch>
+                                    </div>
+                                    <div className="flex flex-col items-end gap-1 text-xs font-mono text-default-400">
+                                        <span>
+                                            Next:{" "}
+                                            {new Date(
+                                                `${rule.nextGenerationAt.slice(0, 10)}T00:00:00`,
+                                            ).toLocaleDateString("en-us", {
+                                                day: "numeric",
+                                                month: "short",
+                                                year: "numeric",
+                                            })}
                                         </span>
-                                    </Switch>
+                                        <span>
+                                            Last:{" "}
+                                            {rule.lastGeneratedAt
+                                                ? new Date(
+                                                      rule.lastGeneratedAt,
+                                                  ).toLocaleDateString(
+                                                      "en-us",
+                                                      {
+                                                          day: "numeric",
+                                                          month: "short",
+                                                          year: "numeric",
+                                                      },
+                                                  )
+                                                : "Never"}
+                                        </span>
+                                    </div>
                                 </div>
-                                <div className="flex flex-col items-end gap-1 text-xs font-mono text-default-400">
-                                    <span>
-                                        Next:{" "}
-                                        {new Date(
-                                            `${rule.nextGenerationAt.slice(0, 10)}T00:00:00`,
-                                        ).toLocaleDateString("en-us", {
-                                            day: "numeric",
-                                            month: "short",
-                                            year: "numeric",
-                                        })}
-                                    </span>
-                                    <span>
-                                        Last:{" "}
-                                        {rule.lastGeneratedAt
-                                            ? new Date(
-                                                  rule.lastGeneratedAt,
-                                              ).toLocaleDateString("en-us", {
-                                                  day: "numeric",
-                                                  month: "short",
-                                                  year: "numeric",
-                                              })
-                                            : "Never"}
-                                    </span>
-                                </div>
-                            </div>
-                        )}
+                            )}
 
-                        <div
-                            className={`
+                            <div
+                                className={`
                             flex gap-4 mt-2
                             ${isEditing ? "justify-around" : "justify-between"}
                         `}
-                        >
-                            <ToggleSwitch
-                                isSelectingRight={isIncome}
-                                onValueChange={setIsIncome}
-                                leftLabel="Expense"
-                                rightLabel="Income"
-                            />
-                            {!isEditing && (
+                            >
                                 <ToggleSwitch
-                                    isSelectingRight={isBigBuck}
-                                    onValueChange={setIsBigBuck}
-                                    leftLabel="Small dime"
-                                    rightLabel="Big buck"
+                                    isSelectingRight={isIncome}
+                                    onValueChange={setIsIncome}
+                                    leftLabel="Expense"
+                                    rightLabel="Income"
                                 />
-                            )}
-                        </div>
+                                {!isEditing && (
+                                    <ToggleSwitch
+                                        isSelectingRight={isBigBuck}
+                                        onValueChange={setIsBigBuck}
+                                        leftLabel="Small dime"
+                                        rightLabel="Big buck"
+                                    />
+                                )}
+                            </div>
 
-                        <Input
-                            variant="underlined"
-                            value={amount}
-                            onValueChange={handleAmountChange}
-                            isRequired
-                            autoFocus
-                            inputMode="decimal"
-                            placeholder="0.00"
-                            onFocus={(e) => e.target.select()}
-                            classNames={{
-                                base: "my-2",
-                                input: `
+                            <Input
+                                variant="underlined"
+                                value={amount}
+                                onValueChange={handleAmountChange}
+                                isRequired
+                                autoFocus
+                                inputMode="decimal"
+                                placeholder="0.00"
+                                onFocus={(e) => e.target.select()}
+                                classNames={{
+                                    base: "my-2",
+                                    input: `
                                     text-4xl text-center font-mono
                                     ${isIncome ? "!text-success" : "!text-foreground"}
                                 `,
-                            }}
-                        />
-
-                        <Input
-                            classNames={{ input: "font-mono" }}
-                            label="Description"
-                            value={description}
-                            onValueChange={setDescription}
-                            maxLength={60}
-                            description={`${description.length}/60`}
-                        />
-
-                        <div className="flex gap-3 items-end justify-between">
-                            <Input
-                                type="date"
-                                label="Start date"
-                                value={startDate}
-                                onValueChange={setStartDate}
-                                isRequired
-                                className="w-1/2"
+                                }}
                             />
-                            <div className="flex flex-col gap-1 shrink-0">
-                                <span className="text-sm text-default-500">
-                                    Frequency
-                                </span>
-                                <select
-                                    value={frequency}
-                                    onChange={handleFrequencyChange}
-                                    className={SELECT_CLASSES}
-                                >
-                                    <option value="daily">Daily</option>
-                                    <option value="weekly">Weekly</option>
-                                    <option value="monthly">Monthly</option>
-                                    <option value="yearly">Yearly</option>
-                                </select>
+
+                            <Input
+                                classNames={{ input: "font-mono" }}
+                                label="Description"
+                                value={description}
+                                onValueChange={setDescription}
+                                maxLength={60}
+                                description={`${description.length}/60`}
+                            />
+
+                            <div className="flex gap-3 items-end justify-between">
+                                <Input
+                                    type="date"
+                                    label="Start date"
+                                    value={startDate}
+                                    onValueChange={setStartDate}
+                                    isRequired
+                                    className="w-1/2"
+                                />
+                                <div className="flex flex-col gap-1 shrink-0">
+                                    <span className="text-sm text-default-500">
+                                        Frequency
+                                    </span>
+                                    <select
+                                        value={frequency}
+                                        onChange={handleFrequencyChange}
+                                        className={SELECT_CLASSES}
+                                    >
+                                        <option value="daily">Daily</option>
+                                        <option value="weekly">Weekly</option>
+                                        <option value="monthly">Monthly</option>
+                                        <option value="yearly">Yearly</option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
 
-                        <p className="text-xs font-mono -mt-2">{repeatLabel}</p>
+                            <p className="text-xs font-mono -mt-2">
+                                {repeatLabel}
+                            </p>
 
-                        <CategoryPicker
-                            categories={filteredCategories}
-                            selectedId={categoryId}
-                            onChange={setCategoryId}
-                        />
-                    </ModalBody>
-                    <ModalFooter
-                        className={isEditing ? "justify-between" : undefined}
-                    >
-                        {isEditing && (
-                            <Button
-                                color="danger"
-                                variant="light"
-                                isLoading={isDeleting}
-                                onPress={handleDelete}
-                            >
-                                Delete
-                            </Button>
-                        )}
-                        <div className="flex gap-2">
-                            <Button
-                                type="submit"
-                                color="primary"
-                                isLoading={isPending}
-                            >
-                                {isEditing ? "Save" : "Create"}
-                            </Button>
-                            <Button variant="light" onPress={handleClose}>
-                                Cancel
-                            </Button>
-                        </div>
-                    </ModalFooter>
-                </form>
-            </ModalContent>
-        </Modal>
+                            <CategoryPicker
+                                categories={filteredCategories}
+                                selectedId={categoryId}
+                                onChange={setCategoryId}
+                                onAdd={() => setIsCategoryDialogOpen(true)}
+                            />
+                        </ModalBody>
+                        <ModalFooter
+                            className={
+                                isEditing ? "justify-between" : undefined
+                            }
+                        >
+                            {isEditing && (
+                                <Button
+                                    color="danger"
+                                    variant="light"
+                                    isLoading={isDeleting}
+                                    onPress={handleDelete}
+                                >
+                                    Delete
+                                </Button>
+                            )}
+                            <div className="flex gap-2">
+                                <Button
+                                    type="submit"
+                                    color="primary"
+                                    isLoading={isPending}
+                                >
+                                    {isEditing ? "Save" : "Create"}
+                                </Button>
+                                <Button variant="light" onPress={handleClose}>
+                                    Cancel
+                                </Button>
+                            </div>
+                        </ModalFooter>
+                    </form>
+                </ModalContent>
+            </Modal>
+            <CategoryDialog
+                isOpen={isCategoryDialogOpen}
+                onClose={() => setIsCategoryDialogOpen(false)}
+                onCreated={setCategoryId}
+            />
+        </>
     );
 }
