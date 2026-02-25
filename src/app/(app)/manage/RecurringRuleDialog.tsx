@@ -215,6 +215,10 @@ export function RecurringRuleDialog({
                                             isSelected={isActive}
                                             onValueChange={setIsActive}
                                             color="success"
+                                            classNames={{
+                                                wrapper: "rounded-none",
+                                                thumb: "rounded-none",
+                                            }}
                                         >
                                             <span className="text-sm font-medium">
                                                 {isActive ? "Active" : "Paused"}
