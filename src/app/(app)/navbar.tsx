@@ -1,7 +1,7 @@
 "use client";
 
 import type { LucideIcon } from "lucide-react";
-import { Feather, Layers, PieChart, Settings } from "lucide-react";
+import { Feather, PieChart, Settings, Settings2 } from "lucide-react";
 import NextLink from "next/link";
 import { usePathname } from "next/navigation";
 import { SyncStatusDot } from "@/components/SyncStatusDot";
@@ -16,7 +16,7 @@ interface NavItem {
 const navItems: NavItem[] = [
     { label: "Log", href: "/log", icon: Feather },
     { label: "Summary", href: "/summary", icon: PieChart },
-    { label: "Manage", href: "/manage", icon: Layers },
+    { label: "Manage", href: "/manage", icon: Settings2 },
     { label: "Settings", href: "/settings", icon: Settings },
 ];
 
