@@ -25,7 +25,7 @@ export default function ManageClient() {
             <Tab key="categories" title="Categories">
                 <CategoriesClient />
             </Tab>
-            <Tab key="recurring" title="Recurring">
+            <Tab key="recurring" title="Recurring Rules">
                 <RecurringClient />
             </Tab>
         </Tabs>
