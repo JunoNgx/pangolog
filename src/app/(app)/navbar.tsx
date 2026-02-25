@@ -72,9 +72,10 @@ export function AppNavbar() {
             <nav
                 className={`
                     fixed bottom-0 left-0 right-0 z-40
-                    md:hidden flex h-16
+                    md:hidden flex h-16 rounded-lg
+                    m-3 mt-0
                     bg-background
-                    border-t border-default-200
+                    border border-default-200
                 `}
             >
                 {navItems.map((item) => {
