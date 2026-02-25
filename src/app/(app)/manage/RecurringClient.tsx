@@ -159,7 +159,7 @@ export default function RecurringClient() {
             >
                 <Button
                     color="primary"
-                    className="fixed bottom-20 md:bottom-6 right-6 z-50 h-14 min-w-0"
+                    className="FloatingActionButton"
                     onPress={() => setIsCreateOpen(true)}
                 >
                     <Plus />
