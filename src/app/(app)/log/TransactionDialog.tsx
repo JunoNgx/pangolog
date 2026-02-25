@@ -12,6 +12,7 @@ import {
 import type React from "react";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
+import { CategoryDialog } from "@/components/CategoryDialog";
 import { CategoryPicker } from "@/components/CategoryPicker";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
 import type { Buck, Dime } from "@/lib/db/types";
@@ -57,6 +58,7 @@ export function TransactionDialog({
     const [isCreatingBuck, setIsCreatingBuck] = useState(defaultIsCreatingBuck);
     const [categoryId, setCategoryId] = useState<string | null>(null);
     const [description, setDescription] = useState("");
+    const [isCategoryDialogOpen, setIsCategoryDialogOpen] = useState(false);
 
     const { data: categories } = useCategories();
     const createDime = useCreateDime();
@@ -224,116 +226,126 @@ export function TransactionDialog({
     const isDeleting = deleteDime.isPending || deleteBuck.isPending;
 
     return (
-        <Modal
-            isOpen={isOpen}
-            onClose={handleClose}
-            onTouchStart={handleBackdropTouchStart}
-            classNames={{
-                closeButton: "cursor-pointer",
-                body: "overflow-y-auto max-h-[calc(var(--visual-viewport-height,100svh)-10rem)]",
-            }}
-        >
-            <ModalContent>
-                <form onSubmit={handleSubmit}>
-                    <ModalHeader>
-                        {isEditing ? "Edit Transaction" : "New Transaction"}
-                    </ModalHeader>
-                    <ModalBody className="gap-4">
-                        <div className="flex justify-center items-center gap-4">
-                            {!isEditing && (
-                                <ToggleSwitch
-                                    isSelectingRight={isCreatingBuck}
-                                    onValueChange={setIsCreatingBuck}
-                                    leftLabel="Small dime"
-                                    rightLabel="Big buck"
+        <>
+            <Modal
+                isOpen={isOpen}
+                onClose={handleClose}
+                onTouchStart={handleBackdropTouchStart}
+                classNames={{
+                    closeButton: "cursor-pointer",
+                    body: "overflow-y-auto max-h-[calc(var(--visual-viewport-height,100svh)-10rem)]",
+                }}
+            >
+                <ModalContent>
+                    <form onSubmit={handleSubmit}>
+                        <ModalHeader>
+                            {isEditing ? "Edit Transaction" : "New Transaction"}
+                        </ModalHeader>
+                        <ModalBody className="gap-4">
+                            <div className="flex justify-center items-center gap-4">
+                                {!isEditing && (
+                                    <ToggleSwitch
+                                        isSelectingRight={isCreatingBuck}
+                                        onValueChange={setIsCreatingBuck}
+                                        leftLabel="Small dime"
+                                        rightLabel="Big buck"
+                                    />
+                                )}
+                            </div>
+
+                            <div
+                                className={`
+                                flex justify-around gap-8
+                                ${isEditing ? "" : "mt-5"}
+                            `}
+                            >
+                                <Input
+                                    type="date"
+                                    label="Date"
+                                    value={transactedAt}
+                                    onValueChange={setTransactedAt}
+                                    isRequired
                                 />
-                            )}
-                        </div>
+                                <ToggleSwitch
+                                    isSelectingRight={isIncome}
+                                    onValueChange={setIsIncome}
+                                    leftLabel="Expense"
+                                    rightLabel="Income"
+                                />
+                            </div>
 
-                        <div
-                            className={`
-                            flex justify-around gap-8
-                            ${isEditing ? "" : "mt-5"}
-                        `}
-                        >
                             <Input
-                                type="date"
-                                label="Date"
-                                value={transactedAt}
-                                onValueChange={setTransactedAt}
+                                variant="underlined"
+                                value={amount}
+                                onValueChange={handleAmountChange}
                                 isRequired
+                                autoFocus
+                                inputMode="decimal"
+                                placeholder="0.00"
+                                onFocus={(e) => e.target.select()}
+                                classNames={{
+                                    base: "my-2",
+                                    input: `
+                                        text-4xl text-center font-mono
+                                        ${isIncome ? "!text-success" : "!text-foreground"}
+                                    `,
+                                }}
                             />
-                            <ToggleSwitch
-                                isSelectingRight={isIncome}
-                                onValueChange={setIsIncome}
-                                leftLabel="Expense"
-                                rightLabel="Income"
+
+                            <Input
+                                classNames={{
+                                    input: "font-mono",
+                                }}
+                                label="Description"
+                                value={description}
+                                onValueChange={setDescription}
+                                maxLength={60}
+                                description={`${description.length}/60`}
                             />
-                        </div>
 
-                        <Input
-                            variant="underlined"
-                            value={amount}
-                            onValueChange={handleAmountChange}
-                            isRequired
-                            autoFocus
-                            inputMode="decimal"
-                            placeholder="0.00"
-                            onFocus={(e) => e.target.select()}
-                            classNames={{
-                                base: "my-2",
-                                input: `
-                                    text-4xl text-center font-mono
-                                    ${isIncome ? "!text-success" : "!text-foreground"}
-                                `,
-                            }}
-                        />
-
-                        <Input
-                            classNames={{
-                                input: "font-mono",
-                            }}
-                            label="Description"
-                            value={description}
-                            onValueChange={setDescription}
-                            maxLength={60}
-                            description={`${description.length}/60`}
-                        />
-
-                        <CategoryPicker
-                            categories={filteredCategories}
-                            selectedId={categoryId}
-                            onChange={setCategoryId}
-                        />
-                    </ModalBody>
-                    <ModalFooter
-                        className={isEditing ? "justify-between" : undefined}
-                    >
-                        {isEditing && (
-                            <Button
-                                color="danger"
-                                variant="light"
-                                isLoading={isDeleting}
-                                onPress={handleDelete}
-                            >
-                                Delete
-                            </Button>
-                        )}
-                        <div className="flex gap-2">
-                            <Button
-                                type="submit"
-                                color="primary"
-                                isLoading={isPending}
-                            >
-                                {isEditing ? "Save" : "Create"}
-                            </Button>
-                            <Button variant="light" onPress={handleClose}>
-                                Cancel
-                            </Button>
-                        </div>
-                    </ModalFooter>
-                </form>
-            </ModalContent>
-        </Modal>
+                            <CategoryPicker
+                                categories={filteredCategories}
+                                selectedId={categoryId}
+                                onChange={setCategoryId}
+                                onAdd={() => setIsCategoryDialogOpen(true)}
+                            />
+                        </ModalBody>
+                        <ModalFooter
+                            className={
+                                isEditing ? "justify-between" : undefined
+                            }
+                        >
+                            {isEditing && (
+                                <Button
+                                    color="danger"
+                                    variant="light"
+                                    isLoading={isDeleting}
+                                    onPress={handleDelete}
+                                >
+                                    Delete
+                                </Button>
+                            )}
+                            <div className="flex gap-2">
+                                <Button
+                                    type="submit"
+                                    color="primary"
+                                    isLoading={isPending}
+                                >
+                                    {isEditing ? "Save" : "Create"}
+                                </Button>
+                                <Button variant="light" onPress={handleClose}>
+                                    Cancel
+                                </Button>
+                            </div>
+                        </ModalFooter>
+                    </form>
+                </ModalContent>
+            </Modal>
+            <CategoryDialog
+                isOpen={isCategoryDialogOpen}
+                onClose={() => setIsCategoryDialogOpen(false)}
+                onCreated={setCategoryId}
+            />
+        </>
     );
 }

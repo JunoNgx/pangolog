@@ -52,12 +52,14 @@ interface CategoryDialogProps {
     isOpen: boolean;
     onClose: () => void;
     category?: Category;
+    onCreated?: (id: string) => void;
 }
 
 export function CategoryDialog({
     isOpen,
     onClose,
     category,
+    onCreated,
 }: CategoryDialogProps) {
     const [name, setName] = useState("");
     const [colour, setColour] = useState(randomHexColor);
@@ -126,7 +128,12 @@ export function CategoryDialog({
             return;
         }
 
-        createCategory.mutate(input, { onSuccess: handleClose });
+        createCategory.mutate(input, {
+            onSuccess: (created) => {
+                handleClose();
+                onCreated?.(created.id);
+            },
+        });
     };
 
     const isPending = createCategory.isPending || updateCategory.isPending;
