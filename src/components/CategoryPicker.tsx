@@ -36,7 +36,7 @@ export function CategoryPicker({
                         type="button"
                         onClick={onAdd}
                         className={`
-                            rounded px-1.5 py-0.5
+                            rounded-sm px-1.5 py-0.5
                             flex items-center gap-1
                             text-xs text-default-400
                             hover:text-default-600 hover:bg-default-100 transition-colors cursor-pointer
