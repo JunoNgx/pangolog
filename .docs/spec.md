@@ -354,7 +354,7 @@ The app uses the **Authorization Code Flow** via GIS `initCodeClient`. When the 
 
 1. GIS opens a consent popup and returns a one-time **authorization code** to the browser callback.
 2. The code is posted to `POST /api/auth/callback`, which exchanges it with Google server-side (using `client_id`, `client_secret`, and `redirect_uri: "postmessage"`) for an access token and a **refresh token**.
-3. The server fetches the user's email from the Google userinfo endpoint, stores the refresh token in an encrypted HTTP-only cookie (`pangolog-session`) via `iron-session`, and returns `{ accessToken, expiresAt, email }` to the client.
+3. The server fetches the user's email from the Google userinfo endpoint, stores the refresh token in an encrypted HTTP-only cookie (`pangolog-session`) via `iron-session` with `maxAge: 30 days`, and returns `{ accessToken, expiresAt, email }` to the client. The explicit `maxAge` is required - without it the cookie is a session cookie and iOS clears it when the PWA is closed, causing daily disconnections.
 4. The client stores `{ id, accessToken, expiresAt, email }` in Zustand (`authToken`).
 
 #### Token refresh
