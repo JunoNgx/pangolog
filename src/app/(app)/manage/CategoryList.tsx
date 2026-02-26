@@ -31,7 +31,7 @@ function SortableCategoryItem({
         <li
             ref={ref}
             className={`
-                rounded-lg
+                rounded-none
                 flex items-center
                 bg-background
                 border border-default-200
@@ -112,7 +112,7 @@ export function CategoryList() {
         return (
             <ul className="MainListContainer gap-2">
                 {["s1", "s2", "s3", "s4", "s5", "s6", "s7"].map((key) => (
-                    <Skeleton key={key} className="h-12 w-full rounded-lg" />
+                    <Skeleton key={key} className="h-12 w-full rounded-none" />
                 ))}
             </ul>
         );

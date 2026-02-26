@@ -61,7 +61,7 @@ export function RecurringList({
         return (
             <ul className="MainListContainer gap-2">
                 {["s1", "s2", "s3"].map((key) => (
-                    <Skeleton key={key} className="h-16 w-full rounded-lg" />
+                    <Skeleton key={key} className="h-16 w-full rounded-none" />
                 ))}
             </ul>
         );
@@ -123,7 +123,7 @@ function RecurringItem({ rule, category, onEdit }: RecurringItemProps) {
                 onClick={() => onEdit(rule)}
                 className={`
                     w-full text-left
-                    rounded-lg px-4 py-3
+                    rounded-none px-4 py-3
                     flex items-center gap-3
                     bg-background
                     border border-default-200
