@@ -1,7 +1,5 @@
 "use client";
 
-import data from "@emoji-mart/data";
-import Picker from "@emoji-mart/react";
 import {
     Button,
     Checkbox,
@@ -15,8 +13,8 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@heroui/react";
+import { EmojiPicker } from "frimousse";
 import { Shuffle } from "lucide-react";
-import { useTheme } from "next-themes";
 import { type SubmitEventHandler, useEffect, useState } from "react";
 import { HexColorPicker } from "react-colorful";
 import { toast } from "sonner";
@@ -68,7 +66,6 @@ export function CategoryDialog({
     const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
     const [isIncomeOnly, setIsIncomeOnly] = useState(false);
     const [isBuckOnly, setIsBuckOnly] = useState(false);
-    const { resolvedTheme } = useTheme();
     const createCategory = useCreateCategory();
     const updateCategory = useUpdateCategory();
     const deleteCategory = useDeleteCategory();
@@ -94,8 +91,8 @@ export function CategoryDialog({
         }
     }, [category]);
 
-    function handleEmojiSelect(emoji: { native: string }) {
-        setIcon(emoji.native);
+    function handleEmojiSelect({ emoji }: { emoji: string }) {
+        setIcon(emoji);
         setIsEmojiPickerOpen(false);
     }
 
@@ -192,7 +189,7 @@ export function CategoryDialog({
                                             type="button"
                                             className={`
                                                 rounded-lg
-                                                flex items-center justify-center px-3 py-2
+                                                h-10 flex items-center justify-center px-3
                                                 bg-default-100
                                                 hover:bg-default-200 transition-colors cursor-pointer
                                             `}
@@ -202,17 +199,76 @@ export function CategoryDialog({
                                             </span>
                                         </button>
                                     </PopoverTrigger>
-                                    <PopoverContent>
-                                        <Picker
-                                            data={data}
-                                            theme={
-                                                resolvedTheme === "dark"
-                                                    ? "dark"
-                                                    : "light"
-                                            }
+                                    <PopoverContent className="p-0">
+                                        <EmojiPicker.Root
                                             onEmojiSelect={handleEmojiSelect}
-                                            previewPosition="none"
-                                        />
+                                            className={`
+                                                w-[300px] h-[360px]
+                                                flex flex-col
+                                                bg-content1 text-foreground
+                                            `}
+                                        >
+                                            <EmojiPicker.Search
+                                                className={`
+                                                    mx-2 mt-2
+                                                    rounded-md px-2.5 py-2
+                                                    bg-default-100 text-sm text-foreground placeholder:text-foreground-400
+                                                    outline-none focus:bg-default-200
+                                                `}
+                                            />
+                                            <EmojiPicker.Viewport className="relative flex-1 outline-none">
+                                                <EmojiPicker.Loading className="absolute inset-0 flex items-center justify-center text-sm text-foreground-400">
+                                                    Loading...
+                                                </EmojiPicker.Loading>
+                                                <EmojiPicker.Empty className="absolute inset-0 flex items-center justify-center text-sm text-foreground-400">
+                                                    No emoji found.
+                                                </EmojiPicker.Empty>
+                                                <EmojiPicker.List
+                                                    className="select-none pb-1.5"
+                                                    components={{
+                                                        CategoryHeader: ({
+                                                            category: cat,
+                                                            ...props
+                                                        }) => (
+                                                            <div
+                                                                className="px-3 pt-3 pb-1.5 text-xs font-medium text-foreground-500 bg-content1"
+                                                                {...props}
+                                                            >
+                                                                {cat.label}
+                                                            </div>
+                                                        ),
+                                                        Row: ({
+                                                            children,
+                                                            ...props
+                                                        }) => (
+                                                            <div
+                                                                className="px-1.5"
+                                                                {...props}
+                                                            >
+                                                                {children}
+                                                            </div>
+                                                        ),
+                                                        Emoji: ({
+                                                            emoji: e,
+                                                            ...props
+                                                        }) => (
+                                                            <button
+                                                                type="button"
+                                                                className={`
+                                                                    size-9
+                                                                    flex items-center justify-center
+                                                                    text-lg rounded-md
+                                                                    data-[active]:bg-default-200 hover:bg-default-100
+                                                                `}
+                                                                {...props}
+                                                            >
+                                                                {e.emoji}
+                                                            </button>
+                                                        ),
+                                                    }}
+                                                />
+                                            </EmojiPicker.Viewport>
+                                        </EmojiPicker.Root>
                                     </PopoverContent>
                                 </Popover>
                             </div>
