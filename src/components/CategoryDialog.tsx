@@ -203,7 +203,7 @@ export function CategoryDialog({
                                         <EmojiPicker.Root
                                             onEmojiSelect={handleEmojiSelect}
                                             className={`
-                                                w-75 h-90
+                                                w-75 h-90 rounded-lg overflow-hidden
                                                 flex flex-col
                                                 bg-content1 text-foreground
                                             `}
