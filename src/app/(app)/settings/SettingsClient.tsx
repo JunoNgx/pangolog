@@ -438,9 +438,25 @@ export default function SettingsClient() {
                         Overview of concepts, pages, hotkeys, and sync
                         behaviour.
                     </p>
-                    <Button as="a" href="/help" color="primary" variant="flat">
-                        View manual
-                    </Button>
+                    <div className="flex flex-col gap-2">
+                        <Button
+                            as="a"
+                            href="/help"
+                            color="primary"
+                            variant="flat"
+                            className="self-start"
+                        >
+                            View manual
+                        </Button>
+                        <div className="flex flex-wrap gap-2">
+                            <Button as="a" href="/privacy" variant="flat">
+                                Privacy Policy
+                            </Button>
+                            <Button as="a" href="/terms" variant="flat">
+                                Terms of Service
+                            </Button>
+                        </div>
+                    </div>
                 </section>
 
                 {/* DEBUG */}
