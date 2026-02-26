@@ -7,9 +7,9 @@
     --font-sans: var(--font-sans-var);
     --font-mono: var(--font-mono-var);
 
-    --radius-sm: 0;
+    /* --radius-sm: 0;
     --radius-md: 0;
-    --radius-lg: 0;
+    --radius-lg: 0; */
 }
 
 @layer base {
