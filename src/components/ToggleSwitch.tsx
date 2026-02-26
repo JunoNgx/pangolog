@@ -79,11 +79,10 @@ export function ToggleSwitch({
                         ${isDisabled ? "opacity-50 cursor-not-allowed" : ""}
                     `,
                     wrapper: `
-                        rounded-none
                         bg-primary
                         group-data-[selected=true]:bg-primary
                     `,
-                    thumb: "rounded-none bg-white",
+                    thumb: "bg-white",
                 }}
                 aria-label={`${leftLabel} ${rightLabel} toggle`}
                 aria-labelledby={`${leftLabelId} ${rightLabelId}`}
