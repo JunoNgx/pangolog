@@ -41,14 +41,14 @@ export default function PrivacyClient() {
                 </p>
             </Section>
 
-            <Section title="Data we collect">
+            <Section title="Your data storage">
                 <p className="text-sm text-default-500 mb-3">
                     We collect no personal data. All transaction records,
                     categories, and settings are stored locally in your
                     browser&apos;s IndexedDB storage on your device.
                 </p>
                 <p className="text-sm text-default-500">
-                    If you connect Google Drive, we store a short-lived session
+                    If you connect to Google Drive, we store a short-lived session
                     token in an encrypted HTTP-only cookie solely to facilitate
                     token refresh. Your Google email address is stored locally
                     on your device and displayed in Settings. No data is
