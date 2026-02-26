@@ -203,7 +203,7 @@ export function CategoryDialog({
                                         <EmojiPicker.Root
                                             onEmojiSelect={handleEmojiSelect}
                                             className={`
-                                                w-[300px] h-[360px]
+                                                w-75 h-90
                                                 flex flex-col
                                                 bg-content1 text-foreground
                                             `}
@@ -258,7 +258,7 @@ export function CategoryDialog({
                                                                     size-9
                                                                     flex items-center justify-center
                                                                     text-lg rounded-md
-                                                                    data-[active]:bg-default-200 hover:bg-default-100
+                                                                    data-active:bg-default-200 hover:bg-default-100
                                                                 `}
                                                                 {...props}
                                                             >
