@@ -438,5 +438,5 @@ Audit timestamps (`createdAt`, `updatedAt`, `deletedAt`, `lastGeneratedAt`) are 
 
 `nextGenerationAt` on recurring rules is stored as a noon local-offset ISO string for new/updated records. Older records may still hold a plain `YYYY-MM-DD` string - all read paths handle both formats transparently via `DateTime.fromISO()`. The due-check compares `DateTime.fromISO(nextGenerationAt).toISODate()` against `todayDateString()`.
 
-`transactedAt` on create/edit uses `resolveTransactedAt()`: today's date gets the actual current time so same-day transactions sort chronologically; past/future dates get local midnight; edits preserve the original time-of-day if only the date changes.
+`transactedAt` on create/edit uses `resolveTransactedAt()`: today's date gets the actual current time so same-day transactions sort chronologically; past/future dates get noon local time; edits preserve the original time-of-day if only the date changes.
 
