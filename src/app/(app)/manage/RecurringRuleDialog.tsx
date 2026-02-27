@@ -45,7 +45,7 @@ const DAY_NAMES = [
 ];
 
 function getRepeatLabel(frequency: Frequency, dateStr: string): string {
-    const dt = DateTime.fromISO(`${dateStr}T12:00:00`);
+    const dt = DateTime.fromISO(dateStr);
     switch (frequency) {
         case "daily":
             return "Repeats every day";
@@ -144,7 +144,7 @@ export function RecurringRuleDialog({
         const amountMinor = Math.round(Number.parseFloat(amount) * 100);
         if (Number.isNaN(amountMinor) || amountMinor <= 0) return;
 
-        const dt = DateTime.fromISO(`${startDate}T12:00:00`);
+        const dt = DateTime.fromISO(startDate);
         const input = {
             amount: amountMinor,
             description,
