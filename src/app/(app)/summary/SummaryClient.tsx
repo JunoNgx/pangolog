@@ -153,10 +153,20 @@ export default function SummaryClient() {
         [categories],
     );
 
+    const monthlyBucks = useMemo(
+        () =>
+            (bucks ?? []).filter((b) => {
+                const d = new Date(b.transactedAt);
+                return d.getMonth() + 1 === selectedMonth;
+            }),
+        [bucks, selectedMonth],
+    );
+
     const transactions = useMemo<(Dime | Buck)[]>(() => {
         if (isYearly && isViewingBucksOnly) return bucks ?? [];
         const dimes = isYearly ? (yearlyDimes ?? []) : (monthlyDimes ?? []);
         if (isYearly && includeBucks) return [...dimes, ...(bucks ?? [])];
+        if (!isYearly && includeBucks) return [...dimes, ...monthlyBucks];
         return dimes;
     }, [
         isYearly,
@@ -165,6 +175,7 @@ export default function SummaryClient() {
         monthlyDimes,
         yearlyDimes,
         bucks,
+        monthlyBucks,
     ]);
 
     const { slices: expenseSlices, total: expenseTotal } = useMemo(
@@ -226,7 +237,7 @@ export default function SummaryClient() {
                             onMonthChange={setSelectedMonth}
                         />
                     )}
-                    {isYearly && !isViewingBucksOnly && (
+                    {(!isYearly || !isViewingBucksOnly) && (
                         <Checkbox
                             isSelected={includeBucks}
                             onValueChange={setIncludeBucks}
