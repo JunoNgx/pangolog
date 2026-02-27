@@ -432,7 +432,7 @@ A manual "Clear service worker cache" button in Settings (debug section) is a us
 
 All date operations use Luxon throughout the codebase.
 
-`transactedAt` is stored as a local-offset ISO string (e.g. `2026-02-15T12:00:00+07:00`), ensuring the local calendar date is unambiguously recoverable on any device without timezone arithmetic. DB v3 migration rewrote existing UTC (`...Z`) `transactedAt` values to local-offset ISO using the device's current timezone.
+`transactedAt` is stored as a local-offset ISO string (e.g. `2026-02-15T12:00:00+07:00`) for new/updated records. Older records may still be UTC (`...Z`) - all read paths handle both transparently via `DateTime.fromISO()`.
 
 Audit timestamps (`createdAt`, `updatedAt`, `deletedAt`, `lastGeneratedAt`) are stored as UTC ISO strings (`.toUTC().toISO()`). This is required for correct string-comparison ordering in sync merge logic (`mergeRecords` uses `updatedAt` for last-write-wins resolution across devices).
 
