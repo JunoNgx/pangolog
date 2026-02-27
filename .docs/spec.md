@@ -436,7 +436,7 @@ All date operations use Luxon throughout the codebase.
 
 Audit timestamps (`createdAt`, `updatedAt`, `deletedAt`, `lastGeneratedAt`) are stored as UTC ISO strings (`.toUTC().toISO()`). This is required for correct string-comparison ordering in sync merge logic (`mergeRecords` uses `updatedAt` for last-write-wins resolution across devices).
 
-`nextGenerationAt` on recurring rules is stored as a noon local-offset ISO string (same format as `transactedAt`). DB v4 migration rewrote existing `YYYY-MM-DD` values to noon local-offset ISO. The due-check compares `DateTime.fromISO(nextGenerationAt).toISODate()` against `todayDateString()`.
+`nextGenerationAt` on recurring rules is stored as a noon local-offset ISO string for new/updated records. Older records may still hold a plain `YYYY-MM-DD` string - all read paths handle both formats transparently via `DateTime.fromISO()`. The due-check compares `DateTime.fromISO(nextGenerationAt).toISODate()` against `todayDateString()`.
 
 `transactedAt` on create/edit uses `resolveTransactedAt()`: today's date gets the actual current time so same-day transactions sort chronologically; past/future dates get noon local time; edits preserve the original time-of-day if only the date changes.
 
