@@ -12,6 +12,7 @@ import {
     Radio,
     RadioGroup,
 } from "@heroui/react";
+import { DateTime } from "luxon";
 import { useTheme } from "next-themes";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
@@ -177,7 +178,7 @@ export default function SettingsClient() {
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
 
-        const todayDateStr = new Date().toISOString().split("T")[0];
+        const todayDateStr = DateTime.now().toISODate()!;
         link.href = url;
         link.download = `pangolog-logdump-${todayDateStr}.json`;
         document.body.appendChild(link);
@@ -205,7 +206,9 @@ export default function SettingsClient() {
                         {lastSyncTime && (
                             <p className="text-xs text-default-400">
                                 Last synced:{" "}
-                                {new Date(lastSyncTime).toLocaleString()}
+                                {DateTime.fromISO(lastSyncTime).toLocaleString(
+                                    DateTime.DATETIME_MED,
+                                )}
                             </p>
                         )}
                         {isConnected ? (

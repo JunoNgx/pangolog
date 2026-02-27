@@ -1,3 +1,4 @@
+import { DateTime } from "luxon";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -19,16 +20,16 @@ export const useProfileSettingsStore = create<ProfileSettingsStore>()(
         (set) => ({
             customCurrency: "",
             isPrefixCurrency: true,
-            settingsUpdatedAt: new Date(0).toISOString(),
+            settingsUpdatedAt: DateTime.fromMillis(0).toISO()!,
             setCustomCurrency: (value) =>
                 set({
                     customCurrency: value,
-                    settingsUpdatedAt: new Date().toISOString(),
+                    settingsUpdatedAt: DateTime.now().toUTC().toISO()!,
                 }),
             setIsPrefixCurrency: (value) =>
                 set({
                     isPrefixCurrency: value,
-                    settingsUpdatedAt: new Date().toISOString(),
+                    settingsUpdatedAt: DateTime.now().toUTC().toISO()!,
                 }),
             applyRemoteSettings: (
                 customCurrency,

@@ -9,6 +9,7 @@ import {
     ModalFooter,
     ModalHeader,
 } from "@heroui/react";
+import { DateTime } from "luxon";
 import type React from "react";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
@@ -132,19 +133,12 @@ export function TransactionDialog({
             const originalDateStr = toDateInputValue(transaction.transactedAt);
             if (transactedAt === originalDateStr)
                 return transaction.transactedAt;
-            const orig = new Date(transaction.transactedAt);
             const [year, month, day] = transactedAt.split("-").map(Number);
-            return new Date(
-                year,
-                month - 1,
-                day,
-                orig.getHours(),
-                orig.getMinutes(),
-                orig.getSeconds(),
-                orig.getMilliseconds(),
-            ).toISOString();
+            return DateTime.fromISO(transaction.transactedAt)
+                .set({ year, month, day })
+                .toISO()!;
         }
-        if (transactedAt === todayDateString()) return new Date().toISOString();
+        if (transactedAt === todayDateString()) return DateTime.now().toISO()!;
         return fromDateInputValue(transactedAt);
     }
 

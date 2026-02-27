@@ -1,3 +1,4 @@
+import { DateTime } from "luxon";
 import {
     getAllBucksForSync,
     getAllCategoriesForSync,
@@ -7,7 +8,7 @@ import {
 import { useProfileSettingsStore } from "./store/useProfileSettingsStore";
 
 function todayString(): string {
-    return new Date().toISOString().split("T")[0];
+    return DateTime.now().toISODate()!;
 }
 
 function triggerDownload(
@@ -36,7 +37,7 @@ export async function exportJson(prettyPrint: boolean): Promise<void> {
         useProfileSettingsStore.getState();
 
     const data = {
-        exportedAt: new Date().toISOString(),
+        exportedAt: DateTime.now().toUTC().toISO()!,
         settings: {
             customCurrency,
             isPrefixCurrency,

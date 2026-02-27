@@ -1,10 +1,11 @@
+import { DateTime } from "luxon";
 import { getDb } from "./connection";
 import type { Category, CategoryInput, CategoryUpdate } from "./types";
 import { generateId } from "./uuid";
 
 export async function createCategory(input: CategoryInput): Promise<Category> {
     const db = await getDb();
-    const now = new Date().toISOString();
+    const now = DateTime.now().toUTC().toISO()!;
 
     const category: Category = {
         id: generateId(),
@@ -48,7 +49,7 @@ export async function updateCategory(
                 id: existing.id,
                 createdAt: existing.createdAt,
                 deletedAt: existing.deletedAt,
-                updatedAt: new Date().toISOString(),
+                updatedAt: DateTime.now().toUTC().toISO()!,
             };
 
             const putReq = store.put(updated);
@@ -74,7 +75,7 @@ export async function deleteCategory(id: string): Promise<void> {
                 return;
             }
 
-            const now = new Date().toISOString();
+            const now = DateTime.now().toUTC().toISO()!;
             const updated: Category = {
                 ...existing,
                 deletedAt: now,
@@ -107,7 +108,7 @@ export async function restoreCategory(id: string): Promise<void> {
             const putReq = store.put({
                 ...existing,
                 deletedAt: null,
-                updatedAt: new Date().toISOString(),
+                updatedAt: DateTime.now().toUTC().toISO()!,
             });
             putReq.onsuccess = () => resolve();
             putReq.onerror = () => reject(putReq.error);
@@ -119,7 +120,7 @@ export async function reorderCategories(
     updates: { id: string; priority: number }[],
 ): Promise<void> {
     const db = await getDb();
-    const now = new Date().toISOString();
+    const now = DateTime.now().toUTC().toISO()!;
 
     return new Promise((resolve, reject) => {
         const tx = db.transaction("categories", "readwrite");

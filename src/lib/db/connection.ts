@@ -1,5 +1,7 @@
+import { DateTime } from "luxon";
+
 const DB_NAME = "pangolog";
-const DB_VERSION = 2;
+const DB_VERSION = 3;
 
 const REQUIRED_STORES = ["dimes", "bucks", "categories", "recurring-rules"];
 
@@ -40,6 +42,33 @@ function openDbRaw(): Promise<IDBDatabase> {
                 const rules = upgradeTx.objectStore("recurring-rules");
                 rules.createIndex("nextGenerationAt", "nextGenerationAt");
                 rules.createIndex("createdAt", "createdAt");
+            }
+
+            if (event.oldVersion < 3) {
+                const upgradeTx = (event.target as IDBOpenDBRequest)
+                    .transaction;
+                if (!upgradeTx) return;
+                for (const storeName of ["dimes", "bucks"] as const) {
+                    const store = upgradeTx.objectStore(storeName);
+                    const req = store.openCursor();
+                    req.onsuccess = () => {
+                        const cursor = req.result;
+                        if (!cursor) return;
+                        const record = cursor.value;
+                        if (
+                            typeof record.transactedAt === "string" &&
+                            record.transactedAt.endsWith("Z")
+                        ) {
+                            record.transactedAt = DateTime.fromISO(
+                                record.transactedAt,
+                            )
+                                .toLocal()
+                                .toISO()!;
+                            cursor.update(record);
+                        }
+                        cursor.continue();
+                    };
+                }
             }
         };
 

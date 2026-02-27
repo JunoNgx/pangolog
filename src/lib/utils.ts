@@ -1,3 +1,4 @@
+import { DateTime } from "luxon";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
 
 export const MONTH_NAMES = [
@@ -17,7 +18,7 @@ export const MONTH_NAMES = [
 
 export const YEAR_OPTIONS = Array.from(
     { length: 21 },
-    (_, i) => new Date().getFullYear() - 10 + i,
+    (_, i) => DateTime.now().year - 10 + i,
 );
 
 export const SELECT_CLASSES = `
@@ -28,23 +29,17 @@ export const SELECT_CLASSES = `
 `;
 
 export function todayDateString(): string {
-    const d = new Date();
-    const year = d.getFullYear();
-    const month = String(d.getMonth() + 1).padStart(2, "0");
-    const day = String(d.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
+    return DateTime.now().toISODate()!;
 }
 
 export function toDateInputValue(isoString: string): string {
-    const d = new Date(isoString);
-    const year = d.getFullYear();
-    const month = String(d.getMonth() + 1).padStart(2, "0");
-    const day = String(d.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
+    return DateTime.fromISO(isoString).toLocal().toISODate()!;
 }
 
 export function fromDateInputValue(dateStr: string): string {
-    return new Date(`${dateStr}T12:00:00`).toISOString();
+    return DateTime.fromISO(dateStr, { zone: "local" })
+        .set({ hour: 12, minute: 0, second: 0, millisecond: 0 })
+        .toISO()!;
 }
 
 export function formatAmount(minorUnits: number): string {
