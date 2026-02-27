@@ -157,7 +157,7 @@ Approach:
 - `settingsUpdatedAt`: ISO timestamp, used for last-write-wins conflict resolution when syncing settings to Drive and JSON export/import.
 
 ## Storage approach
-- OAuth scope: `drive.file` + `drive.readonly` - `drive.readonly` enables cross-device file discovery (listing all files in the Pangolog folder); `drive.file` handles creating and updating files. Files remain visible in the user's Google Drive.
+- OAuth scope: `drive.file` - grants create/read/update/delete access to files created by the app. Files remain visible in the user's Google Drive.
 - Files are stored in a dedicated `Pangolog` folder in the user's Drive root.
 - Settings are stored in `settings.json`.
 - Categories are stored in `categories.json`.
@@ -242,7 +242,7 @@ Approach:
 - Summary view
     - Toggle switch: monthly vs yearly.
     - Toggle switch: Small Dimes vs Big Bucks (yearly only).
-    - Checkbox: include Big Buck transactions alongside dimes (yearly, Small Dimes mode only).
+    - Checkbox: include Big Buck transactions alongside dimes (monthly and yearly, Small Dimes mode only).
     - Data: Segmented horizontal bar for expenses and incomes, each with a legend (category icon, name, amount, %). Categories below 3% are collapsed into "Other".
 
 - Landing page
@@ -430,9 +430,13 @@ A manual "Clear service worker cache" button in Settings (debug section) is a us
 
 ### Date and timestamp handling
 
-All timestamps (`transactedAt`, `createdAt`, `updatedAt`, etc.) are UTC ISO strings written from local `Date` constructors and read back with local getters (`getFullYear`, `getMonth`, `getDate`). The round-trip is consistent, so grouping and indexing by local date is always correct.
+All date operations use Luxon throughout the codebase.
 
-`transactedAt` on create/edit uses `resolveTransactedAt()`: today's date gets the actual current time so same-day transactions sort chronologically; past/future dates get noon; edits preserve the original time, or retain the original time-of-day if only the date changes.
+`transactedAt` is stored as a local-offset ISO string (e.g. `2026-02-15T12:00:00+07:00`), ensuring the local calendar date is unambiguously recoverable on any device without timezone arithmetic. DB v3 migration rewrote existing UTC (`...Z`) `transactedAt` values to local-offset ISO using the device's current timezone.
 
-`nextGenerationAt` on recurring rules is stored as a plain `YYYY-MM-DD` local date string rather than a UTC ISO string. The original ISO format caused a domain mismatch: `computeNextDate` advances local dates, but the old comparison (`nextGenerationAt <= new Date().toISOString()`) was in UTC space. For UTC+ users, local noon on day N stores as UTC day N-1, so after advancing to N+1 the UTC time could still fall on day N and fire the rule again. Storing a plain date and comparing with `todayDateString()` removes the mismatch entirely. ISO-format records left over from before the fix are handled transparently via `.slice(0, 10)`. Luxon and the Temporal API polyfill were considered but rejected - both add significant bundle weight for a problem that is isolated to one file.
+Audit timestamps (`createdAt`, `updatedAt`, `deletedAt`, `lastGeneratedAt`) are stored as UTC ISO strings (`.toUTC().toISO()`). This is required for correct string-comparison ordering in sync merge logic (`mergeRecords` uses `updatedAt` for last-write-wins resolution across devices).
+
+`nextGenerationAt` on recurring rules is stored as a noon local-offset ISO string (same format as `transactedAt`). DB v4 migration rewrote existing `YYYY-MM-DD` values to noon local-offset ISO. The due-check compares `DateTime.fromISO(nextGenerationAt).toISODate()` against `todayDateString()`.
+
+`transactedAt` on create/edit uses `resolveTransactedAt()`: today's date gets the actual current time so same-day transactions sort chronologically; past/future dates get noon local time; edits preserve the original time-of-day if only the date changes.
 

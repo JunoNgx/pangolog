@@ -155,7 +155,7 @@ export async function getDueRecurringRules(): Promise<RecurringRule[]> {
                 (r: RecurringRule) =>
                     r.deletedAt === null &&
                     r.isActive &&
-                    r.nextGenerationAt.slice(0, 10) <= today,
+                    DateTime.fromISO(r.nextGenerationAt).toISODate()! <= today,
             );
             resolve(results);
         };

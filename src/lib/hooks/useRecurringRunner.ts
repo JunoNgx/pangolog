@@ -47,17 +47,9 @@ function toNoonLocalISO(dt: DateTime): string {
     return dt.set({ hour: 12, minute: 0, second: 0, millisecond: 0 }).toISO()!;
 }
 
-function toLocalDateString(dt: DateTime): string {
-    return dt.toISODate()!;
-}
-
-function parseGenerationDate(dateStr: string): DateTime {
-    return DateTime.fromISO(dateStr);
-}
-
 async function processRule(rule: RecurringRule): Promise<void> {
     const now = DateTime.now();
-    let current = parseGenerationDate(rule.nextGenerationAt);
+    let current = DateTime.fromISO(rule.nextGenerationAt);
     let previous = current;
 
     while (current <= now) {
@@ -80,7 +72,7 @@ async function processRule(rule: RecurringRule): Promise<void> {
     }
 
     await updateRecurringRule(rule.id, {
-        nextGenerationAt: toLocalDateString(current),
+        nextGenerationAt: toNoonLocalISO(current),
         lastGeneratedAt: now.toUTC().toISO()!,
     });
 }

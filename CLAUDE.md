@@ -31,6 +31,11 @@ Personal expense tracker PWA. See `.docs/spec.md` and `.docs/plan.md` for full d
 - Global UI state in localStorage (theme, sync status, view toggles)
 - Synced settings in localStorage (currency symbol, prefix/suffix)
 
+### Date storage conventions
+- `transactedAt`, `nextGenerationAt`: local-offset ISO (e.g. `2026-02-15T12:00:00+07:00`) via `DateTime.now().toISO()` or `fromDateInputValue()`
+- All audit timestamps (`createdAt`, `updatedAt`, `deletedAt`, `lastGeneratedAt`): UTC ISO via `DateTime.now().toUTC().toISO()!` - required for string-comparison ordering in sync merge
+- DB is at version 4 (v3: migrated `transactedAt` UTC→local-offset; v4: migrated `nextGenerationAt` YYYY-MM-DD→noon local-offset)
+
 ## Conventions
 - Biome for linting/formatting
 - Monospace-heavy minimalist design
