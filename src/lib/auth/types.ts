@@ -34,6 +34,7 @@ export interface GisCodeClientConfig {
     client_id: string;
     scope: string;
     ux_mode: "popup" | "redirect";
+    prompt?: string;
     callback: (response: GisCodeResponse) => void;
     error_callback?: (error: GisTokenError) => void;
 }
