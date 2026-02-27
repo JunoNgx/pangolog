@@ -6,8 +6,7 @@ import type { AuthToken } from "@/lib/auth/types";
 import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
 
 const CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ?? "";
-const SCOPE =
-    "https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/drive.readonly email";
+const SCOPE = "https://www.googleapis.com/auth/drive.file email";
 const TOKEN_EXPIRY_BUFFER_MS = 10 * 60 * 1000;
 
 function loadGis(): Promise<void> {
@@ -54,6 +53,7 @@ export function useGoogleAuth() {
             client_id: CLIENT_ID,
             scope: SCOPE,
             ux_mode: "popup",
+            prompt: "consent",
             callback: async (response) => {
                 if (response.error) {
                     setError(response.error_description ?? response.error);

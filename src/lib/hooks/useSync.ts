@@ -17,6 +17,14 @@ function isAuthError(err: unknown): boolean {
     return err instanceof Error && err.message.includes("401");
 }
 
+function isScopeError(err: unknown): boolean {
+    return (
+        err instanceof Error &&
+        err.message.includes("403") &&
+        err.message.includes("insufficientPermissions")
+    );
+}
+
 export function useSyncFn() {
     const {
         driveFolderId,
@@ -66,6 +74,15 @@ export function useSyncFn() {
                     toast.success("Sync complete");
                 }
             } catch (err) {
+                if (isScopeError(err)) {
+                    setSyncStatus("idle");
+                    toast.error(
+                        "Google Drive access was revoked or has insufficient permissions. Please reconnect in Settings.",
+                        { id: "auth-reconnect", duration: Infinity },
+                    );
+                    return;
+                }
+
                 if (!isAuthError(err)) {
                     const message =
                         err instanceof Error ? err.message : "Sync failed.";
