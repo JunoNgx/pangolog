@@ -34,7 +34,8 @@ Personal expense tracker PWA. See `.docs/spec.md` and `.docs/plan.md` for full d
 ### Date storage conventions
 - `transactedAt`, `nextGenerationAt`: local-offset ISO (e.g. `2026-02-15T12:00:00+07:00`) via `DateTime.now().toISO()` or `fromDateInputValue()`
 - All audit timestamps (`createdAt`, `updatedAt`, `deletedAt`, `lastGeneratedAt`): UTC ISO via `DateTime.now().toUTC().toISO()!` - required for string-comparison ordering in sync merge
-- DB is at version 4 (v3: migrated `transactedAt` UTC→local-offset; v4: migrated `nextGenerationAt` YYYY-MM-DD→noon local-offset)
+- DB is at version 3 (v3: migrated `transactedAt` UTC→local-offset ISO)
+- `nextGenerationAt` is written as noon local-offset ISO for new/updated records; older records may be `YYYY-MM-DD` - all read paths handle both via `DateTime.fromISO()`
 
 ## Conventions
 - Biome for linting/formatting
