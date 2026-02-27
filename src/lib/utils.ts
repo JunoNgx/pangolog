@@ -37,7 +37,9 @@ export function toDateInputValue(isoString: string): string {
 }
 
 export function fromDateInputValue(dateStr: string): string {
-    return DateTime.fromISO(dateStr, { zone: "local" }).toISO()!;
+    return DateTime.fromISO(dateStr, { zone: "local" })
+        .set({ hour: 12, minute: 0, second: 0, millisecond: 0 })
+        .toISO()!;
 }
 
 export function formatAmount(minorUnits: number): string {
