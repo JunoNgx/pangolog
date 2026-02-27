@@ -133,10 +133,7 @@ export function TransactionDialog({
             const originalDateStr = toDateInputValue(transaction.transactedAt);
             if (transactedAt === originalDateStr)
                 return transaction.transactedAt;
-            const [year, month, day] = transactedAt.split("-").map(Number);
-            return DateTime.fromISO(transaction.transactedAt)
-                .set({ year, month, day })
-                .toISO()!;
+            return fromDateInputValue(transactedAt);
         }
         if (transactedAt === todayDateString()) return DateTime.now().toISO()!;
         return fromDateInputValue(transactedAt);
