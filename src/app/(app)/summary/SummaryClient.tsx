@@ -1,6 +1,7 @@
 "use client";
 
 import { Checkbox } from "@heroui/react";
+import { DateTime } from "luxon";
 import { useMemo } from "react";
 import { MonthYearPicker } from "@/components/MonthYearPicker";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
@@ -155,10 +156,9 @@ export default function SummaryClient() {
 
     const monthlyBucks = useMemo(
         () =>
-            (bucks ?? []).filter((b) => {
-                const d = new Date(b.transactedAt);
-                return d.getMonth() + 1 === selectedMonth;
-            }),
+            (bucks ?? []).filter(
+                (b) => DateTime.fromISO(b.transactedAt).month === selectedMonth,
+            ),
         [bucks, selectedMonth],
     );
 

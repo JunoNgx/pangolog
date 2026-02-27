@@ -1,3 +1,4 @@
+import { DateTime } from "luxon";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -14,15 +15,13 @@ interface LogStore {
     setSelectedCategoryIds: (ids: string[] | null) => void;
 }
 
-const now = new Date();
-
 export const useLogStore = create<LogStore>()(
     persist(
         (set) => ({
             isViewingBigBucks: false,
             shouldIncludeBucksInDimes: false,
-            selectedYear: now.getFullYear(),
-            selectedMonth: now.getMonth() + 1,
+            selectedYear: DateTime.now().year,
+            selectedMonth: DateTime.now().month,
             selectedCategoryIds: null,
             setIsViewingBigBucks: (value) => set({ isViewingBigBucks: value }),
             setShouldIncludeBucksInDimes: (value) =>

@@ -1,25 +1,21 @@
 "use client";
 
-import {
-    type LoggerEntry,
-    useLocalSettingsStore,
-} from "@/lib/store/useLocalSettingsStore";
+import { DateTime } from "luxon";
+import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
 
 export function useLogger() {
-    const setLoggerEntries = useLocalSettingsStore((state) => state.setLoggerEntries);
+    const setLoggerEntries = useLocalSettingsStore(
+        (state) => state.setLoggerEntries,
+    );
 
     function getLoggerEntries() {
         const currentEntries = useLocalSettingsStore.getState().loggerEntries;
         return [...currentEntries];
     }
 
-    function addLoggerEntry(
-        message: string,
-        logcode?: string,
-        data?: any
-    ) {
+    function addLoggerEntry(message: string, logcode?: string, data?: any) {
         const newEntry = {
-            datetime: new Date().toLocaleDateString("en-US", {
+            datetime: DateTime.now().toLocaleString({
                 year: "numeric",
                 month: "long",
                 day: "numeric",
@@ -46,5 +42,4 @@ export function useLogger() {
         addLoggerEntry,
         clearLoggerEntries,
     };
-};
-
+}

@@ -1,6 +1,7 @@
 "use client";
 
 import { Skeleton } from "@heroui/react";
+import { DateTime } from "luxon";
 import { useState } from "react";
 import type { Category, RecurringRule } from "@/lib/db/types";
 import { formatAmount, MONTH_NAMES } from "@/lib/utils";
@@ -185,13 +186,9 @@ function RecurringItem({ rule, category, onEdit }: RecurringItemProps) {
                     </span>
                     <span className="text-xs text-default-400 font-mono">
                         Next:{" "}
-                        {new Date(
-                            `${rule.nextGenerationAt.slice(0, 10)}T00:00:00`,
-                        ).toLocaleDateString("en-us", {
-                            day: "numeric",
-                            month: "short",
-                            year: "numeric",
-                        })}
+                        {DateTime.fromISO(rule.nextGenerationAt).toLocaleString(
+                            DateTime.DATE_MED,
+                        )}
                     </span>
                 </div>
             </button>

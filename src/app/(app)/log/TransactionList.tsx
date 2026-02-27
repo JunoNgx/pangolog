@@ -1,6 +1,7 @@
 "use client";
 
 import { Skeleton } from "@heroui/react";
+import { DateTime } from "luxon";
 import { useState } from "react";
 import type { Buck, Category, Dime } from "@/lib/db/types";
 import { formatAmount } from "@/lib/utils";
@@ -38,8 +39,8 @@ export function TransactionList({
 
     const displayedItems = [...transactions].sort(
         (a, b) =>
-            new Date(b.transactedAt).getTime() -
-            new Date(a.transactedAt).getTime(),
+            DateTime.fromISO(b.transactedAt).toMillis() -
+            DateTime.fromISO(a.transactedAt).toMillis(),
     );
 
     if (isLoading) {
@@ -72,19 +73,18 @@ export function TransactionList({
 
     const groupedByDateItems = displayedItems.reduce<
         {
-            date: Date;
             dateKey: string;
             dateText: string;
             items: (Dime | Buck)[];
         }[]
     >((acc, tx) => {
-        const date = new Date(tx.transactedAt);
-        const dateText = date.toLocaleDateString("en-us", {
+        const dt = DateTime.fromISO(tx.transactedAt);
+        const dateText = dt.toLocaleString({
             weekday: "short",
             day: "numeric",
             month: "short",
         });
-        const dateKey = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+        const dateKey = dt.toISODate()!;
 
         const lastGroup = acc[acc.length - 1];
         if (lastGroup?.dateKey === dateKey) {
@@ -92,7 +92,7 @@ export function TransactionList({
             return acc;
         }
 
-        acc.push({ date, dateKey, dateText, items: [tx] });
+        acc.push({ dateKey, dateText, items: [tx] });
         return acc;
     }, []);
 
@@ -146,9 +146,9 @@ function TransactionItem({
 
     const hasCategory = !!category;
     const hasDescription = !!transaction.description;
-    const txDate = new Date(transaction.transactedAt);
-    const txDay = txDate.getDate();
-    const txMonth = txDate.toLocaleDateString("en-us", { month: "short" });
+    const txDate = DateTime.fromISO(transaction.transactedAt);
+    const txDay = txDate.day;
+    const txMonth = txDate.toLocaleString({ month: "short" });
     const isBigBuck = !isDime(transaction);
 
     const ariaLabel = [

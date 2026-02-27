@@ -1,17 +1,17 @@
+import { DateTime } from "luxon";
 import { getDb } from "./connection";
 import type { Buck, BuckInput, BuckUpdate } from "./types";
 import { generateId } from "./uuid";
 
 export async function createBuck(input: BuckInput): Promise<Buck> {
     const db = await getDb();
-    const now = new Date().toISOString();
-    const date = new Date(input.transactedAt);
+    const now = DateTime.now().toUTC().toISO()!;
 
     const buck: Buck = {
         id: generateId(),
         updatedAt: now,
         deletedAt: null,
-        year: date.getFullYear(),
+        year: DateTime.fromISO(input.transactedAt).year,
         ...input,
     };
 
@@ -47,8 +47,8 @@ export async function updateBuck(id: string, input: BuckUpdate): Promise<Buck> {
                 id: existing.id,
                 transactedAt,
                 deletedAt: existing.deletedAt,
-                year: new Date(transactedAt).getFullYear(),
-                updatedAt: new Date().toISOString(),
+                year: DateTime.fromISO(transactedAt).year,
+                updatedAt: DateTime.now().toUTC().toISO()!,
             };
 
             const putReq = store.put(updated);
@@ -74,7 +74,7 @@ export async function deleteBuck(id: string): Promise<void> {
                 return;
             }
 
-            const now = new Date().toISOString();
+            const now = DateTime.now().toUTC().toISO()!;
             const updated: Buck = {
                 ...existing,
                 deletedAt: now,
@@ -107,7 +107,7 @@ export async function restoreBuck(id: string): Promise<void> {
             const putReq = store.put({
                 ...existing,
                 deletedAt: null,
-                updatedAt: new Date().toISOString(),
+                updatedAt: DateTime.now().toUTC().toISO()!,
             });
             putReq.onsuccess = () => resolve();
             putReq.onerror = () => reject(putReq.error);

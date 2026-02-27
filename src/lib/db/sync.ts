@@ -1,3 +1,4 @@
+import { DateTime } from "luxon";
 import { forceDeleteDb, getDb } from "./connection";
 import type { Buck, Category, Dime, RecurringRule } from "./types";
 
@@ -29,9 +30,10 @@ async function purgeStore(
 }
 
 export async function purgeExpiredRecords(): Promise<void> {
-    const cutoff = new Date();
-    cutoff.setDate(cutoff.getDate() - PURGE_DAYS);
-    const cutoffIso = cutoff.toISOString();
+    const cutoffIso = DateTime.now()
+        .minus({ days: PURGE_DAYS })
+        .toUTC()
+        .toISO()!;
 
     await Promise.all([
         purgeStore("dimes", cutoffIso),

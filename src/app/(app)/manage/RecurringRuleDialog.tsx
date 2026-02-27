@@ -10,6 +10,7 @@ import {
     ModalHeader,
     Switch,
 } from "@heroui/react";
+import { DateTime } from "luxon";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { CategoryDialog } from "@/components/CategoryDialog";
@@ -38,16 +39,16 @@ const DAY_NAMES = [
 ];
 
 function getRepeatLabel(frequency: Frequency, dateStr: string): string {
-    const date = new Date(`${dateStr}T12:00:00`);
+    const dt = DateTime.fromISO(`${dateStr}T12:00:00`);
     switch (frequency) {
         case "daily":
             return "Repeats every day";
         case "weekly":
-            return `Repeats every ${DAY_NAMES[date.getDay()]}`;
+            return `Repeats every ${DAY_NAMES[dt.weekday % 7]}`;
         case "monthly":
-            return `Repeats on the ${date.getDate()} of each month`;
+            return `Repeats on the ${dt.day} of each month`;
         case "yearly":
-            return `Repeats every ${MONTH_NAMES[date.getMonth()]} ${date.getDate()}`;
+            return `Repeats every ${MONTH_NAMES[dt.month - 1]} ${dt.day}`;
     }
 }
 
@@ -137,7 +138,7 @@ export function RecurringRuleDialog({
         const amountMinor = Math.round(Number.parseFloat(amount) * 100);
         if (Number.isNaN(amountMinor) || amountMinor <= 0) return;
 
-        const date = new Date(`${startDate}T12:00:00`);
+        const dt = DateTime.fromISO(`${startDate}T12:00:00`);
         const input = {
             amount: amountMinor,
             description,
@@ -145,9 +146,9 @@ export function RecurringRuleDialog({
             isBigBuck,
             categoryId,
             frequency,
-            dayOfWeek: date.getDay(),
-            dayOfMonth: date.getDate(),
-            monthOfYear: date.getMonth() + 1,
+            dayOfWeek: dt.weekday % 7,
+            dayOfMonth: dt.day,
+            monthOfYear: dt.month,
             nextGenerationAt: startDate,
             isActive,
         };
@@ -224,26 +225,17 @@ export function RecurringRuleDialog({
                                     <div className="flex flex-col items-end gap-1 text-xs font-mono text-default-400">
                                         <span>
                                             Next:{" "}
-                                            {new Date(
-                                                `${rule.nextGenerationAt.slice(0, 10)}T00:00:00`,
-                                            ).toLocaleDateString("en-us", {
-                                                day: "numeric",
-                                                month: "short",
-                                                year: "numeric",
-                                            })}
+                                            {DateTime.fromISO(
+                                                rule.nextGenerationAt,
+                                            ).toLocaleString(DateTime.DATE_MED)}
                                         </span>
                                         <span>
                                             Last:{" "}
                                             {rule.lastGeneratedAt
-                                                ? new Date(
+                                                ? DateTime.fromISO(
                                                       rule.lastGeneratedAt,
-                                                  ).toLocaleDateString(
-                                                      "en-us",
-                                                      {
-                                                          day: "numeric",
-                                                          month: "short",
-                                                          year: "numeric",
-                                                      },
+                                                  ).toLocaleString(
+                                                      DateTime.DATE_MED,
                                                   )
                                                 : "Never"}
                                         </span>

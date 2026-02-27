@@ -1,18 +1,19 @@
+import { DateTime } from "luxon";
 import { getDb } from "./connection";
 import type { Dime, DimeInput, DimeUpdate } from "./types";
 import { generateId } from "./uuid";
 
 export async function createDime(input: DimeInput): Promise<Dime> {
     const db = await getDb();
-    const now = new Date().toISOString();
-    const date = new Date(input.transactedAt);
+    const now = DateTime.now().toUTC().toISO()!;
+    const dt = DateTime.fromISO(input.transactedAt);
 
     const dime: Dime = {
         id: generateId(),
         updatedAt: now,
         deletedAt: null,
-        year: date.getFullYear(),
-        month: date.getMonth() + 1,
+        year: dt.year,
+        month: dt.month,
         ...input,
     };
 
@@ -42,16 +43,16 @@ export async function updateDime(id: string, input: DimeUpdate): Promise<Dime> {
             }
 
             const transactedAt = input.transactedAt ?? existing.transactedAt;
-            const date = new Date(transactedAt);
+            const dt = DateTime.fromISO(transactedAt);
             const updated: Dime = {
                 ...existing,
                 ...input,
                 id: existing.id,
                 transactedAt,
                 deletedAt: existing.deletedAt,
-                year: date.getFullYear(),
-                month: date.getMonth() + 1,
-                updatedAt: new Date().toISOString(),
+                year: dt.year,
+                month: dt.month,
+                updatedAt: DateTime.now().toUTC().toISO()!,
             };
 
             const putReq = store.put(updated);
@@ -77,7 +78,7 @@ export async function deleteDime(id: string): Promise<void> {
                 return;
             }
 
-            const now = new Date().toISOString();
+            const now = DateTime.now().toUTC().toISO()!;
             const updated: Dime = {
                 ...existing,
                 deletedAt: now,
@@ -110,7 +111,7 @@ export async function restoreDime(id: string): Promise<void> {
             const putReq = store.put({
                 ...existing,
                 deletedAt: null,
-                updatedAt: new Date().toISOString(),
+                updatedAt: DateTime.now().toUTC().toISO()!,
             });
             putReq.onsuccess = () => resolve();
             putReq.onerror = () => reject(putReq.error);

@@ -1,6 +1,7 @@
 "use client";
 
 import { useQueryClient } from "@tanstack/react-query";
+import { DateTime } from "luxon";
 import { useCallback, useEffect, useRef } from "react";
 import { createBuck } from "../db/bucks";
 import { createDime } from "../db/dimes";
@@ -10,62 +11,50 @@ import {
 } from "../db/recurringRules";
 import type { RecurringRule } from "../db/types";
 
-function computeNextDate(from: Date, rule: RecurringRule): Date {
-    const next = new Date(from);
+function computeNextDate(from: DateTime, rule: RecurringRule): DateTime {
     switch (rule.frequency) {
         case "daily":
-            next.setDate(next.getDate() + 1);
-            break;
+            return from.plus({ days: 1 });
         case "weekly":
-            next.setDate(next.getDate() + 7);
-            break;
-        case "monthly":
-            next.setMonth(next.getMonth() + 1);
+            return from.plus({ weeks: 1 });
+        case "monthly": {
+            let next = from.plus({ months: 1 });
             if (rule.dayOfMonth !== null) {
-                const lastDay = new Date(
-                    next.getFullYear(),
-                    next.getMonth() + 1,
-                    0,
-                ).getDate();
-                next.setDate(Math.min(rule.dayOfMonth, lastDay));
+                next = next.set({
+                    day: Math.min(rule.dayOfMonth, next.daysInMonth),
+                });
             }
-            break;
-        case "yearly":
-            next.setFullYear(next.getFullYear() + 1);
-            if (rule.monthOfYear !== null) next.setMonth(rule.monthOfYear - 1);
+            return next;
+        }
+        case "yearly": {
+            let next = from.plus({ years: 1 });
+            if (rule.monthOfYear !== null) {
+                next = next.set({ month: rule.monthOfYear });
+            }
             if (rule.dayOfMonth !== null) {
-                const lastDay = new Date(
-                    next.getFullYear(),
-                    next.getMonth() + 1,
-                    0,
-                ).getDate();
-                next.setDate(Math.min(rule.dayOfMonth, lastDay));
+                next = next.set({
+                    day: Math.min(rule.dayOfMonth, next.daysInMonth),
+                });
             }
-            break;
+            return next;
+        }
     }
-    return next;
 }
 
-function toNoonLocalISO(date: Date): string {
-    const y = date.getFullYear();
-    const m = String(date.getMonth() + 1).padStart(2, "0");
-    const d = String(date.getDate()).padStart(2, "0");
-    return new Date(`${y}-${m}-${d}T12:00:00`).toISOString();
+function toNoonLocalISO(dt: DateTime): string {
+    return dt.set({ hour: 12, minute: 0, second: 0, millisecond: 0 }).toISO()!;
 }
 
-function toLocalDateString(date: Date): string {
-    const y = date.getFullYear();
-    const m = String(date.getMonth() + 1).padStart(2, "0");
-    const d = String(date.getDate()).padStart(2, "0");
-    return `${y}-${m}-${d}`;
+function toLocalDateString(dt: DateTime): string {
+    return dt.toISODate()!;
 }
 
-function parseGenerationDate(dateStr: string): Date {
-    return new Date(`${dateStr.slice(0, 10)}T00:00:00`);
+function parseGenerationDate(dateStr: string): DateTime {
+    return DateTime.fromISO(dateStr);
 }
 
 async function processRule(rule: RecurringRule): Promise<void> {
-    const now = new Date();
+    const now = DateTime.now();
     let current = parseGenerationDate(rule.nextGenerationAt);
     let previous = current;
 
@@ -90,7 +79,7 @@ async function processRule(rule: RecurringRule): Promise<void> {
 
     await updateRecurringRule(rule.id, {
         nextGenerationAt: toLocalDateString(current),
-        lastGeneratedAt: now.toISOString(),
+        lastGeneratedAt: now.toUTC().toISO()!,
     });
 }
 

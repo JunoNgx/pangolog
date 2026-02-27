@@ -1,3 +1,4 @@
+import { DateTime } from "luxon";
 import { todayDateString } from "../utils";
 import { getDb } from "./connection";
 import type {
@@ -11,7 +12,7 @@ export async function createRecurringRule(
     input: RecurringRuleInput,
 ): Promise<RecurringRule> {
     const db = await getDb();
-    const now = new Date().toISOString();
+    const now = DateTime.now().toUTC().toISO()!;
 
     const rule: RecurringRule = {
         id: generateId(),
@@ -56,7 +57,7 @@ export async function updateRecurringRule(
                 id: existing.id,
                 createdAt: existing.createdAt,
                 deletedAt: existing.deletedAt,
-                updatedAt: new Date().toISOString(),
+                updatedAt: DateTime.now().toUTC().toISO()!,
             };
 
             const putReq = store.put(updated);
@@ -82,7 +83,7 @@ export async function deleteRecurringRule(id: string): Promise<void> {
                 return;
             }
 
-            const now = new Date().toISOString();
+            const now = DateTime.now().toUTC().toISO()!;
             const putReq = store.put({
                 ...existing,
                 deletedAt: now,
@@ -113,7 +114,7 @@ export async function restoreRecurringRule(id: string): Promise<void> {
             const putReq = store.put({
                 ...existing,
                 deletedAt: null,
-                updatedAt: new Date().toISOString(),
+                updatedAt: DateTime.now().toUTC().toISO()!,
             });
             putReq.onsuccess = () => resolve();
             putReq.onerror = () => reject(putReq.error);

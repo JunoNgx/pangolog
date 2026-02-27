@@ -1,6 +1,7 @@
 "use client";
 
 import { useQueryClient } from "@tanstack/react-query";
+import { DateTime } from "luxon";
 import { useCallback, useEffect, useRef } from "react";
 import { toast } from "sonner";
 import { getOrCreatePangoFolder } from "@/lib/drive/client";
@@ -68,7 +69,7 @@ export function useSyncFn() {
                 await queryClient.invalidateQueries();
 
                 setSyncStatus("idle");
-                setLastSyncTime(new Date().toISOString());
+                setLastSyncTime(DateTime.now().toUTC().toISO()!);
                 toast.dismiss("auth-reconnect");
                 if (!isSilent) {
                     toast.success("Sync complete");

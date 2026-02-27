@@ -1,3 +1,4 @@
+import { DateTime } from "luxon";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -14,16 +15,14 @@ interface SummaryStore {
     setSelectedMonth: (month: number) => void;
 }
 
-const now = new Date();
-
 export const useSummaryStore = create<SummaryStore>()(
     persist(
         (set) => ({
             isYearly: false,
             isViewingBucksOnly: false,
             includeBucks: false,
-            selectedYear: now.getFullYear(),
-            selectedMonth: now.getMonth() + 1,
+            selectedYear: DateTime.now().year,
+            selectedMonth: DateTime.now().month,
             setIsYearly: (value) => set({ isYearly: value }),
             setIsViewingBucksOnly: (value) =>
                 set({ isViewingBucksOnly: value }),
