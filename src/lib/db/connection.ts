@@ -1,7 +1,7 @@
 import { DateTime } from "luxon";
 
 const DB_NAME = "pangolog";
-const DB_VERSION = 3;
+const DB_VERSION = 4;
 
 const REQUIRED_STORES = ["dimes", "bucks", "categories", "recurring-rules"];
 
@@ -69,6 +69,36 @@ function openDbRaw(): Promise<IDBDatabase> {
                         cursor.continue();
                     };
                 }
+            }
+
+            if (event.oldVersion < 4) {
+                const upgradeTx = (event.target as IDBOpenDBRequest)
+                    .transaction;
+                if (!upgradeTx) return;
+                const store = upgradeTx.objectStore("recurring-rules");
+                const req = store.openCursor();
+                req.onsuccess = () => {
+                    const cursor = req.result;
+                    if (!cursor) return;
+                    const record = cursor.value;
+                    if (
+                        typeof record.nextGenerationAt === "string" &&
+                        /^\d{4}-\d{2}-\d{2}$/.test(record.nextGenerationAt)
+                    ) {
+                        record.nextGenerationAt = DateTime.fromISO(
+                            record.nextGenerationAt,
+                        )
+                            .set({
+                                hour: 12,
+                                minute: 0,
+                                second: 0,
+                                millisecond: 0,
+                            })
+                            .toISO()!;
+                        cursor.update(record);
+                    }
+                    cursor.continue();
+                };
             }
         };
 
