@@ -43,10 +43,6 @@ function computeNextDate(from: DateTime, rule: RecurringRule): DateTime {
     }
 }
 
-function toNoonLocalISO(dt: DateTime): string {
-    return dt.set({ hour: 12, minute: 0, second: 0, millisecond: 0 }).toISO()!;
-}
-
 async function processRule(rule: RecurringRule): Promise<void> {
     const now = DateTime.now();
     let current = DateTime.fromISO(rule.nextGenerationAt);
@@ -58,7 +54,12 @@ async function processRule(rule: RecurringRule): Promise<void> {
     }
 
     const transactionInput = {
-        transactedAt: toNoonLocalISO(previous),
+        transactedAt: previous.set({
+            hour: now.hour,
+            minute: now.minute,
+            second: now.second,
+            millisecond: now.millisecond,
+        }).toISO()!,
         amount: rule.amount,
         isIncome: rule.isIncome,
         categoryId: rule.categoryId,
@@ -72,7 +73,12 @@ async function processRule(rule: RecurringRule): Promise<void> {
     }
 
     await updateRecurringRule(rule.id, {
-        nextGenerationAt: toNoonLocalISO(current),
+        nextGenerationAt: current.set({
+            hour: 0,
+            minute: 0,
+            second: 0,
+            millisecond: 0,
+        }).toISO()!,
         lastGeneratedAt: now.toUTC().toISO()!,
     });
 }
