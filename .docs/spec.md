@@ -108,6 +108,7 @@ Approach:
 - `description`: string, user description for the transaction.
 - `isIncome`: boolean, whether the transaction is a positive income instead of expense.
 - indexes:
+    - [year, month] for month queries
     - year queries
     - categoryId for joins
     - transactedAt for sorting

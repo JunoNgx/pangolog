@@ -1,5 +1,5 @@
 const DB_NAME = "pangolog";
-const DB_VERSION = 2;
+const DB_VERSION = 3;
 
 const REQUIRED_STORES = ["dimes", "bucks", "categories", "recurring-rules"];
 
@@ -40,6 +40,14 @@ function openDbRaw(): Promise<IDBDatabase> {
                 const rules = upgradeTx.objectStore("recurring-rules");
                 rules.createIndex("nextGenerationAt", "nextGenerationAt");
                 rules.createIndex("createdAt", "createdAt");
+            }
+            
+            if (event.oldVersion < 3) {
+                const upgradeTx = (event.target as IDBOpenDBRequest)
+                    .transaction;
+                if (!upgradeTx) return;
+                const bucks = upgradeTx.objectStore("bucks");
+                bucks.createIndex("yearMonth", ["year", "month"]);
             }
         };
 
