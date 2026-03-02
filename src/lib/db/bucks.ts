@@ -133,3 +133,25 @@ export async function getBucksByYear(year: number): Promise<Buck[]> {
         };
     });
 }
+
+export async function getBucksByMonth(
+    year: number,
+    month: number,
+): Promise<Buck[]> {
+    const db = await getDb();
+
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction("bucks", "readonly");
+        const store = tx.objectStore("bucks");
+        const index = store.index("yearMonth");
+        const request = index.getAll(IDBKeyRange.only([year, month]));
+
+        request.onerror = () => reject(request.error);
+        request.onsuccess = () => {
+            const results: Buck[] = request.result.filter(
+                (b: Buck) => b.deletedAt === null,
+            );
+            resolve(results);
+        };
+    });
+}
