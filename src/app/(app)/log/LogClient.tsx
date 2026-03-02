@@ -41,11 +41,11 @@ export default function LogClient() {
         setSelectedCategoryIds,
     } = useLogStore();
 
-    const { data: dimes, isLoading: dimesLoading } = useDimes(
+    const { data: dimes, isLoading: isLoadingDimes } = useDimes(
         selectedYear,
         selectedMonth,
     );
-    const { data: bucks, isLoading: bucksLoading } = useBucks(selectedYear);
+    const { data: bucks, isLoading: isLoadingBucks } = useBucks(selectedYear);
     const { data: categories } = useCategories();
 
     const transactions = useMemo(() => {
@@ -91,8 +91,8 @@ export default function LogClient() {
     }, [bucks]);
 
     const isLoading = isViewingBigBucks
-        ? bucksLoading
-        : dimesLoading || (shouldIncludeBucksInDimes && bucksLoading);
+        ? isLoadingBucks
+        : isLoadingDimes || (shouldIncludeBucksInDimes && isLoadingBucks);
 
     return (
         <div>
