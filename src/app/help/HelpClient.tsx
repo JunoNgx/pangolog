@@ -51,6 +51,42 @@ export default function HelpClient() {
                 </p>
             </Section>
 
+            <Section title="Installing as an app">
+                <p className="text-sm text-default-500 mb-3">
+                    Pangolog can be installed as a standalone app on your device
+                    for a better experience - no browser chrome, faster access
+                    from your home screen.
+                </p>
+                <Term name="iOS (Safari)">
+                    Tap the Share button at the bottom of the screen, then
+                    select "Add to Home Screen". Safari only - Chrome and Firefox
+                    on iOS do not support installation.
+                </Term>
+                <Term name="Android (Chrome)">
+                    Tap the three-dot menu in the top right and select "Add to
+                    Home Screen" or "Install app". You may also see an install
+                    prompt appear automatically.
+                </Term>
+                <Term name="Desktop (Chrome / Edge)">
+                    Click the install icon in the address bar, or open the
+                    browser menu and select "Install Pangolog".
+                </Term>
+                <Term name="Other browsers">
+                    PWA installation support varies by browser and OS. Check
+                    your browser's documentation or look for extensions that add
+                    PWA support - for example,{" "}
+                    <a
+                        href="https://addons.mozilla.org/en-US/firefox/addon/pwas-for-firefox/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline text-primary-500"
+                    >
+                        PWAs for Firefox
+                    </a>
+                    .
+                </Term>
+            </Section>
+
             <Section title="Basic concepts">
                 <Term name="Small Dimes">
                     Everyday transactions logged by month - groceries, meals,
