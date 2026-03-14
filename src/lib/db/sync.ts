@@ -2,6 +2,15 @@ import { DateTime } from "luxon";
 import { forceDeleteDb, getDb } from "./connection";
 import type { Buck, Category, Dime, RecurringRule } from "./types";
 
+function normalizeBuck(buck: Buck): Buck {
+    const month = buck.month ?? DateTime.fromISO(buck.transactedAt).month;
+    return { ...buck, month, isBigBuck: true };
+}
+
+function normalizeDime(dime: Dime): Dime {
+    return { ...dime, isBigBuck: false };
+}
+
 const PURGE_DAYS = 30;
 
 async function purgeStore(
@@ -108,7 +117,7 @@ export async function bulkPutDimes(dimes: Dime[]): Promise<void> {
     return new Promise((resolve, reject) => {
         const tx = db.transaction("dimes", "readwrite");
         const store = tx.objectStore("dimes");
-        for (const dime of dimes) store.put(dime);
+        for (const dime of dimes) store.put(normalizeDime(dime));
         tx.oncomplete = () => resolve();
         tx.onerror = () => reject(tx.error);
     });
@@ -119,7 +128,7 @@ export async function bulkPutBucks(bucks: Buck[]): Promise<void> {
     return new Promise((resolve, reject) => {
         const tx = db.transaction("bucks", "readwrite");
         const store = tx.objectStore("bucks");
-        for (const buck of bucks) store.put(buck);
+        for (const buck of bucks) store.put(normalizeBuck(buck));
         tx.oncomplete = () => resolve();
         tx.onerror = () => reject(tx.error);
     });
