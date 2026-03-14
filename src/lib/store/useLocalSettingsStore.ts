@@ -4,7 +4,7 @@ import type { AuthToken } from "@/lib/auth/types";
 
 export type SyncStatus = "idle" | "syncing" | "error";
 export type LoggerEntry = {
-    datetime: string;
+    timestamp: string;
     message: string;
     logcode?: string;
     data?: any;
