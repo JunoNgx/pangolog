@@ -7,6 +7,14 @@ export function useHotkey(
 ) {
     useEffect(() => {
         function handleKeyDown(e: KeyboardEvent) {
+            const activeEl = document.activeElement;
+            if (
+                activeEl instanceof HTMLInputElement ||
+                activeEl instanceof HTMLTextAreaElement ||
+                activeEl instanceof HTMLSelectElement ||
+                (activeEl instanceof HTMLElement && activeEl.isContentEditable)
+            )
+                return;
             if (options?.ctrlOrMeta && !(e.metaKey || e.ctrlKey)) return;
             if (e.key !== key) return;
 

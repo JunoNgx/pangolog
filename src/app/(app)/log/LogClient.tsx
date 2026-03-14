@@ -31,8 +31,21 @@ export default function LogClient() {
     const [isViewingBigBucks, setIsViewingBigBucks] = useState(false);
     const [shouldIncludeBucksInDimes, setShouldIncludeBucksInDimes] =
         useState(false);
+
+    const toggleViewingBigBucks = useCallback(
+        () => setIsViewingBigBucks((prev) => !prev),
+        [],
+    );
+    const toggleIncludeBucksInDimes = useCallback(() => {
+        if (isViewingBigBucks) return;
+        setShouldIncludeBucksInDimes((prev) => !prev);
+    }, [isViewingBigBucks]);
+    useHotkey("b", toggleViewingBigBucks, { ctrlOrMeta: true });
+    useHotkey("i", toggleIncludeBucksInDimes, { ctrlOrMeta: true });
     const [selectedYear, setSelectedYear] = useState(DateTime.now().year);
-    const [selectedMonth, setSelectedMonth] = useState<number>(DateTime.now().month);
+    const [selectedMonth, setSelectedMonth] = useState<number>(
+        DateTime.now().month,
+    );
     const [selectedCategoryIds, setSelectedCategoryIds] = useState<
         string[] | null
     >(null);
@@ -41,9 +54,10 @@ export default function LogClient() {
         selectedYear,
         selectedMonth,
     );
-    const { data: yearlyBucks, isLoading: isLoadingYearlyBucks } = useBucks(selectedYear);
-    const { data: monthlyBucks, isLoading: isLoadingMonthlyBucks }
-        = useBucksByMonth(selectedYear, selectedMonth);
+    const { data: yearlyBucks, isLoading: isLoadingYearlyBucks } =
+        useBucks(selectedYear);
+    const { data: monthlyBucks, isLoading: isLoadingMonthlyBucks } =
+        useBucksByMonth(selectedYear, selectedMonth);
     const { data: categories } = useCategories();
 
     const queriedBucks = useMemo(() => {
@@ -56,7 +70,12 @@ export default function LogClient() {
         }
 
         return [];
-    }, [isViewingBigBucks, shouldIncludeBucksInDimes, yearlyBucks, monthlyBucks]);
+    }, [
+        isViewingBigBucks,
+        shouldIncludeBucksInDimes,
+        yearlyBucks,
+        monthlyBucks,
+    ]);
 
     const queriedDimes = useMemo(() => {
         if (isViewingBigBucks) {
@@ -102,8 +121,7 @@ export default function LogClient() {
     }, [queriedBucks]);
 
     const isLoading = useMemo(() => {
-        if (isViewingBigBucks)
-            return isLoadingYearlyBucks;
+        if (isViewingBigBucks) return isLoadingYearlyBucks;
 
         if (shouldIncludeBucksInDimes)
             return isLoadingDimes || isLoadingMonthlyBucks;
