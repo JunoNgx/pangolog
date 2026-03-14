@@ -9,6 +9,7 @@ export interface Dime {
     month: number;
     description: string;
     isIncome: boolean;
+    isBigBuck: false;
 }
 
 export interface Buck {
@@ -19,8 +20,10 @@ export interface Buck {
     categoryId: string | null;
     amount: number;
     year: number;
+    month: number;
     description: string;
     isIncome: boolean;
+    isBigBuck: true;
 }
 
 export interface Category {
@@ -38,17 +41,26 @@ export interface Category {
 
 export type DimeInput = Omit<
     Dime,
-    "id" | "updatedAt" | "deletedAt" | "year" | "month"
+    "id" | "updatedAt" | "deletedAt" | "year" | "month" | "isBigBuck"
 >;
 
 export type DimeUpdate = Partial<
-    Omit<Dime, "id" | "updatedAt" | "deletedAt" | "year" | "month">
+    Omit<
+        Dime,
+        "id" | "updatedAt" | "deletedAt" | "year" | "month" | "isBigBuck"
+    >
 >;
 
-export type BuckInput = Omit<Buck, "id" | "updatedAt" | "deletedAt" | "year">;
+export type BuckInput = Omit<
+    Buck,
+    "id" | "updatedAt" | "deletedAt" | "year" | "month" | "isBigBuck"
+>;
 
 export type BuckUpdate = Partial<
-    Omit<Buck, "id" | "updatedAt" | "deletedAt" | "year">
+    Omit<
+        Buck,
+        "id" | "updatedAt" | "deletedAt" | "year" | "month" | "isBigBuck"
+    >
 >;
 
 export type CategoryInput = Omit<

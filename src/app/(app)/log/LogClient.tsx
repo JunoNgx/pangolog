@@ -7,7 +7,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { MonthYearPicker } from "@/components/MonthYearPicker";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
 import { createAction } from "@/lib/createAction";
-import { useBucks } from "@/lib/hooks/useBucks";
+import { useBucks, useBucksByMonth } from "@/lib/hooks/useBucks";
 import { useCategories } from "@/lib/hooks/useCategories";
 import { useDimes } from "@/lib/hooks/useDimes";
 import { useHotkey } from "@/lib/hooks/useHotkey";
@@ -37,23 +37,38 @@ export default function LogClient() {
         string[] | null
     >(null);
 
-    const { data: dimes, isLoading: dimesLoading } = useDimes(
+    const { data: dimes, isLoading: isLoadingDimes } = useDimes(
         selectedYear,
         selectedMonth,
     );
-    const { data: bucks, isLoading: bucksLoading } = useBucks(selectedYear);
+    const { data: yearlyBucks, isLoading: isLoadingYearlyBucks } = useBucks(selectedYear);
+    const { data: monthlyBucks, isLoading: isLoadingMonthlyBucks }
+        = useBucksByMonth(selectedYear, selectedMonth);
     const { data: categories } = useCategories();
 
-    const transactions = useMemo(() => {
+    const queriedBucks = useMemo(() => {
         if (isViewingBigBucks) {
-            return bucks ?? [];
+            return yearlyBucks ?? [];
         }
-        const base = dimes ?? [];
+
         if (shouldIncludeBucksInDimes) {
-            return [...base, ...(bucks ?? [])];
+            return monthlyBucks ?? [];
         }
-        return base;
-    }, [isViewingBigBucks, shouldIncludeBucksInDimes, dimes, bucks]);
+
+        return [];
+    }, [isViewingBigBucks, shouldIncludeBucksInDimes, yearlyBucks, monthlyBucks]);
+
+    const queriedDimes = useMemo(() => {
+        if (isViewingBigBucks) {
+            return [];
+        }
+
+        return dimes ?? [];
+    }, [isViewingBigBucks, dimes]);
+
+    const transactions = useMemo(() => {
+        return [...queriedDimes, ...queriedBucks];
+    }, [queriedDimes, queriedBucks]);
 
     const filteredTransactions = useMemo(() => {
         if (selectedCategoryIds === null) return transactions;
@@ -80,15 +95,27 @@ export default function LogClient() {
 
     const buckCategoryIds = useMemo(() => {
         const ids = new Set<string>();
-        for (const tx of bucks ?? []) {
+        for (const tx of queriedBucks ?? []) {
             if (tx.categoryId) ids.add(tx.categoryId);
         }
         return ids;
-    }, [bucks]);
+    }, [queriedBucks]);
 
-    const isLoading = isViewingBigBucks
-        ? bucksLoading
-        : dimesLoading || (shouldIncludeBucksInDimes && bucksLoading);
+    const isLoading = useMemo(() => {
+        if (isViewingBigBucks)
+            return isLoadingYearlyBucks;
+
+        if (shouldIncludeBucksInDimes)
+            return isLoadingDimes || isLoadingMonthlyBucks;
+
+        return isLoadingDimes;
+    }, [
+        isViewingBigBucks,
+        shouldIncludeBucksInDimes,
+        isLoadingDimes,
+        isLoadingYearlyBucks,
+        isLoadingMonthlyBucks,
+    ]);
 
     return (
         <div>
