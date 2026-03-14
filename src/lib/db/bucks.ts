@@ -7,11 +7,14 @@ export async function createBuck(input: BuckInput): Promise<Buck> {
     const db = await getDb();
     const now = DateTime.now().toUTC().toISO()!;
 
+    const dt = DateTime.fromISO(input.transactedAt);
     const buck: Buck = {
         id: generateId(),
         updatedAt: now,
         deletedAt: null,
-        year: DateTime.fromISO(input.transactedAt).year,
+        year: dt.year,
+        month: dt.month,
+        isBigBuck: true,
         ...input,
     };
 
@@ -41,13 +44,16 @@ export async function updateBuck(id: string, input: BuckUpdate): Promise<Buck> {
             }
 
             const transactedAt = input.transactedAt ?? existing.transactedAt;
+            const dt = DateTime.fromISO(transactedAt);
             const updated: Buck = {
                 ...existing,
                 ...input,
                 id: existing.id,
                 transactedAt,
                 deletedAt: existing.deletedAt,
-                year: DateTime.fromISO(transactedAt).year,
+                year: dt.year,
+                month: dt.month,
+                isBigBuck: true,
                 updatedAt: DateTime.now().toUTC().toISO()!,
             };
 
@@ -123,6 +129,28 @@ export async function getBucksByYear(year: number): Promise<Buck[]> {
         const store = tx.objectStore("bucks");
         const index = store.index("year");
         const request = index.getAll(IDBKeyRange.only(year));
+
+        request.onerror = () => reject(request.error);
+        request.onsuccess = () => {
+            const results: Buck[] = request.result.filter(
+                (b: Buck) => b.deletedAt === null,
+            );
+            resolve(results);
+        };
+    });
+}
+
+export async function getBucksByMonth(
+    year: number,
+    month: number,
+): Promise<Buck[]> {
+    const db = await getDb();
+
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction("bucks", "readonly");
+        const store = tx.objectStore("bucks");
+        const index = store.index("yearMonth");
+        const request = index.getAll(IDBKeyRange.only([year, month]));
 
         request.onerror = () => reject(request.error);
         request.onsuccess = () => {

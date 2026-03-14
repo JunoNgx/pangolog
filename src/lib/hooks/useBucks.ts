@@ -3,6 +3,7 @@ import { toast } from "sonner";
 import {
     createBuck,
     deleteBuck,
+    getBucksByMonth,
     getBucksByYear,
     restoreBuck,
     updateBuck,
@@ -15,6 +16,13 @@ export function useBucks(year: number) {
     return useQuery({
         queryKey: [...BUCKS_KEY, year],
         queryFn: () => getBucksByYear(year),
+    });
+}
+
+export function useBucksByMonth(year: number, month: number) {
+    return useQuery({
+        queryKey: [...BUCKS_KEY, year, month],
+        queryFn: () => getBucksByMonth(year, month),
     });
 }
 

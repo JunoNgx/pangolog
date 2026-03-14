@@ -1,5 +1,7 @@
+import { DateTime } from "luxon";
+
 const DB_NAME = "pangolog";
-const DB_VERSION = 2;
+const DB_VERSION = 3;
 
 const REQUIRED_STORES = ["dimes", "bucks", "categories", "recurring-rules"];
 
@@ -40,6 +42,38 @@ function openDbRaw(): Promise<IDBDatabase> {
                 const rules = upgradeTx.objectStore("recurring-rules");
                 rules.createIndex("nextGenerationAt", "nextGenerationAt");
                 rules.createIndex("createdAt", "createdAt");
+            }
+
+            if (event.oldVersion < 3) {
+                const upgradeTx = (event.target as IDBOpenDBRequest)
+                    .transaction;
+                if (!upgradeTx) return;
+                const bucksStore = upgradeTx.objectStore("bucks");
+                bucksStore.createIndex("yearMonth", ["year", "month"]);
+
+                const buckCursor = bucksStore.openCursor();
+                buckCursor.onsuccess = (e) => {
+                    const cursor = (e.target as IDBRequest<IDBCursorWithValue>)
+                        .result;
+                    if (!cursor) return;
+                    cursor.update({
+                        ...cursor.value,
+                        month: DateTime.fromISO(cursor.value.transactedAt)
+                            .month,
+                        isBigBuck: true,
+                    });
+                    cursor.continue();
+                };
+
+                const dimesStore = upgradeTx.objectStore("dimes");
+                const dimeCursor = dimesStore.openCursor();
+                dimeCursor.onsuccess = (e) => {
+                    const cursor = (e.target as IDBRequest<IDBCursorWithValue>)
+                        .result;
+                    if (!cursor) return;
+                    cursor.update({ ...cursor.value, isBigBuck: false });
+                    cursor.continue();
+                };
             }
         };
 

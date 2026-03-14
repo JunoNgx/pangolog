@@ -14,6 +14,7 @@ export async function createDime(input: DimeInput): Promise<Dime> {
         deletedAt: null,
         year: dt.year,
         month: dt.month,
+        isBigBuck: false,
         ...input,
     };
 
