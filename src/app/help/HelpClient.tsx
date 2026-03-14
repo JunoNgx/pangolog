@@ -126,6 +126,23 @@ export default function HelpClient() {
                 </p>
             </Section>
 
+            <Section title="Debug">
+                <p className="text-sm text-default-500 mb-3">
+                    A hidden debug section is available in Settings. Tap the
+                    "Settings" heading 5 times quickly to reveal it.
+                </p>
+                <Term name="View logs">
+                    Opens a dialog showing all in-memory log entries recorded
+                    during the current session and recent sessions. Logs are
+                    retained for 30 days and capped at 500 entries. From the
+                    dialog you can export the log as a JSON file or copy the
+                    content to the clipboard.
+                </Term>
+                <Term name="Clear Logger entries">
+                    Permanently deletes all stored log entries.
+                </Term>
+            </Section>
+
             <Section title="Google Drive sync">
                 <p className="text-sm text-default-500 mb-3">
                     Sync is optional and can be enabled or disabled from
