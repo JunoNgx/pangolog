@@ -44,7 +44,7 @@ interface TransactionDialogProps {
 }
 
 function isDime(tx: Dime | Buck): tx is Dime {
-    return "month" in tx;
+    return !tx.isBigBuck;
 }
 
 export function TransactionDialog({
