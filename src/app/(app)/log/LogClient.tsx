@@ -2,6 +2,7 @@
 
 import { Button, Checkbox, Tooltip } from "@heroui/react";
 import { Plus } from "lucide-react";
+import { DateTime } from "luxon";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { MonthYearPicker } from "@/components/MonthYearPicker";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
@@ -10,7 +11,6 @@ import { useBucks } from "@/lib/hooks/useBucks";
 import { useCategories } from "@/lib/hooks/useCategories";
 import { useDimes } from "@/lib/hooks/useDimes";
 import { useHotkey } from "@/lib/hooks/useHotkey";
-import { useLogStore } from "@/lib/store/useLogStore";
 import { formatAmount, SELECT_CLASSES, YEAR_OPTIONS } from "@/lib/utils";
 import {
     CategoryFilterDropdown,
@@ -28,18 +28,14 @@ export default function LogClient() {
         [openCreateDialog],
     );
 
-    const {
-        isViewingBigBucks,
-        shouldIncludeBucksInDimes,
-        selectedYear,
-        selectedMonth,
-        selectedCategoryIds,
-        setIsViewingBigBucks,
-        setShouldIncludeBucksInDimes,
-        setSelectedYear,
-        setSelectedMonth,
-        setSelectedCategoryIds,
-    } = useLogStore();
+    const [isViewingBigBucks, setIsViewingBigBucks] = useState(false);
+    const [shouldIncludeBucksInDimes, setShouldIncludeBucksInDimes] =
+        useState(false);
+    const [selectedYear, setSelectedYear] = useState(DateTime.now().year);
+    const [selectedMonth, setSelectedMonth] = useState(DateTime.now().month);
+    const [selectedCategoryIds, setSelectedCategoryIds] = useState<
+        string[] | null
+    >(null);
 
     const { data: dimes, isLoading: dimesLoading } = useDimes(
         selectedYear,
