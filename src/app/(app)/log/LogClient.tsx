@@ -32,7 +32,7 @@ export default function LogClient() {
     const [shouldIncludeBucksInDimes, setShouldIncludeBucksInDimes] =
         useState(false);
     const [selectedYear, setSelectedYear] = useState(DateTime.now().year);
-    const [selectedMonth, setSelectedMonth] = useState(DateTime.now().month);
+    const [selectedMonth, setSelectedMonth] = useState<number>(DateTime.now().month);
     const [selectedCategoryIds, setSelectedCategoryIds] = useState<
         string[] | null
     >(null);
@@ -110,8 +110,8 @@ export default function LogClient() {
                         <MonthYearPicker
                             selectedYear={selectedYear}
                             selectedMonth={selectedMonth}
-                            onYearChange={setSelectedYear}
-                            onMonthChange={setSelectedMonth}
+                            onYearChange={(year) => setSelectedYear(year)}
+                            onMonthChange={(month) => setSelectedMonth(month)}
                         />
                         <Checkbox
                             isSelected={shouldIncludeBucksInDimes}
