@@ -3,6 +3,9 @@
 import { DateTime } from "luxon";
 import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
 
+const MAX_LOG_ENTRIES = 500;
+const LOG_RETENTION_DAYS = 30;
+
 export function useLogger() {
     const setLoggerEntries = useLocalSettingsStore(
         (state) => state.setLoggerEntries,
@@ -14,23 +17,25 @@ export function useLogger() {
     }
 
     function addLoggerEntry(message: string, logcode?: string, data?: any) {
+        const now = DateTime.now();
         const newEntry = {
-            datetime: DateTime.now().toLocaleString({
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-                hour: "2-digit",
-                minute: "2-digit",
-                second: "2-digit",
-                hour12: false,
-            }),
+            timestamp: now.toISO()!,
             message,
             logcode,
             data,
         };
 
+        const cutoff = now.minus({ days: LOG_RETENTION_DAYS });
         const currentEntries = useLocalSettingsStore.getState().loggerEntries;
-        setLoggerEntries([...currentEntries, newEntry]);
+        const pruned = [...currentEntries, newEntry].filter(
+            (e) => DateTime.fromISO(e.timestamp) >= cutoff,
+        );
+        const capped =
+            pruned.length > MAX_LOG_ENTRIES
+                ? pruned.slice(pruned.length - MAX_LOG_ENTRIES)
+                : pruned;
+
+        setLoggerEntries(capped);
     }
 
     function clearLoggerEntries() {
