@@ -103,12 +103,33 @@ export default function HelpClient() {
                     opens the command palette for quick navigation and actions
                     anywhere in the app.
                 </p>
-                <p className="text-sm text-default-500">
+                <p className="text-sm text-default-500 mb-3">
                     <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
                         Ctrl/Cmd + Enter
                     </kbd>{" "}
                     opens the create dialog on the Transactions, Categories, and
                     Recurring rules pages.
+                </p>
+                <p className="text-sm text-default-500 mb-3">
+                    <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
+                        Ctrl/Cmd + B
+                    </kbd>{" "}
+                    toggles between Small Dimes and Big Bucks on the
+                    Transactions and Summary pages.
+                </p>
+                <p className="text-sm text-default-500 mb-3">
+                    <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
+                        Ctrl/Cmd + B
+                    </kbd>{" "}
+                    switches between the Categories and Recurring Rules tabs on
+                    the Manage page.
+                </p>
+                <p className="text-sm text-default-500">
+                    <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
+                        Ctrl/Cmd + I
+                    </kbd>{" "}
+                    toggles "Include Big Bucks" on the Transactions and Summary
+                    pages when viewing Small Dimes.
                 </p>
             </Section>
 

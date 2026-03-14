@@ -284,4 +284,9 @@
 - [x] UI to return to previous page
 
 ### Phase 7b: Content
-- [ ] Implement content
+- [x] Implement content
+
+### Phase 7c: Hotkey shortcuts
+- [x] `Ctrl/Cmd + B`: `/log` and `/summary`: toggle between Small Dimes and Big Bucks
+- [x] `Ctrl/Cmd + I`: `/log` and `/summary`: toggle `Include Big Bucks`
+- [x] `Ctrl/Cmd + B`: `/manage`: toggle between tabs

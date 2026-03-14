@@ -2,6 +2,8 @@
 
 import { Tab, Tabs } from "@heroui/react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useCallback } from "react";
+import { useHotkey } from "@/lib/hooks/useHotkey";
 import CategoriesClient from "./CategoriesClient";
 import RecurringClient from "./RecurringClient";
 
@@ -15,6 +17,12 @@ export default function ManageClient() {
     function handleTabChange(key: React.Key) {
         router.replace(`/manage?tab=${String(key)}`);
     }
+
+    const toggleTab = useCallback(() => {
+        const nextTab = activeTab === "categories" ? "recurring" : "categories";
+        router.replace(`/manage?tab=${nextTab}`);
+    }, [activeTab, router]);
+    useHotkey("b", toggleTab, { ctrlOrMeta: true });
 
     return (
         <Tabs

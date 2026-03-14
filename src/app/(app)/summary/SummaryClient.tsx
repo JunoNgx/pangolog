@@ -2,13 +2,14 @@
 
 import { Checkbox } from "@heroui/react";
 import { DateTime } from "luxon";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { MonthYearPicker } from "@/components/MonthYearPicker";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
 import type { Buck, Category, Dime } from "@/lib/db/types";
 import { useBucks } from "@/lib/hooks/useBucks";
 import { useCategories } from "@/lib/hooks/useCategories";
 import { useDimes, useDimesByYear } from "@/lib/hooks/useDimes";
+import { useHotkey } from "@/lib/hooks/useHotkey";
 import { useSummaryStore } from "@/lib/store/useSummaryStore";
 import { formatAmount, SELECT_CLASSES, YEAR_OPTIONS } from "@/lib/utils";
 
@@ -143,6 +144,17 @@ export default function SummaryClient() {
         setSelectedYear,
         setSelectedMonth,
     } = useSummaryStore();
+
+    const toggleViewingBucksOnly = useCallback(
+        () => setIsViewingBucksOnly(!isViewingBucksOnly),
+        [isViewingBucksOnly, setIsViewingBucksOnly],
+    );
+    const toggleIncludeBucks = useCallback(() => {
+        if (isYearly && isViewingBucksOnly) return;
+        setIncludeBucks(!includeBucks);
+    }, [isYearly, isViewingBucksOnly, includeBucks, setIncludeBucks]);
+    useHotkey("b", toggleViewingBucksOnly, { ctrlOrMeta: true });
+    useHotkey("i", toggleIncludeBucks, { ctrlOrMeta: true });
 
     const { data: categories } = useCategories();
     const { data: monthlyDimes } = useDimes(selectedYear, selectedMonth);
