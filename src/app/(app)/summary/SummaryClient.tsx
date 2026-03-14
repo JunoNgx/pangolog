@@ -2,7 +2,7 @@
 
 import { Checkbox } from "@heroui/react";
 import { DateTime } from "luxon";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { MonthYearPicker } from "@/components/MonthYearPicker";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
 import type { Buck, Category, Dime } from "@/lib/db/types";
@@ -10,7 +10,6 @@ import { useBucks } from "@/lib/hooks/useBucks";
 import { useCategories } from "@/lib/hooks/useCategories";
 import { useDimes, useDimesByYear } from "@/lib/hooks/useDimes";
 import { useHotkey } from "@/lib/hooks/useHotkey";
-import { useSummaryStore } from "@/lib/store/useSummaryStore";
 import { formatAmount, SELECT_CLASSES, YEAR_OPTIONS } from "@/lib/utils";
 
 const OTHER_COLOUR = "#9ca3af";
@@ -132,27 +131,22 @@ function SegmentBar({ label, slices, total }: SegmentBarProps) {
 }
 
 export default function SummaryClient() {
-    const {
-        isYearly,
-        isViewingBucksOnly,
-        includeBucks,
-        selectedYear,
-        selectedMonth,
-        setIsYearly,
-        setIsViewingBucksOnly,
-        setIncludeBucks,
-        setSelectedYear,
-        setSelectedMonth,
-    } = useSummaryStore();
+    const [isYearly, setIsYearly] = useState(false);
+    const [isViewingBucksOnly, setIsViewingBucksOnly] = useState(false);
+    const [includeBucks, setIncludeBucks] = useState(false);
+    const [selectedYear, setSelectedYear] = useState(DateTime.now().year);
+    const [selectedMonth, setSelectedMonth] = useState<number>(
+        DateTime.now().month,
+    );
 
     const toggleViewingBucksOnly = useCallback(
-        () => setIsViewingBucksOnly(!isViewingBucksOnly),
-        [isViewingBucksOnly, setIsViewingBucksOnly],
+        () => setIsViewingBucksOnly((prev) => !prev),
+        [],
     );
     const toggleIncludeBucks = useCallback(() => {
         if (isYearly && isViewingBucksOnly) return;
-        setIncludeBucks(!includeBucks);
-    }, [isYearly, isViewingBucksOnly, includeBucks, setIncludeBucks]);
+        setIncludeBucks((prev) => !prev);
+    }, [isYearly, isViewingBucksOnly]);
     useHotkey("b", toggleViewingBucksOnly, { ctrlOrMeta: true });
     useHotkey("i", toggleIncludeBucks, { ctrlOrMeta: true });
 
