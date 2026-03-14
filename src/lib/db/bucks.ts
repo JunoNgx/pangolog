@@ -7,11 +7,14 @@ export async function createBuck(input: BuckInput): Promise<Buck> {
     const db = await getDb();
     const now = DateTime.now().toUTC().toISO()!;
 
+    const dt = DateTime.fromISO(input.transactedAt);
     const buck: Buck = {
         id: generateId(),
         updatedAt: now,
         deletedAt: null,
-        year: DateTime.fromISO(input.transactedAt).year,
+        year: dt.year,
+        month: dt.month,
+        isBigBuck: true,
         ...input,
     };
 
@@ -41,13 +44,16 @@ export async function updateBuck(id: string, input: BuckUpdate): Promise<Buck> {
             }
 
             const transactedAt = input.transactedAt ?? existing.transactedAt;
+            const dt = DateTime.fromISO(transactedAt);
             const updated: Buck = {
                 ...existing,
                 ...input,
                 id: existing.id,
                 transactedAt,
                 deletedAt: existing.deletedAt,
-                year: DateTime.fromISO(transactedAt).year,
+                year: dt.year,
+                month: dt.month,
+                isBigBuck: true,
                 updatedAt: DateTime.now().toUTC().toISO()!,
             };
 
