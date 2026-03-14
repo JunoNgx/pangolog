@@ -506,6 +506,14 @@ export default function SettingsClient() {
                 )}
                 {/* END DEBUG */}
 
+                <section>
+                    <h3 className="text-lg font-semibold mb-2">Version</h3>
+                    <p className="text-xs text-default-400 font-mono">
+                        v{process.env.NEXT_PUBLIC_VERSION} (
+                        {process.env.NEXT_PUBLIC_COMMIT_HASH})
+                    </p>
+                </section>
+
                 <section className="mt-8">
                     <h3 className="text-lg font-semibold mb-1 text-danger">
                         Danger Zone
