@@ -11,7 +11,7 @@ function normalizeDime(dime: Dime): Dime {
     return { ...dime, isBigBuck: false };
 }
 
-const PURGE_DAYS = 30;
+const PURGE_DAYS = 60;
 
 async function purgeStore(
     storeName: "dimes" | "bucks" | "categories" | "recurring-rules",

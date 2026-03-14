@@ -56,7 +56,7 @@ Approach:
 - Data is resolved on the "Last write wins", using `updatedAt`.
 - Transactions are not hard-deleted. Use `deletedAt`.
 - Deleted transactions remain stored to facilitate deletion propagation.
-- Data with `deletedAt` older than 30 days are removed on both local and cloud instance.
+- Data with `deletedAt` older than 60 days are removed on both local and cloud instance.
 - On a Drive API 401, a forced server-side token refresh is attempted via `POST /api/auth/refresh`. If the refresh fails (cookie missing or refresh token revoked), sync resets to idle silently and the user remains shown as connected. If the forced refresh succeeds but Drive still returns 401 (genuine revocation), `setAuthToken(null)` is called and a "please reconnect" toast is shown.
 
 ### Error recovery strategies
