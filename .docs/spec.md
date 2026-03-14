@@ -92,6 +92,7 @@ Approach:
 - `month`: integer, derived field from `transactedAt`
 - `description`: string, user description for the transaction.
 - `isIncome`: boolean, whether the transaction is a positive income instead of expense.
+- `isBigBuck`: boolean, always `false`. Discriminant field used to distinguish dimes from bucks at the type level without runtime `"month" in tx` checks.
 - indexes:
     - [year, month] for month queries
     - categoryId for joins
@@ -105,11 +106,13 @@ Approach:
 - `categoryId`: uuid, foreign key to `categories`.
 - `amount`: integer (Stored as minor units, e.g., 100 for $1.00 or 100 for 100 VND).
 - `year`: integer, derived field from `transactedAt`
+- `month`: integer, derived field from `transactedAt`. Stored to enable `[year, month]` compound index queries for the "include Big Bucks in Small Dimes month view" feature.
 - `description`: string, user description for the transaction.
 - `isIncome`: boolean, whether the transaction is a positive income instead of expense.
+- `isBigBuck`: boolean, always `true`. Discriminant field paired with the same field on dimes.
 - indexes:
     - [year, month] for month queries
-    - year queries
+    - year for year queries
     - categoryId for joins
     - transactedAt for sorting
 
