@@ -63,6 +63,8 @@ export default function SettingsClient() {
     const [isResetDialogOpen, setIsResetDialogOpen] = useState(false);
     const [isResetting, setIsResetting] = useState(false);
 
+    const [isLogDialogOpen, setIsLogDialogOpen] = useState(false);
+
     const [isDebugVisible, setIsDebugVisible] = useState(false);
     const headingTapCountRef = useRef(0);
     const headingTapTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
@@ -482,16 +484,9 @@ export default function SettingsClient() {
                         <Button
                             className="block mt-2"
                             variant="flat"
-                            onPress={handleCopyDebugLoggerEntries}
+                            onPress={() => setIsLogDialogOpen(true)}
                         >
-                            Copy Logger content
-                        </Button>
-                        <Button
-                            className="block mt-2"
-                            variant="flat"
-                            onPress={handleDumpDebugLoggerContent}
-                        >
-                            Dump log
+                            View logs
                         </Button>
 
                         <Button
@@ -561,6 +556,42 @@ export default function SettingsClient() {
                             onPress={handleReset}
                         >
                             Reset
+                        </Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+
+            <Modal
+                isOpen={isLogDialogOpen}
+                onClose={() => setIsLogDialogOpen(false)}
+                size="full"
+                classNames={{ closeButton: "cursor-pointer" }}
+            >
+                <ModalContent>
+                    <ModalHeader>Logs</ModalHeader>
+                    <ModalBody className="overflow-y-auto">
+                        <pre className="text-xs font-mono whitespace-pre-wrap break-all">
+                            {JSON.stringify(getLoggerEntries(), null, 2)}
+                        </pre>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button
+                            variant="flat"
+                            onPress={handleDumpDebugLoggerContent}
+                        >
+                            Export logs
+                        </Button>
+                        <Button
+                            variant="flat"
+                            onPress={handleCopyDebugLoggerEntries}
+                        >
+                            Copy content
+                        </Button>
+                        <Button
+                            variant="light"
+                            onPress={() => setIsLogDialogOpen(false)}
+                        >
+                            Close
                         </Button>
                     </ModalFooter>
                 </ModalContent>
