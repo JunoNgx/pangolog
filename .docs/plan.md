@@ -290,3 +290,34 @@
 - [x] `Ctrl/Cmd + B`: `/log` and `/summary`: toggle between Small Dimes and Big Bucks
 - [x] `Ctrl/Cmd + I`: `/log` and `/summary`: toggle `Include Big Bucks`
 - [x] `Ctrl/Cmd + B`: `/manage`: toggle between tabs
+
+### Phase 8: migration for optimised table structure
+
+This phase will render existing cloud data and json files obsolete and incompatible.
+
+### Phase 8a: IDB
+- [ ] Implement object store for transactions
+- [ ] Implement indexing for transaction queries (by year and month)
+- [ ] Implement CRUD wrapper function for transactions
+
+### Phase 8b: Implement migration script
+- [ ] Implement migration to move data from `dimes` and `bucks` to `transactions`
+
+### Phase 8c: Update hooks and views
+- [ ] Replace `useDimes`, `useBucks`, `useBucksByMonth`, `useDimesByYear` with unified `useTransactions` hook(s)
+- [ ] Update `/log` view to use new hooks
+- [ ] Update `/summary` view to use new hooks
+
+### Phase 8d: Update recurring rules
+- [ ] Update recurring rules logic to create new transactions correctly
+
+### Phase 8e: Update JSON export/import
+- [ ] Update export logic: single `transactions` array instead of separate `dimes`/`bucks`
+- [ ] Update import logic: handle new format only; silently ignore old `dimes`/`bucks` fields if present
+
+### Phase 8f: Update sync logic
+- [ ] Ignore existing `YYYY-MM.json` and `YYYY-bucks.json` Drive files without migration
+- [ ] Replace upload logic with `YYYY.json` per-year files
+- [ ] Replace download logic to fetch `YYYY.json` files
+- [ ] Smart sync: skip download if Drive `modifiedTime` <= `lastSyncTime`
+- [ ] Smart sync: only upload years with local mutations since `lastSyncTime`
