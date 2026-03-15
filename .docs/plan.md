@@ -327,5 +327,5 @@ This phase will render existing cloud data and json files obsolete and incompati
 - [x] Smart sync: only upload years with local mutations since `lastSyncTime`
 
 ### Phase 8g: Delete old logic
-- [ ] Delete IDB stores for dimes and bucks
-- [ ] Delete dimes and bucks hooks
+- [x] Delete IDB stores for dimes and bucks
+- [x] Delete dimes and bucks hooks

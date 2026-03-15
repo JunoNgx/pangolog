@@ -3,13 +3,7 @@ import { DateTime } from "luxon";
 const DB_NAME = "pangolog";
 const DB_VERSION = 4;
 
-const REQUIRED_STORES = [
-    "dimes",
-    "bucks",
-    "categories",
-    "recurring-rules",
-    "transactions",
-];
+const REQUIRED_STORES = ["categories", "recurring-rules", "transactions"];
 
 let dbPromise: Promise<IDBDatabase> | null = null;
 
@@ -116,6 +110,9 @@ function openDbRaw(): Promise<IDBDatabase> {
                     txStore.put({ ...cursor.value, isBigBuck: true });
                     cursor.continue();
                 };
+
+                db.deleteObjectStore("dimes");
+                db.deleteObjectStore("bucks");
             }
         };
 
