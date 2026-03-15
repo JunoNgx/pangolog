@@ -144,3 +144,4 @@ Don't comment on the classes. Just keep one type of classes in its own line. Eac
 - Phase 8b (migration script): done - DB bumped to v4; `transactions` store created with yearMonth/year/categoryId/transactedAt indexes; existing dimes and bucks copied into transactions on upgrade
 - Phase 8c (update hooks and views): done - LogClient, SummaryClient, TransactionDialog, TransactionList updated to use useTransactions; `Dime | Buck` replaced with `Transaction` throughout
 - Phase 8c-2 (transaction type switch): done - dime/buck toggle now always visible in dialog (including edit); income/expense toggle shown on create only; income/expense moved above date row
+- Phase 8d (recurring rules): done - useRecurringRunner now calls createTransaction with isBigBuck field instead of separate createDime/createBuck

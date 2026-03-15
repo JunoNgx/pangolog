@@ -313,7 +313,7 @@ This phase will render existing cloud data and json files obsolete and incompati
 - [x] Implement UI to allow converting between types
 
 ### Phase 8d: Update recurring rules
-- [ ] Update recurring rules logic to create new transactions correctly
+- [x] Update recurring rules logic to create new transactions correctly
 
 ### Phase 8e: Update JSON export/import
 - [ ] Update export logic: single `transactions` array instead of separate `dimes`/`bucks`

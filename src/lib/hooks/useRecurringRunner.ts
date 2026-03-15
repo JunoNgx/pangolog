@@ -3,12 +3,11 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { DateTime } from "luxon";
 import { useCallback, useEffect, useRef } from "react";
-import { createBuck } from "../db/bucks";
-import { createDime } from "../db/dimes";
 import {
     getDueRecurringRules,
     updateRecurringRule,
 } from "../db/recurringRules";
+import { createTransaction } from "../db/transactions";
 import type { RecurringRule } from "../db/types";
 
 // daysInMonth is typed number | undefined for invalid DateTimes, but next is
@@ -53,32 +52,31 @@ async function processRule(rule: RecurringRule): Promise<void> {
         current = computeNextDate(current, rule);
     }
 
-    const transactionInput = {
-        transactedAt: previous.set({
-            hour: now.hour,
-            minute: now.minute,
-            second: now.second,
-            millisecond: now.millisecond,
-        }).toISO()!,
+    await createTransaction({
+        transactedAt: previous
+            .set({
+                hour: now.hour,
+                minute: now.minute,
+                second: now.second,
+                millisecond: now.millisecond,
+            })
+            .toISO()!,
         amount: rule.amount,
         isIncome: rule.isIncome,
+        isBigBuck: rule.isBigBuck,
         categoryId: rule.categoryId,
         description: rule.description,
-    };
-
-    if (rule.isBigBuck) {
-        await createBuck(transactionInput);
-    } else {
-        await createDime(transactionInput);
-    }
+    });
 
     await updateRecurringRule(rule.id, {
-        nextGenerationAt: current.set({
-            hour: 0,
-            minute: 0,
-            second: 0,
-            millisecond: 0,
-        }).toISO()!,
+        nextGenerationAt: current
+            .set({
+                hour: 0,
+                minute: 0,
+                second: 0,
+                millisecond: 0,
+            })
+            .toISO()!,
         lastGeneratedAt: now.toUTC().toISO()!,
     });
 }
