@@ -532,6 +532,12 @@ export default function SettingsClient() {
                             Clear Logger entries
                         </Button>
 
+                        <p className="text-xs text-default-400 mt-4">
+                            Wipes the database and all app data. This will make
+                            a fresh new user experience. Local data will be
+                            permanently destroyed, but your data on Google Drive
+                            will remain intact. This cannot be undone.
+                        </p>
                         <Button
                             className="block mt-2"
                             color="danger"
@@ -610,13 +616,10 @@ export default function SettingsClient() {
                 classNames={{ closeButton: "cursor-pointer" }}
             >
                 <ModalContent>
-                    <ModalHeader>Reset app?</ModalHeader>
+                    <ModalHeader>Confirm resetting app?</ModalHeader>
                     <ModalBody>
-                        <p className="text-sm text-default-600">
-                            This will wipe all local data and app settings,
-                            including your Google Drive connection. The database
-                            will be fully recreated on next load. This cannot be
-                            undone.
+                        <p className="text-sm text-danger-500">
+                            This cannot be undone.
                         </p>
                     </ModalBody>
                     <ModalFooter>
