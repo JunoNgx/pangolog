@@ -9,6 +9,11 @@ export function transactionFileName(year: number): string {
     return `${year}.json`;
 }
 
+export function backupFileName(year: number, month: number): string {
+    const mm = String(month).padStart(2, "0");
+    return `backup-${year}-${mm}.json`;
+}
+
 export const CATEGORIES_FILE = "categories.json";
 export const RECURRING_RULES_FILE = "recurring-rules.json";
 export const SETTINGS_FILE = "settings.json";
