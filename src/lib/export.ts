@@ -24,7 +24,7 @@ function triggerDownload(
     URL.revokeObjectURL(url);
 }
 
-export async function exportJson(prettyPrint: boolean): Promise<void> {
+export async function buildExportData() {
     const [transactions, categories, recurringRules] = await Promise.all([
         getAllTransactionsForSync(),
         getAllCategoriesForSync(),
@@ -34,7 +34,7 @@ export async function exportJson(prettyPrint: boolean): Promise<void> {
     const { customCurrency, isPrefixCurrency, settingsUpdatedAt } =
         useProfileSettingsStore.getState();
 
-    const data = {
+    return {
         exportedAt: DateTime.now().toUTC().toISO()!,
         settings: {
             customCurrency,
@@ -45,8 +45,12 @@ export async function exportJson(prettyPrint: boolean): Promise<void> {
         categories: categories.filter((c) => c.deletedAt === null),
         recurringRules: recurringRules.filter((r) => r.deletedAt === null),
     };
+}
 
-    const content = prettyPrint
+export async function exportJson(isPrettyPrint: boolean): Promise<void> {
+    const data = await buildExportData();
+
+    const content = isPrettyPrint
         ? JSON.stringify(data, null, 2)
         : JSON.stringify(data);
 
