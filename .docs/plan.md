@@ -320,11 +320,11 @@ This phase will render existing cloud data and json files obsolete and incompati
 - [x] Update import logic: handle new format only; silently ignore old `dimes`/`bucks` fields if present
 
 ### Phase 8f: Update sync logic
-- [ ] Ignore existing `YYYY-MM.json` and `YYYY-bucks.json` Drive files without migration
-- [ ] Replace upload logic with `YYYY.json` per-year files
-- [ ] Replace download logic to fetch `YYYY.json` files
-- [ ] Smart sync: skip download if Drive `modifiedTime` <= `lastSyncTime`
-- [ ] Smart sync: only upload years with local mutations since `lastSyncTime`
+- [x] Ignore existing `YYYY-MM.json` and `YYYY-bucks.json` Drive files without migration
+- [x] Replace upload logic with `YYYY.json` per-year files
+- [x] Replace download logic to fetch `YYYY.json` files
+- [x] Smart sync: skip download if Drive `modifiedTime` <= `lastSyncTime`
+- [x] Smart sync: only upload years with local mutations since `lastSyncTime`
 
 ### Phase 8g: Delete old logic
 - [ ] Delete IDB stores for dimes and bucks
