@@ -1,9 +1,8 @@
 import { DateTime } from "luxon";
 import {
-    getAllBucksForSync,
     getAllCategoriesForSync,
-    getAllDimesForSync,
     getAllRecurringRulesForSync,
+    getAllTransactionsForSync,
 } from "./db/sync";
 import { useProfileSettingsStore } from "./store/useProfileSettingsStore";
 
@@ -26,9 +25,8 @@ function triggerDownload(
 }
 
 export async function exportJson(prettyPrint: boolean): Promise<void> {
-    const [dimes, bucks, categories, recurringRules] = await Promise.all([
-        getAllDimesForSync(),
-        getAllBucksForSync(),
+    const [transactions, categories, recurringRules] = await Promise.all([
+        getAllTransactionsForSync(),
         getAllCategoriesForSync(),
         getAllRecurringRulesForSync(),
     ]);
@@ -43,8 +41,7 @@ export async function exportJson(prettyPrint: boolean): Promise<void> {
             isPrefixCurrency,
             updatedAt: settingsUpdatedAt,
         },
-        dimes: dimes.filter((d) => d.deletedAt === null),
-        bucks: bucks.filter((b) => b.deletedAt === null),
+        transactions: transactions.filter((t) => t.deletedAt === null),
         categories: categories.filter((c) => c.deletedAt === null),
         recurringRules: recurringRules.filter((r) => r.deletedAt === null),
     };
