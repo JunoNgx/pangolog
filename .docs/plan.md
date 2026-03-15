@@ -199,7 +199,7 @@
 ### Phase 3e: Implement demo data
 
 #### Phase 3e-1: demo data
-- [ ] Implement demo data as part of migration
+- [x] Implement demo data as part of migration
 
 #### Phase 3e-2: multiple clear data options
 - [ ] Implement `shouldShowDemoDataBanner` in `localSettingsStore`
