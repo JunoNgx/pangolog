@@ -428,6 +428,12 @@ The PWA manifest is in place but no service worker is configured yet. Implementi
 
 A manual "Clear service worker cache" button in Settings (debug section) is a useful escape hatch during development and testing.
 
+### Zustand persist SSR hydration
+
+Zustand's `persist` middleware calls `hydrate()` once when the store module is first evaluated. In Next.js App Router, this can happen server-side (during SSR) where `localStorage` is unavailable. When no storage is found, Zustand skips calling the `onRehydrateStorage` callback entirely - meaning `hasHydrated` never becomes `true` on the client, and any UI gated behind `hasHydrated` never renders.
+
+The fix is a `StoreHydration` component mounted in `providers.tsx` that calls `useLocalSettingsStore.persist.rehydrate()` in a `useEffect`. This guarantees client-side rehydration runs regardless of what happened during SSR.
+
 ### Unified transactions table
 Dimes and bucks are stored in a single `transactions` IndexedDB store, distinguished by `isBigBuck`. This simplifies the data model, eliminates normalization shims, and allows a single `[year, month]` compound index to serve both dime month queries and the "include Big Bucks in month view" feature. On Drive, all transactions for a year are stored in a single `YYYY.json` file rather than split by type and month.
 

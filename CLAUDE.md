@@ -95,7 +95,7 @@ Don't comment on the classes. Just keep one type of classes in its own line. Eac
 - Default starting location will be set in PWA manifest.
 
 ## Known behaviours
-- Zustand `persist` middleware hydrates asynchronously - on first render, persisted state (e.g. `isSeeded`, `authToken`) is at its default value. Gate logic that depends on persisted state behind `hasHydrated` from `useLocalSettingsStore`.
+- Zustand `persist` middleware hydrates asynchronously - on first render, persisted state (e.g. `isSeeded`, `authToken`) is at its default value. Gate logic that depends on persisted state behind `hasHydrated` from `useLocalSettingsStore`. In Next.js App Router, SSR can cause `hydrate()` to run server-side where `localStorage` is unavailable, skipping `onRehydrateStorage` entirely and leaving `hasHydrated` permanently `false`. The fix is `StoreHydration` in `providers.tsx`, which calls `useLocalSettingsStore.persist.rehydrate()` in a `useEffect` to guarantee client-side hydration.
 - React 18 automatic batching defers renders until the event loop yields. After calling a state setter inside an async function, use `await Promise.resolve()` to flush the render before continuing with heavy async work (e.g. Drive API calls).
 - `crypto.randomUUID()` requires a secure context (HTTPS). `localhost` qualifies but local network IP over HTTP does not. Use `generateId()` from `src/lib/db/uuid.ts` for all record ID generation.
 - After a full DB reset (`clearAllData`), the page must reload to clear the cached `dbPromise` module state, otherwise subsequent DB operations fail.
