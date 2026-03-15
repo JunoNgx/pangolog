@@ -32,10 +32,10 @@ export default function RecurringClient() {
     const [isCreateOpen, setIsCreateOpen] = useState(false);
     const [sortBy, setSortBy] = useState<SortBy>("nextGenerationAt");
     const [sortAsc, setSortAsc] = useState(true);
-    const [hideInactive, setHideInactive] = useState(false);
-    const [showDimes, setShowDimes] = useState(true);
-    const [showBucks, setShowBucks] = useState(true);
-    const [showIncome, setShowIncome] = useState(true);
+    const [shouldHideInactive, setShouldHideInactive] = useState(false);
+    const [shouldShowDimes, setShouldShowDimes] = useState(true);
+    const [shouldShowBucks, setShouldShowBucks] = useState(true);
+    const [shouldShowIncome, setShouldShowIncome] = useState(true);
 
     const openCreateDialog = useCallback(() => setIsCreateOpen(true), []);
     useHotkey("Enter", openCreateDialog, { ctrlOrMeta: true });
@@ -51,9 +51,9 @@ export default function RecurringClient() {
         if (!rules) return [];
         const dir = sortAsc ? 1 : -1;
         return [...rules]
-            .filter((r) => !hideInactive || r.isActive)
-            .filter((r) => (r.isBigBuck ? showBucks : showDimes))
-            .filter((r) => showIncome || !r.isIncome)
+            .filter((r) => !shouldHideInactive || r.isActive)
+            .filter((r) => (r.isBigBuck ? shouldShowBucks : shouldShowDimes))
+            .filter((r) => shouldShowIncome || !r.isIncome)
             .sort((a, b) => {
                 switch (sortBy) {
                     case "createdAt":
@@ -81,10 +81,10 @@ export default function RecurringClient() {
         rules,
         sortBy,
         sortAsc,
-        hideInactive,
-        showDimes,
-        showBucks,
-        showIncome,
+        shouldHideInactive,
+        shouldShowDimes,
+        shouldShowBucks,
+        shouldShowIncome,
     ]);
 
     function handleSortChange(e: React.ChangeEvent<HTMLSelectElement>) {
@@ -94,20 +94,29 @@ export default function RecurringClient() {
     return (
         <div>
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-4">
-                <Checkbox isSelected={showDimes} onValueChange={setShowDimes}>
+                <Checkbox
+                    isSelected={shouldShowDimes}
+                    onValueChange={setShouldShowDimes}
+                >
                     <span className="text-sm text-default-500">
                         Small dimes
                     </span>
                 </Checkbox>
-                <Checkbox isSelected={showBucks} onValueChange={setShowBucks}>
+                <Checkbox
+                    isSelected={shouldShowBucks}
+                    onValueChange={setShouldShowBucks}
+                >
                     <span className="text-sm text-default-500">Big bucks</span>
                 </Checkbox>
-                <Checkbox isSelected={showIncome} onValueChange={setShowIncome}>
+                <Checkbox
+                    isSelected={shouldShowIncome}
+                    onValueChange={setShouldShowIncome}
+                >
                     <span className="text-sm text-default-500">Income</span>
                 </Checkbox>
                 <Checkbox
-                    isSelected={hideInactive}
-                    onValueChange={setHideInactive}
+                    isSelected={shouldHideInactive}
+                    onValueChange={setShouldHideInactive}
                 >
                     <span className="text-sm text-default-500">
                         Hide inactive
