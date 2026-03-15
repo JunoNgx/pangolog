@@ -337,11 +337,11 @@ This phase will render existing cloud data and json files obsolete and incompati
 - [x] Add `backupFileName(year, month): string` → `backup-YYYY-MM.json` to drive client
 
 ### Phase 9b: Backup logic
-- [ ] After each successful sync, check if `backup-YYYY-MM.json` for the current month exists in the Pangolog Drive folder
-- [ ] If not, serialize all data (same format as JSON export: transactions, categories, recurringRules, settings) and upload it
-- [ ] Skip silently if backup already exists for the current month
+- [x] After each successful sync, check if `backup-YYYY-MM.json` for the current month exists in the Pangolog Drive folder
+- [x] If not, serialize all data (same format as JSON export: transactions, categories, recurringRules, settings) and upload it
+- [x] Skip silently if backup already exists for the current month
 
 ### Phase 9c: Implement UI
-- [ ] Implement `isAutobackupEnabled` in `localSettingsStore`
+- [x] Implement `isAutobackupEnabled` in `localSettingsStore`
 - [ ] Implement toggle checkbox in settings
 - [ ] Implement note informing the user that monthly backups accumulate and they should clean up old ones manually

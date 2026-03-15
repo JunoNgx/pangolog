@@ -17,6 +17,8 @@ interface LocalSettingsStore {
     setDriveFolderId: (id: string | null) => void;
     lastSyncTime: string | null;
     setLastSyncTime: (time: string | null) => void;
+    isAutobackupEnabled: boolean;
+    setIsAutobackupEnabled: (enabled: boolean) => void;
     syncStatus: SyncStatus;
     setSyncStatus: (status: SyncStatus) => void;
     syncError: string | null;
@@ -35,6 +37,9 @@ export const useLocalSettingsStore = create<LocalSettingsStore>()(
             setDriveFolderId: (id) => set({ driveFolderId: id }),
             lastSyncTime: null,
             setLastSyncTime: (time) => set({ lastSyncTime: time }),
+            isAutobackupEnabled: false,
+            setIsAutobackupEnabled: (enabled) =>
+                set({ isAutobackupEnabled: enabled }),
             syncStatus: "idle",
             setSyncStatus: (status) => set({ syncStatus: status }),
             syncError: null,
@@ -49,6 +54,7 @@ export const useLocalSettingsStore = create<LocalSettingsStore>()(
                 authToken: state.authToken,
                 driveFolderId: state.driveFolderId,
                 lastSyncTime: state.lastSyncTime,
+                isAutobackupEnabled: state.isAutobackupEnabled,
             }),
             onRehydrateStorage: () => () => {
                 useLocalSettingsStore.setState({ hasHydrated: true });
