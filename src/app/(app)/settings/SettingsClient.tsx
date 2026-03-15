@@ -90,6 +90,7 @@ export default function SettingsClient() {
         if (headingTapCountRef.current >= 5) {
             headingTapCountRef.current = 0;
             setIsDebugVisible((prev) => !prev);
+            toast(isDebugVisible ? "Debug settings are now hidden." : "Debug settings are now visible.");
         }
     }
 
