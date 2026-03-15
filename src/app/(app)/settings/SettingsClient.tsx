@@ -584,6 +584,11 @@ export default function SettingsClient() {
             >
                 <ModalContent>
                     <ModalHeader>Clear local records?</ModalHeader>
+                    <ModalBody>
+                        <p className="text-sm text-danger-500">
+                            This cannot be undone.
+                        </p>
+                    </ModalBody>
                     <ModalFooter>
                         <Button
                             variant="light"
