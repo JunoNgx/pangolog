@@ -309,6 +309,9 @@ This phase will render existing cloud data and json files obsolete and incompati
 - [x] Update `/log` view to use new hooks
 - [x] Update `/summary` view to use new hooks
 
+### Phase 8c-2: Allow transaction type switch
+- [x] Implement UI to allow converting between types
+
 ### Phase 8d: Update recurring rules
 - [ ] Update recurring rules logic to create new transactions correctly
 

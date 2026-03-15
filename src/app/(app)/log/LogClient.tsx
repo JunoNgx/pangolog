@@ -213,7 +213,7 @@ export default function LogClient() {
             <TransactionDialog
                 isOpen={isCreateOpen}
                 onClose={() => setIsCreateOpen(false)}
-                defaultIsCreatingBuck={isViewingBigBucks}
+                defaultIsBigBuck={isViewingBigBucks}
             />
         </div>
     );

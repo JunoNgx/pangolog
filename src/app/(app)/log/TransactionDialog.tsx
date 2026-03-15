@@ -34,19 +34,19 @@ interface TransactionDialogProps {
     isOpen: boolean;
     onClose: () => void;
     transaction?: Transaction;
-    defaultIsCreatingBuck?: boolean;
+    defaultIsBigBuck?: boolean;
 }
 
 export function TransactionDialog({
     isOpen,
     onClose,
     transaction,
-    defaultIsCreatingBuck = false,
+    defaultIsBigBuck = false,
 }: TransactionDialogProps) {
     const [amount, setAmount] = useState("");
     const [transactedAt, setTransactedAt] = useState(todayDateString());
     const [isIncome, setIsIncome] = useState(false);
-    const [isCreatingBuck, setIsCreatingBuck] = useState(defaultIsCreatingBuck);
+    const [isBigBuck, setIsBigBuck] = useState(defaultIsBigBuck);
     const [categoryId, setCategoryId] = useState<string | null>(null);
     const [description, setDescription] = useState("");
     const [isCategoryDialogOpen, setIsCategoryDialogOpen] = useState(false);
@@ -64,27 +64,27 @@ export function TransactionDialog({
             setAmount((transaction.amount / 100).toFixed(2));
             setTransactedAt(toDateInputValue(transaction.transactedAt));
             setIsIncome(transaction.isIncome);
-            setIsCreatingBuck(transaction.isBigBuck);
+            setIsBigBuck(transaction.isBigBuck);
             setCategoryId(transaction.categoryId);
             setDescription(transaction.description);
         } else {
             setAmount("");
             setTransactedAt(todayDateString());
             setIsIncome(false);
-            setIsCreatingBuck(defaultIsCreatingBuck);
+            setIsBigBuck(defaultIsBigBuck);
             setCategoryId(null);
             setDescription("");
         }
-    }, [transaction, defaultIsCreatingBuck]);
+    }, [transaction, defaultIsBigBuck]);
 
     const filteredCategories = useMemo(() => {
         if (!categories) return [];
         return categories.filter((cat) => {
-            if (!isCreatingBuck && cat.isBuckOnly) return false;
+            if (!isBigBuck && cat.isBuckOnly) return false;
             if (!isIncome && cat.isIncomeOnly) return false;
             return true;
         });
-    }, [categories, isCreatingBuck, isIncome]);
+    }, [categories, isBigBuck, isIncome]);
 
     // On Android (Chrome and Firefox), tapping the backdrop to close the dialog
     // causes the keyboard to flash briefly. This happens because the input blur
@@ -101,7 +101,7 @@ export function TransactionDialog({
         setAmount("");
         setTransactedAt(todayDateString());
         setIsIncome(false);
-        setIsCreatingBuck(defaultIsCreatingBuck);
+        setIsBigBuck(defaultIsBigBuck);
         setCategoryId(null);
         setDescription("");
         onClose();
@@ -134,7 +134,7 @@ export function TransactionDialog({
             transactedAt: resolveTransactedAt(),
             amount: amountMinor,
             isIncome,
-            isBigBuck: isCreatingBuck,
+            isBigBuck: isBigBuck,
             categoryId,
             description,
         };
@@ -188,23 +188,18 @@ export function TransactionDialog({
                             {isEditing ? "Edit Transaction" : "New Transaction"}
                         </ModalHeader>
                         <ModalBody className="gap-4">
-                            <div className="flex justify-center items-center gap-4">
-                                {!isEditing && (
+                            {!isEditing && (
+                                <div className="flex justify-center items-center gap-4 mb-4">
                                     <ToggleSwitch
-                                        isSelectingRight={isCreatingBuck}
-                                        onValueChange={setIsCreatingBuck}
-                                        leftLabel="Small dime"
-                                        rightLabel="Big buck"
+                                        isSelectingRight={isIncome}
+                                        onValueChange={setIsIncome}
+                                        leftLabel="Expense"
+                                        rightLabel="Income"
                                     />
-                                )}
-                            </div>
+                                </div>
+                            )}
 
-                            <div
-                                className={`
-                                flex justify-around gap-8
-                                ${isEditing ? "" : "mt-5"}
-                            `}
-                            >
+                            <div className="flex justify-around gap-8">
                                 <Input
                                     type="date"
                                     label="Date"
@@ -213,10 +208,10 @@ export function TransactionDialog({
                                     isRequired
                                 />
                                 <ToggleSwitch
-                                    isSelectingRight={isIncome}
-                                    onValueChange={setIsIncome}
-                                    leftLabel="Expense"
-                                    rightLabel="Income"
+                                    isSelectingRight={isBigBuck}
+                                    onValueChange={setIsBigBuck}
+                                    leftLabel="Small dime"
+                                    rightLabel="Big buck"
                                 />
                             </div>
 
