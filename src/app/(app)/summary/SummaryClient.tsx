@@ -135,7 +135,7 @@ function SegmentBar({ label, slices, total }: SegmentBarProps) {
 export default function SummaryClient() {
     const [isYearly, setIsYearly] = useState(false);
     const [isViewingBucksOnly, setIsViewingBucksOnly] = useState(false);
-    const [includeBucks, setIncludeBucks] = useState(false);
+    const [shouldIncludeBucks, setShouldIncludeBucks] = useState(false);
     const [selectedYear, setSelectedYear] = useState(DateTime.now().year);
     const [selectedMonth, setSelectedMonth] = useState<number>(
         DateTime.now().month,
@@ -147,7 +147,7 @@ export default function SummaryClient() {
     );
     const toggleIncludeBucks = useCallback(() => {
         if (isYearly && isViewingBucksOnly) return;
-        setIncludeBucks((prev) => !prev);
+        setShouldIncludeBucks((prev) => !prev);
     }, [isYearly, isViewingBucksOnly]);
     useHotkey("b", toggleViewingBucksOnly, { ctrlOrMeta: true });
     useHotkey("i", toggleIncludeBucks, { ctrlOrMeta: true });
@@ -176,11 +176,11 @@ export default function SummaryClient() {
             ? yearly.filter((t) => !t.isBigBuck)
             : monthly.filter((t) => !t.isBigBuck);
 
-        if (includeBucks && isYearly) {
+        if (shouldIncludeBucks && isYearly) {
             return [...base, ...yearly.filter((t) => t.isBigBuck)];
         }
 
-        if (includeBucks && !isYearly) {
+        if (shouldIncludeBucks && !isYearly) {
             return [...base, ...monthly.filter((t) => t.isBigBuck)];
         }
 
@@ -188,7 +188,7 @@ export default function SummaryClient() {
     }, [
         isYearly,
         isViewingBucksOnly,
-        includeBucks,
+        shouldIncludeBucks,
         monthlyTransactions,
         yearlyTransactions,
     ]);
@@ -254,8 +254,8 @@ export default function SummaryClient() {
                     )}
                     {(!isYearly || !isViewingBucksOnly) && (
                         <Checkbox
-                            isSelected={includeBucks}
-                            onValueChange={setIncludeBucks}
+                            isSelected={shouldIncludeBucks}
+                            onValueChange={setShouldIncludeBucks}
                             size="md"
                         >
                             <span className="text-sm">Include Big Bucks</span>
