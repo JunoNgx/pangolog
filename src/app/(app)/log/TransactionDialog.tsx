@@ -16,20 +16,14 @@ import { toast } from "sonner";
 import { CategoryDialog } from "@/components/CategoryDialog";
 import { CategoryPicker } from "@/components/CategoryPicker";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
-import type { Buck, Dime } from "@/lib/db/types";
-import {
-    useCreateBuck,
-    useDeleteBuck,
-    useRestoreBuck,
-    useUpdateBuck,
-} from "@/lib/hooks/useBucks";
+import type { Transaction } from "@/lib/db/types";
 import { useCategories } from "@/lib/hooks/useCategories";
 import {
-    useCreateDime,
-    useDeleteDime,
-    useRestoreDime,
-    useUpdateDime,
-} from "@/lib/hooks/useDimes";
+    useCreateTransaction,
+    useDeleteTransaction,
+    useRestoreTransaction,
+    useUpdateTransaction,
+} from "@/lib/hooks/useTransactions";
 import {
     fromDateInputValue,
     toDateInputValue,
@@ -39,37 +33,29 @@ import {
 interface TransactionDialogProps {
     isOpen: boolean;
     onClose: () => void;
-    transaction?: Dime | Buck;
-    defaultIsCreatingBuck?: boolean;
-}
-
-function isDime(tx: Dime | Buck): tx is Dime {
-    return !tx.isBigBuck;
+    transaction?: Transaction;
+    defaultIsBigBuck?: boolean;
 }
 
 export function TransactionDialog({
     isOpen,
     onClose,
     transaction,
-    defaultIsCreatingBuck = false,
+    defaultIsBigBuck = false,
 }: TransactionDialogProps) {
     const [amount, setAmount] = useState("");
     const [transactedAt, setTransactedAt] = useState(todayDateString());
     const [isIncome, setIsIncome] = useState(false);
-    const [isCreatingBuck, setIsCreatingBuck] = useState(defaultIsCreatingBuck);
+    const [isBigBuck, setIsBigBuck] = useState(defaultIsBigBuck);
     const [categoryId, setCategoryId] = useState<string | null>(null);
     const [description, setDescription] = useState("");
     const [isCategoryDialogOpen, setIsCategoryDialogOpen] = useState(false);
 
     const { data: categories } = useCategories();
-    const createDime = useCreateDime();
-    const updateDime = useUpdateDime();
-    const deleteDime = useDeleteDime();
-    const restoreDime = useRestoreDime();
-    const createBuck = useCreateBuck();
-    const updateBuck = useUpdateBuck();
-    const deleteBuck = useDeleteBuck();
-    const restoreBuck = useRestoreBuck();
+    const createTransaction = useCreateTransaction();
+    const updateTransaction = useUpdateTransaction();
+    const deleteTransaction = useDeleteTransaction();
+    const restoreTransaction = useRestoreTransaction();
 
     const isEditing = !!transaction;
 
@@ -78,27 +64,27 @@ export function TransactionDialog({
             setAmount((transaction.amount / 100).toFixed(2));
             setTransactedAt(toDateInputValue(transaction.transactedAt));
             setIsIncome(transaction.isIncome);
-            setIsCreatingBuck(!isDime(transaction));
+            setIsBigBuck(transaction.isBigBuck);
             setCategoryId(transaction.categoryId);
             setDescription(transaction.description);
         } else {
             setAmount("");
             setTransactedAt(todayDateString());
             setIsIncome(false);
-            setIsCreatingBuck(defaultIsCreatingBuck);
+            setIsBigBuck(defaultIsBigBuck);
             setCategoryId(null);
             setDescription("");
         }
-    }, [transaction, defaultIsCreatingBuck]);
+    }, [transaction, defaultIsBigBuck]);
 
     const filteredCategories = useMemo(() => {
         if (!categories) return [];
         return categories.filter((cat) => {
-            if (!isCreatingBuck && cat.isBuckOnly) return false;
+            if (!isBigBuck && cat.isBuckOnly) return false;
             if (!isIncome && cat.isIncomeOnly) return false;
             return true;
         });
-    }, [categories, isCreatingBuck, isIncome]);
+    }, [categories, isBigBuck, isIncome]);
 
     // On Android (Chrome and Firefox), tapping the backdrop to close the dialog
     // causes the keyboard to flash briefly. This happens because the input blur
@@ -115,7 +101,7 @@ export function TransactionDialog({
         setAmount("");
         setTransactedAt(todayDateString());
         setIsIncome(false);
-        setIsCreatingBuck(defaultIsCreatingBuck);
+        setIsBigBuck(defaultIsBigBuck);
         setCategoryId(null);
         setDescription("");
         onClose();
@@ -148,73 +134,42 @@ export function TransactionDialog({
             transactedAt: resolveTransactedAt(),
             amount: amountMinor,
             isIncome,
+            isBigBuck: isBigBuck,
             categoryId,
             description,
         };
 
-        if (isEditing && isDime(transaction)) {
-            updateDime.mutate(
+        if (isEditing) {
+            updateTransaction.mutate(
                 { id: transaction.id, input },
                 { onSuccess: handleClose },
             );
             return;
         }
 
-        if (isEditing && !isDime(transaction)) {
-            updateBuck.mutate(
-                { id: transaction.id, input },
-                { onSuccess: handleClose },
-            );
-            return;
-        }
-
-        if (isCreatingBuck) {
-            createBuck.mutate(input, { onSuccess: handleClose });
-            return;
-        }
-
-        createDime.mutate(input, { onSuccess: handleClose });
+        createTransaction.mutate(input, { onSuccess: handleClose });
     }
 
     function handleDelete() {
         if (!transaction) return;
         const id = transaction.id;
-        if (isDime(transaction)) {
-            deleteDime.mutate(id, {
-                onSuccess: () => {
-                    handleClose();
-                    toast("Transaction deleted", {
-                        duration: 5000,
-                        action: {
-                            label: "Undo",
-                            onClick: () => restoreDime.mutate(id),
-                        },
-                    });
-                },
-            });
-        } else {
-            deleteBuck.mutate(id, {
-                onSuccess: () => {
-                    handleClose();
-                    toast("Transaction deleted", {
-                        duration: 5000,
-                        action: {
-                            label: "Undo",
-                            onClick: () => restoreBuck.mutate(id),
-                        },
-                    });
-                },
-            });
-        }
+        deleteTransaction.mutate(id, {
+            onSuccess: () => {
+                handleClose();
+                toast("Transaction deleted", {
+                    duration: 5000,
+                    action: {
+                        label: "Undo",
+                        onClick: () => restoreTransaction.mutate(id),
+                    },
+                });
+            },
+        });
     }
 
     const isPending =
-        createDime.isPending ||
-        updateDime.isPending ||
-        createBuck.isPending ||
-        updateBuck.isPending;
-
-    const isDeleting = deleteDime.isPending || deleteBuck.isPending;
+        createTransaction.isPending || updateTransaction.isPending;
+    const isDeleting = deleteTransaction.isPending;
 
     return (
         <>
@@ -233,23 +188,18 @@ export function TransactionDialog({
                             {isEditing ? "Edit Transaction" : "New Transaction"}
                         </ModalHeader>
                         <ModalBody className="gap-4">
-                            <div className="flex justify-center items-center gap-4">
-                                {!isEditing && (
+                            {!isEditing && (
+                                <div className="flex justify-center items-center gap-4 mb-4">
                                     <ToggleSwitch
-                                        isSelectingRight={isCreatingBuck}
-                                        onValueChange={setIsCreatingBuck}
-                                        leftLabel="Small dime"
-                                        rightLabel="Big buck"
+                                        isSelectingRight={isIncome}
+                                        onValueChange={setIsIncome}
+                                        leftLabel="Expense"
+                                        rightLabel="Income"
                                     />
-                                )}
-                            </div>
+                                </div>
+                            )}
 
-                            <div
-                                className={`
-                                flex justify-around gap-8
-                                ${isEditing ? "" : "mt-5"}
-                            `}
-                            >
+                            <div className="flex justify-around gap-8">
                                 <Input
                                     type="date"
                                     label="Date"
@@ -258,10 +208,10 @@ export function TransactionDialog({
                                     isRequired
                                 />
                                 <ToggleSwitch
-                                    isSelectingRight={isIncome}
-                                    onValueChange={setIsIncome}
-                                    leftLabel="Expense"
-                                    rightLabel="Income"
+                                    isSelectingRight={isBigBuck}
+                                    onValueChange={setIsBigBuck}
+                                    leftLabel="Small dime"
+                                    rightLabel="Big buck"
                                 />
                             </div>
 

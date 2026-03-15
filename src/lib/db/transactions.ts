@@ -1,51 +1,55 @@
 import { DateTime } from "luxon";
 import { getDb } from "./connection";
-import type { Dime, DimeInput, DimeUpdate } from "./types";
+import type { Transaction, TransactionInput, TransactionUpdate } from "./types";
 import { generateId } from "./uuid";
 
-export async function createDime(input: DimeInput): Promise<Dime> {
+export async function createTransaction(
+    input: TransactionInput,
+): Promise<Transaction> {
     const db = await getDb();
     const now = DateTime.now().toUTC().toISO()!;
     const dt = DateTime.fromISO(input.transactedAt);
 
-    const dime: Dime = {
+    const transaction: Transaction = {
         id: generateId(),
         updatedAt: now,
         deletedAt: null,
         year: dt.year,
         month: dt.month,
-        isBigBuck: false,
         ...input,
     };
 
     return new Promise((resolve, reject) => {
-        const tx = db.transaction("dimes", "readwrite");
-        const store = tx.objectStore("dimes");
-        const request = store.add(dime);
-        request.onsuccess = () => resolve(dime);
+        const tx = db.transaction("transactions", "readwrite");
+        const store = tx.objectStore("transactions");
+        const request = store.add(transaction);
+        request.onsuccess = () => resolve(transaction);
         request.onerror = () => reject(request.error);
     });
 }
 
-export async function updateDime(id: string, input: DimeUpdate): Promise<Dime> {
+export async function updateTransaction(
+    id: string,
+    input: TransactionUpdate,
+): Promise<Transaction> {
     const db = await getDb();
 
     return new Promise((resolve, reject) => {
-        const tx = db.transaction("dimes", "readwrite");
-        const store = tx.objectStore("dimes");
+        const tx = db.transaction("transactions", "readwrite");
+        const store = tx.objectStore("transactions");
         const getReq = store.get(id);
 
         getReq.onerror = () => reject(getReq.error);
         getReq.onsuccess = () => {
-            const existing: Dime | undefined = getReq.result;
+            const existing: Transaction | undefined = getReq.result;
             if (!existing) {
-                reject(new Error(`Dime ${id} not found`));
+                reject(new Error(`Transaction ${id} not found`));
                 return;
             }
 
             const transactedAt = input.transactedAt ?? existing.transactedAt;
             const dt = DateTime.fromISO(transactedAt);
-            const updated: Dime = {
+            const updated: Transaction = {
                 ...existing,
                 ...input,
                 id: existing.id,
@@ -63,24 +67,24 @@ export async function updateDime(id: string, input: DimeUpdate): Promise<Dime> {
     });
 }
 
-export async function deleteDime(id: string): Promise<void> {
+export async function deleteTransaction(id: string): Promise<void> {
     const db = await getDb();
 
     return new Promise((resolve, reject) => {
-        const tx = db.transaction("dimes", "readwrite");
-        const store = tx.objectStore("dimes");
+        const tx = db.transaction("transactions", "readwrite");
+        const store = tx.objectStore("transactions");
         const getReq = store.get(id);
 
         getReq.onerror = () => reject(getReq.error);
         getReq.onsuccess = () => {
-            const existing: Dime | undefined = getReq.result;
+            const existing: Transaction | undefined = getReq.result;
             if (!existing) {
-                reject(new Error(`Dime ${id} not found`));
+                reject(new Error(`Transaction ${id} not found`));
                 return;
             }
 
             const now = DateTime.now().toUTC().toISO()!;
-            const updated: Dime = {
+            const updated: Transaction = {
                 ...existing,
                 deletedAt: now,
                 updatedAt: now,
@@ -93,19 +97,19 @@ export async function deleteDime(id: string): Promise<void> {
     });
 }
 
-export async function restoreDime(id: string): Promise<void> {
+export async function restoreTransaction(id: string): Promise<void> {
     const db = await getDb();
 
     return new Promise((resolve, reject) => {
-        const tx = db.transaction("dimes", "readwrite");
-        const store = tx.objectStore("dimes");
+        const tx = db.transaction("transactions", "readwrite");
+        const store = tx.objectStore("transactions");
         const getReq = store.get(id);
 
         getReq.onerror = () => reject(getReq.error);
         getReq.onsuccess = () => {
-            const existing: Dime | undefined = getReq.result;
+            const existing: Transaction | undefined = getReq.result;
             if (!existing) {
-                reject(new Error(`Dime ${id} not found`));
+                reject(new Error(`Transaction ${id} not found`));
                 return;
             }
 
@@ -120,42 +124,44 @@ export async function restoreDime(id: string): Promise<void> {
     });
 }
 
-export async function getDimesByYear(year: number): Promise<Dime[]> {
+export async function getTransactionsByMonth(
+    year: number,
+    month: number,
+): Promise<Transaction[]> {
     const db = await getDb();
 
     return new Promise((resolve, reject) => {
-        const tx = db.transaction("dimes", "readonly");
-        const store = tx.objectStore("dimes");
+        const tx = db.transaction("transactions", "readonly");
+        const store = tx.objectStore("transactions");
         const index = store.index("yearMonth");
-        const range = IDBKeyRange.bound([year, 1], [year, 12]);
-        const request = index.getAll(range);
+        const request = index.getAll(IDBKeyRange.only([year, month]));
 
         request.onerror = () => reject(request.error);
         request.onsuccess = () => {
-            const results: Dime[] = request.result.filter(
-                (d: Dime) => d.deletedAt === null,
+            const results: Transaction[] = request.result.filter(
+                (t: Transaction) => t.deletedAt === null,
             );
             resolve(results);
         };
     });
 }
 
-export async function getDimesByMonth(
+export async function getTransactionsByYear(
     year: number,
-    month: number,
-): Promise<Dime[]> {
+): Promise<Transaction[]> {
     const db = await getDb();
 
     return new Promise((resolve, reject) => {
-        const tx = db.transaction("dimes", "readonly");
-        const store = tx.objectStore("dimes");
+        const tx = db.transaction("transactions", "readonly");
+        const store = tx.objectStore("transactions");
         const index = store.index("yearMonth");
-        const request = index.getAll(IDBKeyRange.only([year, month]));
+        const range = IDBKeyRange.bound([year, 1], [year, 12]);
+        const request = index.getAll(range);
 
         request.onerror = () => reject(request.error);
         request.onsuccess = () => {
-            const results: Dime[] = request.result.filter(
-                (d: Dime) => d.deletedAt === null,
+            const results: Transaction[] = request.result.filter(
+                (t: Transaction) => t.deletedAt === null,
             );
             resolve(results);
         };

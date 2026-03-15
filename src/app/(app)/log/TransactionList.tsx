@@ -3,18 +3,14 @@
 import { Skeleton } from "@heroui/react";
 import { DateTime } from "luxon";
 import { useState } from "react";
-import type { Buck, Category, Dime } from "@/lib/db/types";
+import type { Category, Transaction } from "@/lib/db/types";
 import { formatAmount } from "@/lib/utils";
 import { TransactionDialog } from "./TransactionDialog";
 
 interface TransactionListProps {
-    transactions: (Dime | Buck)[];
+    transactions: Transaction[];
     categories: Category[];
     isLoading: boolean;
-}
-
-function isDime(tx: Dime | Buck): tx is Dime {
-    return !tx.isBigBuck;
 }
 
 export function TransactionList({
@@ -22,7 +18,7 @@ export function TransactionList({
     categories,
     isLoading,
 }: TransactionListProps) {
-    const [editingTx, setEditingTx] = useState<Dime | Buck | undefined>();
+    const [editingTx, setEditingTx] = useState<Transaction | undefined>();
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     const categoryMap = new Map(categories.map((c) => [c.id, c]));
@@ -32,7 +28,7 @@ export function TransactionList({
         setEditingTx(undefined);
     }
 
-    function openEditDialog(transaction: Buck | Dime) {
+    function openEditDialog(transaction: Transaction) {
         setEditingTx(transaction);
         setIsDialogOpen(true);
     }
@@ -75,7 +71,7 @@ export function TransactionList({
         {
             dateKey: string;
             dateText: string;
-            items: (Dime | Buck)[];
+            items: Transaction[];
         }[]
     >((acc, tx) => {
         const dt = DateTime.fromISO(tx.transactedAt);
@@ -132,9 +128,9 @@ export function TransactionList({
 }
 
 interface TransactionItemProps {
-    transaction: Dime | Buck;
+    transaction: Transaction;
     category: Category | undefined;
-    openEditDialog: (model: Dime | Buck) => void;
+    openEditDialog: (model: Transaction) => void;
 }
 
 function TransactionItem({
@@ -149,7 +145,7 @@ function TransactionItem({
     const txDate = DateTime.fromISO(transaction.transactedAt);
     const txDay = txDate.day;
     const txMonth = txDate.toLocaleString({ month: "short" });
-    const isBigBuck = !isDime(transaction);
+    const isBigBuck = transaction.isBigBuck;
 
     const ariaLabel = [
         transaction.description,

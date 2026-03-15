@@ -1,14 +1,12 @@
 import {
-    bulkPutBucks,
     bulkPutCategories,
-    bulkPutDimes,
     bulkPutRecurringRules,
-    getAllBucksForSync,
+    bulkPutTransactions,
     getAllCategoriesForSync,
-    getAllDimesForSync,
     getAllRecurringRulesForSync,
+    getAllTransactionsForSync,
 } from "./db/sync";
-import type { Buck, Category, Dime, RecurringRule } from "./db/types";
+import type { Category, RecurringRule, Transaction } from "./db/types";
 import { useProfileSettingsStore } from "./store/useProfileSettingsStore";
 
 interface ImportSettings {
@@ -20,17 +18,14 @@ interface ImportSettings {
 export interface ImportData {
     exportedAt: string;
     settings?: ImportSettings;
-    dimes: Dime[];
-    bucks: Buck[];
+    transactions?: Transaction[];
     categories: Category[];
     recurringRules?: RecurringRule[];
 }
 
 export interface ImportPreview {
-    dimesAdded: number;
-    dimesUpdated: number;
-    bucksAdded: number;
-    bucksUpdated: number;
+    transactionsAdded: number;
+    transactionsUpdated: number;
     categoriesAdded: number;
     categoriesUpdated: number;
     rulesAdded: number;
@@ -51,12 +46,12 @@ function hasRequiredFields(
 
 export function validateImportData(data: unknown): data is ImportData {
     if (!isRecord(data)) return false;
-    if (!Array.isArray(data.dimes)) return false;
-    if (!Array.isArray(data.bucks)) return false;
     if (!Array.isArray(data.categories)) return false;
-    if (!data.dimes.every(hasRequiredFields)) return false;
-    if (!data.bucks.every(hasRequiredFields)) return false;
     if (!data.categories.every(hasRequiredFields)) return false;
+    if (data.transactions !== undefined) {
+        if (!Array.isArray(data.transactions)) return false;
+        if (!data.transactions.every(hasRequiredFields)) return false;
+    }
     if (data.recurringRules !== undefined) {
         if (!Array.isArray(data.recurringRules)) return false;
         if (!data.recurringRules.every(hasRequiredFields)) return false;
@@ -65,38 +60,25 @@ export function validateImportData(data: unknown): data is ImportData {
 }
 
 export async function previewImport(data: ImportData): Promise<ImportPreview> {
-    const [existingDimes, existingBucks, existingCategories, existingRules] =
+    const [existingTransactions, existingCategories, existingRules] =
         await Promise.all([
-            getAllDimesForSync(),
-            getAllBucksForSync(),
+            getAllTransactionsForSync(),
             getAllCategoriesForSync(),
             getAllRecurringRulesForSync(),
         ]);
 
-    const dimeMap = new Map(existingDimes.map((d) => [d.id, d]));
-    const buckMap = new Map(existingBucks.map((b) => [b.id, b]));
+    const transactionMap = new Map(existingTransactions.map((t) => [t.id, t]));
     const categoryMap = new Map(existingCategories.map((c) => [c.id, c]));
     const ruleMap = new Map(existingRules.map((r) => [r.id, r]));
 
-    let dimesAdded = 0;
-    let dimesUpdated = 0;
-    for (const dime of data.dimes) {
-        const existing = dimeMap.get(dime.id);
+    let transactionsAdded = 0;
+    let transactionsUpdated = 0;
+    for (const tx of data.transactions ?? []) {
+        const existing = transactionMap.get(tx.id);
         if (!existing) {
-            dimesAdded++;
-        } else if (dime.updatedAt > existing.updatedAt) {
-            dimesUpdated++;
-        }
-    }
-
-    let bucksAdded = 0;
-    let bucksUpdated = 0;
-    for (const buck of data.bucks) {
-        const existing = buckMap.get(buck.id);
-        if (!existing) {
-            bucksAdded++;
-        } else if (buck.updatedAt > existing.updatedAt) {
-            bucksUpdated++;
+            transactionsAdded++;
+        } else if (tx.updatedAt > existing.updatedAt) {
+            transactionsUpdated++;
         }
     }
 
@@ -123,10 +105,8 @@ export async function previewImport(data: ImportData): Promise<ImportPreview> {
     }
 
     return {
-        dimesAdded,
-        dimesUpdated,
-        bucksAdded,
-        bucksUpdated,
+        transactionsAdded,
+        transactionsUpdated,
         categoriesAdded,
         categoriesUpdated,
         rulesAdded,
@@ -138,27 +118,20 @@ export async function previewImport(data: ImportData): Promise<ImportPreview> {
 export async function executeImport(data: ImportData): Promise<ImportPreview> {
     const preview = await previewImport(data);
 
-    const [existingDimes, existingBucks, existingCategories, existingRules] =
+    const [existingTransactions, existingCategories, existingRules] =
         await Promise.all([
-            getAllDimesForSync(),
-            getAllBucksForSync(),
+            getAllTransactionsForSync(),
             getAllCategoriesForSync(),
             getAllRecurringRulesForSync(),
         ]);
 
-    const dimeMap = new Map(existingDimes.map((d) => [d.id, d]));
-    const buckMap = new Map(existingBucks.map((b) => [b.id, b]));
+    const transactionMap = new Map(existingTransactions.map((t) => [t.id, t]));
     const categoryMap = new Map(existingCategories.map((c) => [c.id, c]));
     const ruleMap = new Map(existingRules.map((r) => [r.id, r]));
 
-    const dimesToPut = data.dimes.filter((d) => {
-        const existing = dimeMap.get(d.id);
-        return !existing || d.updatedAt > existing.updatedAt;
-    });
-
-    const bucksToPut = data.bucks.filter((b) => {
-        const existing = buckMap.get(b.id);
-        return !existing || b.updatedAt > existing.updatedAt;
+    const transactionsToPut = (data.transactions ?? []).filter((t) => {
+        const existing = transactionMap.get(t.id);
+        return !existing || t.updatedAt > existing.updatedAt;
     });
 
     const categoriesToPut = data.categories.filter((c) => {
@@ -172,8 +145,7 @@ export async function executeImport(data: ImportData): Promise<ImportPreview> {
     });
 
     await Promise.all([
-        bulkPutDimes(dimesToPut),
-        bulkPutBucks(bucksToPut),
+        bulkPutTransactions(transactionsToPut),
         bulkPutCategories(categoriesToPut),
         bulkPutRecurringRules(rulesToPut),
     ]);
