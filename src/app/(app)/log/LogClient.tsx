@@ -4,6 +4,7 @@ import { Button, Checkbox, Tooltip } from "@heroui/react";
 import { Plus } from "lucide-react";
 import { DateTime } from "luxon";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { DemoDataBanner } from "@/components/DemoDataBanner";
 import { MonthYearPicker } from "@/components/MonthYearPicker";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
 import { createAction } from "@/lib/createAction";
@@ -191,6 +192,7 @@ export default function LogClient() {
                 </div>
             </div>
 
+            <DemoDataBanner />
             <TransactionList
                 transactions={filteredTransactions}
                 categories={categories ?? []}

@@ -206,12 +206,13 @@
 - [x] Reset app: wipes all tables and localStorage data, hidden behind Debug section
 
 #### Phase 3e-3: opt-in demo data banner
-- [ ] Remove automatic seeding from IDB migration
-- [ ] Implement `shouldShowDemoDataBanner` in `localSettingsStore` (default true, persisted)
-- [ ] Implement `DemoDataBanner`.
-- [ ] Show banner on `/log` and `/manage` (categories) for new users with "Load sample data" and "Dismiss" options
-    - [ ] Load sample data: seeds demo data as regular records, sets `shouldShowDemoDataBanner` to false
-    - [ ] Dismiss: sets `shouldShowDemoDataBanner` to false
+- [x] Remove automatic seeding from IDB migration
+- [x] Implement `shouldShowDemoDataBanner` in `localSettingsStore` (default true, persisted)
+- [x] Implement `DemoDataBanner`.
+- [x] Show banner on `/log` and `/manage` (categories) for new users with "Load sample data" and "Dismiss" options
+    - [x] Load sample data: seeds demo data as regular records, sets `shouldShowDemoDataBanner` to false
+    - [x] Dismiss: sets `shouldShowDemoDataBanner` to false
+- [x] Fix Zustand persist SSR hydration: add `StoreHydration` to `providers.tsx`
 
 ## Phase 4: Data mobility
 

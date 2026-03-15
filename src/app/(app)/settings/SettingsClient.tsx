@@ -97,7 +97,7 @@ export default function SettingsClient() {
         setIsResetting(true);
         if (isConnected) disconnect();
         await clearAllData();
-        setShouldShowDemoDataBanner(false);
+        setShouldShowDemoDataBanner(true);
         toast.success("All data has been reset. Reloading...");
         await new Promise((resolve) => setTimeout(resolve, 1500));
         window.location.reload();
