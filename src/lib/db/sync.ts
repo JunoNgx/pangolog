@@ -1,6 +1,6 @@
 import { DateTime } from "luxon";
 import { forceDeleteDb, getDb } from "./connection";
-import type { Buck, Category, Dime, RecurringRule } from "./types";
+import type { Buck, Category, Dime, RecurringRule, Transaction } from "./types";
 
 function normalizeBuck(buck: Buck): Buck {
     const month = buck.month ?? DateTime.fromISO(buck.transactedAt).month;
@@ -89,6 +89,29 @@ export async function getAllRecurringRulesForSync(): Promise<RecurringRule[]> {
         const request = tx.objectStore("recurring-rules").getAll();
         request.onsuccess = () => resolve(request.result as RecurringRule[]);
         request.onerror = () => reject(request.error);
+    });
+}
+
+export async function getAllTransactionsForSync(): Promise<Transaction[]> {
+    const db = await getDb();
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction("transactions", "readonly");
+        const request = tx.objectStore("transactions").getAll();
+        request.onsuccess = () => resolve(request.result as Transaction[]);
+        request.onerror = () => reject(request.error);
+    });
+}
+
+export async function bulkPutTransactions(
+    transactions: Transaction[],
+): Promise<void> {
+    const db = await getDb();
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction("transactions", "readwrite");
+        const store = tx.objectStore("transactions");
+        for (const transaction of transactions) store.put(transaction);
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
     });
 }
 

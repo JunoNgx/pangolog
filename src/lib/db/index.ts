@@ -11,9 +11,11 @@ export {
     bulkPutBucks,
     bulkPutCategories,
     bulkPutDimes,
+    bulkPutTransactions,
     getAllBucksForSync,
     getAllCategoriesForSync,
     getAllDimesForSync,
+    getAllTransactionsForSync,
     purgeExpiredRecords,
 } from "./sync";
 export {

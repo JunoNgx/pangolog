@@ -316,8 +316,8 @@ This phase will render existing cloud data and json files obsolete and incompati
 - [x] Update recurring rules logic to create new transactions correctly
 
 ### Phase 8e: Update JSON export/import
-- [ ] Update export logic: single `transactions` array instead of separate `dimes`/`bucks`
-- [ ] Update import logic: handle new format only; silently ignore old `dimes`/`bucks` fields if present
+- [x] Update export logic: single `transactions` array instead of separate `dimes`/`bucks`
+- [x] Update import logic: handle new format only; silently ignore old `dimes`/`bucks` fields if present
 
 ### Phase 8f: Update sync logic
 - [ ] Ignore existing `YYYY-MM.json` and `YYYY-bucks.json` Drive files without migration
