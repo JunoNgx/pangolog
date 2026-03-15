@@ -141,3 +141,4 @@ Don't comment on the classes. Just keep one type of classes in its own line. Eac
 - Phase 7a (help route): done - /help route outside (app) group (no navbar), floating back button via router.back(), "View manual" button in settings
 - Phase 7b (command palette): done - Cmd/Ctrl+K global shortcut; grouped commands: Navigate (all routes incl. Help), Create (route-aware via `createAction` module registry), Actions (Sync, Export JSON, theme switches); keyboard nav with scroll-into-view; `useSyncFn` extracted from `useSync` for palette use without side effects
 - Phase 8a (transactions IDB layer): done - Transaction type, transactions.ts CRUD (getByMonth/getByYear), useTransactions hooks; DB store creation deferred to phase 8b alongside migration
+- Phase 8b (migration script): done - DB bumped to v4; `transactions` store created with yearMonth/year/categoryId/transactedAt indexes; existing dimes and bucks copied into transactions on upgrade
