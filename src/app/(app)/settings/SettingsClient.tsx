@@ -532,11 +532,11 @@ export default function SettingsClient() {
                             Clear Logger entries
                         </Button>
 
-                        <p className="text-xs text-default-400 mt-4">
-                            Wipes the database and all app data. This will make
-                            a fresh new user experience. Local data will be
-                            permanently destroyed, but your data on Google Drive
-                            will remain intact. This cannot be undone.
+                        <p className="text-xs text-default-400 mt-8">
+                            Wipes the local database and all local app data.
+                            This will make a fresh new user experience. Your
+                            data on Google Drive will remain intact. This cannot
+                            be undone.
                         </p>
                         <Button
                             className="block mt-2"
