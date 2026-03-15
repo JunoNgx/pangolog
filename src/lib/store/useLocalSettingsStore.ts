@@ -19,6 +19,8 @@ interface LocalSettingsStore {
     setLastSyncTime: (time: string | null) => void;
     isAutobackupEnabled: boolean;
     setIsAutobackupEnabled: (enabled: boolean) => void;
+    shouldShowDemoDataBanner: boolean;
+    setShouldShowDemoDataBanner: (show: boolean) => void;
     syncStatus: SyncStatus;
     setSyncStatus: (status: SyncStatus) => void;
     syncError: string | null;
@@ -40,6 +42,9 @@ export const useLocalSettingsStore = create<LocalSettingsStore>()(
             isAutobackupEnabled: false,
             setIsAutobackupEnabled: (enabled) =>
                 set({ isAutobackupEnabled: enabled }),
+            shouldShowDemoDataBanner: true,
+            setShouldShowDemoDataBanner: (show) =>
+                set({ shouldShowDemoDataBanner: show }),
             syncStatus: "idle",
             setSyncStatus: (status) => set({ syncStatus: status }),
             syncError: null,
@@ -55,6 +60,7 @@ export const useLocalSettingsStore = create<LocalSettingsStore>()(
                 driveFolderId: state.driveFolderId,
                 lastSyncTime: state.lastSyncTime,
                 isAutobackupEnabled: state.isAutobackupEnabled,
+                shouldShowDemoDataBanner: state.shouldShowDemoDataBanner,
             }),
             onRehydrateStorage: () => () => {
                 useLocalSettingsStore.setState({ hasHydrated: true });

@@ -16,7 +16,7 @@ import { DateTime } from "luxon";
 import { useTheme } from "next-themes";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-import { clearAllData } from "@/lib/db/sync";
+import { clearAllData, forceDeleteDb } from "@/lib/db";
 import { exportJson } from "@/lib/export";
 import { useGoogleAuth } from "@/lib/hooks/useGoogleAuth";
 import { useLogger } from "@/lib/hooks/useLogger";
@@ -48,6 +48,7 @@ export default function SettingsClient() {
         syncError,
         isAutobackupEnabled,
         setIsAutobackupEnabled,
+        setShouldShowDemoDataBanner,
     } = useLocalSettingsStore();
     const { getLoggerEntries, clearLoggerEntries } = useLogger();
 
@@ -66,8 +67,10 @@ export default function SettingsClient() {
     const [isMounted, setIsMounted] = useState(false);
     useEffect(() => setIsMounted(true), []);
 
-    const [isResetDialogOpen, setIsResetDialogOpen] = useState(false);
-    const [isResetting, setIsResetting] = useState(false);
+    const [isClearRecordsDialogOpen, setIsResetDialogOpen] = useState(false);
+    const [isClearingRecords, setIsResetting] = useState(false);
+    const [isResetAppDialogOpen, setIsResetAppDialogOpen] = useState(false);
+    const [isClearingRecordsApp, setIsResettingApp] = useState(false);
 
     const [isLogDialogOpen, setIsLogDialogOpen] = useState(false);
 
@@ -90,13 +93,24 @@ export default function SettingsClient() {
         }
     }
 
-    async function handleReset() {
+    async function handleClearLocalRecords() {
         setIsResetting(true);
         if (isConnected) disconnect();
         await clearAllData();
+        setShouldShowDemoDataBanner(true);
         toast.success("All data has been reset. Reloading...");
         await new Promise((resolve) => setTimeout(resolve, 1500));
         window.location.reload();
+    }
+
+    async function handleClearLocalRecordsApp() {
+        setIsResettingApp(true);
+        if (isConnected) disconnect();
+        localStorage.clear();
+        await forceDeleteDb();
+        toast.success("App reset. Reloading...");
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+        window.location.href = "/";
     }
 
     async function handleExportJson() {
@@ -509,12 +523,27 @@ export default function SettingsClient() {
                         </Button>
 
                         <Button
-                            className="block mt-12"
+                            className="block mt-8"
                             color="danger"
                             variant="flat"
                             onPress={handleClearDebugLoggerEntry}
                         >
                             Clear Logger entries
+                        </Button>
+
+                        <p className="text-xs text-default-400 mt-8">
+                            Wipes the local database and all local app data.
+                            This will make a fresh new user experience. Your
+                            data on Google Drive will remain intact. This cannot
+                            be undone.
+                        </p>
+                        <Button
+                            className="block mt-2"
+                            color="danger"
+                            variant="flat"
+                            onPress={() => setIsResetAppDialogOpen(true)}
+                        >
+                            Reset app
                         </Button>
                     </section>
                 )}
@@ -533,33 +562,30 @@ export default function SettingsClient() {
                         Danger Zone
                     </h3>
                     <p className="text-xs text-default-400 mb-4">
-                        Disconnects Google Drive and permanently deletes all
-                        local data. Your data on Google Drive will remain
-                        intact. Use this to start fresh on this device. This
-                        cannot be undone.
+                        Removes all local transactions, categories, and
+                        recurring rules, and disconnects Google Drive. Your data
+                        on Google Drive will remain intact.
                     </p>
                     <Button
                         color="danger"
                         variant="flat"
                         onPress={() => setIsResetDialogOpen(true)}
                     >
-                        Reset all data
+                        Clear local records
                     </Button>
                 </section>
             </div>
 
             <Modal
-                isOpen={isResetDialogOpen}
+                isOpen={isClearRecordsDialogOpen}
                 onClose={() => setIsResetDialogOpen(false)}
                 classNames={{ closeButton: "cursor-pointer" }}
             >
                 <ModalContent>
-                    <ModalHeader>Reset all data?</ModalHeader>
+                    <ModalHeader>Clear local records?</ModalHeader>
                     <ModalBody>
-                        <p className="text-sm text-default-600">
-                            This will disconnect Google Drive and permanently
-                            delete all local transactions, categories, and
-                            settings. This cannot be undone.
+                        <p className="text-sm text-danger-500">
+                            This cannot be undone.
                         </p>
                     </ModalBody>
                     <ModalFooter>
@@ -571,10 +597,40 @@ export default function SettingsClient() {
                         </Button>
                         <Button
                             color="danger"
-                            isLoading={isResetting}
-                            onPress={handleReset}
+                            isLoading={isClearingRecords}
+                            onPress={handleClearLocalRecords}
                         >
-                            Reset
+                            Clear
+                        </Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+
+            <Modal
+                isOpen={isResetAppDialogOpen}
+                onClose={() => setIsResetAppDialogOpen(false)}
+                classNames={{ closeButton: "cursor-pointer" }}
+            >
+                <ModalContent>
+                    <ModalHeader>Confirm resetting app?</ModalHeader>
+                    <ModalBody>
+                        <p className="text-sm text-danger-500">
+                            This cannot be undone.
+                        </p>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button
+                            variant="light"
+                            onPress={() => setIsResetAppDialogOpen(false)}
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            color="danger"
+                            isLoading={isClearingRecordsApp}
+                            onPress={handleClearLocalRecordsApp}
+                        >
+                            Reset app
                         </Button>
                     </ModalFooter>
                 </ModalContent>

@@ -3,7 +3,7 @@ import {
     getAllCategoriesForSync,
     getAllRecurringRulesForSync,
     getAllTransactionsForSync,
-} from "./db/sync";
+} from "./db/bulk";
 import { useProfileSettingsStore } from "./store/useProfileSettingsStore";
 
 function todayString(): string {

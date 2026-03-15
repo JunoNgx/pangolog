@@ -7,7 +7,7 @@ import {
     getAllRecurringRulesForSync,
     getAllTransactionsForSync,
     purgeExpiredRecords,
-} from "@/lib/db/sync";
+} from "@/lib/db/bulk";
 import type { Category, RecurringRule, Transaction } from "@/lib/db/types";
 import { buildExportData } from "@/lib/export";
 import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
