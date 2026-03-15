@@ -23,16 +23,16 @@ Approach:
 
 ### Transaction management
 - Read: query small dime transactions by month
-- Read: query big buck transactions by month
+- Read: query big buck transactions by year
 - Read: search by text description among currently displayed transactions
 - Create: create new transactions with the following setting options
     - Transaction amount
     - Expense or income
     - Small dime or big buck
     - One single category to attach the transaction to
-- Create: recurring transaction on a weekly or monthly basis
+- Create: recurring transaction on a daily, weekly, monthly, or yearly basis
 - Update: edit existing transactions
-- Delete: permanently remove existing transactions
+- Delete: soft-delete transactions (set `deletedAt`); purged after 60 days
 
 ### Category management
 - Read: view current categories
@@ -41,7 +41,7 @@ Approach:
     - Colour
     - Emoji icon
 - Update: reorder category priority in the create transaction dialog
-- Delete: remove transaction
+- Delete: remove category
 
 ### Advanced financial review:
 - View segmented bar summary by month, with and without big buck transactions
@@ -49,8 +49,8 @@ Approach:
 
 ### Synchronisation
 - Cloud synchronisation is entirely optional, users can start using immediately without providing Google Drive authorisation.
-- New users are seeded with demo data (categories: Food, Grocery, Videogame; transactions: Eggs, Sandwich, What Remains of Edith Finch).
-- On first sync, users are prompted whether to carry over seed data to the cloud or discard it before syncing.
+- New users are seeded with demo data (categories: Food, Grocery, Videogame; transactions: Eggs, Sandwich, What Remains of Edith Finch). *(not yet implemented)*
+- On first sync, users are prompted whether to carry over seed data to the cloud or discard it before syncing. *(not yet implemented)*
 - Data is sync'ed with transaction, debounced to 30s.
 - Data is sync'ed upon `visibilitychange` and `document.visibilityState === hidden`.
 - Data is resolved on the "Last write wins", using `updatedAt`.
@@ -59,21 +59,16 @@ Approach:
 - Data with `deletedAt` older than 60 days are removed on both local and cloud instance.
 - On a Drive API 401, a forced server-side token refresh is attempted via `POST /api/auth/refresh`. If the refresh fails (cookie missing or refresh token revoked), sync resets to idle silently and the user remains shown as connected. If the forced refresh succeeds but Drive still returns 401 (genuine revocation), `setAuthToken(null)` is called and a "please reconnect" toast is shown.
 
-### Error recovery strategies
-- Exponential backoff (30s, 60s, 120s, 300s)
-- Max retry attempts: 5
-- Failed operations stored in sync queue
-- Manual retry option in UI
 
 ### Data mobility
-- Export transactions to JSON, xls or csv
-- Import transactions from local JSON, xls or csv
+- Export transactions to JSON
+- Import transactions from local JSON
 - Data import should be able to also add categories
 
 ### Other settings
 - Freely user-set custom currency (as a string), as a prefix or suffix. E.g. `$12` or `12k IDR`. This is merely a cosmetic display unit, and has no bearing on the logic and/or data.
 
-### Offline support
+### Offline support *(not yet implemented)*
 - Works offline without an internet connection
 - Offline indicator
 - Queue changes made offline for sync when connection returns
@@ -212,7 +207,7 @@ Approach:
 
 - Dialog: add new transaction/edit transaction (shared by both Small Dimes and Big Bucks)
     - Toggle switch: income vs expense.
-    - Toggle switch: Small Dimes vs Big Bucks (not available when editing).
+    - Toggle switch: Small Dimes vs Big Bucks.
     - Date of transaction: current date by default
     - Category accordion:
         - Collapsed: 7 categories of highest priority.
@@ -311,14 +306,14 @@ Approach:
 
 ## Recurring expenses
 - Frequency choices: daily, weekly, monthly, yearly
-- `nextGenerationdAt` is calculated upon changes in:
+- `nextGenerationAt` is calculated upon changes in:
     - `frequency`
     - `dayOfWeek`
     - `dayOfMonth`
-    - `dayOfYear`
+    - `monthOfYear`
 - Execution logic:
     - Upon startup, `visibilitychange` (similar to sync)
-    - Query items with `nextGeneratedAt` older than current time
+    - Query items with `nextGenerationAt` older than current time
     - Iterate over matching rule, loop this:
         - Create the transaction
         - Advance `nextGenerationAt` until `nextGenerationAt` is in the future

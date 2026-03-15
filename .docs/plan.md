@@ -230,7 +230,8 @@
     - [x] Show counts added/updated
     - [ ] Error reporting
 
-### Phase 4b: CSV export/import
+
+### Phase 4b: CSV export/import - canceled, will not implement
 - [ ] CSV export
     - [ ] Flatten nested data
     - [ ] Handle categories separately
