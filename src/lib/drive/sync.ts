@@ -1,3 +1,4 @@
+import { DateTime } from "luxon";
 import {
     bulkPutCategories,
     bulkPutRecurringRules,
@@ -8,10 +9,13 @@ import {
     purgeExpiredRecords,
 } from "@/lib/db/sync";
 import type { Category, RecurringRule, Transaction } from "@/lib/db/types";
+import { buildExportData } from "@/lib/export";
 import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
 import {
+    backupFileName,
     CATEGORIES_FILE,
+    createFile,
     downloadFile,
     listFiles,
     RECURRING_RULES_FILE,
@@ -205,4 +209,16 @@ export async function syncAll(token: string, folderId: string): Promise<void> {
     }
 
     await Promise.all(uploads);
+
+    // --- Autobackup ---
+
+    const { isAutobackupEnabled } = useLocalSettingsStore.getState();
+    if (!isAutobackupEnabled) return;
+
+    const now = DateTime.now();
+    const fileName = backupFileName(now.year, now.month);
+    if (driveFileMap.has(fileName)) return;
+
+    const backupData = await buildExportData();
+    await createFile(token, folderId, fileName, backupData);
 }

@@ -230,7 +230,8 @@
     - [x] Show counts added/updated
     - [ ] Error reporting
 
-### Phase 4b: CSV export/import
+
+### Phase 4b: CSV export/import - canceled, will not implement
 - [ ] CSV export
     - [ ] Flatten nested data
     - [ ] Handle categories separately
@@ -329,3 +330,18 @@ This phase will render existing cloud data and json files obsolete and incompati
 ### Phase 8g: Delete old logic
 - [x] Delete IDB stores for dimes and bucks
 - [x] Delete dimes and bucks hooks
+
+## Task 9: Cloud autobackup
+
+### Phase 9a: Drive client
+- [x] Add `backupFileName(year, month): string` → `backup-YYYY-MM.json` to drive client
+
+### Phase 9b: Backup logic
+- [x] After each successful sync, check if `backup-YYYY-MM.json` for the current month exists in the Pangolog Drive folder
+- [x] If not, serialize all data (same format as JSON export: transactions, categories, recurringRules, settings) and upload it
+- [x] Skip silently if backup already exists for the current month
+
+### Phase 9c: Implement UI
+- [x] Implement `isAutobackupEnabled` in `localSettingsStore`
+- [x] Implement toggle checkbox in settings
+- [x] Implement note informing the user that monthly backups accumulate and they should clean up old ones manually
