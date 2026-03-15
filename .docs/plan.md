@@ -201,14 +201,17 @@
 #### Phase 3e-1: demo data
 - [x] Implement demo data as part of migration
 
-#### Phase 3e-2: multiple clear data options
-- [ ] Implement `shouldShowDemoDataBanner` in `localSettingsStore`
-- [ ] Clear all data: remove all records in all tables
-    - [ ] This will also set `shouldShowDemoDataBanner` to `false`
-- [ ] Reset app: wipes all tables and localStorage data, hidden behind Debug section
+#### Phase 3e-2: clear data options
+- [x] Clear local records: hard-deletes all records in all tables
+- [x] Reset app: wipes all tables and localStorage data, hidden behind Debug section
 
-#### Phase 3e-3: Implement onboarding interface
-- [ ] Implement Tip banner in Settings in the `Google Drive Sync` about clearing records prior to syncing
+#### Phase 3e-3: opt-in demo data banner
+- [ ] Remove automatic seeding from IDB migration
+- [ ] Implement `shouldShowDemoDataBanner` in `localSettingsStore` (default true, persisted)
+- [ ] Implement `DemoDataBanner`.
+- [ ] Show banner on `/log` and `/manage` (categories) for new users with "Load sample data" and "Dismiss" options
+    - [ ] Load sample data: seeds demo data as regular records, sets `shouldShowDemoDataBanner` to false
+    - [ ] Dismiss: sets `shouldShowDemoDataBanner` to false
 
 ## Phase 4: Data mobility
 

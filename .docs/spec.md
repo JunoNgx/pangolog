@@ -77,7 +77,13 @@ Approach:
 - Queue changes made offline for sync when connection returns
 
 ### Demo data
-- New users are seeded with demo data. Data are retroactively and relatively dated based on current time.
+- Demo data is opt-in. New users see a banner on their first visit to `/log`  or `/manage` (categories).
+    - Banner content: New here? Have a taste and explore.
+    - Buttons:
+        - Load sample data
+        - Dismiss
+- Once loaded, demo data is treated as regular data - no special tracking or sync handling.
+- The banner is dismissed once the user loads the data or manually dismisses it.
 - Categories (all created three days ago):
     - Food
     - Videogame (big buck)
