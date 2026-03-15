@@ -1,20 +1,11 @@
 import { DateTime } from "luxon";
 import { forceDeleteDb, getDb } from "./connection";
-import type { Buck, Category, Dime, RecurringRule } from "./types";
-
-function normalizeBuck(buck: Buck): Buck {
-    const month = buck.month ?? DateTime.fromISO(buck.transactedAt).month;
-    return { ...buck, month, isBigBuck: true };
-}
-
-function normalizeDime(dime: Dime): Dime {
-    return { ...dime, isBigBuck: false };
-}
+import type { Category, RecurringRule, Transaction } from "./types";
 
 const PURGE_DAYS = 60;
 
 async function purgeStore(
-    storeName: "dimes" | "bucks" | "categories" | "recurring-rules",
+    storeName: "categories" | "recurring-rules" | "transactions",
     cutoffIso: string,
 ): Promise<void> {
     const db = await getDb();
@@ -45,31 +36,10 @@ export async function purgeExpiredRecords(): Promise<void> {
         .toISO()!;
 
     await Promise.all([
-        purgeStore("dimes", cutoffIso),
-        purgeStore("bucks", cutoffIso),
         purgeStore("categories", cutoffIso),
         purgeStore("recurring-rules", cutoffIso),
+        purgeStore("transactions", cutoffIso),
     ]);
-}
-
-export async function getAllDimesForSync(): Promise<Dime[]> {
-    const db = await getDb();
-    return new Promise((resolve, reject) => {
-        const tx = db.transaction("dimes", "readonly");
-        const request = tx.objectStore("dimes").getAll();
-        request.onsuccess = () => resolve(request.result as Dime[]);
-        request.onerror = () => reject(request.error);
-    });
-}
-
-export async function getAllBucksForSync(): Promise<Buck[]> {
-    const db = await getDb();
-    return new Promise((resolve, reject) => {
-        const tx = db.transaction("bucks", "readonly");
-        const request = tx.objectStore("bucks").getAll();
-        request.onsuccess = () => resolve(request.result as Buck[]);
-        request.onerror = () => reject(request.error);
-    });
 }
 
 export async function getAllCategoriesForSync(): Promise<Category[]> {
@@ -92,43 +62,24 @@ export async function getAllRecurringRulesForSync(): Promise<RecurringRule[]> {
     });
 }
 
-export async function clearAllData(): Promise<void> {
-    try {
-        const db = await getDb();
-        await new Promise<void>((resolve, reject) => {
-            const tx = db.transaction(
-                ["dimes", "bucks", "categories", "recurring-rules"],
-                "readwrite",
-            );
-            tx.objectStore("dimes").clear();
-            tx.objectStore("bucks").clear();
-            tx.objectStore("categories").clear();
-            tx.objectStore("recurring-rules").clear();
-            tx.oncomplete = () => resolve();
-            tx.onerror = () => reject(tx.error);
-        });
-    } catch {
-        await forceDeleteDb();
-    }
-}
-
-export async function bulkPutDimes(dimes: Dime[]): Promise<void> {
+export async function getAllTransactionsForSync(): Promise<Transaction[]> {
     const db = await getDb();
     return new Promise((resolve, reject) => {
-        const tx = db.transaction("dimes", "readwrite");
-        const store = tx.objectStore("dimes");
-        for (const dime of dimes) store.put(normalizeDime(dime));
-        tx.oncomplete = () => resolve();
-        tx.onerror = () => reject(tx.error);
+        const tx = db.transaction("transactions", "readonly");
+        const request = tx.objectStore("transactions").getAll();
+        request.onsuccess = () => resolve(request.result as Transaction[]);
+        request.onerror = () => reject(request.error);
     });
 }
 
-export async function bulkPutBucks(bucks: Buck[]): Promise<void> {
+export async function bulkPutTransactions(
+    transactions: Transaction[],
+): Promise<void> {
     const db = await getDb();
     return new Promise((resolve, reject) => {
-        const tx = db.transaction("bucks", "readwrite");
-        const store = tx.objectStore("bucks");
-        for (const buck of bucks) store.put(normalizeBuck(buck));
+        const tx = db.transaction("transactions", "readwrite");
+        const store = tx.objectStore("transactions");
+        for (const transaction of transactions) store.put(transaction);
         tx.oncomplete = () => resolve();
         tx.onerror = () => reject(tx.error);
     });
@@ -156,4 +107,23 @@ export async function bulkPutRecurringRules(
         tx.oncomplete = () => resolve();
         tx.onerror = () => reject(tx.error);
     });
+}
+
+export async function clearAllData(): Promise<void> {
+    try {
+        const db = await getDb();
+        await new Promise<void>((resolve, reject) => {
+            const tx = db.transaction(
+                ["categories", "recurring-rules", "transactions"],
+                "readwrite",
+            );
+            tx.objectStore("categories").clear();
+            tx.objectStore("recurring-rules").clear();
+            tx.objectStore("transactions").clear();
+            tx.oncomplete = () => resolve();
+            tx.onerror = () => reject(tx.error);
+        });
+    } catch {
+        await forceDeleteDb();
+    }
 }

@@ -1,9 +1,9 @@
 import { DateTime } from "luxon";
 
 const DB_NAME = "pangolog";
-const DB_VERSION = 3;
+const DB_VERSION = 4;
 
-const REQUIRED_STORES = ["dimes", "bucks", "categories", "recurring-rules"];
+const REQUIRED_STORES = ["categories", "recurring-rules", "transactions"];
 
 let dbPromise: Promise<IDBDatabase> | null = null;
 
@@ -74,6 +74,45 @@ function openDbRaw(): Promise<IDBDatabase> {
                     cursor.update({ ...cursor.value, isBigBuck: false });
                     cursor.continue();
                 };
+            }
+
+            if (event.oldVersion < 4) {
+                const upgradeTx = (event.target as IDBOpenDBRequest)
+                    .transaction;
+                if (!upgradeTx) return;
+
+                const transactions = db.createObjectStore("transactions", {
+                    keyPath: "id",
+                });
+                transactions.createIndex("yearMonth", ["year", "month"]);
+                transactions.createIndex("year", "year");
+                transactions.createIndex("categoryId", "categoryId");
+                transactions.createIndex("transactedAt", "transactedAt");
+
+                const txStore = upgradeTx.objectStore("transactions");
+
+                const dimesStore2 = upgradeTx.objectStore("dimes");
+                const dimeCursor2 = dimesStore2.openCursor();
+                dimeCursor2.onsuccess = (e) => {
+                    const cursor = (e.target as IDBRequest<IDBCursorWithValue>)
+                        .result;
+                    if (!cursor) return;
+                    txStore.put({ ...cursor.value, isBigBuck: false });
+                    cursor.continue();
+                };
+
+                const bucksStore2 = upgradeTx.objectStore("bucks");
+                const buckCursor2 = bucksStore2.openCursor();
+                buckCursor2.onsuccess = (e) => {
+                    const cursor = (e.target as IDBRequest<IDBCursorWithValue>)
+                        .result;
+                    if (!cursor) return;
+                    txStore.put({ ...cursor.value, isBigBuck: true });
+                    cursor.continue();
+                };
+
+                db.deleteObjectStore("dimes");
+                db.deleteObjectStore("bucks");
             }
         };
 

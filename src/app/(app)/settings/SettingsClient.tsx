@@ -373,12 +373,9 @@ export default function SettingsClient() {
                                     Preview:
                                 </p>
                                 <p className="text-default-600">
-                                    Dimes: +{importPreview.dimesAdded} new,{" "}
-                                    {importPreview.dimesUpdated} updated
-                                </p>
-                                <p className="text-default-600">
-                                    Bucks: +{importPreview.bucksAdded} new,{" "}
-                                    {importPreview.bucksUpdated} updated
+                                    Transactions: +
+                                    {importPreview.transactionsAdded} new,{" "}
+                                    {importPreview.transactionsUpdated} updated
                                 </p>
                                 <p className="text-default-600">
                                     Categories: +{importPreview.categoriesAdded}{" "}
@@ -414,12 +411,9 @@ export default function SettingsClient() {
                                     Import complete.
                                 </p>
                                 <p className="text-success-600">
-                                    Dimes: +{importResult.dimesAdded} new,{" "}
-                                    {importResult.dimesUpdated} updated
-                                </p>
-                                <p className="text-success-600">
-                                    Bucks: +{importResult.bucksAdded} new,{" "}
-                                    {importResult.bucksUpdated} updated
+                                    Transactions: +
+                                    {importResult.transactionsAdded} new,{" "}
+                                    {importResult.transactionsUpdated} updated
                                 </p>
                                 <p className="text-success-600">
                                     Categories: +{importResult.categoriesAdded}{" "}
