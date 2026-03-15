@@ -16,8 +16,7 @@ import { DateTime } from "luxon";
 import { useTheme } from "next-themes";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-import { forceDeleteDb } from "@/lib/db";
-import { clearAllData } from "@/lib/db/sync";
+import { clearAllData, forceDeleteDb } from "@/lib/db";
 import { exportJson } from "@/lib/export";
 import { useGoogleAuth } from "@/lib/hooks/useGoogleAuth";
 import { useLogger } from "@/lib/hooks/useLogger";
@@ -564,8 +563,8 @@ export default function SettingsClient() {
                     </h3>
                     <p className="text-xs text-default-400 mb-4">
                         Removes all local transactions, categories, and
-                        recurring rules, and disconnects Google Drive. Your
-                        data on Google Drive will remain intact.
+                        recurring rules, and disconnects Google Drive. Your data
+                        on Google Drive will remain intact.
                     </p>
                     <Button
                         color="danger"
