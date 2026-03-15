@@ -524,7 +524,7 @@ export default function SettingsClient() {
                         </Button>
 
                         <Button
-                            className="block mt-2"
+                            className="block mt-8"
                             color="danger"
                             variant="flat"
                             onPress={handleClearDebugLoggerEntry}
