@@ -16,6 +16,7 @@ import { DateTime } from "luxon";
 import { useTheme } from "next-themes";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
+import { forceDeleteDb } from "@/lib/db";
 import { clearAllData } from "@/lib/db/sync";
 import { exportJson } from "@/lib/export";
 import { useGoogleAuth } from "@/lib/hooks/useGoogleAuth";
@@ -48,6 +49,7 @@ export default function SettingsClient() {
         syncError,
         isAutobackupEnabled,
         setIsAutobackupEnabled,
+        setShouldShowDemoDataBanner,
     } = useLocalSettingsStore();
     const { getLoggerEntries, clearLoggerEntries } = useLogger();
 
@@ -68,6 +70,8 @@ export default function SettingsClient() {
 
     const [isResetDialogOpen, setIsResetDialogOpen] = useState(false);
     const [isResetting, setIsResetting] = useState(false);
+    const [isResetAppDialogOpen, setIsResetAppDialogOpen] = useState(false);
+    const [isResettingApp, setIsResettingApp] = useState(false);
 
     const [isLogDialogOpen, setIsLogDialogOpen] = useState(false);
 
@@ -94,9 +98,20 @@ export default function SettingsClient() {
         setIsResetting(true);
         if (isConnected) disconnect();
         await clearAllData();
+        setShouldShowDemoDataBanner(false);
         toast.success("All data has been reset. Reloading...");
         await new Promise((resolve) => setTimeout(resolve, 1500));
         window.location.reload();
+    }
+
+    async function handleResetApp() {
+        setIsResettingApp(true);
+        if (isConnected) disconnect();
+        localStorage.clear();
+        await forceDeleteDb();
+        toast.success("App reset. Reloading...");
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+        window.location.href = "/";
     }
 
     async function handleExportJson() {
@@ -509,12 +524,21 @@ export default function SettingsClient() {
                         </Button>
 
                         <Button
-                            className="block mt-12"
+                            className="block mt-2"
                             color="danger"
                             variant="flat"
                             onPress={handleClearDebugLoggerEntry}
                         >
                             Clear Logger entries
+                        </Button>
+
+                        <Button
+                            className="block mt-2"
+                            color="danger"
+                            variant="flat"
+                            onPress={() => setIsResetAppDialogOpen(true)}
+                        >
+                            Reset app
                         </Button>
                     </section>
                 )}
@@ -575,6 +599,39 @@ export default function SettingsClient() {
                             onPress={handleReset}
                         >
                             Reset
+                        </Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+
+            <Modal
+                isOpen={isResetAppDialogOpen}
+                onClose={() => setIsResetAppDialogOpen(false)}
+                classNames={{ closeButton: "cursor-pointer" }}
+            >
+                <ModalContent>
+                    <ModalHeader>Reset app?</ModalHeader>
+                    <ModalBody>
+                        <p className="text-sm text-default-600">
+                            This will wipe all local data and app settings,
+                            including your Google Drive connection. The database
+                            will be fully recreated on next load. This cannot be
+                            undone.
+                        </p>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button
+                            variant="light"
+                            onPress={() => setIsResetAppDialogOpen(false)}
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            color="danger"
+                            isLoading={isResettingApp}
+                            onPress={handleResetApp}
+                        >
+                            Reset app
                         </Button>
                     </ModalFooter>
                 </ModalContent>
