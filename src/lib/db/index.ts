@@ -16,6 +16,14 @@ export {
     getAllDimesForSync,
     purgeExpiredRecords,
 } from "./sync";
+export {
+    createTransaction,
+    deleteTransaction,
+    getTransactionsByMonth,
+    getTransactionsByYear,
+    restoreTransaction,
+    updateTransaction,
+} from "./transactions";
 export type {
     Buck,
     BuckInput,
@@ -26,4 +34,7 @@ export type {
     Dime,
     DimeInput,
     DimeUpdate,
+    Transaction,
+    TransactionInput,
+    TransactionUpdate,
 } from "./types";

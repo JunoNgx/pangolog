@@ -296,9 +296,10 @@
 This phase will render existing cloud data and json files obsolete and incompatible.
 
 ### Phase 8a: IDB
-- [ ] Implement object store for transactions
-- [ ] Implement indexing for transaction queries (by year and month)
-- [ ] Implement CRUD wrapper function for transactions
+- [x] Implement object store for transactions
+- [x] Implement indexing for transaction queries (by year and month)
+- [x] Implement CRUD wrapper function for transactions
+- [x] Implement `useTransactions` hook
 
 ### Phase 8b: Implement migration script
 - [ ] Implement migration to move data from `dimes` and `bucks` to `transactions`
