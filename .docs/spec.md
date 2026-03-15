@@ -90,7 +90,7 @@ Approach:
     - [ ] Chinese noodle, $20, category Food, dated current day
     - [ ] 4U Gas payment, $350, category Wage, dated current day
     - [ ] (big buck) What Remains of Edith Finch, $20, Videogame, dated the previous day
-    - [ ] (big buck, income) Poster design for LSPD, $200, dated current day
+    - [ ] (big buck, income) Poster design for LSPD, $2000, dated current day
 
 ## Data model
 
