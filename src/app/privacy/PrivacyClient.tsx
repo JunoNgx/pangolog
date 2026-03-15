@@ -48,11 +48,11 @@ export default function PrivacyClient() {
                     browser&apos;s IndexedDB storage on your device.
                 </p>
                 <p className="text-sm text-default-500">
-                    If you connect to Google Drive, we store a short-lived session
-                    token in an encrypted HTTP-only cookie solely to facilitate
-                    token refresh. Your Google email address is stored locally
-                    on your device and displayed in Settings. No data is
-                    transmitted to or stored on Pangolog servers.
+                    If you connect to Google Drive, we store a short-lived
+                    session token in an encrypted HTTP-only cookie solely to
+                    facilitate token refresh. Your Google email address is
+                    stored locally on your device and displayed in Settings. No
+                    data is transmitted to or stored on Pangolog servers.
                 </p>
             </Section>
 
