@@ -325,3 +325,7 @@ This phase will render existing cloud data and json files obsolete and incompati
 - [ ] Replace download logic to fetch `YYYY.json` files
 - [ ] Smart sync: skip download if Drive `modifiedTime` <= `lastSyncTime`
 - [ ] Smart sync: only upload years with local mutations since `lastSyncTime`
+
+### Phase 8g: Delete old logic
+- [ ] Delete IDB stores for dimes and bucks
+- [ ] Delete dimes and bucks hooks
