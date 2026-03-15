@@ -334,7 +334,7 @@ This phase will render existing cloud data and json files obsolete and incompati
 ## Task 9: Cloud autobackup
 
 ### Phase 9a: Drive client
-- [ ] Add `backupFileName(year, month): string` → `backup-YYYY-MM.json` to drive client
+- [x] Add `backupFileName(year, month): string` → `backup-YYYY-MM.json` to drive client
 
 ### Phase 9b: Backup logic
 - [ ] After each successful sync, check if `backup-YYYY-MM.json` for the current month exists in the Pangolog Drive folder
