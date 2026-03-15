@@ -42,7 +42,13 @@ export default function SettingsClient() {
         useGoogleAuth();
     const { theme, setTheme } = useTheme();
     const { sync } = useSync();
-    const { syncStatus, lastSyncTime, syncError } = useLocalSettingsStore();
+    const {
+        syncStatus,
+        lastSyncTime,
+        syncError,
+        isAutobackupEnabled,
+        setIsAutobackupEnabled,
+    } = useLocalSettingsStore();
     const { getLoggerEntries, clearLoggerEntries } = useLogger();
 
     const [isPrettyPrint, setIsPrettyPrint] = useState(true);
@@ -262,6 +268,25 @@ export default function SettingsClient() {
                         {error && (
                             <p className="text-xs text-danger-500">{error}</p>
                         )}
+                        <Checkbox
+                            isSelected={isAutobackupEnabled}
+                            onValueChange={setIsAutobackupEnabled}
+                            isDisabled={!isConnected}
+                            size="sm"
+                        >
+                            <span className="text-sm">Monthly autobackup</span>
+                        </Checkbox>
+                        {!isConnected && (
+                            <p className="text-xs text-default-400">
+                                Connect Google Drive to enable autobackup.
+                            </p>
+                        )}
+                        <p className="text-xs text-default-400">
+                            A backup is written to your Pangolog Drive folder
+                            each month (backup-YYYY-MM.json) in the same format
+                            as the JSON export below. Backups accumulate over
+                            time - clean up old ones manually as needed.
+                        </p>
                     </div>
                 </section>
 
