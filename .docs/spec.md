@@ -59,6 +59,11 @@ Approach:
 - Data with `deletedAt` older than 60 days are removed on both local and cloud instance.
 - On a Drive API 401, a forced server-side token refresh is attempted via `POST /api/auth/refresh`. If the refresh fails (cookie missing or refresh token revoked), sync resets to idle silently and the user remains shown as connected. If the forced refresh succeeds but Drive still returns 401 (genuine revocation), `setAuthToken(null)` is called and a "please reconnect" toast is shown.
 
+### Cloud Autobackup
+- For user who has connected to GDrive for cloud sync
+- Store data in a monthly basis in `backup-YYYY-MM.json`
+- Will skip if the current month's backup already exists
+- No pruning, data is accumulated over time (user should be advised to clean up as needed)
 
 ### Data mobility
 - Export transactions to JSON
@@ -302,6 +307,7 @@ Approach:
         - `YYYY.json`
         - `settings.json`
         - `recurring-rules.json`
+        - `backup-YYYY-MM.json` (if autobackup is enabled)
         - Sync-triggering events/logic (`visibilitychange`)
 
 ## Recurring expenses
