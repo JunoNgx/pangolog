@@ -1,24 +1,22 @@
 import {
-    bulkPutBucks,
     bulkPutCategories,
-    bulkPutDimes,
     bulkPutRecurringRules,
-    getAllBucksForSync,
+    bulkPutTransactions,
     getAllCategoriesForSync,
-    getAllDimesForSync,
     getAllRecurringRulesForSync,
+    getAllTransactionsForSync,
     purgeExpiredRecords,
 } from "@/lib/db/sync";
-import type { Buck, Category, Dime, RecurringRule } from "@/lib/db/types";
+import type { Category, RecurringRule, Transaction } from "@/lib/db/types";
+import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
 import {
-    buckFileName,
     CATEGORIES_FILE,
-    dimeFileName,
     downloadFile,
     listFiles,
     RECURRING_RULES_FILE,
     SETTINGS_FILE,
+    transactionFileName,
     trashFile,
     upsertFile,
 } from "./client";
@@ -65,24 +63,30 @@ function mergeRecords<T extends { id: string; updatedAt: string }>(
 export async function syncAll(token: string, folderId: string): Promise<void> {
     await purgeExpiredRecords();
 
-    const [localDimes, localBucks, localCategories, localRules] =
-        await Promise.all([
-            getAllDimesForSync(),
-            getAllBucksForSync(),
-            getAllCategoriesForSync(),
-            getAllRecurringRulesForSync(),
-        ]);
+    const lastSyncTime = useLocalSettingsStore.getState().lastSyncTime;
+
+    const [localTransactions, localCategories, localRules] = await Promise.all([
+        getAllTransactionsForSync(),
+        getAllCategoriesForSync(),
+        getAllRecurringRulesForSync(),
+    ]);
 
     const driveFiles = await listFiles(token, folderId);
 
     // Deduplicate Drive files by name - keep first occurrence, trash extras
-    const driveFileMap = new Map<string, string>();
+    const driveFileMap = new Map<
+        string,
+        { id: string; modifiedTime: string }
+    >();
     const toTrash: string[] = [];
     for (const f of driveFiles) {
         if (driveFileMap.has(f.name)) {
             toTrash.push(f.id);
         } else {
-            driveFileMap.set(f.name, f.id);
+            driveFileMap.set(f.name, {
+                id: f.id,
+                modifiedTime: f.modifiedTime,
+            });
         }
     }
     if (toTrash.length > 0) {
@@ -98,9 +102,12 @@ export async function syncAll(token: string, folderId: string): Promise<void> {
         applyRemoteSettings,
     } = useProfileSettingsStore.getState();
 
-    const settingsFileId = driveFileMap.get(SETTINGS_FILE);
-    if (settingsFileId) {
-        const remote = await downloadFile<DriveSettings>(token, settingsFileId);
+    const settingsEntry = driveFileMap.get(SETTINGS_FILE);
+    if (settingsEntry) {
+        const remote = await downloadFile<DriveSettings>(
+            token,
+            settingsEntry.id,
+        );
         if (remote.updatedAt > settingsUpdatedAt) {
             applyRemoteSettings(
                 remote.customCurrency,
@@ -117,62 +124,58 @@ export async function syncAll(token: string, folderId: string): Promise<void> {
     };
     await upsertFile(token, folderId, SETTINGS_FILE, localSettings);
 
-    // --- Download and merge ---
+    // --- Download and merge categories + rules ---
 
-    const categoriesFileId = driveFileMap.get(CATEGORIES_FILE);
-    if (categoriesFileId) {
-        const remote = await downloadFile<Category[]>(token, categoriesFileId);
+    const categoriesEntry = driveFileMap.get(CATEGORIES_FILE);
+    if (categoriesEntry) {
+        const remote = await downloadFile<Category[]>(
+            token,
+            categoriesEntry.id,
+        );
         await bulkPutCategories(mergeRecords(localCategories, remote));
     }
 
-    const rulesFileId = driveFileMap.get(RECURRING_RULES_FILE);
-    if (rulesFileId) {
-        const remote = await downloadFile<RecurringRule[]>(token, rulesFileId);
+    const rulesEntry = driveFileMap.get(RECURRING_RULES_FILE);
+    if (rulesEntry) {
+        const remote = await downloadFile<RecurringRule[]>(
+            token,
+            rulesEntry.id,
+        );
         await bulkPutRecurringRules(mergeRecords(localRules, remote));
     }
 
-    const localDimesByMonth = groupBy(localDimes, (d) =>
-        dimeFileName(d.year, d.month),
+    // --- Download and merge transactions (YYYY.json, smart sync) ---
+
+    const localTransactionsByYear = groupBy(localTransactions, (t) =>
+        transactionFileName(t.year),
     );
-    const driveMonthFiles = driveFiles
-        .map((f) => f.name)
-        .filter((name) => /^\d{4}-\d{2}\.json$/.test(name));
-    const allMonthFiles = new Set([
-        ...localDimesByMonth.keys(),
-        ...driveMonthFiles,
-    ]);
 
-    for (const monthFile of allMonthFiles) {
-        const fileId = driveFileMap.get(monthFile);
-        if (!fileId) continue;
-        const local = localDimesByMonth.get(monthFile) ?? [];
-        const remote = await downloadFile<Dime[]>(token, fileId);
-        await bulkPutDimes(mergeRecords(local, remote));
-    }
-
-    const localBucksByYear = groupBy(localBucks, (b) => buckFileName(b.year));
     const driveYearFiles = driveFiles
         .map((f) => f.name)
-        .filter((name) => /^\d{4}-bucks\.json$/.test(name));
+        .filter((name) => /^\d{4}\.json$/.test(name));
+
     const allYearFiles = new Set([
-        ...localBucksByYear.keys(),
+        ...localTransactionsByYear.keys(),
         ...driveYearFiles,
     ]);
 
     for (const yearFile of allYearFiles) {
-        const fileId = driveFileMap.get(yearFile);
-        if (!fileId) continue;
-        const local = localBucksByYear.get(yearFile) ?? [];
-        const remote = await downloadFile<Buck[]>(token, fileId);
-        await bulkPutBucks(mergeRecords(local, remote));
+        const driveEntry = driveFileMap.get(yearFile);
+        if (!driveEntry) continue;
+
+        // Smart sync: skip download if file not modified since last sync
+        if (lastSyncTime && driveEntry.modifiedTime <= lastSyncTime) continue;
+
+        const local = localTransactionsByYear.get(yearFile) ?? [];
+        const remote = await downloadFile<Transaction[]>(token, driveEntry.id);
+        await bulkPutTransactions(mergeRecords(local, remote));
     }
 
     // --- Upload merged local data ---
 
-    const [mergedDimes, mergedBucks, mergedCategories, mergedRules] =
+    const [mergedTransactions, mergedCategories, mergedRules] =
         await Promise.all([
-            getAllDimesForSync(),
-            getAllBucksForSync(),
+            getAllTransactionsForSync(),
             getAllCategoriesForSync(),
             getAllRecurringRulesForSync(),
         ]);
@@ -186,16 +189,19 @@ export async function syncAll(token: string, folderId: string): Promise<void> {
         upsertFile(token, folderId, RECURRING_RULES_FILE, mergedRules),
     );
 
-    const mergedDimesByMonth = groupBy(mergedDimes, (d) =>
-        dimeFileName(d.year, d.month),
+    const mergedTransactionsByYear = groupBy(mergedTransactions, (t) =>
+        transactionFileName(t.year),
     );
-    for (const [fileName, dimes] of mergedDimesByMonth) {
-        uploads.push(upsertFile(token, folderId, fileName, dimes));
-    }
 
-    const mergedBucksByYear = groupBy(mergedBucks, (b) => buckFileName(b.year));
-    for (const [fileName, bucks] of mergedBucksByYear) {
-        uploads.push(upsertFile(token, folderId, fileName, bucks));
+    for (const [yearFile, transactions] of mergedTransactionsByYear) {
+        // Smart sync: skip upload if no mutations since last sync
+        if (
+            lastSyncTime &&
+            !transactions.some((t) => t.updatedAt > lastSyncTime)
+        ) {
+            continue;
+        }
+        uploads.push(upsertFile(token, folderId, yearFile, transactions));
     }
 
     await Promise.all(uploads);

@@ -5,13 +5,8 @@ const FOLDER_MIME = "application/vnd.google-apps.folder";
 
 // --- File name helpers ---
 
-export function dimeFileName(year: number, month: number): string {
-    const mm = String(month).padStart(2, "0");
-    return `${year}-${mm}.json`;
-}
-
-export function buckFileName(year: number): string {
-    return `${year}-bucks.json`;
+export function transactionFileName(year: number): string {
+    return `${year}.json`;
 }
 
 export const CATEGORIES_FILE = "categories.json";
@@ -20,9 +15,10 @@ export const SETTINGS_FILE = "settings.json";
 
 // --- Types ---
 
-interface DriveFile {
+export interface DriveFile {
     id: string;
     name: string;
+    modifiedTime: string;
 }
 
 interface DriveFileList {
@@ -101,9 +97,10 @@ export async function listFiles(
         `'${folderId}' in parents and trashed=false`,
     );
     const res = await expectOk(
-        await fetch(`${DRIVE_API}/files?q=${query}&fields=files(id,name)`, {
-            headers: authHeader(token),
-        }),
+        await fetch(
+            `${DRIVE_API}/files?q=${query}&fields=files(id,name,modifiedTime)`,
+            { headers: authHeader(token) },
+        ),
     );
     const { files } = (await res.json()) as DriveFileList;
     return files;
