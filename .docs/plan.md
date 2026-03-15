@@ -196,24 +196,19 @@
 - [x] Manual sync button (settings page)
 - [x] Error notifications (toast) - deferred to Phase 1h
 
-### Phase 3e: Initialise demo data upon entering the app
-- [ ] Should use the time user enters the app as creation datetime
-- [ ] Categories
-    - [ ] Food
-    - [ ] Videogame
-    - [ ] Grocery
-- [ ] Small dimes
-    - [ ] Eggs, $5, category Grocery
-    - [ ] Sandwich, $10, category Food
-- [ ] Big bucks
-    - [ ] What Remains of Edith Finch, $20, Videogame
-- [ ] Resolution with existing cloud data
-    - [ ] Store the seed data ids for potential purging
-    - [ ] New user, no GDrive, no problem
-    - [ ] First sync: Confirm with user whether they want to carry over seed data.
-        - [ ] Keep it: clear seed ids and sync
-        - [ ] Discard: hard-delete seed data, clear seed ids, then sync clean data.
-    - [ ] Returning user: seed, but upon connecting to Gdrive and triggering sync, the dialog is fired
+### Phase 3e: Implement demo data
+
+#### Phase 3e-1: demo data
+- [ ] Implement demo data as part of migration
+
+#### Phase 3e-2: multiple clear data options
+- [ ] Implement `shouldShowDemoDataBanner` in `localSettingsStore`
+- [ ] Clear all data: remove all records in all tables
+    - [ ] This will also set `shouldShowDemoDataBanner` to `false`
+- [ ] Reset app: wipes all tables and localStorage data, hidden behind Debug section
+
+#### Phase 3e-3: Implement onboarding interface
+- [ ] Implement Tip banner in Settings in the `Google Drive Sync` about clearing records prior to syncing
 
 ## Phase 4: Data mobility
 
