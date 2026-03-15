@@ -91,28 +91,21 @@ function openDbRaw(): Promise<IDBDatabase> {
 
                 const txStore = upgradeTx.objectStore("transactions");
 
-                const dimesStore2 = upgradeTx.objectStore("dimes");
-                const dimeCursor2 = dimesStore2.openCursor();
-                dimeCursor2.onsuccess = (e) => {
-                    const cursor = (e.target as IDBRequest<IDBCursorWithValue>)
-                        .result;
-                    if (!cursor) return;
-                    txStore.put({ ...cursor.value, isBigBuck: false });
-                    cursor.continue();
+                const getAllDimes = upgradeTx.objectStore("dimes").getAll();
+                getAllDimes.onsuccess = () => {
+                    for (const dime of getAllDimes.result) {
+                        txStore.put({ ...dime, isBigBuck: false });
+                    }
+                    db.deleteObjectStore("dimes");
                 };
 
-                const bucksStore2 = upgradeTx.objectStore("bucks");
-                const buckCursor2 = bucksStore2.openCursor();
-                buckCursor2.onsuccess = (e) => {
-                    const cursor = (e.target as IDBRequest<IDBCursorWithValue>)
-                        .result;
-                    if (!cursor) return;
-                    txStore.put({ ...cursor.value, isBigBuck: true });
-                    cursor.continue();
+                const getAllBucks = upgradeTx.objectStore("bucks").getAll();
+                getAllBucks.onsuccess = () => {
+                    for (const buck of getAllBucks.result) {
+                        txStore.put({ ...buck, isBigBuck: true });
+                    }
+                    db.deleteObjectStore("bucks");
                 };
-
-                db.deleteObjectStore("dimes");
-                db.deleteObjectStore("bucks");
             }
         };
 
