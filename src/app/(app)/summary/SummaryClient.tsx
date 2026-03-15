@@ -5,11 +5,13 @@ import { DateTime } from "luxon";
 import { useCallback, useMemo, useState } from "react";
 import { MonthYearPicker } from "@/components/MonthYearPicker";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
-import type { Buck, Category, Dime } from "@/lib/db/types";
-import { useBucks } from "@/lib/hooks/useBucks";
+import type { Category, Transaction } from "@/lib/db/types";
 import { useCategories } from "@/lib/hooks/useCategories";
-import { useDimes, useDimesByYear } from "@/lib/hooks/useDimes";
 import { useHotkey } from "@/lib/hooks/useHotkey";
+import {
+    useTransactionsByMonth,
+    useTransactionsByYear,
+} from "@/lib/hooks/useTransactions";
 import { formatAmount, SELECT_CLASSES, YEAR_OPTIONS } from "@/lib/utils";
 
 const OTHER_COLOUR = "#9ca3af";
@@ -29,7 +31,7 @@ interface SliceResult {
 }
 
 function buildSlices(
-    transactions: (Dime | Buck)[],
+    transactions: Transaction[],
     categoryMap: Map<string, Category>,
     isIncome: boolean,
 ): SliceResult {
@@ -151,37 +153,44 @@ export default function SummaryClient() {
     useHotkey("i", toggleIncludeBucks, { ctrlOrMeta: true });
 
     const { data: categories } = useCategories();
-    const { data: monthlyDimes } = useDimes(selectedYear, selectedMonth);
-    const { data: yearlyDimes } = useDimesByYear(selectedYear);
-    const { data: bucks } = useBucks(selectedYear);
+    const { data: monthlyTransactions } = useTransactionsByMonth(
+        selectedYear,
+        selectedMonth,
+    );
+    const { data: yearlyTransactions } = useTransactionsByYear(selectedYear);
 
     const categoryMap = useMemo(
         () => new Map((categories ?? []).map((c) => [c.id, c])),
         [categories],
     );
 
-    const monthlyBucks = useMemo(
-        () =>
-            (bucks ?? []).filter(
-                (b) => DateTime.fromISO(b.transactedAt).month === selectedMonth,
-            ),
-        [bucks, selectedMonth],
-    );
+    const transactions = useMemo<Transaction[]>(() => {
+        const yearly = yearlyTransactions ?? [];
+        const monthly = monthlyTransactions ?? [];
 
-    const transactions = useMemo<(Dime | Buck)[]>(() => {
-        if (isYearly && isViewingBucksOnly) return bucks ?? [];
-        const dimes = isYearly ? (yearlyDimes ?? []) : (monthlyDimes ?? []);
-        if (isYearly && includeBucks) return [...dimes, ...(bucks ?? [])];
-        if (!isYearly && includeBucks) return [...dimes, ...monthlyBucks];
-        return dimes;
+        if (isYearly && isViewingBucksOnly) {
+            return yearly.filter((t) => t.isBigBuck);
+        }
+
+        const base = isYearly
+            ? yearly.filter((t) => !t.isBigBuck)
+            : monthly.filter((t) => !t.isBigBuck);
+
+        if (includeBucks && isYearly) {
+            return [...base, ...yearly.filter((t) => t.isBigBuck)];
+        }
+
+        if (includeBucks && !isYearly) {
+            return [...base, ...monthly.filter((t) => t.isBigBuck)];
+        }
+
+        return base;
     }, [
         isYearly,
         isViewingBucksOnly,
         includeBucks,
-        monthlyDimes,
-        yearlyDimes,
-        bucks,
-        monthlyBucks,
+        monthlyTransactions,
+        yearlyTransactions,
     ]);
 
     const { slices: expenseSlices, total: expenseTotal } = useMemo(
