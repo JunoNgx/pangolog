@@ -343,5 +343,5 @@ This phase will render existing cloud data and json files obsolete and incompati
 
 ### Phase 9c: Implement UI
 - [x] Implement `isAutobackupEnabled` in `localSettingsStore`
-- [ ] Implement toggle checkbox in settings
-- [ ] Implement note informing the user that monthly backups accumulate and they should clean up old ones manually
+- [x] Implement toggle checkbox in settings
+- [x] Implement note informing the user that monthly backups accumulate and they should clean up old ones manually
