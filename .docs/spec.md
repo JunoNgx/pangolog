@@ -49,8 +49,6 @@ Approach:
 
 ### Synchronisation
 - Cloud synchronisation is entirely optional, users can start using immediately without providing Google Drive authorisation.
-- New users are seeded with demo data (categories: Food, Grocery, Videogame; transactions: Eggs, Sandwich, What Remains of Edith Finch). *(not yet implemented)*
-- On first sync, users are prompted whether to carry over seed data to the cloud or discard it before syncing. *(not yet implemented)*
 - Data is sync'ed with transaction, debounced to 30s.
 - Data is sync'ed upon `visibilitychange` and `document.visibilityState === hidden`.
 - Data is resolved on the "Last write wins", using `updatedAt`.
@@ -77,6 +75,22 @@ Approach:
 - Works offline without an internet connection
 - Offline indicator
 - Queue changes made offline for sync when connection returns
+
+### Demo data
+- New users are seeded with demo data. Data are retroactively and relatively dated based on current time.
+- Categories (all created three days ago):
+    - Food
+    - Videogame (big buck)
+    - Grocery
+    - Freelancing (income)
+    - Wage (income)
+- Transactions:
+    - [ ] Eggs, $5, category Grocery, dated the previous day
+    - [ ] Sandwich, $12, category Food, dated the previous day
+    - [ ] Chinese noodle, $20, category Food, dated current day
+    - [ ] 4U Gas payment, $350, category Wage, dated current day
+    - [ ] (big buck) What Remains of Edith Finch, $20, Videogame, dated the previous day
+    - [ ] (big buck, income) Poster design for LSPD, $200, dated current day
 
 ## Data model
 
