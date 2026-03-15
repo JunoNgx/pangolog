@@ -304,7 +304,7 @@ function seedDemoData(upgradeTx: IDBTransaction): void {
     txStore.put({
         id: generateId(),
         description: "Poster design for LSPD",
-        amount: 20000,
+        amount: 200000,
         categoryId: catFreelancing,
         isIncome: true,
         isBigBuck: true,
