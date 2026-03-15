@@ -5,7 +5,7 @@ import {
     getAllCategoriesForSync,
     getAllRecurringRulesForSync,
     getAllTransactionsForSync,
-} from "./db/sync";
+} from "./db/bulk";
 import type { Category, RecurringRule, Transaction } from "./db/types";
 import { useProfileSettingsStore } from "./store/useProfileSettingsStore";
 

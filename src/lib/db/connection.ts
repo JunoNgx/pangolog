@@ -314,5 +314,4 @@ function seedDemoData(upgradeTx: IDBTransaction): void {
         updatedAt: auditNow,
         deletedAt: null,
     });
-
 }
