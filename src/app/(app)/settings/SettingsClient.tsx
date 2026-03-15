@@ -563,17 +563,16 @@ export default function SettingsClient() {
                         Danger Zone
                     </h3>
                     <p className="text-xs text-default-400 mb-4">
-                        Disconnects Google Drive and permanently deletes all
-                        local data. Your data on Google Drive will remain
-                        intact. Use this to start fresh on this device. This
-                        cannot be undone.
+                        Removes all local transactions, categories, and
+                        recurring rules, and disconnects Google Drive. Your
+                        data on Google Drive will remain intact.
                     </p>
                     <Button
                         color="danger"
                         variant="flat"
                         onPress={() => setIsResetDialogOpen(true)}
                     >
-                        Reset all data
+                        Clear local records
                     </Button>
                 </section>
             </div>
@@ -584,14 +583,7 @@ export default function SettingsClient() {
                 classNames={{ closeButton: "cursor-pointer" }}
             >
                 <ModalContent>
-                    <ModalHeader>Reset all data?</ModalHeader>
-                    <ModalBody>
-                        <p className="text-sm text-default-600">
-                            This will disconnect Google Drive and permanently
-                            delete all local transactions, categories, and
-                            settings. This cannot be undone.
-                        </p>
-                    </ModalBody>
+                    <ModalHeader>Clear local records?</ModalHeader>
                     <ModalFooter>
                         <Button
                             variant="light"
@@ -604,7 +596,7 @@ export default function SettingsClient() {
                             isLoading={isResetting}
                             onPress={handleReset}
                         >
-                            Reset
+                            Clear
                         </Button>
                     </ModalFooter>
                 </ModalContent>
