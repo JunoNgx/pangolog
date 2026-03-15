@@ -59,8 +59,8 @@ export default function HelpClient() {
                 </p>
                 <Term name="iOS (Safari)">
                     Tap the Share button at the bottom of the screen, then
-                    select "Add to Home Screen". Safari only - Chrome and Firefox
-                    on iOS do not support installation.
+                    select "Add to Home Screen". Safari only - Chrome and
+                    Firefox on iOS do not support installation.
                 </Term>
                 <Term name="Android (Chrome)">
                     Tap the three-dot menu in the top right and select "Add to
