@@ -302,7 +302,7 @@ This phase will render existing cloud data and json files obsolete and incompati
 - [x] Implement `useTransactions` hook
 
 ### Phase 8b: Implement migration script
-- [ ] Implement migration to move data from `dimes` and `bucks` to `transactions`
+- [x] Implement migration to move data from `dimes` and `bucks` to `transactions`
 
 ### Phase 8c: Update hooks and views
 - [ ] Replace `useDimes`, `useBucks`, `useBucksByMonth`, `useDimesByYear` with unified `useTransactions` hook(s)
