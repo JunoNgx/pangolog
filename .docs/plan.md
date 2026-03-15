@@ -196,24 +196,23 @@
 - [x] Manual sync button (settings page)
 - [x] Error notifications (toast) - deferred to Phase 1h
 
-### Phase 3e: Initialise demo data upon entering the app
-- [ ] Should use the time user enters the app as creation datetime
-- [ ] Categories
-    - [ ] Food
-    - [ ] Videogame
-    - [ ] Grocery
-- [ ] Small dimes
-    - [ ] Eggs, $5, category Grocery
-    - [ ] Sandwich, $10, category Food
-- [ ] Big bucks
-    - [ ] What Remains of Edith Finch, $20, Videogame
-- [ ] Resolution with existing cloud data
-    - [ ] Store the seed data ids for potential purging
-    - [ ] New user, no GDrive, no problem
-    - [ ] First sync: Confirm with user whether they want to carry over seed data.
-        - [ ] Keep it: clear seed ids and sync
-        - [ ] Discard: hard-delete seed data, clear seed ids, then sync clean data.
-    - [ ] Returning user: seed, but upon connecting to Gdrive and triggering sync, the dialog is fired
+### Phase 3e: Implement demo data
+
+#### Phase 3e-1: demo data
+- [x] Implement demo data as part of migration
+
+#### Phase 3e-2: clear data options
+- [x] Clear local records: hard-deletes all records in all tables
+- [x] Reset app: wipes all tables and localStorage data, hidden behind Debug section
+
+#### Phase 3e-3: opt-in demo data banner
+- [x] Remove automatic seeding from IDB migration
+- [x] Implement `shouldShowDemoDataBanner` in `localSettingsStore` (default true, persisted)
+- [x] Implement `DemoDataBanner`.
+- [x] Show banner on `/log` and `/manage` (categories) for new users with "Load sample data" and "Dismiss" options
+    - [x] Load sample data: seeds demo data as regular records, sets `shouldShowDemoDataBanner` to false
+    - [x] Dismiss: sets `shouldShowDemoDataBanner` to false
+- [x] Fix Zustand persist SSR hydration: add `StoreHydration` to `providers.tsx`
 
 ## Phase 4: Data mobility
 

@@ -1,19 +1,20 @@
 export {
+    bulkPutCategories,
+    bulkPutRecurringRules,
+    bulkPutTransactions,
+    clearAllData,
+    getAllCategoriesForSync,
+    getAllRecurringRulesForSync,
+    getAllTransactionsForSync,
+    purgeExpiredRecords,
+} from "./bulk";
+export {
     createCategory,
     deleteCategory,
     getAllCategories,
     updateCategory,
 } from "./categories";
-export { getDb } from "./connection";
-export {
-    bulkPutCategories,
-    bulkPutRecurringRules,
-    bulkPutTransactions,
-    getAllCategoriesForSync,
-    getAllRecurringRulesForSync,
-    getAllTransactionsForSync,
-    purgeExpiredRecords,
-} from "./sync";
+export { forceDeleteDb, getDb } from "./connection";
 export {
     createTransaction,
     deleteTransaction,

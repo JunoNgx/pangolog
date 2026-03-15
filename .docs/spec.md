@@ -49,8 +49,6 @@ Approach:
 
 ### Synchronisation
 - Cloud synchronisation is entirely optional, users can start using immediately without providing Google Drive authorisation.
-- New users are seeded with demo data (categories: Food, Grocery, Videogame; transactions: Eggs, Sandwich, What Remains of Edith Finch). *(not yet implemented)*
-- On first sync, users are prompted whether to carry over seed data to the cloud or discard it before syncing. *(not yet implemented)*
 - Data is sync'ed with transaction, debounced to 30s.
 - Data is sync'ed upon `visibilitychange` and `document.visibilityState === hidden`.
 - Data is resolved on the "Last write wins", using `updatedAt`.
@@ -77,6 +75,28 @@ Approach:
 - Works offline without an internet connection
 - Offline indicator
 - Queue changes made offline for sync when connection returns
+
+### Demo data
+- Demo data is opt-in. New users see a banner on their first visit to `/log`  or `/manage` (categories).
+    - Banner content: New here? Have a taste and explore.
+    - Buttons:
+        - Load sample data
+        - Dismiss
+- Once loaded, demo data is treated as regular data - no special tracking or sync handling.
+- The banner is dismissed once the user loads the data or manually dismisses it.
+- Categories (all created three days ago):
+    - Food
+    - Videogame (big buck)
+    - Grocery
+    - Freelancing (income)
+    - Wage (income)
+- Transactions:
+    - [ ] Eggs, $5, category Grocery, dated the previous day
+    - [ ] Sandwich, $12, category Food, dated the previous day
+    - [ ] Chinese noodle, $20, category Food, dated current day
+    - [ ] 4U Gas payment, $350, category Wage, dated current day
+    - [ ] (big buck) What Remains of Edith Finch, $20, Videogame, dated the previous day
+    - [ ] (big buck, income) Poster design for LSPD, $2000, dated current day
 
 ## Data model
 
@@ -407,6 +427,12 @@ The PWA manifest is in place but no service worker is configured yet. Implementi
 5. **Next.js App Router compatibility** — `next-pwa` is largely unmaintained; the App Router-compatible fork is `@ducanh2912/next-pwa`. Alternatively, a hand-written `sw.js` with a `cache.addAll()` on install and a cache-first fetch strategy is viable for a solo project — the only maintenance cost is bumping a cache version constant on each deployment. Pin Next.js and the SW plugin versions and upgrade them together.
 
 A manual "Clear service worker cache" button in Settings (debug section) is a useful escape hatch during development and testing.
+
+### Zustand persist SSR hydration
+
+Zustand's `persist` middleware calls `hydrate()` once when the store module is first evaluated. In Next.js App Router, this can happen server-side (during SSR) where `localStorage` is unavailable. When no storage is found, Zustand skips calling the `onRehydrateStorage` callback entirely - meaning `hasHydrated` never becomes `true` on the client, and any UI gated behind `hasHydrated` never renders.
+
+The fix is a `StoreHydration` component mounted in `providers.tsx` that calls `useLocalSettingsStore.persist.rehydrate()` in a `useEffect`. This guarantees client-side rehydration runs regardless of what happened during SSR.
 
 ### Unified transactions table
 Dimes and bucks are stored in a single `transactions` IndexedDB store, distinguished by `isBigBuck`. This simplifies the data model, eliminates normalization shims, and allows a single `[year, month]` compound index to serve both dime month queries and the "include Big Bucks in month view" feature. On Drive, all transactions for a year are stored in a single `YYYY.json` file rather than split by type and month.
