@@ -67,10 +67,10 @@ export default function SettingsClient() {
     const [isMounted, setIsMounted] = useState(false);
     useEffect(() => setIsMounted(true), []);
 
-    const [isResetDialogOpen, setIsResetDialogOpen] = useState(false);
-    const [isResetting, setIsResetting] = useState(false);
+    const [isClearRecordsDialogOpen, setIsResetDialogOpen] = useState(false);
+    const [isClearingRecords, setIsResetting] = useState(false);
     const [isResetAppDialogOpen, setIsResetAppDialogOpen] = useState(false);
-    const [isResettingApp, setIsResettingApp] = useState(false);
+    const [isClearingRecordsApp, setIsResettingApp] = useState(false);
 
     const [isLogDialogOpen, setIsLogDialogOpen] = useState(false);
 
@@ -93,7 +93,7 @@ export default function SettingsClient() {
         }
     }
 
-    async function handleReset() {
+    async function handleClearLocalRecords() {
         setIsResetting(true);
         if (isConnected) disconnect();
         await clearAllData();
@@ -103,7 +103,7 @@ export default function SettingsClient() {
         window.location.reload();
     }
 
-    async function handleResetApp() {
+    async function handleClearLocalRecordsApp() {
         setIsResettingApp(true);
         if (isConnected) disconnect();
         localStorage.clear();
@@ -577,7 +577,7 @@ export default function SettingsClient() {
             </div>
 
             <Modal
-                isOpen={isResetDialogOpen}
+                isOpen={isClearRecordsDialogOpen}
                 onClose={() => setIsResetDialogOpen(false)}
                 classNames={{ closeButton: "cursor-pointer" }}
             >
@@ -597,8 +597,8 @@ export default function SettingsClient() {
                         </Button>
                         <Button
                             color="danger"
-                            isLoading={isResetting}
-                            onPress={handleReset}
+                            isLoading={isClearingRecords}
+                            onPress={handleClearLocalRecords}
                         >
                             Clear
                         </Button>
@@ -627,8 +627,8 @@ export default function SettingsClient() {
                         </Button>
                         <Button
                             color="danger"
-                            isLoading={isResettingApp}
-                            onPress={handleResetApp}
+                            isLoading={isClearingRecordsApp}
+                            onPress={handleClearLocalRecordsApp}
                         >
                             Reset app
                         </Button>
