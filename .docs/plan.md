@@ -305,9 +305,9 @@ This phase will render existing cloud data and json files obsolete and incompati
 - [x] Implement migration to move data from `dimes` and `bucks` to `transactions`
 
 ### Phase 8c: Update hooks and views
-- [ ] Replace `useDimes`, `useBucks`, `useBucksByMonth`, `useDimesByYear` with unified `useTransactions` hook(s)
-- [ ] Update `/log` view to use new hooks
-- [ ] Update `/summary` view to use new hooks
+- [x] Replace `useDimes`, `useBucks`, `useBucksByMonth`, `useDimesByYear` with unified `useTransactions` hook(s)
+- [x] Update `/log` view to use new hooks
+- [x] Update `/summary` view to use new hooks
 
 ### Phase 8d: Update recurring rules
 - [ ] Update recurring rules logic to create new transactions correctly

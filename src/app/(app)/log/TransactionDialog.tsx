@@ -16,20 +16,14 @@ import { toast } from "sonner";
 import { CategoryDialog } from "@/components/CategoryDialog";
 import { CategoryPicker } from "@/components/CategoryPicker";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
-import type { Buck, Dime } from "@/lib/db/types";
-import {
-    useCreateBuck,
-    useDeleteBuck,
-    useRestoreBuck,
-    useUpdateBuck,
-} from "@/lib/hooks/useBucks";
+import type { Transaction } from "@/lib/db/types";
 import { useCategories } from "@/lib/hooks/useCategories";
 import {
-    useCreateDime,
-    useDeleteDime,
-    useRestoreDime,
-    useUpdateDime,
-} from "@/lib/hooks/useDimes";
+    useCreateTransaction,
+    useDeleteTransaction,
+    useRestoreTransaction,
+    useUpdateTransaction,
+} from "@/lib/hooks/useTransactions";
 import {
     fromDateInputValue,
     toDateInputValue,
@@ -39,12 +33,8 @@ import {
 interface TransactionDialogProps {
     isOpen: boolean;
     onClose: () => void;
-    transaction?: Dime | Buck;
+    transaction?: Transaction;
     defaultIsCreatingBuck?: boolean;
-}
-
-function isDime(tx: Dime | Buck): tx is Dime {
-    return !tx.isBigBuck;
 }
 
 export function TransactionDialog({
@@ -62,14 +52,10 @@ export function TransactionDialog({
     const [isCategoryDialogOpen, setIsCategoryDialogOpen] = useState(false);
 
     const { data: categories } = useCategories();
-    const createDime = useCreateDime();
-    const updateDime = useUpdateDime();
-    const deleteDime = useDeleteDime();
-    const restoreDime = useRestoreDime();
-    const createBuck = useCreateBuck();
-    const updateBuck = useUpdateBuck();
-    const deleteBuck = useDeleteBuck();
-    const restoreBuck = useRestoreBuck();
+    const createTransaction = useCreateTransaction();
+    const updateTransaction = useUpdateTransaction();
+    const deleteTransaction = useDeleteTransaction();
+    const restoreTransaction = useRestoreTransaction();
 
     const isEditing = !!transaction;
 
@@ -78,7 +64,7 @@ export function TransactionDialog({
             setAmount((transaction.amount / 100).toFixed(2));
             setTransactedAt(toDateInputValue(transaction.transactedAt));
             setIsIncome(transaction.isIncome);
-            setIsCreatingBuck(!isDime(transaction));
+            setIsCreatingBuck(transaction.isBigBuck);
             setCategoryId(transaction.categoryId);
             setDescription(transaction.description);
         } else {
@@ -148,73 +134,42 @@ export function TransactionDialog({
             transactedAt: resolveTransactedAt(),
             amount: amountMinor,
             isIncome,
+            isBigBuck: isCreatingBuck,
             categoryId,
             description,
         };
 
-        if (isEditing && isDime(transaction)) {
-            updateDime.mutate(
+        if (isEditing) {
+            updateTransaction.mutate(
                 { id: transaction.id, input },
                 { onSuccess: handleClose },
             );
             return;
         }
 
-        if (isEditing && !isDime(transaction)) {
-            updateBuck.mutate(
-                { id: transaction.id, input },
-                { onSuccess: handleClose },
-            );
-            return;
-        }
-
-        if (isCreatingBuck) {
-            createBuck.mutate(input, { onSuccess: handleClose });
-            return;
-        }
-
-        createDime.mutate(input, { onSuccess: handleClose });
+        createTransaction.mutate(input, { onSuccess: handleClose });
     }
 
     function handleDelete() {
         if (!transaction) return;
         const id = transaction.id;
-        if (isDime(transaction)) {
-            deleteDime.mutate(id, {
-                onSuccess: () => {
-                    handleClose();
-                    toast("Transaction deleted", {
-                        duration: 5000,
-                        action: {
-                            label: "Undo",
-                            onClick: () => restoreDime.mutate(id),
-                        },
-                    });
-                },
-            });
-        } else {
-            deleteBuck.mutate(id, {
-                onSuccess: () => {
-                    handleClose();
-                    toast("Transaction deleted", {
-                        duration: 5000,
-                        action: {
-                            label: "Undo",
-                            onClick: () => restoreBuck.mutate(id),
-                        },
-                    });
-                },
-            });
-        }
+        deleteTransaction.mutate(id, {
+            onSuccess: () => {
+                handleClose();
+                toast("Transaction deleted", {
+                    duration: 5000,
+                    action: {
+                        label: "Undo",
+                        onClick: () => restoreTransaction.mutate(id),
+                    },
+                });
+            },
+        });
     }
 
     const isPending =
-        createDime.isPending ||
-        updateDime.isPending ||
-        createBuck.isPending ||
-        updateBuck.isPending;
-
-    const isDeleting = deleteDime.isPending || deleteBuck.isPending;
+        createTransaction.isPending || updateTransaction.isPending;
+    const isDeleting = deleteTransaction.isPending;
 
     return (
         <>
