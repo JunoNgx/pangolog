@@ -143,3 +143,4 @@ Don't comment on the classes. Just keep one type of classes in its own line. Eac
 - Phase 8a (transactions IDB layer): done - Transaction type, transactions.ts CRUD (getByMonth/getByYear), useTransactions hooks; DB store creation deferred to phase 8b alongside migration
 - Phase 8b (migration script): done - DB bumped to v4; `transactions` store created with yearMonth/year/categoryId/transactedAt indexes; existing dimes and bucks copied into transactions on upgrade
 - Phase 8c (update hooks and views): done - LogClient, SummaryClient, TransactionDialog, TransactionList updated to use useTransactions; `Dime | Buck` replaced with `Transaction` throughout
+- Phase 8c-2 (transaction type switch): done - dime/buck toggle now always visible in dialog (including edit); income/expense toggle shown on create only; income/expense moved above date row
