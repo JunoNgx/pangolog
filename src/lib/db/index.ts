@@ -4,7 +4,7 @@ export {
     getAllCategories,
     updateCategory,
 } from "./categories";
-export { getDb } from "./connection";
+export { forceDeleteDb, getDb } from "./connection";
 export {
     bulkPutCategories,
     bulkPutRecurringRules,
