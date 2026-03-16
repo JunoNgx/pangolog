@@ -269,7 +269,7 @@ export default function LogClient() {
                     className="mb-4"
                     classNames={{
                         inputWrapper:
-                            "data-[focus-visible=true]:ring-0 data-[focus-visible=true]:ring-offset-0",
+                            "data-[focus-visible=true]:ring-0 data-[focus-visible=true]:ring-offset-0 rounded-md",
                     }}
                 />
             )}
