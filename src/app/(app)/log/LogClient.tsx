@@ -55,6 +55,7 @@ export default function LogClient() {
         string[] | null
     >(null);
 
+    const [isSearchMode, setIsSearchMode] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const isSearching = searchQuery.trim().length > 0;
 
@@ -65,6 +66,20 @@ export default function LogClient() {
     const { data: allTransactions, isLoading: isLoadingAll } =
         useAllTransactions();
     const { data: categories } = useCategories();
+
+    function handleToggleSearchMode() {
+        if (isSearchMode) {
+            setIsSearchMode(false);
+            setSearchQuery("");
+            return;
+        }
+        setIsSearchMode(true);
+    }
+
+    function handleClearSearch() {
+        setIsSearchMode(false);
+        setSearchQuery("");
+    }
 
     const queriedBucks = useMemo(() => {
         if (isViewingBigBucks) {
@@ -215,20 +230,37 @@ export default function LogClient() {
 
     return (
         <div>
-            <h2 className="text-xl font-bold mb-4">Transactions</h2>
+            <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-bold">Transactions</h2>
+                <Button
+                    isIconOnly
+                    variant={isSearchMode ? "flat" : "light"}
+                    size="sm"
+                    onPress={handleToggleSearchMode}
+                    aria-label="Search transactions"
+                >
+                    <Search size={16} />
+                </Button>
+            </div>
 
-            <Input
-                placeholder="Search by description"
-                value={searchQuery}
-                onValueChange={setSearchQuery}
-                startContent={<Search size={16} className="text-default-400" />}
-                isClearable
-                className="mb-4"
-                classNames={{
-                    inputWrapper:
-                        "data-[focus-visible=true]:ring-0 data-[focus-visible=true]:ring-offset-0",
-                }}
-            />
+            {isSearchMode && (
+                <Input
+                    placeholder="Search by description"
+                    value={searchQuery}
+                    onValueChange={setSearchQuery}
+                    onClear={handleClearSearch}
+                    startContent={
+                        <Search size={16} className="text-default-400" />
+                    }
+                    isClearable
+                    autoFocus
+                    className="mb-4"
+                    classNames={{
+                        inputWrapper:
+                            "data-[focus-visible=true]:ring-0 data-[focus-visible=true]:ring-offset-0",
+                    }}
+                />
+            )}
 
             {viewingControls}
 
