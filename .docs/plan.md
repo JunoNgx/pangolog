@@ -358,3 +358,6 @@ This phase will render existing cloud data and json files obsolete and incompati
 - [x] Implement search bar
 - [x] Implement conditions to display viewing controls
 - [x] Implement conditions to display search results
+
+### Task 10d: search mode
+- [x] Implement search mode UI
