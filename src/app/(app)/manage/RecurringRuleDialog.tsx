@@ -212,10 +212,10 @@ export function RecurringRuleDialog({
                             {isEditing && rule && (
                                 <div
                                     className={`
-                                p-3 rounded-lg border
-                                flex items-center justify-between
-                                bg-default-50 border-default-200
-                            `}
+                                        p-3 rounded-lg border
+                                        flex items-center justify-between
+                                        bg-default-50 border-default-200
+                                    `}
                                 >
                                     <div className="flex flex-col gap-1">
                                         <Switch
@@ -251,9 +251,9 @@ export function RecurringRuleDialog({
 
                             <div
                                 className={`
-                            flex gap-4 mt-2
-                            ${isEditing ? "justify-around" : "justify-between"}
-                        `}
+                                    flex gap-4 mt-2
+                                    ${isEditing ? "justify-around" : "justify-between"}
+                                `}
                             >
                                 <ToggleSwitch
                                     isSelectingRight={isIncome}
@@ -283,9 +283,9 @@ export function RecurringRuleDialog({
                                 classNames={{
                                     base: "my-2",
                                     input: `
-                                    text-4xl text-center font-mono
-                                    ${isIncome ? "!text-success" : "!text-foreground"}
-                                `,
+                                        text-4xl text-center font-mono
+                                        ${isIncome ? "!text-success" : "!text-foreground"}
+                                    `,
                                 }}
                             />
 

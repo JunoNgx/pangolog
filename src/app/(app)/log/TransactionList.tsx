@@ -207,10 +207,10 @@ function TransactionItem({
 
                 <span
                     className={`
-                    self-center
-                    font-mono font-medium
-                    ${transaction.isIncome ? "text-success" : ""}
-                `}
+                        self-center
+                        font-mono font-medium
+                        ${transaction.isIncome ? "text-success" : ""}
+                    `}
                 >
                     {transaction.isIncome ? "+" : ""}
                     {amountDisplay}
