@@ -349,7 +349,7 @@ This phase will render existing cloud data and json files obsolete and incompati
 ### Task 10: transaction search
 
 #### Task 10a: preparation
-- [ ] Rename `getAllTransactionsForSync` to `getAllTransactions`
+- [x] Rename `getAllTransactionsForSync` to `getAllTransactions`
 
 #### Task 10b: implement a hook
 - [ ] Implement `useAllTransactions` hook in `useTransactions`

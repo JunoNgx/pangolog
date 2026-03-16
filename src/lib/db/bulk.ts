@@ -62,7 +62,7 @@ export async function getAllRecurringRulesForSync(): Promise<RecurringRule[]> {
     });
 }
 
-export async function getAllTransactionsForSync(): Promise<Transaction[]> {
+export async function getAllTransactions(): Promise<Transaction[]> {
     const db = await getDb();
     return new Promise((resolve, reject) => {
         const tx = db.transaction("transactions", "readonly");
