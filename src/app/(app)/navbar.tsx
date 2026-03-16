@@ -28,39 +28,44 @@ export function AppNavbar() {
             <header
                 className={`
                     sticky top-0 z-40
-                    hidden md:flex items-center h-14 px-6 gap-2
+                    hidden md:flex
                     bg-background/80 backdrop-blur-md
                     border-b border-default-200
                 `}
             >
-                <NextLink href="/" className="font-bold text-lg mr-6 shrink-0">
-                    Pangolog
-                </NextLink>
-                <nav className="flex items-center gap-1 ml-auto">
-                    {navItems.map((item) => {
-                        const isActive = pathname === item.href;
-                        const linkClass = `
-                            flex items-center gap-2 px-3 py-1.5 rounded-md
-                            text-sm
-                            transition-colors
-                            ${isActive ? "bg-primary/10 text-primary" : "text-default-500 hover:bg-default-100 hover:text-foreground"}
-                        `;
-                        return (
-                            <NextLink
-                                key={item.href}
-                                href={item.href}
-                                className={linkClass}
-                                aria-current={isActive ? "page" : undefined}
-                            >
-                                <item.icon size={15} />
-                                {item.label}
-                            </NextLink>
-                        );
-                    })}
-                </nav>
-                <div className="flex items-center gap-1 shrink-0">
-                    <SyncStatusDot />
-                    <ThemeSwitcher />
+                <div className="flex items-center h-14 px-6 gap-2 w-full max-w-5xl mx-auto">
+                    <NextLink
+                        href="/"
+                        className="font-bold text-lg mr-6 shrink-0"
+                    >
+                        Pangolog
+                    </NextLink>
+                    <nav className="flex items-center gap-1 ml-auto">
+                        {navItems.map((item) => {
+                            const isActive = pathname === item.href;
+                            const linkClass = `
+                                flex items-center gap-2 px-3 py-1.5 rounded-md
+                                text-sm
+                                transition-colors
+                                ${isActive ? "bg-primary/10 text-primary" : "text-default-500 hover:bg-default-100 hover:text-foreground"}
+                            `;
+                            return (
+                                <NextLink
+                                    key={item.href}
+                                    href={item.href}
+                                    className={linkClass}
+                                    aria-current={isActive ? "page" : undefined}
+                                >
+                                    <item.icon size={15} />
+                                    {item.label}
+                                </NextLink>
+                            );
+                        })}
+                    </nav>
+                    <div className="flex items-center gap-1 shrink-0">
+                        <SyncStatusDot />
+                        <ThemeSwitcher />
+                    </div>
                 </div>
             </header>
 
