@@ -122,7 +122,7 @@ function SegmentBar({ label, slices, total }: SegmentBarProps) {
                         <span className="font-mono text-default-500">
                             {formatAmount(slice.total)}
                         </span>
-                        <span className="font-mono text-default-400 w-10 text-right">
+                        <span className="font-mono text-default-400 w-14 text-right">
                             {slice.pct.toFixed(1)}%
                         </span>
                     </li>
