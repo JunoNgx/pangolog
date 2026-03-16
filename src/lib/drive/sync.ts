@@ -5,7 +5,7 @@ import {
     bulkPutTransactions,
     getAllCategoriesForSync,
     getAllRecurringRulesForSync,
-    getAllTransactionsForSync,
+    getAllTransactions,
     purgeExpiredRecords,
 } from "@/lib/db/bulk";
 import type { Category, RecurringRule, Transaction } from "@/lib/db/types";
@@ -70,7 +70,7 @@ export async function syncAll(token: string, folderId: string): Promise<void> {
     const lastSyncTime = useLocalSettingsStore.getState().lastSyncTime;
 
     const [localTransactions, localCategories, localRules] = await Promise.all([
-        getAllTransactionsForSync(),
+        getAllTransactions(),
         getAllCategoriesForSync(),
         getAllRecurringRulesForSync(),
     ]);
@@ -179,7 +179,7 @@ export async function syncAll(token: string, folderId: string): Promise<void> {
 
     const [mergedTransactions, mergedCategories, mergedRules] =
         await Promise.all([
-            getAllTransactionsForSync(),
+            getAllTransactions(),
             getAllCategoriesForSync(),
             getAllRecurringRulesForSync(),
         ]);

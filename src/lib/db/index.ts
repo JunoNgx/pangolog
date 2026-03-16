@@ -5,7 +5,7 @@ export {
     clearAllData,
     getAllCategoriesForSync,
     getAllRecurringRulesForSync,
-    getAllTransactionsForSync,
+    getAllTransactions,
     purgeExpiredRecords,
 } from "./bulk";
 export {
