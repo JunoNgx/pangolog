@@ -261,11 +261,11 @@ export default function HelpClient() {
                 </p>
                 <ul className="text-sm text-default-500 font-mono space-y-1">
                     <li>Pangolog/</li>
-                    <li className="pl-4">YYYY-MM.json</li>
-                    <li className="pl-4">YYYY-bucks.json</li>
+                    <li className="pl-4">YYYY.json</li>
                     <li className="pl-4">categories.json</li>
                     <li className="pl-4">recurring-rules.json</li>
                     <li className="pl-4">settings.json</li>
+                    <li className="pl-4">backup-YYYY-MM.json</li>
                 </ul>
             </Section>
 
