@@ -4,7 +4,7 @@ import {
     bulkPutTransactions,
     getAllCategoriesForSync,
     getAllRecurringRulesForSync,
-    getAllTransactionsForSync,
+    getAllTransactions,
 } from "./db/bulk";
 import type { Category, RecurringRule, Transaction } from "./db/types";
 import { useProfileSettingsStore } from "./store/useProfileSettingsStore";
@@ -62,7 +62,7 @@ export function validateImportData(data: unknown): data is ImportData {
 export async function previewImport(data: ImportData): Promise<ImportPreview> {
     const [existingTransactions, existingCategories, existingRules] =
         await Promise.all([
-            getAllTransactionsForSync(),
+            getAllTransactions(),
             getAllCategoriesForSync(),
             getAllRecurringRulesForSync(),
         ]);
@@ -120,7 +120,7 @@ export async function executeImport(data: ImportData): Promise<ImportPreview> {
 
     const [existingTransactions, existingCategories, existingRules] =
         await Promise.all([
-            getAllTransactionsForSync(),
+            getAllTransactions(),
             getAllCategoriesForSync(),
             getAllRecurringRulesForSync(),
         ]);
