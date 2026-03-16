@@ -108,8 +108,7 @@ Approach:
         - Including both small dimes and big bucks
         - Small dimes and big bucks are mixed, but indicated
         - Transactions are grouped together by date like normal view
-- Search logic is debounced to 500ms
-- Search query filters by transaction only
+- Search query filters by description only
 
 ## Data model
 
