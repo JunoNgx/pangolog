@@ -139,11 +139,11 @@ export default function RecurringClient() {
                         type="button"
                         onClick={() => setSortAsc((prev) => !prev)}
                         className={`
-                        rounded-lg p-2
-                        bg-default-100 border border-default-200
-                        text-foreground
-                        cursor-pointer hover:bg-default-200
-                    `}
+                            rounded-lg p-2
+                            bg-default-100 border border-default-200
+                            text-foreground
+                            cursor-pointer hover:bg-default-200
+                        `}
                         aria-label={
                             sortAsc ? "Sort descending" : "Sort ascending"
                         }
