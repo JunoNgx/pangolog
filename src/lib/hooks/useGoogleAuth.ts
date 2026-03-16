@@ -30,7 +30,7 @@ export function useGoogleAuth() {
     const [isConnecting, setIsConnecting] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const isConnected = authToken !== null && isTokenValid(authToken);
+    const isConnected = authToken !== null;
 
     const connect = useCallback(async () => {
         if (!CLIENT_ID) {
