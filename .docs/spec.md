@@ -452,6 +452,12 @@ The fix is a `StoreHydration` component mounted in `providers.tsx` that calls `u
 ### Unified transactions table
 Dimes and bucks are stored in a single `transactions` IndexedDB store, distinguished by `isBigBuck`. This simplifies the data model, eliminates normalization shims, and allows a single `[year, month]` compound index to serve both dime month queries and the "include Big Bucks in month view" feature. On Drive, all transactions for a year are stored in a single `YYYY.json` file rather than split by type and month.
 
+### Ctrl/Cmd+Enter to submit dialog form: capture-phase window listener
+
+`Ctrl/Cmd+Enter` submits the transaction dialog form from anywhere within it, including when a category button is focused. A form-level `onKeyDown` handler is insufficient because HeroUI buttons call `stopPropagation` on keydown events, preventing them from bubbling up to the form.
+
+A `window` event listener registered with `{ capture: true }` intercepts the event during the capture phase, before it reaches the button, and calls `formRef.current?.requestSubmit()`. The listener is added/removed based on `isOpen` to avoid interfering with other parts of the app.
+
 ### Date and timestamp handling
 
 All date operations use Luxon throughout the codebase.

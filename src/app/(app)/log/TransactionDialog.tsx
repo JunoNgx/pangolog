@@ -8,10 +8,11 @@ import {
     ModalContent,
     ModalFooter,
     ModalHeader,
+    Tooltip,
 } from "@heroui/react";
 import { DateTime } from "luxon";
 import type React from "react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import { CategoryDialog } from "@/components/CategoryDialog";
 import { CategoryPicker } from "@/components/CategoryPicker";
@@ -58,6 +59,7 @@ export function TransactionDialog({
     const restoreTransaction = useRestoreTransaction();
 
     const isEditing = !!transaction;
+    const formRef = useRef<HTMLFormElement>(null);
 
     useEffect(() => {
         if (transaction) {
@@ -150,6 +152,25 @@ export function TransactionDialog({
         createTransaction.mutate(input, { onSuccess: handleClose });
     }
 
+    // Ctrl/Cmd+Enter submits the form from anywhere in the dialog, including
+    // when a category button is focused. HeroUI buttons call stopPropagation on
+    // keydown, so a regular bubbling listener on the form never fires. Using
+    // capture mode intercepts the event before it reaches the button.
+    useEffect(() => {
+        if (!isOpen) return;
+        function handleKeyDown(e: KeyboardEvent) {
+            if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
+                e.preventDefault();
+                formRef.current?.requestSubmit();
+            }
+        }
+        window.addEventListener("keydown", handleKeyDown, { capture: true });
+        return () =>
+            window.removeEventListener("keydown", handleKeyDown, {
+                capture: true,
+            });
+    }, [isOpen]);
+
     function handleDelete() {
         if (!transaction) return;
         const id = transaction.id;
@@ -183,7 +204,7 @@ export function TransactionDialog({
                 }}
             >
                 <ModalContent>
-                    <form onSubmit={handleSubmit}>
+                    <form ref={formRef} onSubmit={handleSubmit}>
                         <ModalHeader>
                             {isEditing ? "Edit Transaction" : "New Transaction"}
                         </ModalHeader>
@@ -267,13 +288,18 @@ export function TransactionDialog({
                                 </Button>
                             )}
                             <div className="flex gap-2">
-                                <Button
-                                    type="submit"
-                                    color="primary"
-                                    isLoading={isPending}
+                                <Tooltip
+                                    content="Ctrl/Cmd + Enter"
+                                    placement="left"
                                 >
-                                    {isEditing ? "Save" : "Create"}
-                                </Button>
+                                    <Button
+                                        type="submit"
+                                        color="primary"
+                                        isLoading={isPending}
+                                    >
+                                        {isEditing ? "Save" : "Create"}
+                                    </Button>
+                                </Tooltip>
                                 <Button variant="light" onPress={handleClose}>
                                     Cancel
                                 </Button>

@@ -148,6 +148,12 @@ export default function HelpClient() {
                 </p>
                 <p className="text-sm text-default-500 mb-3">
                     <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
+                        Ctrl/Cmd + Enter
+                    </kbd>{" "}
+                    also submits the dialog form from anywhere within it.
+                </p>
+                <p className="text-sm text-default-500 mb-3">
+                    <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
                         Ctrl/Cmd + F
                     </kbd>{" "}
                     enters search mode on the Transactions page.
