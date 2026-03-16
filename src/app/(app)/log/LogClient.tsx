@@ -3,7 +3,7 @@
 import { Button, Checkbox, Input, Tooltip } from "@heroui/react";
 import { Plus, Search } from "lucide-react";
 import { DateTime } from "luxon";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { DemoDataBanner } from "@/components/DemoDataBanner";
 import { MonthYearPicker } from "@/components/MonthYearPicker";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
@@ -46,6 +46,7 @@ export default function LogClient() {
     }, [isViewingBigBucks]);
     useHotkey("b", toggleViewingBigBucks, { ctrlOrMeta: true });
     useHotkey("i", toggleIncludeBucksInDimes, { ctrlOrMeta: true });
+    useHotkey("f", handleSearchHotkey, { ctrlOrMeta: true });
 
     const [selectedYear, setSelectedYear] = useState(DateTime.now().year);
     const [selectedMonth, setSelectedMonth] = useState<number>(
@@ -57,6 +58,7 @@ export default function LogClient() {
 
     const [isSearchMode, setIsSearchMode] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
+    const searchInputRef = useRef<HTMLInputElement>(null);
     const isSearching = searchQuery.trim().length > 0;
 
     const { data: monthlyTransactions, isLoading: isLoadingMonthly } =
@@ -66,6 +68,14 @@ export default function LogClient() {
     const { data: allTransactions, isLoading: isLoadingAll } =
         useAllTransactions();
     const { data: categories } = useCategories();
+
+    function handleSearchHotkey() {
+        if (isSearchMode) {
+            searchInputRef.current?.focus();
+            return;
+        }
+        setIsSearchMode(true);
+    }
 
     function handleToggleSearchMode() {
         if (isSearchMode) {
@@ -245,10 +255,12 @@ export default function LogClient() {
 
             {isSearchMode && (
                 <Input
+                    ref={searchInputRef}
                     placeholder="Search by description"
                     value={searchQuery}
                     onValueChange={setSearchQuery}
-                    onClear={handleClearSearch}
+                    onClear={() => setSearchQuery("")}
+                    onKeyDown={(e) => e.key === "Escape" && handleClearSearch()}
                     startContent={
                         <Search size={16} className="text-default-400" />
                     }

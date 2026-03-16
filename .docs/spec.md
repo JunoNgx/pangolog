@@ -109,6 +109,9 @@ Approach:
         - Small dimes and big bucks are mixed, but indicated
         - Transactions are grouped together by date like normal view
 - Search query filters by description only
+- To avoid UI cluttering, search input is only displayed when user is in search mode
+    - Related hotkey shortcut: Ctrl/Cmd to enter search mode
+    - In search mode, when search input is focused, pressing Esc will exit search mode
 
 ## Data model
 
