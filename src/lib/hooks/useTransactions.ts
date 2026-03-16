@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { getAllTransactions } from "../db/bulk";
 import {
     createTransaction,
     deleteTransaction,
@@ -11,6 +12,13 @@ import {
 import type { TransactionInput, TransactionUpdate } from "../db/types";
 
 const TRANSACTIONS_KEY = ["transactions"];
+
+export function useAllTransactions() {
+    return useQuery({
+        queryKey: [...TRANSACTIONS_KEY, "all"],
+        queryFn: () => getAllTransactions(),
+    });
+}
 
 export function useTransactionsByMonth(year: number, month: number) {
     return useQuery({

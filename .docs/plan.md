@@ -352,7 +352,7 @@ This phase will render existing cloud data and json files obsolete and incompati
 - [x] Rename `getAllTransactionsForSync` to `getAllTransactions`
 
 #### Task 10b: implement a hook
-- [ ] Implement `useAllTransactions` hook in `useTransactions`
+- [x] Implement `useAllTransactions` hook in `useTransactions`
 
 #### Task 10c: implement UI
 - [ ] Implement search bar
