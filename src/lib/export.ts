@@ -2,7 +2,7 @@ import { DateTime } from "luxon";
 import {
     getAllCategoriesForSync,
     getAllRecurringRulesForSync,
-    getAllTransactionsForSync,
+    getAllTransactions,
 } from "./db/bulk";
 import { useProfileSettingsStore } from "./store/useProfileSettingsStore";
 
@@ -26,7 +26,7 @@ function triggerDownload(
 
 export async function buildExportData() {
     const [transactions, categories, recurringRules] = await Promise.all([
-        getAllTransactionsForSync(),
+        getAllTransactions(),
         getAllCategoriesForSync(),
         getAllRecurringRulesForSync(),
     ]);

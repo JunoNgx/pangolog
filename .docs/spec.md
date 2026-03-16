@@ -98,6 +98,21 @@ Approach:
     - [ ] (big buck) What Remains of Edith Finch, $20, Videogame, dated the previous day
     - [ ] (big buck, income) Poster design for LSPD, $2000, dated current day
 
+### Transaction searching
+- In `/log` view, user is able to search across all transactions regardless of month/year.
+- When search input is empty: normal transaction view
+- When search input is not empty:
+    - Viewing control settings (month/year picker, Big Bucks toggle, category filter) are hidden
+    - Total expense is hidden
+    - Hit query results are displayed in a list
+        - Including both small dimes and big bucks
+        - Small dimes and big bucks are mixed, but indicated
+        - Transactions are grouped together by date like normal view
+- Search query filters by description only
+- To avoid UI cluttering, search input is only displayed when user is in search mode
+    - Related hotkey shortcut: Ctrl/Cmd to enter search mode
+    - In search mode, when search input is focused, pressing Esc will exit search mode
+
 ## Data model
 
 ### Table `transactions`

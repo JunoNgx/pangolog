@@ -344,3 +344,20 @@ This phase will render existing cloud data and json files obsolete and incompati
 - [x] Implement `isAutobackupEnabled` in `localSettingsStore`
 - [x] Implement toggle checkbox in settings
 - [x] Implement note informing the user that monthly backups accumulate and they should clean up old ones manually
+
+
+### Task 10: transaction search
+
+#### Task 10a: preparation
+- [x] Rename `getAllTransactionsForSync` to `getAllTransactions`
+
+#### Task 10b: implement a hook
+- [x] Implement `useAllTransactions` hook in `useTransactions`
+
+#### Task 10c: implement UI
+- [x] Implement search bar
+- [x] Implement conditions to display viewing controls
+- [x] Implement conditions to display search results
+
+### Task 10d: search mode
+- [x] Implement search mode UI
