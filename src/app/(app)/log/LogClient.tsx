@@ -46,6 +46,7 @@ export default function LogClient() {
     }, [isViewingBigBucks]);
     useHotkey("b", toggleViewingBigBucks, { ctrlOrMeta: true });
     useHotkey("i", toggleIncludeBucksInDimes, { ctrlOrMeta: true });
+
     const [selectedYear, setSelectedYear] = useState(DateTime.now().year);
     const [selectedMonth, setSelectedMonth] = useState<number>(
         DateTime.now().month,
@@ -69,11 +70,9 @@ export default function LogClient() {
         if (isViewingBigBucks) {
             return (yearlyTransactions ?? []).filter((t) => t.isBigBuck);
         }
-
         if (shouldIncludeBucksInDimes) {
             return (monthlyTransactions ?? []).filter((t) => t.isBigBuck);
         }
-
         return [];
     }, [
         isViewingBigBucks,
@@ -87,9 +86,10 @@ export default function LogClient() {
         return (monthlyTransactions ?? []).filter((t) => !t.isBigBuck);
     }, [isViewingBigBucks, monthlyTransactions]);
 
-    const transactions = useMemo(() => {
-        return [...queriedDimes, ...queriedBucks];
-    }, [queriedDimes, queriedBucks]);
+    const transactions = useMemo(
+        () => [...queriedDimes, ...queriedBucks],
+        [queriedDimes, queriedBucks],
+    );
 
     const filteredTransactions = useMemo(() => {
         if (selectedCategoryIds === null) return transactions;
@@ -134,6 +134,85 @@ export default function LogClient() {
 
     const isLoading = isViewingBigBucks ? isLoadingYearly : isLoadingMonthly;
 
+    const viewingTypeRow = (
+        <div className="flex items-center gap-3">
+            <span className="text-sm text-default-500">Viewing:</span>
+            <ToggleSwitch
+                isSelectingRight={isViewingBigBucks}
+                onValueChange={setIsViewingBigBucks}
+                leftLabel="Small Dimes"
+                rightLabel="Big Bucks"
+            />
+        </div>
+    );
+
+    const dimesControls = !isViewingBigBucks && (
+        <div className="flex items-center justify-between gap-4">
+            <MonthYearPicker
+                selectedYear={selectedYear}
+                selectedMonth={selectedMonth}
+                onYearChange={(year) => setSelectedYear(year)}
+                onMonthChange={(month) => setSelectedMonth(month)}
+            />
+            <Checkbox
+                isSelected={shouldIncludeBucksInDimes}
+                onValueChange={setShouldIncludeBucksInDimes}
+                size="md"
+            >
+                <span className="text-sm">Include Big Bucks</span>
+            </Checkbox>
+        </div>
+    );
+
+    const bucksControls = isViewingBigBucks && (
+        <select
+            value={selectedYear}
+            onChange={(e) => setSelectedYear(Number(e.target.value))}
+            className={`self-start ${SELECT_CLASSES}`}
+        >
+            {YEAR_OPTIONS.map((y) => (
+                <option key={y} value={y}>
+                    {y}
+                </option>
+            ))}
+        </select>
+    );
+
+    const totalAndFilterRow = (
+        <div className="flex items-center justify-between">
+            <span className="flex gap-2">
+                <span className="text-default-500">Total expense:</span>
+                <span
+                    className="font-mono font-medium"
+                    suppressHydrationWarning
+                >
+                    {formatAmount(
+                        filteredTransactions
+                            .filter((tx) => !tx.isIncome)
+                            .reduce((sum, tx) => sum + tx.amount, 0),
+                    )}
+                </span>
+            </span>
+            <CategoryFilterDropdown
+                categories={categories ?? []}
+                selectedIds={selectedCategoryIds}
+                onChange={setSelectedCategoryIds}
+                activeCategoryIds={activeCategoryIds}
+                hasUncategorised={hasUncategorised}
+                buckCategoryIds={buckCategoryIds}
+            />
+        </div>
+    );
+
+    const viewingControls = !isSearching && (
+        <div className="flex flex-col gap-3 mb-4">
+            {viewingTypeRow}
+            {dimesControls}
+            {bucksControls}
+            {totalAndFilterRow}
+        </div>
+    );
+
     return (
         <div>
             <h2 className="text-xl font-bold mb-4">Transactions</h2>
@@ -151,88 +230,7 @@ export default function LogClient() {
                 }}
             />
 
-            {!isSearching && (
-                <div className="flex flex-col gap-3 mb-4">
-                    <div className="flex items-center gap-3">
-                        <span className="text-sm text-default-500">
-                            Viewing:
-                        </span>
-                        <ToggleSwitch
-                            isSelectingRight={isViewingBigBucks}
-                            onValueChange={setIsViewingBigBucks}
-                            leftLabel="Small Dimes"
-                            rightLabel="Big Bucks"
-                        />
-                    </div>
-
-                    {!isViewingBigBucks && (
-                        <div className="flex items-center justify-between gap-4">
-                            <MonthYearPicker
-                                selectedYear={selectedYear}
-                                selectedMonth={selectedMonth}
-                                onYearChange={(year) => setSelectedYear(year)}
-                                onMonthChange={(month) =>
-                                    setSelectedMonth(month)
-                                }
-                            />
-                            <Checkbox
-                                isSelected={shouldIncludeBucksInDimes}
-                                onValueChange={setShouldIncludeBucksInDimes}
-                                size="md"
-                            >
-                                <span className="text-sm">
-                                    Include Big Bucks
-                                </span>
-                            </Checkbox>
-                        </div>
-                    )}
-
-                    {isViewingBigBucks && (
-                        <select
-                            value={selectedYear}
-                            onChange={(e) =>
-                                setSelectedYear(Number(e.target.value))
-                            }
-                            className={`self-start ${SELECT_CLASSES}`}
-                        >
-                            {YEAR_OPTIONS.map((y) => (
-                                <option key={y} value={y}>
-                                    {y}
-                                </option>
-                            ))}
-                        </select>
-                    )}
-
-                    <div className="flex items-center justify-between">
-                        <span className="flex gap-2">
-                            <span className="text-default-500">
-                                Total expense:
-                            </span>
-                            <span
-                                className="font-mono font-medium"
-                                suppressHydrationWarning
-                            >
-                                {formatAmount(
-                                    filteredTransactions
-                                        .filter((tx) => !tx.isIncome)
-                                        .reduce(
-                                            (sum, tx) => sum + tx.amount,
-                                            0,
-                                        ),
-                                )}
-                            </span>
-                        </span>
-                        <CategoryFilterDropdown
-                            categories={categories ?? []}
-                            selectedIds={selectedCategoryIds}
-                            onChange={setSelectedCategoryIds}
-                            activeCategoryIds={activeCategoryIds}
-                            hasUncategorised={hasUncategorised}
-                            buckCategoryIds={buckCategoryIds}
-                        />
-                    </div>
-                </div>
-            )}
+            {viewingControls}
 
             <DemoDataBanner />
 
