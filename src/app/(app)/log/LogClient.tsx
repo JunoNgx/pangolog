@@ -1,7 +1,7 @@
 "use client";
 
-import { Button, Checkbox, Tooltip } from "@heroui/react";
-import { Plus } from "lucide-react";
+import { Button, Checkbox, Input, Tooltip } from "@heroui/react";
+import { Plus, Search } from "lucide-react";
 import { DateTime } from "luxon";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { DemoDataBanner } from "@/components/DemoDataBanner";
@@ -11,6 +11,7 @@ import { createAction } from "@/lib/createAction";
 import { useCategories } from "@/lib/hooks/useCategories";
 import { useHotkey } from "@/lib/hooks/useHotkey";
 import {
+    useAllTransactions,
     useTransactionsByMonth,
     useTransactionsByYear,
 } from "@/lib/hooks/useTransactions";
@@ -53,10 +54,15 @@ export default function LogClient() {
         string[] | null
     >(null);
 
+    const [searchQuery, setSearchQuery] = useState("");
+    const isSearching = searchQuery.trim().length > 0;
+
     const { data: monthlyTransactions, isLoading: isLoadingMonthly } =
         useTransactionsByMonth(selectedYear, selectedMonth);
     const { data: yearlyTransactions, isLoading: isLoadingYearly } =
         useTransactionsByYear(selectedYear);
+    const { data: allTransactions, isLoading: isLoadingAll } =
+        useAllTransactions();
     const { data: categories } = useCategories();
 
     const queriedBucks = useMemo(() => {
@@ -116,88 +122,133 @@ export default function LogClient() {
         return ids;
     }, [queriedBucks]);
 
+    const searchResults = useMemo(() => {
+        if (!isSearching) return [];
+        const query = searchQuery.trim().toLowerCase();
+        return (allTransactions ?? [])
+            .filter((t) => t.deletedAt === null)
+            .filter(
+                (t) => t.description?.toLowerCase().includes(query) ?? false,
+            );
+    }, [isSearching, searchQuery, allTransactions]);
+
     const isLoading = isViewingBigBucks ? isLoadingYearly : isLoadingMonthly;
 
     return (
         <div>
             <h2 className="text-xl font-bold mb-4">Transactions</h2>
 
-            <div className="flex flex-col gap-3 mb-4">
-                <div className="flex items-center gap-3">
-                    <span className="text-sm text-default-500">Viewing:</span>
-                    <ToggleSwitch
-                        isSelectingRight={isViewingBigBucks}
-                        onValueChange={setIsViewingBigBucks}
-                        leftLabel="Small Dimes"
-                        rightLabel="Big Bucks"
-                    />
-                </div>
+            <Input
+                placeholder="Search by description"
+                value={searchQuery}
+                onValueChange={setSearchQuery}
+                startContent={<Search size={16} className="text-default-400" />}
+                isClearable
+                className="mb-4"
+                classNames={{
+                    inputWrapper:
+                        "data-[focus-visible=true]:ring-0 data-[focus-visible=true]:ring-offset-0",
+                }}
+            />
 
-                {!isViewingBigBucks && (
-                    <div className="flex items-center justify-between gap-4">
-                        <MonthYearPicker
-                            selectedYear={selectedYear}
-                            selectedMonth={selectedMonth}
-                            onYearChange={(year) => setSelectedYear(year)}
-                            onMonthChange={(month) => setSelectedMonth(month)}
-                        />
-                        <Checkbox
-                            isSelected={shouldIncludeBucksInDimes}
-                            onValueChange={setShouldIncludeBucksInDimes}
-                            size="md"
-                        >
-                            <span className="text-sm">Include Big Bucks</span>
-                        </Checkbox>
-                    </div>
-                )}
-
-                {isViewingBigBucks && (
-                    <select
-                        value={selectedYear}
-                        onChange={(e) =>
-                            setSelectedYear(Number(e.target.value))
-                        }
-                        className={`self-start ${SELECT_CLASSES}`}
-                    >
-                        {YEAR_OPTIONS.map((y) => (
-                            <option key={y} value={y}>
-                                {y}
-                            </option>
-                        ))}
-                    </select>
-                )}
-
-                <div className="flex items-center justify-between">
-                    <span className="flex gap-2">
-                        <span className="text-default-500">Total expense:</span>
-                        <span
-                            className="font-mono font-medium"
-                            suppressHydrationWarning
-                        >
-                            {formatAmount(
-                                filteredTransactions
-                                    .filter((tx) => !tx.isIncome)
-                                    .reduce((sum, tx) => sum + tx.amount, 0),
-                            )}
+            {!isSearching && (
+                <div className="flex flex-col gap-3 mb-4">
+                    <div className="flex items-center gap-3">
+                        <span className="text-sm text-default-500">
+                            Viewing:
                         </span>
-                    </span>
-                    <CategoryFilterDropdown
-                        categories={categories ?? []}
-                        selectedIds={selectedCategoryIds}
-                        onChange={setSelectedCategoryIds}
-                        activeCategoryIds={activeCategoryIds}
-                        hasUncategorised={hasUncategorised}
-                        buckCategoryIds={buckCategoryIds}
-                    />
+                        <ToggleSwitch
+                            isSelectingRight={isViewingBigBucks}
+                            onValueChange={setIsViewingBigBucks}
+                            leftLabel="Small Dimes"
+                            rightLabel="Big Bucks"
+                        />
+                    </div>
+
+                    {!isViewingBigBucks && (
+                        <div className="flex items-center justify-between gap-4">
+                            <MonthYearPicker
+                                selectedYear={selectedYear}
+                                selectedMonth={selectedMonth}
+                                onYearChange={(year) => setSelectedYear(year)}
+                                onMonthChange={(month) =>
+                                    setSelectedMonth(month)
+                                }
+                            />
+                            <Checkbox
+                                isSelected={shouldIncludeBucksInDimes}
+                                onValueChange={setShouldIncludeBucksInDimes}
+                                size="md"
+                            >
+                                <span className="text-sm">
+                                    Include Big Bucks
+                                </span>
+                            </Checkbox>
+                        </div>
+                    )}
+
+                    {isViewingBigBucks && (
+                        <select
+                            value={selectedYear}
+                            onChange={(e) =>
+                                setSelectedYear(Number(e.target.value))
+                            }
+                            className={`self-start ${SELECT_CLASSES}`}
+                        >
+                            {YEAR_OPTIONS.map((y) => (
+                                <option key={y} value={y}>
+                                    {y}
+                                </option>
+                            ))}
+                        </select>
+                    )}
+
+                    <div className="flex items-center justify-between">
+                        <span className="flex gap-2">
+                            <span className="text-default-500">
+                                Total expense:
+                            </span>
+                            <span
+                                className="font-mono font-medium"
+                                suppressHydrationWarning
+                            >
+                                {formatAmount(
+                                    filteredTransactions
+                                        .filter((tx) => !tx.isIncome)
+                                        .reduce(
+                                            (sum, tx) => sum + tx.amount,
+                                            0,
+                                        ),
+                                )}
+                            </span>
+                        </span>
+                        <CategoryFilterDropdown
+                            categories={categories ?? []}
+                            selectedIds={selectedCategoryIds}
+                            onChange={setSelectedCategoryIds}
+                            activeCategoryIds={activeCategoryIds}
+                            hasUncategorised={hasUncategorised}
+                            buckCategoryIds={buckCategoryIds}
+                        />
+                    </div>
                 </div>
-            </div>
+            )}
 
             <DemoDataBanner />
-            <TransactionList
-                transactions={filteredTransactions}
-                categories={categories ?? []}
-                isLoading={isLoading}
-            />
+
+            {isSearching ? (
+                <TransactionList
+                    transactions={searchResults}
+                    categories={categories ?? []}
+                    isLoading={isLoadingAll}
+                />
+            ) : (
+                <TransactionList
+                    transactions={filteredTransactions}
+                    categories={categories ?? []}
+                    isLoading={isLoading}
+                />
+            )}
 
             <Tooltip
                 content={<span className="text-center">Ctrl/Cmd + Enter</span>}

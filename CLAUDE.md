@@ -150,3 +150,4 @@ Don't comment on the classes. Just keep one type of classes in its own line. Eac
 - Phase 8g (delete old logic): done - dimes/bucks stores deleted within the v4 upgrade block (DB stays at v4); dimes.ts, bucks.ts, useDimes.ts, useBucks.ts deleted; Dime/Buck types removed from types.ts; sync.ts and index.ts cleaned up
 - Task 10a (preparation): done - renamed `getAllTransactionsForSync` to `getAllTransactions` in bulk.ts, index.ts, export.ts, import.ts, sync.ts
 - Task 10b (hook): done - `useAllTransactions` hook added to useTransactions.ts; queries all transactions via `getAllTransactions()` under `["transactions", "all"]` key
+- Task 10c (UI): done - search bar in LogClient using HeroUI Input; viewing controls hidden when searching; results filtered from useAllTransactions by description (case-insensitive, description-only)
