@@ -458,6 +458,12 @@ Dimes and bucks are stored in a single `transactions` IndexedDB store, distingui
 
 A `window` event listener registered with `{ capture: true }` intercepts the event during the capture phase, before it reaches the button, and calls `formRef.current?.requestSubmit()`. The listener is added/removed based on `isOpen` to avoid interfering with other parts of the app.
 
+### Last-write-wins merge: sync vs. import are not shared
+
+Both Drive sync (`sync.ts`) and local JSON import (`import.ts`) use last-write-wins conflict resolution based on `updatedAt` timestamps, but they are intentionally not sharing a helper.
+
+`sync.ts` uses `mergeRecords<T>` which takes two in-memory arrays (local + remote) and produces a merged array. `import.ts` queries the DB for existing records, filters which incoming items to write, and additionally counts added vs. updated records for the import preview. Sharing the logic would require either awkward extra parameters or redesigning `mergeRecords` to return counts. The duplication is minimal (a single timestamp comparison) and the contexts differ enough that keeping them separate is the right trade-off.
+
 ### Date and timestamp handling
 
 All date operations use Luxon throughout the codebase.
