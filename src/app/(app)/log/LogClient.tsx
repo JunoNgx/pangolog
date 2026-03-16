@@ -229,7 +229,7 @@ export default function LogClient() {
         </div>
     );
 
-    const viewingControls = !isSearching && (
+    const viewingControls = !isSearchMode && (
         <div className="flex flex-col gap-3 mb-4">
             {viewingTypeRow}
             {dimesControls}
@@ -278,7 +278,7 @@ export default function LogClient() {
 
             <DemoDataBanner />
 
-            {isSearching ? (
+            {isSearchMode ? (
                 <TransactionList
                     transactions={searchResults}
                     categories={categories ?? []}
