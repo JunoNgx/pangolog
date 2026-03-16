@@ -102,6 +102,11 @@ export default function HelpClient() {
                     income-only or Big Bucks-only to filter them from irrelevant
                     pickers.
                 </Term>
+                <Term name="Recurring rules">
+                    Rules that automatically generate transactions on a
+                    schedule - daily, weekly, monthly, or yearly. Useful for
+                    fixed expenses like rent or subscriptions.
+                </Term>
             </Section>
 
             <Section title="Pages">
