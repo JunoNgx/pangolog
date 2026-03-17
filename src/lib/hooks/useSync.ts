@@ -93,7 +93,7 @@ export function useSyncFn() {
                     return;
                 }
 
-                // Drive returned 401 - attempt a isSilent token refresh.
+                // Drive returned 401 - attempt a silent token refresh.
                 // Recovers from clock-skew expiry without user interaction.
                 // The refreshed token will be picked up by the next sync.
                 const freshToken = await getValidToken(true);
@@ -144,11 +144,10 @@ export function useSync() {
         });
     }, [queryClient, debouncedSync]);
 
-    // Immediate sync on tab hide
+    // Sync on tab hide (flush pending) and on tab restore (catch up)
     useEffect(() => {
         const handleVisibilityChange = () => {
-            if (document.visibilityState !== "hidden") return;
-            if (debounceRef.current) {
+            if (document.visibilityState === "hidden" && debounceRef.current) {
                 clearTimeout(debounceRef.current);
                 debounceRef.current = null;
             }
