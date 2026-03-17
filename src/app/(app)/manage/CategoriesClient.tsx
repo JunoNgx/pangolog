@@ -4,6 +4,7 @@ import { Button, Tooltip } from "@heroui/react";
 import { Plus } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { CategoryDialog } from "@/components/CategoryDialog";
+import { DemoDataBanner } from "@/components/DemoDataBanner";
 import { createAction } from "@/lib/createAction";
 import { useHotkey } from "@/lib/hooks/useHotkey";
 import { CategoryList } from "./CategoryList";
@@ -22,6 +23,7 @@ export default function CategoriesClient() {
             <p className="text-sm text-default-400 mb-4">
                 Drag to reorder. Order is reflected when choosing a category.
             </p>
+            <DemoDataBanner />
             <CategoryList />
             <Tooltip
                 content={<span className="text-center">Ctrl/Cmd + Enter</span>}

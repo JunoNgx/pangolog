@@ -3,6 +3,7 @@
 import { Button, Checkbox, Tooltip } from "@heroui/react";
 import { ArrowDownAZ, ArrowUpAZ, Plus } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { DemoDataBanner } from "@/components/DemoDataBanner";
 import { createAction } from "@/lib/createAction";
 import { useCategories } from "@/lib/hooks/useCategories";
 import { useHotkey } from "@/lib/hooks/useHotkey";
@@ -156,6 +157,7 @@ export default function RecurringClient() {
                     </button>
                 </div>
             </div>
+            <DemoDataBanner />
             <RecurringList
                 rules={sortedRules}
                 categories={categories ?? []}
