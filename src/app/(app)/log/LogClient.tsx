@@ -10,6 +10,7 @@ import { ToggleSwitch } from "@/components/ToggleSwitch";
 import { createAction } from "@/lib/createAction";
 import { useCategories } from "@/lib/hooks/useCategories";
 import { useHotkey } from "@/lib/hooks/useHotkey";
+import { useLogViewSettings } from "@/lib/hooks/useLogViewSettings";
 import {
     useAllTransactions,
     useTransactionsByMonth,
@@ -32,18 +33,21 @@ export default function LogClient() {
         [openCreateDialog],
     );
 
-    const [isViewingBigBucks, setIsViewingBigBucks] = useState(false);
-    const [shouldIncludeBucksInDimes, setShouldIncludeBucksInDimes] =
-        useState(false);
+    const {
+        isViewingBigBucks,
+        setIsViewingBigBucks,
+        shouldIncludeBucksInDimes,
+        setShouldIncludeBucksInDimes,
+    } = useLogViewSettings();
 
     const toggleViewingBigBucks = useCallback(
-        () => setIsViewingBigBucks((prev) => !prev),
-        [],
+        () => setIsViewingBigBucks(!isViewingBigBucks),
+        [isViewingBigBucks, setIsViewingBigBucks],
     );
     const toggleIncludeBucksInDimes = useCallback(() => {
         if (isViewingBigBucks) return;
-        setShouldIncludeBucksInDimes((prev) => !prev);
-    }, [isViewingBigBucks]);
+        setShouldIncludeBucksInDimes(!shouldIncludeBucksInDimes);
+    }, [isViewingBigBucks, shouldIncludeBucksInDimes, setShouldIncludeBucksInDimes]);
     useHotkey("b", toggleViewingBigBucks, { ctrlOrMeta: true });
     useHotkey("i", toggleIncludeBucksInDimes, { ctrlOrMeta: true });
     useHotkey("f", handleSearchHotkey, { ctrlOrMeta: true });
