@@ -332,6 +332,7 @@ Approach:
     - Ctrl/Cmd + B: (Transactions) toggle between viewing Small Dimes and Big Bucks
     - Ctrl/Cmd + I: (Transactions when viewing Small Dimes/Summary route) toggle `Include Big Bucks`
     - Ctrl/Cmd + B: (Manage route) toggle between tabs
+    - Ctrl/Cmd + Shift + S: (Transaction view) manually trigger sync
 - Recurring rules
     - Creation-triggering events/logic (`visibilitychange)
     - Quirk: if not used for a long time, will skip previous possible entries, and only create the newest possible entry.
