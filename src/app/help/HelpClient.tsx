@@ -21,12 +21,23 @@ function Section({
     );
 }
 
-function Term({ name, children }: { name: string; children: React.ReactNode }) {
+function Term({
+    name,
+    children,
+    isHeading = false,
+}: {
+    name: string;
+    children: React.ReactNode;
+    isHeading?: boolean;
+}) {
+    const nameClass = "font-mono text-sm font-medium text-foreground mb-1";
     return (
         <div className="mb-3">
-            <p className="font-mono text-sm font-medium text-foreground mb-1">
-                {name}
-            </p>
+            {isHeading ? (
+                <h3 className={nameClass}>{name}</h3>
+            ) : (
+                <p className={nameClass}>{name}</p>
+            )}
             <p className="text-sm text-default-500">{children}</p>
         </div>
     );
@@ -57,21 +68,21 @@ export default function HelpClient() {
                     for a better experience - no browser chrome, faster access
                     from your home screen.
                 </p>
-                <Term name="iOS (Safari)">
+                <Term name="iOS (Safari)" isHeading>
                     Tap the Share button at the bottom of the screen, then
                     select "Add to Home Screen". Safari only - Chrome and
                     Firefox on iOS do not support installation.
                 </Term>
-                <Term name="Android (Chrome)">
+                <Term name="Android (Chrome)" isHeading>
                     Tap the three-dot menu in the top right and select "Add to
                     Home Screen" or "Install app". You may also see an install
                     prompt appear automatically.
                 </Term>
-                <Term name="Desktop (Chrome / Edge)">
+                <Term name="Desktop (Chrome / Edge)" isHeading>
                     Click the install icon in the address bar, or open the
                     browser menu and select "Install Pangolog".
                 </Term>
-                <Term name="Other browsers">
+                <Term name="Other browsers" isHeading>
                     PWA installation support varies by browser and OS. Check
                     your browser's documentation or look for extensions that add
                     PWA support - for example,{" "}
@@ -137,9 +148,9 @@ export default function HelpClient() {
             </Section>
 
             <Section title="Keyboard shortcuts">
-                <p className="text-sm font-medium text-default-600 mb-2">
+                <h3 className="text-sm font-medium text-default-600 mb-2">
                     Universal
-                </p>
+                </h3>
                 <p className="text-sm text-default-500 mb-3">
                     <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
                         Ctrl/Cmd + K
@@ -148,9 +159,9 @@ export default function HelpClient() {
                     Available on all main app pages.
                 </p>
 
-                <p className="text-sm font-medium text-default-600 mb-2 mt-4">
+                <h3 className="text-sm font-medium text-default-600 mb-2 mt-4">
                     Transaction view
-                </p>
+                </h3>
                 <p className="text-sm text-default-500 mb-3">
                     <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
                         Ctrl/Cmd + Enter
@@ -182,9 +193,9 @@ export default function HelpClient() {
                     manually triggers a sync with Google Drive.
                 </p>
 
-                <p className="text-sm font-medium text-default-600 mb-2 mt-4">
+                <h3 className="text-sm font-medium text-default-600 mb-2 mt-4">
                     Transaction dialog
-                </p>
+                </h3>
                 <p className="text-sm text-default-500 mb-3">
                     <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
                         Ctrl/Cmd + Enter
@@ -192,9 +203,9 @@ export default function HelpClient() {
                     submits the form from anywhere within the dialog.
                 </p>
 
-                <p className="text-sm font-medium text-default-600 mb-2 mt-4">
+                <h3 className="text-sm font-medium text-default-600 mb-2 mt-4">
                     Summary view
-                </p>
+                </h3>
                 <p className="text-sm text-default-500 mb-3">
                     <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
                         Ctrl/Cmd + B
@@ -208,9 +219,9 @@ export default function HelpClient() {
                     toggles "Include Big Bucks" when viewing Small Dimes.
                 </p>
 
-                <p className="text-sm font-medium text-default-600 mb-2 mt-4">
+                <h3 className="text-sm font-medium text-default-600 mb-2 mt-4">
                     Categories view / Recurring view
-                </p>
+                </h3>
                 <p className="text-sm text-default-500 mb-3">
                     <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
                         Ctrl/Cmd + Enter
@@ -259,9 +270,9 @@ export default function HelpClient() {
                     <span className="font-mono text-xs">updatedAt</span>.
                     Deleted records are soft-deleted and purged after 60 days.
                 </p>
-                <p className="text-sm font-medium text-default-600 mb-1">
+                <h3 className="text-sm font-medium text-default-600 mb-1">
                     Storage structure on Google Drive
-                </p>
+                </h3>
                 <ul className="text-sm text-default-500 font-mono space-y-1">
                     <li>Pangolog/</li>
                     <li className="pl-4">YYYY.json</li>
