@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@heroui/react";
+import { Button, Tooltip } from "@heroui/react";
 import { RefreshCw } from "lucide-react";
 import { DateTime } from "luxon";
 import { useGoogleAuth } from "@/lib/hooks/useGoogleAuth";
@@ -33,15 +33,17 @@ export function SyncButton() {
               : `Synced ${lastSyncLabel}`;
 
     return (
-        <Button
-            size="sm"
-            variant="flat"
-            isDisabled={syncStatus === "syncing"}
-            onPress={() => sync()}
-            className="flex items-center gap-1.5 px-2 h-7 min-w-0 text-default-500"
-        >
-            <RefreshCw size={12} className={iconClass} />
-            <span className="text-xs font-normal">{statusLabel}</span>
-        </Button>
+        <Tooltip content="Ctrl/Cmd + Shift + S" placement="bottom">
+            <Button
+                size="sm"
+                variant="flat"
+                isDisabled={syncStatus === "syncing"}
+                onPress={() => sync()}
+                className="flex items-center gap-1.5 px-2 h-7 min-w-0 text-default-500"
+            >
+                <RefreshCw size={12} className={iconClass} />
+                <span className="text-xs font-normal">{statusLabel}</span>
+            </Button>
+        </Tooltip>
     );
 }

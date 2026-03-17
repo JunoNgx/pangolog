@@ -12,6 +12,7 @@ import { createAction } from "@/lib/createAction";
 import { useCategories } from "@/lib/hooks/useCategories";
 import { useHotkey } from "@/lib/hooks/useHotkey";
 import { useLogViewSettings } from "@/lib/hooks/useLogViewSettings";
+import { useSyncFn } from "@/lib/hooks/useSync";
 import {
     useAllTransactions,
     useTransactionsByMonth,
@@ -52,6 +53,10 @@ export default function LogClient() {
     useHotkey("b", toggleViewingBigBucks, { ctrlOrMeta: true });
     useHotkey("i", toggleIncludeBucksInDimes, { ctrlOrMeta: true });
     useHotkey("f", handleSearchHotkey, { ctrlOrMeta: true });
+
+    const { sync } = useSyncFn();
+    const triggerSync = useCallback(() => sync(), [sync]);
+    useHotkey("S", triggerSync, { ctrlOrMeta: true, shift: true });
 
     const [selectedYear, setSelectedYear] = useState(DateTime.now().year);
     const [selectedMonth, setSelectedMonth] = useState<number>(

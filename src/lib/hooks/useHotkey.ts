@@ -3,7 +3,7 @@ import { useEffect } from "react";
 export function useHotkey(
     key: string,
     callback: () => void,
-    options?: { ctrlOrMeta?: boolean },
+    options?: { ctrlOrMeta?: boolean; shift?: boolean },
 ) {
     useEffect(() => {
         function handleKeyDown(e: KeyboardEvent) {
@@ -16,6 +16,7 @@ export function useHotkey(
             )
                 return;
             if (options?.ctrlOrMeta && !(e.metaKey || e.ctrlKey)) return;
+            if (options?.shift && !e.shiftKey) return;
             if (e.key !== key) return;
 
             e.preventDefault();
@@ -24,5 +25,5 @@ export function useHotkey(
 
         window.addEventListener("keydown", handleKeyDown);
         return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [key, callback, options?.ctrlOrMeta]);
+    }, [key, callback, options?.ctrlOrMeta, options?.shift]);
 }

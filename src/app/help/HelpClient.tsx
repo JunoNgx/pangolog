@@ -175,6 +175,12 @@ export default function HelpClient() {
                     </kbd>{" "}
                     toggles "Include Big Bucks" when viewing Small Dimes.
                 </p>
+                <p className="text-sm text-default-500 mb-3">
+                    <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
+                        Ctrl/Cmd + Shift + S
+                    </kbd>{" "}
+                    manually triggers a sync with Google Drive.
+                </p>
 
                 <p className="text-sm font-medium text-default-600 mb-2 mt-4">
                     Transaction dialog
