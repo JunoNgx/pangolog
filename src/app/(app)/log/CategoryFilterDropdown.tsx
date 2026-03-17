@@ -105,12 +105,12 @@ export function CategoryFilterDropdown({
                                         {cat.icon}
                                     </span>{" "}
                                     {cat.name}
-                                    {cat.isIncomeOnly && (
+                                    {buckCategoryIds.has(cat.id) && (
                                         <span className="ml-2 text-xs font-medium text-amber-500">
                                             BUCK
                                         </span>
                                     )}
-                                    {buckCategoryIds.has(cat.id) && (
+                                    {cat.isIncomeOnly && (
                                         <span className="ml-2 text-xs font-medium text-success">
                                             INC
                                         </span>
