@@ -5,6 +5,7 @@ import { Plus, Search } from "lucide-react";
 import { DateTime } from "luxon";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { DemoDataBanner } from "@/components/DemoDataBanner";
+import { SyncButton } from "@/components/SyncButton";
 import { MonthYearPicker } from "@/components/MonthYearPicker";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
 import { createAction } from "@/lib/createAction";
@@ -245,7 +246,10 @@ export default function LogClient() {
     return (
         <div>
             <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-bold">Transactions</h2>
+                <div className="flex items-center gap-2">
+                    <h2 className="text-xl font-bold">Transactions</h2>
+                    <SyncButton />
+                </div>
                 <Button
                     isIconOnly
                     variant={isSearchMode ? "flat" : "light"}

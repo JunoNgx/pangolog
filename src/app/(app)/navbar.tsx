@@ -4,7 +4,6 @@ import type { LucideIcon } from "lucide-react";
 import { Feather, PieChart, Settings, SlidersHorizontal } from "lucide-react";
 import NextLink from "next/link";
 import { usePathname } from "next/navigation";
-import { SyncStatusDot } from "@/components/SyncStatusDot";
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 
 interface NavItem {
@@ -63,7 +62,6 @@ export function AppNavbar() {
                         })}
                     </nav>
                     <div className="flex items-center gap-1 shrink-0">
-                        <SyncStatusDot />
                         <ThemeSwitcher />
                     </div>
                 </div>
