@@ -3,7 +3,6 @@
 import { Tab, Tabs } from "@heroui/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
-import { DemoDataBanner } from "@/components/DemoDataBanner";
 import { useHotkey } from "@/lib/hooks/useHotkey";
 import CategoriesClient from "./CategoriesClient";
 import RecurringClient from "./RecurringClient";
@@ -26,20 +25,17 @@ export default function ManageClient() {
     useHotkey("b", toggleTab, { ctrlOrMeta: true });
 
     return (
-        <div className="flex flex-col gap-3">
-            <DemoDataBanner />
-            <Tabs
-                selectedKey={activeTab}
-                onSelectionChange={handleTabChange}
-                aria-label="Manage sections"
-            >
-                <Tab key="categories" title="Categories">
-                    <CategoriesClient />
-                </Tab>
-                <Tab key="recurring" title="Recurring Rules">
-                    <RecurringClient />
-                </Tab>
-            </Tabs>
-        </div>
+        <Tabs
+            selectedKey={activeTab}
+            onSelectionChange={handleTabChange}
+            aria-label="Manage sections"
+        >
+            <Tab key="categories" title="Categories">
+                <CategoriesClient />
+            </Tab>
+            <Tab key="recurring" title="Recurring Rules">
+                <RecurringClient />
+            </Tab>
+        </Tabs>
     );
 }
