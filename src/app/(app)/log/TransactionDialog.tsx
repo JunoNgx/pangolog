@@ -27,6 +27,7 @@ import {
 } from "@/lib/hooks/useTransactions";
 import {
     fromDateInputValue,
+    getLocaleDateFormat,
     toDateInputValue,
     todayDateString,
 } from "@/lib/utils";
@@ -78,6 +79,8 @@ export function TransactionDialog({
             setDescription("");
         }
     }, [transaction, defaultIsBigBuck]);
+
+    const localeDateFormat = useMemo(() => getLocaleDateFormat(), []);
 
     const filteredCategories = useMemo(() => {
         if (!categories) return [];
@@ -223,7 +226,14 @@ export function TransactionDialog({
                             <div className="flex justify-around gap-8">
                                 <Input
                                     type="date"
-                                    label="Date"
+                                    label={
+                                        <span>
+                                            Date{" "}
+                                            <span className="font-mono text-default-400 text-xs">
+                                                {localeDateFormat}
+                                            </span>
+                                        </span>
+                                    }
                                     value={transactedAt}
                                     onValueChange={setTransactedAt}
                                     isRequired

@@ -28,6 +28,23 @@ export const SELECT_CLASSES = `
     cursor-pointer
 `;
 
+export function getLocaleDateFormat(): string {
+    if (typeof window === "undefined") return "";
+    return new Intl.DateTimeFormat(navigator.language, {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+    })
+        .formatToParts(new Date(2000, 0, 15))
+        .map((p) => {
+            if (p.type === "year") return "YYYY";
+            if (p.type === "month") return "MM";
+            if (p.type === "day") return "DD";
+            return p.value;
+        })
+        .join("");
+}
+
 export function todayDateString(): string {
     return DateTime.now().toISODate()!;
 }
