@@ -58,6 +58,17 @@ function getRepeatLabel(frequency: Frequency, dateStr: string): string {
     }
 }
 
+const modalClassNames = {
+    closeButton: "cursor-pointer",
+    body: "overflow-y-auto max-h-[calc(var(--visual-viewport-height,100svh)-10rem)]",
+};
+
+const statusPanelClasses = `
+    p-3 rounded-lg border
+    flex items-center justify-between
+    bg-default-50 border-default-200
+`;
+
 interface RecurringRuleDialogProps {
     isOpen: boolean;
     onClose: () => void;
@@ -191,15 +202,76 @@ export function RecurringRuleDialog({
     const isDeleting = deleteRule.isPending;
     const repeatLabel = getRepeatLabel(frequency, startDate);
 
+    const toggleRowClasses = `
+        flex gap-4 mt-2
+        ${isEditing ? "justify-around" : "justify-between"}
+    `;
+
+    const amountInputClassNames = {
+        base: "my-2",
+        input: `
+            text-4xl text-center font-mono
+            ${isIncome ? "!text-success" : "!text-foreground"}
+        `,
+    };
+
+    const ruleStatusPanel = isEditing && rule && (
+        <div className={statusPanelClasses}>
+            <div className="flex flex-col gap-1">
+                <Switch
+                    isSelected={isActive}
+                    onValueChange={setIsActive}
+                    color="success"
+                >
+                    <span className="text-sm font-medium">
+                        {isActive ? "Active" : "Paused"}
+                    </span>
+                </Switch>
+            </div>
+            <div className="flex flex-col items-end gap-1 text-xs font-mono text-default-400">
+                <span>
+                    Next:{" "}
+                    {DateTime.fromISO(rule.nextGenerationAt).toLocaleString(
+                        DateTime.DATE_MED,
+                    )}
+                </span>
+                <span>
+                    Last:{" "}
+                    {rule.lastGeneratedAt
+                        ? DateTime.fromISO(rule.lastGeneratedAt).toLocaleString(
+                              DateTime.DATE_MED,
+                          )
+                        : "Never"}
+                </span>
+            </div>
+        </div>
+    );
+
+    const typeToggleRow = (
+        <div className={toggleRowClasses}>
+            <ToggleSwitch
+                isSelectingRight={isIncome}
+                onValueChange={setIsIncome}
+                leftLabel="Expense"
+                rightLabel="Income"
+            />
+            {!isEditing && (
+                <ToggleSwitch
+                    isSelectingRight={isBigBuck}
+                    onValueChange={setIsBigBuck}
+                    leftLabel="Small dime"
+                    rightLabel="Big buck"
+                />
+            )}
+        </div>
+    );
+
     return (
         <>
             <Modal
                 isOpen={isOpen}
                 onClose={handleClose}
-                classNames={{
-                    closeButton: "cursor-pointer",
-                    body: "overflow-y-auto max-h-[calc(var(--visual-viewport-height,100svh)-10rem)]",
-                }}
+                classNames={modalClassNames}
             >
                 <ModalContent>
                     <form onSubmit={handleSubmit}>
@@ -209,67 +281,8 @@ export function RecurringRuleDialog({
                                 : "New Recurring Rule"}
                         </ModalHeader>
                         <ModalBody className="gap-4">
-                            {isEditing && rule && (
-                                <div
-                                    className={`
-                                        p-3 rounded-lg border
-                                        flex items-center justify-between
-                                        bg-default-50 border-default-200
-                                    `}
-                                >
-                                    <div className="flex flex-col gap-1">
-                                        <Switch
-                                            isSelected={isActive}
-                                            onValueChange={setIsActive}
-                                            color="success"
-                                        >
-                                            <span className="text-sm font-medium">
-                                                {isActive ? "Active" : "Paused"}
-                                            </span>
-                                        </Switch>
-                                    </div>
-                                    <div className="flex flex-col items-end gap-1 text-xs font-mono text-default-400">
-                                        <span>
-                                            Next:{" "}
-                                            {DateTime.fromISO(
-                                                rule.nextGenerationAt,
-                                            ).toLocaleString(DateTime.DATE_MED)}
-                                        </span>
-                                        <span>
-                                            Last:{" "}
-                                            {rule.lastGeneratedAt
-                                                ? DateTime.fromISO(
-                                                      rule.lastGeneratedAt,
-                                                  ).toLocaleString(
-                                                      DateTime.DATE_MED,
-                                                  )
-                                                : "Never"}
-                                        </span>
-                                    </div>
-                                </div>
-                            )}
-
-                            <div
-                                className={`
-                                    flex gap-4 mt-2
-                                    ${isEditing ? "justify-around" : "justify-between"}
-                                `}
-                            >
-                                <ToggleSwitch
-                                    isSelectingRight={isIncome}
-                                    onValueChange={setIsIncome}
-                                    leftLabel="Expense"
-                                    rightLabel="Income"
-                                />
-                                {!isEditing && (
-                                    <ToggleSwitch
-                                        isSelectingRight={isBigBuck}
-                                        onValueChange={setIsBigBuck}
-                                        leftLabel="Small dime"
-                                        rightLabel="Big buck"
-                                    />
-                                )}
-                            </div>
+                            {ruleStatusPanel}
+                            {typeToggleRow}
 
                             <Input
                                 variant="underlined"
@@ -280,13 +293,7 @@ export function RecurringRuleDialog({
                                 inputMode="decimal"
                                 placeholder="0.00"
                                 onFocus={(e) => e.target.select()}
-                                classNames={{
-                                    base: "my-2",
-                                    input: `
-                                        text-4xl text-center font-mono
-                                        ${isIncome ? "!text-success" : "!text-foreground"}
-                                    `,
-                                }}
+                                classNames={amountInputClassNames}
                             />
 
                             <Input
