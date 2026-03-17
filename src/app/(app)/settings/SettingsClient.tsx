@@ -49,6 +49,7 @@ export default function SettingsClient() {
         isAutobackupEnabled,
         setIsAutobackupEnabled,
         setShouldShowDemoDataBanner,
+        setLastSyncTime,
     } = useLocalSettingsStore();
     const { getLoggerEntries, clearLoggerEntries } = useLogger();
 
@@ -70,7 +71,7 @@ export default function SettingsClient() {
     const [isClearRecordsDialogOpen, setIsResetDialogOpen] = useState(false);
     const [isClearingRecords, setIsResetting] = useState(false);
     const [isResetAppDialogOpen, setIsResetAppDialogOpen] = useState(false);
-    const [isClearingRecordsApp, setIsResettingApp] = useState(false);
+    const [isResettingApp, setIsResettingApp] = useState(false);
 
     const [isLogDialogOpen, setIsLogDialogOpen] = useState(false);
 
@@ -100,22 +101,33 @@ export default function SettingsClient() {
 
     async function handleClearLocalRecords() {
         setIsResetting(true);
-        if (isConnected) disconnect();
-        await clearAllData();
-        setShouldShowDemoDataBanner(true);
-        toast.success("All data has been reset. Reloading...");
-        await new Promise((resolve) => setTimeout(resolve, 1500));
-        window.location.reload();
+        try {
+            if (isConnected) disconnect();
+            await clearAllData();
+            setLastSyncTime(null);
+            setShouldShowDemoDataBanner(true);
+            toast.success("All data has been reset. Reloading...");
+            await new Promise((resolve) => setTimeout(resolve, 1500));
+            window.location.reload();
+        } catch (err) {
+            toast.error(`Record clearing failed: ${err}`);
+            setIsResetting(false);
+        }
     }
 
-    async function handleClearLocalRecordsApp() {
+    async function handleResetApp() {
         setIsResettingApp(true);
-        if (isConnected) disconnect();
-        localStorage.clear();
-        await forceDeleteDb();
-        toast.success("App reset. Reloading...");
-        await new Promise((resolve) => setTimeout(resolve, 1500));
-        window.location.href = "/";
+        try {
+            localStorage.clear();
+            sessionStorage.clear();
+            await forceDeleteDb();
+            toast.success("App reset. Reloading...");
+            await new Promise((resolve) => setTimeout(resolve, 1500));
+            window.location.href = "/";
+        } catch (err) {
+            toast.error(`Reset failed: ${err}`);
+            setIsResettingApp(false);
+        }
     }
 
     async function handleExportJson() {
@@ -632,8 +644,8 @@ export default function SettingsClient() {
                         </Button>
                         <Button
                             color="danger"
-                            isLoading={isClearingRecordsApp}
-                            onPress={handleClearLocalRecordsApp}
+                            isLoading={isResettingApp}
+                            onPress={handleResetApp}
                         >
                             Reset app
                         </Button>
