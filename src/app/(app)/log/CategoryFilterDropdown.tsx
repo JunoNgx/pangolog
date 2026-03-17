@@ -19,6 +19,65 @@ interface CategoryFilterDropdownProps {
     buckCategoryIds: Set<string>;
 }
 
+const checkboxClassNames = { base: "max-w-full", label: "truncate" };
+
+interface CategoryFilterItemProps {
+    name: string;
+    icon?: string | null;
+    isIncomeOnly?: boolean;
+    isBuck?: boolean;
+    isSelected: boolean;
+    onToggle: () => void;
+}
+
+function CategoryFilterItem({
+    icon,
+    name,
+    isIncomeOnly,
+    isBuck,
+    isSelected,
+    onToggle,
+}: CategoryFilterItemProps) {
+    return (
+        <li className="py-1">
+            <Checkbox
+                isSelected={isSelected}
+                onValueChange={onToggle}
+                size="md"
+                classNames={checkboxClassNames}
+            >
+                {icon && <span className="text-base">{icon}</span>} {name}
+                {isBuck && (
+                    <span className="ml-2 text-xs font-medium text-amber-500">
+                        BUCK
+                    </span>
+                )}
+                {isIncomeOnly && (
+                    <span className="ml-2 text-xs font-medium text-success">
+                        INC
+                    </span>
+                )}
+            </Checkbox>
+        </li>
+    );
+}
+
+const popoverClasses = `
+    flex flex-col w-64
+`;
+
+const listClasses = `
+    flex flex-col max-h-64 overflow-y-auto px-2 py-1
+`;
+
+const footerClasses = `
+    flex gap-1 p-2 border-t border-default-200
+`;
+
+const actionButtonClasses = `
+    flex-1 text-xs
+`;
+
 export function CategoryFilterDropdown({
     categories,
     selectedIds,
@@ -59,6 +118,19 @@ export function CategoryFilterDropdown({
         ? `Filter (${selectedCount}/${totalCount})`
         : "Filter";
 
+    const uncategorisedItem = hasUncategorised && (
+        <li className="py-1">
+            <Checkbox
+                isSelected={isChecked(UNCATEGORISED_ID)}
+                onValueChange={() => handleToggle(UNCATEGORISED_ID)}
+                size="md"
+                classNames={checkboxClassNames}
+            >
+                Uncategorised
+            </Checkbox>
+        </li>
+    );
+
     return (
         <Popover placement="bottom-end">
             <PopoverTrigger>
@@ -71,59 +143,26 @@ export function CategoryFilterDropdown({
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="p-0">
-                <div className="flex flex-col w-64">
-                    <ul className="flex flex-col max-h-64 overflow-y-auto px-2 py-1">
-                        {hasUncategorised && (
-                            <li className="py-1">
-                                <Checkbox
-                                    isSelected={isChecked(UNCATEGORISED_ID)}
-                                    onValueChange={() =>
-                                        handleToggle(UNCATEGORISED_ID)
-                                    }
-                                    size="md"
-                                    classNames={{
-                                        base: "max-w-full",
-                                        label: "truncate",
-                                    }}
-                                >
-                                    Uncategorised
-                                </Checkbox>
-                            </li>
-                        )}
+                <div className={popoverClasses}>
+                    <ul className={listClasses}>
+                        {uncategorisedItem}
                         {activeCategories.map((cat) => (
-                            <li key={cat.id} className="py-1">
-                                <Checkbox
-                                    isSelected={isChecked(cat.id)}
-                                    onValueChange={() => handleToggle(cat.id)}
-                                    size="md"
-                                    classNames={{
-                                        base: "max-w-full",
-                                        label: "truncate",
-                                    }}
-                                >
-                                    <span className="text-base">
-                                        {cat.icon}
-                                    </span>{" "}
-                                    {cat.name}
-                                    {buckCategoryIds.has(cat.id) && (
-                                        <span className="ml-2 text-xs font-medium text-amber-500">
-                                            BUCK
-                                        </span>
-                                    )}
-                                    {cat.isIncomeOnly && (
-                                        <span className="ml-2 text-xs font-medium text-success">
-                                            INC
-                                        </span>
-                                    )}
-                                </Checkbox>
-                            </li>
+                            <CategoryFilterItem
+                                key={cat.id}
+                                name={cat.name}
+                                icon={cat.icon}
+                                isIncomeOnly={cat.isIncomeOnly}
+                                isBuck={buckCategoryIds.has(cat.id)}
+                                isSelected={isChecked(cat.id)}
+                                onToggle={() => handleToggle(cat.id)}
+                            />
                         ))}
                     </ul>
-                    <div className="flex gap-1 p-2 border-t border-default-200">
+                    <div className={footerClasses}>
                         <Button
                             size="sm"
                             variant="light"
-                            className="flex-1 text-xs"
+                            className={actionButtonClasses}
                             onPress={() => onChange(null)}
                         >
                             Check all
@@ -131,7 +170,7 @@ export function CategoryFilterDropdown({
                         <Button
                             size="sm"
                             variant="light"
-                            className="flex-1 text-xs"
+                            className={actionButtonClasses}
                             onPress={() => onChange([])}
                         >
                             Uncheck all
