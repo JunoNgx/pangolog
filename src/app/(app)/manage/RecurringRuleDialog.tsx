@@ -26,6 +26,7 @@ import {
 } from "@/lib/hooks/useRecurringRules";
 import {
     fromDateInputValue,
+    getLocaleDateFormat,
     MONTH_NAMES,
     SELECT_CLASSES,
     toDateInputValue,
@@ -97,6 +98,7 @@ export function RecurringRuleDialog({
     const restoreRule = useRestoreRecurringRule();
 
     const isEditing = !!rule;
+    const localeDateFormat = useMemo(() => getLocaleDateFormat(), []);
 
     useEffect(() => {
         if (rule) {
@@ -308,7 +310,14 @@ export function RecurringRuleDialog({
                             <div className="flex gap-3 items-end justify-between">
                                 <Input
                                     type="date"
-                                    label="Start date"
+                                    label={
+                                        <span>
+                                            Start date{" "}
+                                            <span className="font-mono text-default-400 text-xs">
+                                                {localeDateFormat}
+                                            </span>
+                                        </span>
+                                    }
                                     value={startDate}
                                     onValueChange={setStartDate}
                                     isRequired
