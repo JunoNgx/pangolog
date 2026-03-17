@@ -13,7 +13,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@heroui/react";
-import { EmojiPicker } from "frimousse";
+import { EmojiPicker, type EmojiPickerListComponents } from "frimousse";
 import { Shuffle } from "lucide-react";
 import { type SubmitEventHandler, useEffect, useState } from "react";
 import { HexColorPicker } from "react-colorful";
@@ -45,6 +45,73 @@ function randomHexColor() {
         .toString(16)
         .padStart(6, "0")}`;
 }
+
+const modalClassNames = {
+    closeButton: "cursor-pointer",
+    body: "overflow-y-auto max-h-[calc(var(--visual-viewport-height,100svh)-10rem)]",
+};
+
+const iconTriggerClasses = `
+    rounded-lg
+    h-10 flex items-center justify-center px-3
+    bg-default-100
+    hover:bg-default-200 transition-colors cursor-pointer
+`;
+
+const emojiPickerRootClasses = `
+    w-75 h-90 rounded-lg overflow-hidden
+    flex flex-col
+    bg-content1 text-foreground
+`;
+
+const emojiPickerSearchClasses = `
+    mx-2 mt-2
+    rounded-md px-2.5 py-2
+    bg-default-100 text-sm text-foreground placeholder:text-foreground-400
+    outline-none focus:bg-default-200
+`;
+
+const emojiButtonClasses = `
+    size-9
+    flex items-center justify-center
+    text-lg rounded-md
+    data-active:bg-default-200 hover:bg-default-100
+`;
+
+const colourTriggerClasses = `
+    flex-1 rounded-lg
+    flex items-center gap-3 px-3 py-2
+    bg-default-100
+    hover:bg-default-200 transition-colors cursor-pointer
+`;
+
+const randomColourButtonClasses = `
+    size-10 shrink-0 rounded-lg
+    flex items-center justify-center
+    bg-default-100 text-default-500
+    hover:bg-default-200 transition-colors cursor-pointer
+`;
+
+const emojiPickerComponents: EmojiPickerListComponents = {
+    CategoryHeader: ({ category: cat, ...props }) => (
+        <div
+            className="px-3 pt-3 pb-1.5 text-xs font-medium text-foreground-500 bg-content1"
+            {...props}
+        >
+            {cat.label}
+        </div>
+    ),
+    Row: ({ children, ...props }) => (
+        <div className="px-1.5" {...props}>
+            {children}
+        </div>
+    ),
+    Emoji: ({ emoji: e, ...props }) => (
+        <button type="button" className={emojiButtonClasses} {...props}>
+            {e.emoji}
+        </button>
+    ),
+};
 
 interface CategoryDialogProps {
     isOpen: boolean;
@@ -106,6 +173,10 @@ export function CategoryDialog({
         onClose();
     }
 
+    function handleColourHexChange(v: string) {
+        setColour(v.startsWith("#") ? v : `#${v}`);
+    }
+
     const handleSubmit: SubmitEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault();
         const input = {
@@ -152,15 +223,99 @@ export function CategoryDialog({
         });
     }
 
+    const emojiPickerSection = (
+        <div className="flex flex-col gap-1">
+            <span className="text-xs text-foreground-500">Icon</span>
+            <Popover
+                placement="bottom-start"
+                isOpen={isEmojiPickerOpen}
+                onOpenChange={setIsEmojiPickerOpen}
+            >
+                <PopoverTrigger>
+                    <button type="button" className={iconTriggerClasses}>
+                        <span className="text-xl">{icon}</span>
+                    </button>
+                </PopoverTrigger>
+                <PopoverContent className="p-0">
+                    <EmojiPicker.Root
+                        onEmojiSelect={handleEmojiSelect}
+                        className={emojiPickerRootClasses}
+                    >
+                        <EmojiPicker.Search
+                            className={emojiPickerSearchClasses}
+                        />
+                        <EmojiPicker.Viewport className="relative flex-1 outline-none">
+                            <EmojiPicker.Loading className="absolute inset-0 flex items-center justify-center text-sm text-foreground-400">
+                                Loading...
+                            </EmojiPicker.Loading>
+                            <EmojiPicker.Empty className="absolute inset-0 flex items-center justify-center text-sm text-foreground-400">
+                                No emoji found.
+                            </EmojiPicker.Empty>
+                            <EmojiPicker.List
+                                className="select-none pb-1.5"
+                                components={emojiPickerComponents}
+                            />
+                        </EmojiPicker.Viewport>
+                    </EmojiPicker.Root>
+                </PopoverContent>
+            </Popover>
+        </div>
+    );
+
+    const colourPickerSection = (
+        <div className="flex w-2/3 flex-col gap-1">
+            <span className="text-xs text-foreground-500">Colour</span>
+            <div className="flex gap-2">
+                <Popover placement="bottom-end">
+                    <PopoverTrigger>
+                        <button type="button" className={colourTriggerClasses}>
+                            <div
+                                className="size-6 shrink-0 rounded-full"
+                                style={{ backgroundColor: colour }}
+                            />
+                            <span className="text-sm text-foreground-500">
+                                {colour}
+                            </span>
+                        </button>
+                    </PopoverTrigger>
+                    <PopoverContent>
+                        <div className="flex flex-col gap-2 p-2">
+                            <HexColorPicker
+                                color={colour}
+                                onChange={setColour}
+                                style={{ width: "100%" }}
+                            />
+                            <div className="flex gap-2">
+                                <Input
+                                    label="Hex"
+                                    size="sm"
+                                    value={colour}
+                                    onValueChange={handleColourHexChange}
+                                    maxLength={7}
+                                    className="flex-1"
+                                />
+                                <div
+                                    className="flex-1 rounded"
+                                    style={{ backgroundColor: colour }}
+                                />
+                            </div>
+                        </div>
+                    </PopoverContent>
+                </Popover>
+                <button
+                    type="button"
+                    onClick={() => setColour(randomHexColor())}
+                    className={randomColourButtonClasses}
+                    title="Random colour"
+                >
+                    <Shuffle size={16} />
+                </button>
+            </div>
+        </div>
+    );
+
     return (
-        <Modal
-            isOpen={isOpen}
-            onClose={onClose}
-            classNames={{
-                closeButton: "cursor-pointer",
-                body: "overflow-y-auto max-h-[calc(var(--visual-viewport-height,100svh)-10rem)]",
-            }}
-        >
+        <Modal isOpen={isOpen} onClose={onClose} classNames={modalClassNames}>
             <ModalContent>
                 <form onSubmit={handleSubmit}>
                     <ModalHeader>
@@ -175,181 +330,9 @@ export function CategoryDialog({
                             autoFocus
                         />
                         <div className="flex justify-between">
-                            <div className="flex flex-col gap-1">
-                                <span className="text-xs text-foreground-500">
-                                    Icon
-                                </span>
-                                <Popover
-                                    placement="bottom-start"
-                                    isOpen={isEmojiPickerOpen}
-                                    onOpenChange={setIsEmojiPickerOpen}
-                                >
-                                    <PopoverTrigger>
-                                        <button
-                                            type="button"
-                                            className={`
-                                                rounded-lg
-                                                h-10 flex items-center justify-center px-3
-                                                bg-default-100
-                                                hover:bg-default-200 transition-colors cursor-pointer
-                                            `}
-                                        >
-                                            <span className="text-xl">
-                                                {icon}
-                                            </span>
-                                        </button>
-                                    </PopoverTrigger>
-                                    <PopoverContent className="p-0">
-                                        <EmojiPicker.Root
-                                            onEmojiSelect={handleEmojiSelect}
-                                            className={`
-                                                w-75 h-90 rounded-lg overflow-hidden
-                                                flex flex-col
-                                                bg-content1 text-foreground
-                                            `}
-                                        >
-                                            <EmojiPicker.Search
-                                                className={`
-                                                    mx-2 mt-2
-                                                    rounded-md px-2.5 py-2
-                                                    bg-default-100 text-sm text-foreground placeholder:text-foreground-400
-                                                    outline-none focus:bg-default-200
-                                                `}
-                                            />
-                                            <EmojiPicker.Viewport className="relative flex-1 outline-none">
-                                                <EmojiPicker.Loading className="absolute inset-0 flex items-center justify-center text-sm text-foreground-400">
-                                                    Loading...
-                                                </EmojiPicker.Loading>
-                                                <EmojiPicker.Empty className="absolute inset-0 flex items-center justify-center text-sm text-foreground-400">
-                                                    No emoji found.
-                                                </EmojiPicker.Empty>
-                                                <EmojiPicker.List
-                                                    className="select-none pb-1.5"
-                                                    components={{
-                                                        CategoryHeader: ({
-                                                            category: cat,
-                                                            ...props
-                                                        }) => (
-                                                            <div
-                                                                className="px-3 pt-3 pb-1.5 text-xs font-medium text-foreground-500 bg-content1"
-                                                                {...props}
-                                                            >
-                                                                {cat.label}
-                                                            </div>
-                                                        ),
-                                                        Row: ({
-                                                            children,
-                                                            ...props
-                                                        }) => (
-                                                            <div
-                                                                className="px-1.5"
-                                                                {...props}
-                                                            >
-                                                                {children}
-                                                            </div>
-                                                        ),
-                                                        Emoji: ({
-                                                            emoji: e,
-                                                            ...props
-                                                        }) => (
-                                                            <button
-                                                                type="button"
-                                                                className={`
-                                                                    size-9
-                                                                    flex items-center justify-center
-                                                                    text-lg rounded-md
-                                                                    data-active:bg-default-200 hover:bg-default-100
-                                                                `}
-                                                                {...props}
-                                                            >
-                                                                {e.emoji}
-                                                            </button>
-                                                        ),
-                                                    }}
-                                                />
-                                            </EmojiPicker.Viewport>
-                                        </EmojiPicker.Root>
-                                    </PopoverContent>
-                                </Popover>
-                            </div>
-                            <div className="flex w-2/3 flex-col gap-1">
-                                <span className="text-xs text-foreground-500">
-                                    Colour
-                                </span>
-                                <div className="flex gap-2">
-                                    <Popover placement="bottom-end">
-                                        <PopoverTrigger>
-                                            <button
-                                                type="button"
-                                                className={`
-                                                    flex-1 rounded-lg
-                                                    flex items-center gap-3 px-3 py-2
-                                                    bg-default-100
-                                                    hover:bg-default-200 transition-colors cursor-pointer
-                                                `}
-                                            >
-                                                <div
-                                                    className={`
-                                                        size-6 shrink-0 rounded-full
-                                                    `}
-                                                    style={{
-                                                        backgroundColor: colour,
-                                                    }}
-                                                />
-                                                <span className="text-sm text-foreground-500">
-                                                    {colour}
-                                                </span>
-                                            </button>
-                                        </PopoverTrigger>
-                                        <PopoverContent>
-                                            <div className="flex flex-col gap-2 p-2">
-                                                <HexColorPicker
-                                                    color={colour}
-                                                    onChange={setColour}
-                                                    style={{ width: "100%" }}
-                                                />
-                                                <div className="flex gap-2">
-                                                    <Input
-                                                        label="Hex"
-                                                        size="sm"
-                                                        value={colour}
-                                                        onValueChange={(v) =>
-                                                            setColour(
-                                                                v.startsWith(
-                                                                    "#",
-                                                                )
-                                                                    ? v
-                                                                    : `#${v}`,
-                                                            )
-                                                        }
-                                                        maxLength={7}
-                                                        className="flex-1"
-                                                    />
-                                                    <div
-                                                        className="flex-1 rounded"
-                                                        style={{
-                                                            backgroundColor:
-                                                                colour,
-                                                        }}
-                                                    />
-                                                </div>
-                                            </div>
-                                        </PopoverContent>
-                                    </Popover>
-                                    <button
-                                        type="button"
-                                        onClick={() =>
-                                            setColour(randomHexColor())
-                                        }
-                                        className="size-10 shrink-0 rounded-lg flex items-center justify-center bg-default-100 hover:bg-default-200 transition-colors text-default-500 cursor-pointer"
-                                        title="Random colour"
-                                    >
-                                        <Shuffle size={16} />
-                                    </button>
-                                </div>
-                            </div>
+                            {emojiPickerSection}
+                            {colourPickerSection}
                         </div>
-
                         <Checkbox
                             isSelected={isIncomeOnly}
                             onValueChange={setIsIncomeOnly}
