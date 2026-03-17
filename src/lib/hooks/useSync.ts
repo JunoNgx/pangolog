@@ -10,6 +10,7 @@ import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
 import { useGoogleAuth } from "./useGoogleAuth";
 
 const DEBOUNCE_MS = 30_000;
+const RESTORE_SYNC_THRESHOLD_MS = 12 * 60 * 60 * 1000;
 
 // Module-level flag prevents concurrent syncs across hook instances.
 let isSyncing = false;
@@ -125,6 +126,11 @@ export function useSyncFn() {
     return { sync };
 }
 
+function isSyncStale(lastSyncTime: string | null): boolean {
+    if (!lastSyncTime) return true;
+    return Date.now() - new Date(lastSyncTime).getTime() > RESTORE_SYNC_THRESHOLD_MS;
+}
+
 export function useSync() {
     const { sync } = useSyncFn();
     const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -144,14 +150,19 @@ export function useSync() {
         });
     }, [queryClient, debouncedSync]);
 
-    // Sync on tab hide (flush pending) and on tab restore (catch up)
+    // Flush pending debounce on hide; sync on restore if last sync was stale
     useEffect(() => {
         const handleVisibilityChange = () => {
-            if (document.visibilityState === "hidden" && debounceRef.current) {
-                clearTimeout(debounceRef.current);
-                debounceRef.current = null;
+            if (document.visibilityState === "hidden") {
+                // Discard pending debounce - restore sync will catch up on return
+                if (debounceRef.current) {
+                    clearTimeout(debounceRef.current);
+                    debounceRef.current = null;
+                }
+                return;
             }
-            sync(true);
+            const { lastSyncTime } = useLocalSettingsStore.getState();
+            if (isSyncStale(lastSyncTime)) sync(true);
         };
         document.addEventListener("visibilitychange", handleVisibilityChange);
         return () =>
