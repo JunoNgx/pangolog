@@ -271,7 +271,7 @@ export default function HelpClient() {
                     Deleted records are soft-deleted and purged after 60 days.
                 </p>
                 <h3 className="text-sm font-medium text-default-600 mb-1">
-                    Storage structure on Google Drive
+                    Storage structure
                 </h3>
                 <ul className="text-sm text-default-500 font-mono space-y-1">
                     <li>Pangolog/</li>
