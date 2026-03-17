@@ -103,9 +103,9 @@ export default function HelpClient() {
                     pickers.
                 </Term>
                 <Term name="Recurring rules">
-                    Rules that automatically generate transactions on a
-                    schedule - daily, weekly, monthly, or yearly. Useful for
-                    fixed expenses like rent or subscriptions.
+                    Rules that automatically generate transactions on a schedule
+                    - daily, weekly, monthly, or yearly. Useful for fixed
+                    expenses like rent or subscriptions.
                 </Term>
             </Section>
 
@@ -249,21 +249,18 @@ export default function HelpClient() {
             <Section title="Google Drive sync">
                 <p className="text-sm text-default-500 mb-3">
                     Sync is optional and can be enabled or disabled from
-                    Settings. When connected, data is synced automatically after
-                    changes and whenever the app becomes visible again. Syncing
-                    is debounced - the app waits 30 seconds after the last
-                    change before uploading, rather than sending a request on
-                    every edit. This reduces unnecessary API calls and avoids
-                    hitting Google Drive&apos;s rate limits.
+                    Settings. Once connected, sync happens automatically: 30
+                    seconds after any change, and when returning to the app
+                    after 12+ hours. You can also sync manually via the button
+                    in the transaction view.
                 </p>
                 <p className="text-sm text-default-500 mb-3">
-                    Conflicts are resolved by last-write-wins using the
-                    record&apos;s{" "}
-                    <span className="font-mono text-xs">updatedAt</span>{" "}
-                    timestamp.
+                    Conflicts are resolved by last-write-wins on{" "}
+                    <span className="font-mono text-xs">updatedAt</span>.
+                    Deleted records are soft-deleted and purged after 60 days.
                 </p>
                 <p className="text-sm font-medium text-default-600 mb-1">
-                    Storage structure
+                    Storage structure on Google Drive
                 </p>
                 <ul className="text-sm text-default-500 font-mono space-y-1">
                     <li>Pangolog/</li>
