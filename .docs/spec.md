@@ -208,7 +208,7 @@ Approach:
 - Command palette (Cmd/Ctrl+K): global quick-access overlay with filtered command list
     - Navigate: Go to Log, Categories, Summary, Recurring, Settings, Help
     - Create: context-aware (New transaction / New category / New recurring rule) - only shown on routes with a create dialog; wired via a module-level `createAction` registry
-    - Actions: Sync now (only when Drive connected), Export JSON, theme switcher (shows the two non-active theme options)
+    - Actions: Sync now (only when Drive connected), Show keyboard shortcuts, Export JSON, theme switcher (shows the two non-active theme options)
     - Keyboard navigation: ArrowUp/Down moves selection, Enter executes, Escape closes
 
 ### Navbar
@@ -332,6 +332,7 @@ Approach:
     - Settings
 - Hotkey shortcuts:
     - Ctrl/Cmd + K: (main pages) open command palette
+    - Ctrl/Cmd + /: (main pages) show keyboard shortcuts
     - Ctrl/Cmd + 1: go to Log
     - Ctrl/Cmd + 2: go to Summary
     - Ctrl/Cmd + 3: go to Manage
