@@ -153,7 +153,15 @@ export function CommandPalette() {
                           action: () => sync(),
                       },
                   ]
-                : []),
+                : [
+                      {
+                          id: "connect-drive",
+                          group: "Actions",
+                          label: "Connect Google Drive to sync",
+                          icon: <RefreshCw size={16} />,
+                          action: () => router.push("/settings"),
+                      },
+                  ]),
             {
                 id: "export",
                 group: "Actions",
