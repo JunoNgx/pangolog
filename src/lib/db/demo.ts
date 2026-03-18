@@ -16,9 +16,13 @@ export async function seedDemoData(): Promise<void> {
     const catGrocery = generateId();
     const catFreelancing = generateId();
     const catWage = generateId();
+    const catSubscription = generateId();
 
     await new Promise<void>((resolve, reject) => {
-        const tx = db.transaction(["categories", "transactions"], "readwrite");
+        const tx = db.transaction(
+            ["categories", "transactions", "recurring-rules"],
+            "readwrite",
+        );
         tx.oncomplete = () => resolve();
         tx.onerror = () => reject(tx.error);
 
@@ -79,6 +83,18 @@ export async function seedDemoData(): Promise<void> {
             priority: 4,
             isBuckOnly: false,
             isIncomeOnly: true,
+            createdAt: catCreatedAt,
+            updatedAt: catCreatedAt,
+            deletedAt: null,
+        });
+        catStore.put({
+            id: catSubscription,
+            name: "Subscription",
+            colour: "#EC4899",
+            icon: "📺",
+            priority: 5,
+            isBuckOnly: false,
+            isIncomeOnly: false,
             createdAt: catCreatedAt,
             updatedAt: catCreatedAt,
             deletedAt: null,
@@ -163,6 +179,39 @@ export async function seedDemoData(): Promise<void> {
             transactedAt: todayISO,
             year: now.year,
             month: now.month,
+            updatedAt: auditNow,
+            deletedAt: null,
+        });
+        txStore.put({
+            id: generateId(),
+            description: "Nebula",
+            amount: 1000,
+            categoryId: catSubscription,
+            isIncome: false,
+            isBigBuck: false,
+            transactedAt: todayISO,
+            year: now.year,
+            month: now.month,
+            updatedAt: auditNow,
+            deletedAt: null,
+        });
+
+        const rrStore = tx.objectStore("recurring-rules");
+        rrStore.put({
+            id: generateId(),
+            description: "Nebula",
+            amount: 1000,
+            categoryId: catSubscription,
+            isIncome: false,
+            isBigBuck: false,
+            frequency: "monthly",
+            dayOfWeek: null,
+            dayOfMonth: now.day,
+            monthOfYear: null,
+            lastGeneratedAt: auditNow,
+            nextGenerationAt: now.plus({ months: 1 }).toISO()!,
+            isActive: true,
+            createdAt: auditNow,
             updatedAt: auditNow,
             deletedAt: null,
         });
