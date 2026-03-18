@@ -184,7 +184,7 @@ export async function seedDemoData(): Promise<void> {
         });
         txStore.put({
             id: generateId(),
-            description: "Nebula",
+            description: "Streaming service",
             amount: 1000,
             categoryId: catSubscription,
             isIncome: false,
@@ -199,7 +199,7 @@ export async function seedDemoData(): Promise<void> {
         const rrStore = tx.objectStore("recurring-rules");
         rrStore.put({
             id: generateId(),
-            description: "Nebula",
+            description: "Streaming service",
             amount: 1000,
             categoryId: catSubscription,
             isIncome: false,
