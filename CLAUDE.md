@@ -129,7 +129,7 @@ Don't comment on the classes. Just keep one type of classes in its own line. Eac
 - Phase 3b (Drive file structure): done
 - Phase 3c (Sync logic): done - includes settings.json sync (customCurrency, isPrefixCurrency)
 - Phase 3d (Misc implementations): done
-- Phase 3e (Seed data for new users): incomplete
+- Phase 3e (Seed data for new users): done - DemoDataBanner on /log and /manage; opt-in sample data with categories, transactions, recurring rule, and réal currency
 - Phase 1h (toast notifications): done - sonner; deletion undo, Google Drive connection, manual sync success/failure; auto-syncs are silent; DB mutation errors surface via toast
 - Phase 4a (JSON export/import): done - includes display settings; error reporting deferred
 - Phase 5a (recurring rules DB layer): done - RecurringRule types, DB v2 with indexes, CRUD functions, hooks
@@ -151,3 +151,4 @@ Don't comment on the classes. Just keep one type of classes in its own line. Eac
 - Task 10a (preparation): done - renamed `getAllTransactionsForSync` to `getAllTransactions` in bulk.ts, index.ts, export.ts, import.ts, sync.ts
 - Task 10b (hook): done - `useAllTransactions` hook added to useTransactions.ts; queries all transactions via `getAllTransactions()` under `["transactions", "all"]` key
 - Task 10c (UI): done - search bar in LogClient using HeroUI Input; viewing controls hidden when searching; results filtered from useAllTransactions by description (case-insensitive, description-only)
+- Task 9 (Cloud Autobackup): done - monthly `backup-YYYY-MM.json` uploaded to Drive after sync if not already present; `isAutobackupEnabled` toggle in settings; user advised to clean up old backups manually
