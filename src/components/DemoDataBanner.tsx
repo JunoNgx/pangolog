@@ -23,6 +23,7 @@ export function DemoDataBanner() {
         try {
             await seedDemoData();
             useProfileSettingsStore.getState().setCustomCurrency("réal");
+            useProfileSettingsStore.getState().setIsPrefixCurrency(false);
             await queryClient.invalidateQueries({ queryKey: ["transactions"] });
             await queryClient.invalidateQueries({ queryKey: ["categories"] });
             setShouldShowDemoDataBanner(false);
