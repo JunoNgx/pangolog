@@ -22,7 +22,7 @@ export default function ManageClient() {
         const nextTab = activeTab === "categories" ? "recurring" : "categories";
         router.replace(`/manage?tab=${nextTab}`);
     }, [activeTab, router]);
-    useHotkey("b", toggleTab, { ctrlOrMeta: true });
+    useHotkey("U", toggleTab, { ctrlOrMeta: true, shift: true });
 
     return (
         <Tabs

@@ -70,6 +70,9 @@ export function CommandPalette() {
 
     useHotkey("k", open, { ctrlOrMeta: true });
 
+    const goToSettings = useCallback(() => router.push("/settings"), [router]);
+    useHotkey(".", goToSettings, { ctrlOrMeta: true });
+
     const createCommand = useMemo((): Command | null => {
         if (pathname === "/log") {
             return {

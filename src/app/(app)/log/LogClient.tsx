@@ -5,8 +5,8 @@ import { Plus, Search } from "lucide-react";
 import { DateTime } from "luxon";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { DemoDataBanner } from "@/components/DemoDataBanner";
-import { SyncButton } from "@/components/SyncButton";
 import { MonthYearPicker } from "@/components/MonthYearPicker";
+import { SyncButton } from "@/components/SyncButton";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
 import { createAction } from "@/lib/createAction";
 import { useCategories } from "@/lib/hooks/useCategories";
@@ -49,14 +49,21 @@ export default function LogClient() {
     const toggleIncludeBucksInDimes = useCallback(() => {
         if (isViewingBigBucks) return;
         setShouldIncludeBucksInDimes(!shouldIncludeBucksInDimes);
-    }, [isViewingBigBucks, shouldIncludeBucksInDimes, setShouldIncludeBucksInDimes]);
-    useHotkey("b", toggleViewingBigBucks, { ctrlOrMeta: true });
-    useHotkey("i", toggleIncludeBucksInDimes, { ctrlOrMeta: true });
+    }, [
+        isViewingBigBucks,
+        shouldIncludeBucksInDimes,
+        setShouldIncludeBucksInDimes,
+    ]);
+    useHotkey("U", toggleViewingBigBucks, { ctrlOrMeta: true, shift: true });
+    useHotkey("I", toggleIncludeBucksInDimes, {
+        ctrlOrMeta: true,
+        shift: true,
+    });
     useHotkey("f", handleSearchHotkey, { ctrlOrMeta: true });
 
     const { sync } = useSyncFn();
     const triggerSync = useCallback(() => sync(), [sync]);
-    useHotkey("S", triggerSync, { ctrlOrMeta: true, shift: true });
+    useHotkey("s", triggerSync, { ctrlOrMeta: true });
 
     const [selectedYear, setSelectedYear] = useState(DateTime.now().year);
     const [selectedMonth, setSelectedMonth] = useState<number>(
