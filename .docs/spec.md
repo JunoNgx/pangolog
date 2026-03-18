@@ -332,7 +332,10 @@ Approach:
     - Settings
 - Hotkey shortcuts:
     - Ctrl/Cmd + K: (main pages) open command palette
-    - Ctrl/Cmd + .: (main pages) go to settings
+    - Ctrl/Cmd + 1: go to Log
+    - Ctrl/Cmd + 2: go to Summary
+    - Ctrl/Cmd + 3: go to Manage
+    - Ctrl/Cmd + 4 / Ctrl/Cmd + .: go to Settings
     - Ctrl/Cmd + Enter: open create dialog on Log, Categories, and Recurring rules pages
     - Ctrl/Cmd + Shift + U: (Transactions; Summary) toggle between viewing Small Dimes and Big Bucks
     - Ctrl/Cmd + Shift + I: (Transactions; Summary) when viewing Small Dimes/Summary route, toggle `Include Big Bucks`

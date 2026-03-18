@@ -159,9 +159,28 @@ export default function HelpClient() {
                 </p>
                 <p className="text-sm text-default-500 mb-3">
                     <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
+                        Ctrl/Cmd + 1
+                    </kbd>{" "}
+                    /{" "}
+                    <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
+                        2
+                    </kbd>{" "}
+                    /{" "}
+                    <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
+                        3
+                    </kbd>{" "}
+                    /{" "}
+                    <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
+                        4
+                    </kbd>{" "}
+                    navigates to Log, Summary, Manage, and Settings
+                    respectively.
+                </p>
+                <p className="text-sm text-default-500 mb-3">
+                    <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
                         Ctrl/Cmd + .
                     </kbd>{" "}
-                    goes to Settings.
+                    also goes to Settings.
                 </p>
 
                 <h3 className="text-sm font-medium text-default-600 mb-2 mt-4">
