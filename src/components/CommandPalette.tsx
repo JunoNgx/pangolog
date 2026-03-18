@@ -5,6 +5,7 @@ import {
     BookOpen,
     Download,
     Feather,
+    Keyboard,
     Monitor,
     Moon,
     PieChart,
@@ -23,6 +24,7 @@ import { exportJson } from "@/lib/export";
 import { useGoogleAuth } from "@/lib/hooks/useGoogleAuth";
 import { useHotkey } from "@/lib/hooks/useHotkey";
 import { useSyncFn } from "@/lib/hooks/useSync";
+import { shortcutsAction } from "@/lib/shortcutsAction";
 
 type Command = {
     id: string;
@@ -173,6 +175,13 @@ export function CommandPalette() {
                           action: () => router.push("/settings"),
                       },
                   ]),
+            {
+                id: "shortcuts",
+                group: "Actions",
+                label: "Show keyboard shortcuts",
+                icon: <Keyboard size={16} />,
+                action: () => shortcutsAction.trigger(),
+            },
             {
                 id: "export",
                 group: "Actions",
