@@ -53,6 +53,7 @@ Personal expense tracker PWA. See `.docs/spec.md` and `.docs/plan.md` for full d
 - Complicated handler function, taking up more than one line, should be implemented separately outside of the template.
 - Do not use the deprecated `FormEvent` and `React.FormEventHandler`
 - Do not use em dash
+- Avoid nesting by breaking down component templates to variables
 
 ### Tailwind classes
 - Tailwind classes are to be wrapped in literal template, grouping classes into categories:
