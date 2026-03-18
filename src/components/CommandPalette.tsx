@@ -73,6 +73,14 @@ export function CommandPalette() {
     const goToSettings = useCallback(() => router.push("/settings"), [router]);
     useHotkey(".", goToSettings, { ctrlOrMeta: true });
 
+    const goToLog = useCallback(() => router.push("/log"), [router]);
+    const goToSummary = useCallback(() => router.push("/summary"), [router]);
+    const goToManage = useCallback(() => router.push("/manage"), [router]);
+    useHotkey("1", goToLog, { ctrlOrMeta: true });
+    useHotkey("2", goToSummary, { ctrlOrMeta: true });
+    useHotkey("3", goToManage, { ctrlOrMeta: true });
+    useHotkey("4", goToSettings, { ctrlOrMeta: true });
+
     const createCommand = useMemo((): Command | null => {
         if (pathname === "/log") {
             return {
