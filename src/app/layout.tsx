@@ -15,12 +15,21 @@ const fontMono = Geist_Mono({
     variable: "--font-mono-var",
 });
 
+import { BASE_URL } from "@/lib/constants";
+
 export const metadata: Metadata = {
     title: {
         default: "Pangolog",
         template: "Pangolog - %s",
     },
-    description: "An offine-first and privacy-first minimalist expense tracker",
+    description:
+        "An offline-first, privacy-first minimalist expense tracker. No account required. Your data stays on your device.",
+    metadataBase: new URL(BASE_URL),
+    openGraph: {
+        siteName: "Pangolog",
+        type: "website",
+        locale: "en_US",
+    },
     appleWebApp: {
         capable: true,
         statusBarStyle: "default",

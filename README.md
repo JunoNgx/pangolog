@@ -43,7 +43,7 @@ Run `yarn && yarn dev` from the root directory.
 
 ## Environment variable
 
-This project only requires environment variable if user chooses to sync data with Google Drive. The required variables are:
+### For Google Drive sync
 - `NEXT_PUBLIC_GOOGLE_CLIENT_ID`
 - `GOOGLE_CLIENT_SECRET`
 - `IRON_SESSION_SECRET`
@@ -59,6 +59,9 @@ You would need
     - For `NEXT_PUBLIC_GOOGLE_CLIENT_ID`: use client ID
     - For `GOOGLE_CLIENT_SECRET`: use a secret under the Client secrets section
 - Execute in a terminal `openssl rand -base64 32` and use the output for `IRON_SESSION_SECRET`
+
+### For SEO configuration
+- `NEXT_PUBLIC_BASE_URL` (optional - defaults to the value in `src/lib/constants.ts`)
 
 ## Support and Contribution
 
