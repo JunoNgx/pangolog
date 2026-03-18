@@ -315,7 +315,8 @@ Approach:
 
 #### Layout
 - Basic and simple read-only text content
-- Floating button to return to previous page via `router.back()`
+- Floating button to return to previous page via `router.back()`; tooltip shows "Esc"
+- Esc hotkey also triggers `router.back()`; same applies to `/privacy` and `/terms`
 
 #### Content
 - App overview
