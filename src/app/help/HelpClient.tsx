@@ -148,121 +148,13 @@ export default function HelpClient() {
             </Section>
 
             <Section title="Keyboard shortcuts">
-                <h3 className="text-sm font-medium text-default-600 mb-2">
-                    Universal
-                </h3>
-                <p className="text-sm text-default-500 mb-3">
+                <p className="text-sm text-default-500">
+                    Press{" "}
                     <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
-                        Ctrl/Cmd + K
+                        Ctrl/Cmd + /
                     </kbd>{" "}
-                    opens the command palette for quick navigation and actions.
-                </p>
-                <p className="text-sm text-default-500 mb-3">
-                    <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
-                        Ctrl/Cmd + 1
-                    </kbd>{" "}
-                    /{" "}
-                    <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
-                        2
-                    </kbd>{" "}
-                    /{" "}
-                    <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
-                        3
-                    </kbd>{" "}
-                    /{" "}
-                    <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
-                        4
-                    </kbd>{" "}
-                    navigates to Log, Summary, Manage, and Settings
-                    respectively.
-                </p>
-                <p className="text-sm text-default-500 mb-3">
-                    <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
-                        Ctrl/Cmd + .
-                    </kbd>{" "}
-                    also goes to Settings.
-                </p>
-
-                <h3 className="text-sm font-medium text-default-600 mb-2 mt-4">
-                    Transaction view
-                </h3>
-                <p className="text-sm text-default-500 mb-3">
-                    <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
-                        Ctrl/Cmd + Enter
-                    </kbd>{" "}
-                    opens the create transaction dialog.
-                </p>
-                <p className="text-sm text-default-500 mb-3">
-                    <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
-                        Ctrl/Cmd + F
-                    </kbd>{" "}
-                    enters search mode.
-                </p>
-                <p className="text-sm text-default-500 mb-3">
-                    <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
-                        Ctrl/Cmd + Shift + U
-                    </kbd>{" "}
-                    toggles between Small Dimes and Big Bucks.
-                </p>
-                <p className="text-sm text-default-500 mb-3">
-                    <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
-                        Ctrl/Cmd + Shift + I
-                    </kbd>{" "}
-                    toggles "Include Big Bucks" when viewing Small Dimes.
-                </p>
-                <p className="text-sm text-default-500 mb-3">
-                    <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
-                        Ctrl/Cmd + S
-                    </kbd>{" "}
-                    manually triggers a sync with Google Drive.
-                </p>
-
-                <h3 className="text-sm font-medium text-default-600 mb-2 mt-4">
-                    Transaction dialog
-                </h3>
-                <p className="text-sm text-default-500 mb-3">
-                    <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
-                        Ctrl/Cmd + Enter
-                    </kbd>{" "}
-                    submits the form from anywhere within the dialog.
-                </p>
-
-                <h3 className="text-sm font-medium text-default-600 mb-2 mt-4">
-                    Summary view
-                </h3>
-                <p className="text-sm text-default-500 mb-3">
-                    <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
-                        Ctrl/Cmd + Shift + Y
-                    </kbd>{" "}
-                    switches between monthly and yearly view.
-                </p>
-                <p className="text-sm text-default-500 mb-3">
-                    <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
-                        Ctrl/Cmd + Shift + U
-                    </kbd>{" "}
-                    toggles between Small Dimes and Big Bucks.
-                </p>
-                <p className="text-sm text-default-500 mb-3">
-                    <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
-                        Ctrl/Cmd + Shift + I
-                    </kbd>{" "}
-                    toggles "Include Big Bucks" when viewing Small Dimes.
-                </p>
-
-                <h3 className="text-sm font-medium text-default-600 mb-2 mt-4">
-                    Categories view / Recurring view
-                </h3>
-                <p className="text-sm text-default-500 mb-3">
-                    <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
-                        Ctrl/Cmd + Enter
-                    </kbd>{" "}
-                    opens the create dialog.
-                </p>
-                <p className="text-sm text-default-500 mb-3">
-                    <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
-                        Ctrl/Cmd + Shift + U
-                    </kbd>{" "}
-                    switches between the Categories and Recurring Rules tabs.
+                    anywhere in the app to view the full list of keyboard
+                    shortcuts.
                 </p>
             </Section>
 
