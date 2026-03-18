@@ -74,16 +74,16 @@
 
 ### Phase 1g: implement default route and setup important settings
 - [x] User onboarding flow
-    - [ ] Root page checks IndexedDB for existing data
+    - [won't do] Root page checks IndexedDB for existing data
     - [x] Set localStorage flag on first transaction creation
     - [x] Redirect returning users to /log
     - [x] Show landing page for new users
 
 ### Phase 1h: polishing
-- [ ] Polishing
+- [x] Polishing
     - [x] Toast notifications
     - [x] Loading skeletons
-    - [ ] Empty states
+    - [x] Empty states
 
 ### Phase 1j: Responsive design
 - [x] Responsive design
@@ -227,7 +227,7 @@
     - [x] Handle conflicts (overwrite/merge)
 - [x] Import summary
     - [x] Show counts added/updated
-    - [ ] Error reporting
+    - [x] Error reporting
 
 
 ### Phase 4b: CSV export/import - canceled, will not implement
@@ -332,15 +332,15 @@ This phase will render existing cloud data and json files obsolete and incompati
 
 ## Task 9: Cloud autobackup
 
-### Phase 9a: Drive client
+### Task 9a: Drive client
 - [x] Add `backupFileName(year, month): string` → `backup-YYYY-MM.json` to drive client
 
-### Phase 9b: Backup logic
+### Task 9b: Backup logic
 - [x] After each successful sync, check if `backup-YYYY-MM.json` for the current month exists in the Pangolog Drive folder
 - [x] If not, serialize all data (same format as JSON export: transactions, categories, recurringRules, settings) and upload it
 - [x] Skip silently if backup already exists for the current month
 
-### Phase 9c: Implement UI
+### Task 9c: Implement UI
 - [x] Implement `isAutobackupEnabled` in `localSettingsStore`
 - [x] Implement toggle checkbox in settings
 - [x] Implement note informing the user that monthly backups accumulate and they should clean up old ones manually
