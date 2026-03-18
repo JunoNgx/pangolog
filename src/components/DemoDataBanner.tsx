@@ -5,6 +5,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { seedDemoData } from "@/lib/db/demo";
 import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
+import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
 
 export function DemoDataBanner() {
     const queryClient = useQueryClient();
@@ -21,6 +22,7 @@ export function DemoDataBanner() {
         setIsLoading(true);
         try {
             await seedDemoData();
+            useProfileSettingsStore.getState().setCustomCurrency("réal");
             await queryClient.invalidateQueries({ queryKey: ["transactions"] });
             await queryClient.invalidateQueries({ queryKey: ["categories"] });
             setShouldShowDemoDataBanner(false);
