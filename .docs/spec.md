@@ -92,14 +92,14 @@ Approach:
     - Wage (income)
     - Subscription
 - Transactions:
-    - [ ] Eggs, $5, category Grocery, dated the previous day
-    - [ ] Sandwich, $12, category Food, dated the previous day
-    - [ ] Chinese noodle, $20, category Food, dated current day
-    - [ ] 4U Gas payment, $350, category Wage, dated current day
-    - [ ] (big buck) What Remains of Edith Finch, $20, Videogame, dated the previous day
-    - [ ] (big buck, income) Poster design for LSPD, $2000, dated current day
+    - Eggs, $5, category Grocery, dated the previous day
+    - Sandwich, $12, category Food, dated the previous day
+    - Chinese noodle, $20, category Food, dated current day
+    - 4U Gas payment, $350, category Wage, dated current day
+    - (big buck) What Remains of Edith Finch, $20, Videogame, dated the previous day
+    - (big buck, income) Poster design for LSPD, $2000, dated current day
 - Recurring rules:
-    - [ ] Streaming service, $10, category subscription, monthly, starting current day
+    - Streaming service, $10, category subscription, monthly, starting current day
         - This would also trigger an immediate creation of this monthly transaction
 
 ### Transaction searching
