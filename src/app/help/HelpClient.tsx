@@ -156,7 +156,12 @@ export default function HelpClient() {
                         Ctrl/Cmd + K
                     </kbd>{" "}
                     opens the command palette for quick navigation and actions.
-                    Available on all main app pages.
+                </p>
+                <p className="text-sm text-default-500 mb-3">
+                    <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
+                        Ctrl/Cmd + .
+                    </kbd>{" "}
+                    goes to Settings.
                 </p>
 
                 <h3 className="text-sm font-medium text-default-600 mb-2 mt-4">
@@ -176,19 +181,19 @@ export default function HelpClient() {
                 </p>
                 <p className="text-sm text-default-500 mb-3">
                     <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
-                        Ctrl/Cmd + B
+                        Ctrl/Cmd + Shift + U
                     </kbd>{" "}
                     toggles between Small Dimes and Big Bucks.
                 </p>
                 <p className="text-sm text-default-500 mb-3">
                     <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
-                        Ctrl/Cmd + I
+                        Ctrl/Cmd + Shift + I
                     </kbd>{" "}
                     toggles "Include Big Bucks" when viewing Small Dimes.
                 </p>
                 <p className="text-sm text-default-500 mb-3">
                     <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
-                        Ctrl/Cmd + Shift + S
+                        Ctrl/Cmd + S
                     </kbd>{" "}
                     manually triggers a sync with Google Drive.
                 </p>
@@ -208,13 +213,19 @@ export default function HelpClient() {
                 </h3>
                 <p className="text-sm text-default-500 mb-3">
                     <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
-                        Ctrl/Cmd + B
+                        Ctrl/Cmd + Shift + Y
+                    </kbd>{" "}
+                    switches between monthly and yearly view.
+                </p>
+                <p className="text-sm text-default-500 mb-3">
+                    <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
+                        Ctrl/Cmd + Shift + U
                     </kbd>{" "}
                     toggles between Small Dimes and Big Bucks.
                 </p>
                 <p className="text-sm text-default-500 mb-3">
                     <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
-                        Ctrl/Cmd + I
+                        Ctrl/Cmd + Shift + I
                     </kbd>{" "}
                     toggles "Include Big Bucks" when viewing Small Dimes.
                 </p>
@@ -230,7 +241,7 @@ export default function HelpClient() {
                 </p>
                 <p className="text-sm text-default-500 mb-3">
                     <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
-                        Ctrl/Cmd + B
+                        Ctrl/Cmd + Shift + U
                     </kbd>{" "}
                     switches between the Categories and Recurring Rules tabs.
                 </p>

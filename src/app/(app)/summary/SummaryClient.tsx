@@ -153,9 +153,19 @@ export default function SummaryClient() {
     const toggleIncludeBucks = useCallback(() => {
         if (isYearly && isViewingBucksOnly) return;
         setShouldIncludeBucks(!shouldIncludeBucks);
-    }, [isYearly, isViewingBucksOnly, shouldIncludeBucks, setShouldIncludeBucks]);
-    useHotkey("b", toggleViewingBucksOnly, { ctrlOrMeta: true });
-    useHotkey("i", toggleIncludeBucks, { ctrlOrMeta: true });
+    }, [
+        isYearly,
+        isViewingBucksOnly,
+        shouldIncludeBucks,
+        setShouldIncludeBucks,
+    ]);
+    const toggleIsYearly = useCallback(
+        () => setIsYearly(!isYearly),
+        [isYearly, setIsYearly],
+    );
+    useHotkey("U", toggleViewingBucksOnly, { ctrlOrMeta: true, shift: true });
+    useHotkey("I", toggleIncludeBucks, { ctrlOrMeta: true, shift: true });
+    useHotkey("Y", toggleIsYearly, { ctrlOrMeta: true, shift: true });
 
     const { data: categories } = useCategories();
     const { data: monthlyTransactions } = useTransactionsByMonth(

@@ -331,12 +331,14 @@ Approach:
     - Recurring rules
     - Settings
 - Hotkey shortcuts:
-    - Ctrl/Cmd + K: open command palette (global)
+    - Ctrl/Cmd + K: (main pages) open command palette
+    - Ctrl/Cmd + .: (main pages) go to settings
     - Ctrl/Cmd + Enter: open create dialog on Log, Categories, and Recurring rules pages
-    - Ctrl/Cmd + B: (Transactions) toggle between viewing Small Dimes and Big Bucks
-    - Ctrl/Cmd + I: (Transactions when viewing Small Dimes/Summary route) toggle `Include Big Bucks`
-    - Ctrl/Cmd + B: (Manage route) toggle between tabs
-    - Ctrl/Cmd + Shift + S: (Transaction view) manually trigger sync
+    - Ctrl/Cmd + Shift + U: (Transactions; Summary) toggle between viewing Small Dimes and Big Bucks
+    - Ctrl/Cmd + Shift + I: (Transactions; Summary) when viewing Small Dimes/Summary route, toggle `Include Big Bucks`
+    - Ctrl/Cmd + Shift + Y: (Summary) switch year/month view
+    - Ctrl/Cmd + Shift + U: (Manage route) toggle between tabs
+    - Ctrl/Cmd + S: (Transaction view) manually trigger sync
 - Recurring rules
     - Creation-triggering events/logic (`visibilitychange)
     - Quirk: if not used for a long time, will skip previous possible entries, and only create the newest possible entry.
