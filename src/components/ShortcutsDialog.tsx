@@ -60,16 +60,16 @@ const SHORTCUT_GROUPS: ShortcutGroup[] = [
         title: "Summary view",
         shortcuts: [
             {
+                keys: ["Ctrl/Cmd", "Shift", "Y"],
+                description: "Switch monthly / yearly view",
+            },
+            {
                 keys: ["Ctrl/Cmd", "Shift", "U"],
                 description: "Toggle Small Dimes / Big Bucks",
             },
             {
                 keys: ["Ctrl/Cmd", "Shift", "I"],
                 description: 'Toggle "Include Big Bucks"',
-            },
-            {
-                keys: ["Ctrl/Cmd", "Shift", "Y"],
-                description: "Switch monthly / yearly view",
             },
         ],
     },
