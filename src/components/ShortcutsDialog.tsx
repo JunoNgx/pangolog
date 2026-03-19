@@ -21,10 +21,8 @@ const SHORTCUT_GROUPS: ShortcutGroup[] = [
         shortcuts: [
             { keys: ["Ctrl/Cmd", "K"], description: "Open command palette" },
             { keys: ["Ctrl/Cmd", "/"], description: "Show keyboard shortcuts" },
-            { keys: ["Ctrl/Cmd", "1"], description: "Go to Log" },
-            { keys: ["Ctrl/Cmd", "2"], description: "Go to Summary" },
-            { keys: ["Ctrl/Cmd", "3"], description: "Go to Manage" },
-            { keys: ["Ctrl/Cmd", "4"], description: "Go to Settings" },
+            { keys: ["Ctrl/Cmd", "]"], description: "Go to next page" },
+            { keys: ["Ctrl/Cmd", "["], description: "Go to previous page" },
             { keys: ["Ctrl/Cmd", "."], description: "Go to Settings" },
         ],
     },
@@ -65,11 +63,11 @@ const SHORTCUT_GROUPS: ShortcutGroup[] = [
             },
             {
                 keys: ["Ctrl/Cmd", "Shift", "U"],
-                description: "Toggle Small Dimes / Big Bucks",
+                description: "Toggle Small Dimes",
             },
             {
                 keys: ["Ctrl/Cmd", "Shift", "I"],
-                description: 'Toggle "Include Big Bucks"',
+                description: "Toggle Big Bucks",
             },
         ],
     },
