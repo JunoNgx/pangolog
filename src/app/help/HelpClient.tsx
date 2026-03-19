@@ -188,7 +188,7 @@ export default function HelpClient() {
                     Sync is optional and can be enabled or disabled from
                     Settings. Once connected, sync happens automatically: 30
                     seconds after any change, and when returning to the app
-                    after 12+ hours. You can also sync manually via the button
+                    after 24+ hours. You can also sync manually via the button
                     in the transaction view.
                 </p>
                 <p className="text-sm text-default-500 mb-3">

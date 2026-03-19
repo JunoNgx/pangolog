@@ -50,7 +50,7 @@ Approach:
 ### Synchronisation
 - Cloud synchronisation is entirely optional, users can start using immediately without providing Google Drive authorisation.
 - Data is sync'ed after any mutation, debounced to 30s. Pending debounce is cancelled when the app goes hidden.
-- Data is sync'ed when the app becomes visible again, only if the last sync was more than 12 hours ago.
+- Data is sync'ed when the app becomes visible again, only if the last sync was more than 24 hours ago.
 - Data is resolved on the "Last write wins", using `updatedAt`.
 - Transactions are not hard-deleted. Use `deletedAt`.
 - Deleted transactions remain stored to facilitate deletion propagation.
@@ -355,7 +355,6 @@ Approach:
         - `settings.json`
         - `recurring-rules.json`
         - `backup-YYYY-MM.json` (if autobackup is enabled)
-        - Sync-triggering events/logic: after mutations (debounced 30s), on app restore if last sync was >12 hours ago
 
 ## Recurring expenses
 - Frequency choices: daily, weekly, monthly, yearly

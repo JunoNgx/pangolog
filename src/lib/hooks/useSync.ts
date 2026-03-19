@@ -10,7 +10,7 @@ import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
 import { useGoogleAuth } from "./useGoogleAuth";
 
 const DEBOUNCE_MS = 30_000;
-const RESTORE_SYNC_THRESHOLD_MS = 12 * 60 * 60 * 1000;
+const RESTORE_SYNC_THRESHOLD_MS = 24 * 60 * 60 * 1000;
 
 // Module-level flag prevents concurrent syncs across hook instances.
 let isSyncing = false;
