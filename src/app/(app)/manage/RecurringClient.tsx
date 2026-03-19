@@ -164,19 +164,23 @@ export default function RecurringClient() {
                 isLoading={isLoading}
             />
 
-            <Tooltip
-                content={<span className="text-center">Ctrl/Cmd + Enter</span>}
-                placement="left"
-            >
-                <Button
-                    color="primary"
-                    className="FloatingActionButton"
-                    onPress={() => setIsCreateOpen(true)}
+            <div className="FloatingActionButtonContainer">
+                <Tooltip
+                    content={
+                        <span className="text-center">Ctrl/Cmd + Enter</span>
+                    }
+                    placement="left"
                 >
-                    <Plus />
-                    <span className="hidden md:inline">Add rule</span>
-                </Button>
-            </Tooltip>
+                    <Button
+                        color="primary"
+                        className="FloatingActionButton"
+                        onPress={() => setIsCreateOpen(true)}
+                    >
+                        <Plus />
+                        <span className="hidden md:inline">Rule</span>
+                    </Button>
+                </Tooltip>
+            </div>
 
             <RecurringRuleDialog
                 isOpen={isCreateOpen}

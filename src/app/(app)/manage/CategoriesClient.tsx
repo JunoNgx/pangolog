@@ -25,19 +25,23 @@ export default function CategoriesClient() {
             </p>
             <DemoDataBanner />
             <CategoryList />
-            <Tooltip
-                content={<span className="text-center">Ctrl/Cmd + Enter</span>}
-                placement="left"
-            >
-                <Button
-                    color="primary"
-                    className="FloatingActionButton"
-                    onPress={() => setIsCreateOpen(true)}
+            <div className="FloatingActionButtonContainer">
+                <Tooltip
+                    content={
+                        <span className="text-center">Ctrl/Cmd + Enter</span>
+                    }
+                    placement="left"
                 >
-                    <Plus />
-                    <span className="hidden md:inline">Add category</span>
-                </Button>
-            </Tooltip>
+                    <Button
+                        color="primary"
+                        className="FloatingActionButton"
+                        onPress={() => setIsCreateOpen(true)}
+                    >
+                        <Plus />
+                        <span className="hidden md:inline">Category</span>
+                    </Button>
+                </Tooltip>
+            </div>
             <CategoryDialog
                 isOpen={isCreateOpen}
                 onClose={() => setIsCreateOpen(false)}
