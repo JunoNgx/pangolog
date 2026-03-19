@@ -355,6 +355,38 @@ Approach:
         - `recurring-rules.json`
         - `backup-YYYY-MM.json` (if autobackup is enabled)
 
+### Landing page
+
+#### Tagline
+A minimalist, offline-first, and privacy-first personal expense tracker.
+
+#### Hook
+
+log
+/lɔːɡ/
+(verb)
+To add an entry in a logbook
+
+#### Features
+- Built around human life
+    - Small dimes: small and daily expenses
+    - Big bucks: irregular and large purchases
+    - Barebones and does only what it should
+
+- Privacy-first and offline-first
+    - Data lives only on your device, and optionally on your Google Drive
+    - PWA-ready and works without an internet connection
+    - Zero data collection
+
+- Free and open-source
+    - Made by indie developer for fun
+    - Free forever
+    - Fork or host it yourself
+
+#### CTA
+- Get started
+    - Button subline: like, now; no account or signup needed
+
 ## Recurring expenses
 - Frequency choices: daily, weekly, monthly, yearly
 - `nextGenerationAt` is calculated upon changes in:
