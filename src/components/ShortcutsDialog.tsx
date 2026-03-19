@@ -107,9 +107,10 @@ export function ShortcutsDialog() {
 
     const open = useCallback(() => setIsOpen(true), []);
     const close = useCallback(() => setIsOpen(false), []);
+    const toggle = useCallback(() => setIsOpen((prev) => !prev), []);
 
     useEffect(() => shortcutsAction.register(open), [open]);
-    useHotkey("/", open, { ctrlOrMeta: true });
+    useHotkey("/", toggle, { ctrlOrMeta: true });
 
     return (
         <Modal
