@@ -1,12 +1,13 @@
 "use client";
 
-import { Button, Checkbox, Input, Tooltip } from "@heroui/react";
+import { Button, Input, Tooltip } from "@heroui/react";
 import { Plus, Search } from "lucide-react";
 import { DateTime } from "luxon";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { DemoDataBanner } from "@/components/DemoDataBanner";
-import { MonthYearPicker } from "@/components/MonthYearPicker";
+import { PeriodPicker } from "@/components/PeriodPicker";
 import { SyncButton } from "@/components/SyncButton";
+import { TransactionTypeCheckboxes } from "@/components/TransactionTypeCheckboxes";
 import { createAction } from "@/lib/createAction";
 import { useCategories } from "@/lib/hooks/useCategories";
 import { useHotkey } from "@/lib/hooks/useHotkey";
@@ -17,7 +18,7 @@ import {
     useTransactionsByMonth,
     useTransactionsByYear,
 } from "@/lib/hooks/useTransactions";
-import { formatAmount, SELECT_CLASSES, YEAR_OPTIONS } from "@/lib/utils";
+import { formatAmount } from "@/lib/utils";
 import {
     CategoryFilterDropdown,
     UNCATEGORISED_ID,
@@ -178,42 +179,19 @@ export default function LogClient() {
 
     const pickerAndCheckboxRow = (
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-            {isOnlyBigBucks ? (
-                <select
-                    value={selectedYear}
-                    onChange={(e) => setSelectedYear(Number(e.target.value))}
-                    className={`self-start ${SELECT_CLASSES}`}
-                >
-                    {YEAR_OPTIONS.map((y) => (
-                        <option key={y} value={y}>
-                            {y}
-                        </option>
-                    ))}
-                </select>
-            ) : (
-                <MonthYearPicker
-                    selectedYear={selectedYear}
-                    selectedMonth={selectedMonth}
-                    onYearChange={(year) => setSelectedYear(year)}
-                    onMonthChange={(month) => setSelectedMonth(month)}
-                />
-            )}
-            <div className="flex items-center gap-4 self-end sm:self-auto">
-                <Checkbox
-                    isSelected={shouldShowSmallDimes}
-                    onValueChange={setShouldShowSmallDimes}
-                    size="md"
-                >
-                    <span className="text-sm">Small Dimes</span>
-                </Checkbox>
-                <Checkbox
-                    isSelected={shouldShowBigBucks}
-                    onValueChange={setShouldShowBigBucks}
-                    size="md"
-                >
-                    <span className="text-sm">Big Bucks</span>
-                </Checkbox>
-            </div>
+            <PeriodPicker
+                isYearly={isOnlyBigBucks}
+                selectedYear={selectedYear}
+                selectedMonth={selectedMonth}
+                onYearChange={setSelectedYear}
+                onMonthChange={setSelectedMonth}
+            />
+            <TransactionTypeCheckboxes
+                shouldShowSmallDimes={shouldShowSmallDimes}
+                onSmallDimesChange={setShouldShowSmallDimes}
+                shouldShowBigBucks={shouldShowBigBucks}
+                onBigBucksChange={setShouldShowBigBucks}
+            />
         </div>
     );
 
@@ -232,14 +210,16 @@ export default function LogClient() {
                     )}
                 </span>
             </span>
-            <CategoryFilterDropdown
-                categories={categories ?? []}
-                selectedIds={selectedCategoryIds}
-                onChange={setSelectedCategoryIds}
-                activeCategoryIds={activeCategoryIds}
-                hasUncategorised={hasUncategorised}
-                buckCategoryIds={buckCategoryIds}
-            />
+            {(activeCategoryIds.size > 0 || hasUncategorised) && (
+                <CategoryFilterDropdown
+                    categories={categories ?? []}
+                    selectedIds={selectedCategoryIds}
+                    onChange={setSelectedCategoryIds}
+                    activeCategoryIds={activeCategoryIds}
+                    hasUncategorised={hasUncategorised}
+                    buckCategoryIds={buckCategoryIds}
+                />
+            )}
         </div>
     );
 
