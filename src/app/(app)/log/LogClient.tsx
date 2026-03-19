@@ -7,7 +7,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { DemoDataBanner } from "@/components/DemoDataBanner";
 import { MonthYearPicker } from "@/components/MonthYearPicker";
 import { SyncButton } from "@/components/SyncButton";
-import { ToggleSwitch } from "@/components/ToggleSwitch";
 import { createAction } from "@/lib/createAction";
 import { useCategories } from "@/lib/hooks/useCategories";
 import { useHotkey } from "@/lib/hooks/useHotkey";
@@ -36,26 +35,27 @@ export default function LogClient() {
     );
 
     const {
-        isViewingBigBucks,
-        setIsViewingBigBucks,
-        shouldIncludeBucksInDimes,
-        setShouldIncludeBucksInDimes,
+        shouldShowSmallDimes,
+        setShouldShowSmallDimes,
+        shouldShowBigBucks,
+        setShouldShowBigBucks,
     } = useLogViewSettings();
 
-    const toggleViewingBigBucks = useCallback(
-        () => setIsViewingBigBucks(!isViewingBigBucks),
-        [isViewingBigBucks, setIsViewingBigBucks],
+    const isOnlyBigBucks = !shouldShowSmallDimes && shouldShowBigBucks;
+
+    const toggleShouldShowSmallDimes = useCallback(
+        () => setShouldShowSmallDimes(!shouldShowSmallDimes),
+        [shouldShowSmallDimes, setShouldShowSmallDimes],
     );
-    const toggleIncludeBucksInDimes = useCallback(() => {
-        if (isViewingBigBucks) return;
-        setShouldIncludeBucksInDimes(!shouldIncludeBucksInDimes);
-    }, [
-        isViewingBigBucks,
-        shouldIncludeBucksInDimes,
-        setShouldIncludeBucksInDimes,
-    ]);
-    useHotkey("U", toggleViewingBigBucks, { ctrlOrMeta: true, shift: true });
-    useHotkey("I", toggleIncludeBucksInDimes, {
+    const toggleShouldShowBigBucks = useCallback(
+        () => setShouldShowBigBucks(!shouldShowBigBucks),
+        [shouldShowBigBucks, setShouldShowBigBucks],
+    );
+    useHotkey("U", toggleShouldShowSmallDimes, {
+        ctrlOrMeta: true,
+        shift: true,
+    });
+    useHotkey("I", toggleShouldShowBigBucks, {
         ctrlOrMeta: true,
         shift: true,
     });
@@ -109,24 +109,24 @@ export default function LogClient() {
     }
 
     const queriedBucks = useMemo(() => {
-        if (isViewingBigBucks) {
+        if (isOnlyBigBucks) {
             return (yearlyTransactions ?? []).filter((t) => t.isBigBuck);
         }
-        if (shouldIncludeBucksInDimes) {
+        if (shouldShowBigBucks) {
             return (monthlyTransactions ?? []).filter((t) => t.isBigBuck);
         }
         return [];
     }, [
-        isViewingBigBucks,
-        shouldIncludeBucksInDimes,
+        isOnlyBigBucks,
+        shouldShowBigBucks,
         yearlyTransactions,
         monthlyTransactions,
     ]);
 
     const queriedDimes = useMemo(() => {
-        if (isViewingBigBucks) return [];
+        if (!shouldShowSmallDimes) return [];
         return (monthlyTransactions ?? []).filter((t) => !t.isBigBuck);
-    }, [isViewingBigBucks, monthlyTransactions]);
+    }, [shouldShowSmallDimes, monthlyTransactions]);
 
     const transactions = useMemo(
         () => [...queriedDimes, ...queriedBucks],
@@ -174,50 +174,47 @@ export default function LogClient() {
             );
     }, [isSearching, searchQuery, allTransactions]);
 
-    const isLoading = isViewingBigBucks ? isLoadingYearly : isLoadingMonthly;
+    const isLoading = isOnlyBigBucks ? isLoadingYearly : isLoadingMonthly;
 
-    const viewingTypeRow = (
-        <div className="flex items-center gap-3">
-            <span className="text-sm text-default-500">Viewing:</span>
-            <ToggleSwitch
-                isSelectingRight={isViewingBigBucks}
-                onValueChange={setIsViewingBigBucks}
-                leftLabel="Small Dimes"
-                rightLabel="Big Bucks"
-            />
+    const pickerAndCheckboxRow = (
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            {isOnlyBigBucks ? (
+                <select
+                    value={selectedYear}
+                    onChange={(e) => setSelectedYear(Number(e.target.value))}
+                    className={`self-start ${SELECT_CLASSES}`}
+                >
+                    {YEAR_OPTIONS.map((y) => (
+                        <option key={y} value={y}>
+                            {y}
+                        </option>
+                    ))}
+                </select>
+            ) : (
+                <MonthYearPicker
+                    selectedYear={selectedYear}
+                    selectedMonth={selectedMonth}
+                    onYearChange={(year) => setSelectedYear(year)}
+                    onMonthChange={(month) => setSelectedMonth(month)}
+                />
+            )}
+            <div className="flex items-center gap-4 self-end sm:self-auto">
+                <Checkbox
+                    isSelected={shouldShowSmallDimes}
+                    onValueChange={setShouldShowSmallDimes}
+                    size="md"
+                >
+                    <span className="text-sm">Small Dimes</span>
+                </Checkbox>
+                <Checkbox
+                    isSelected={shouldShowBigBucks}
+                    onValueChange={setShouldShowBigBucks}
+                    size="md"
+                >
+                    <span className="text-sm">Big Bucks</span>
+                </Checkbox>
+            </div>
         </div>
-    );
-
-    const dimesControls = !isViewingBigBucks && (
-        <div className="flex items-center justify-between gap-4">
-            <MonthYearPicker
-                selectedYear={selectedYear}
-                selectedMonth={selectedMonth}
-                onYearChange={(year) => setSelectedYear(year)}
-                onMonthChange={(month) => setSelectedMonth(month)}
-            />
-            <Checkbox
-                isSelected={shouldIncludeBucksInDimes}
-                onValueChange={setShouldIncludeBucksInDimes}
-                size="md"
-            >
-                <span className="text-sm">Include Big Bucks</span>
-            </Checkbox>
-        </div>
-    );
-
-    const bucksControls = isViewingBigBucks && (
-        <select
-            value={selectedYear}
-            onChange={(e) => setSelectedYear(Number(e.target.value))}
-            className={`self-start ${SELECT_CLASSES}`}
-        >
-            {YEAR_OPTIONS.map((y) => (
-                <option key={y} value={y}>
-                    {y}
-                </option>
-            ))}
-        </select>
     );
 
     const totalAndFilterRow = (
@@ -248,9 +245,7 @@ export default function LogClient() {
 
     const viewingControls = !isSearchMode && (
         <div className="flex flex-col gap-3 mb-4">
-            {viewingTypeRow}
-            {dimesControls}
-            {bucksControls}
+            {pickerAndCheckboxRow}
             {totalAndFilterRow}
         </div>
     );
@@ -325,16 +320,14 @@ export default function LogClient() {
                         onPress={() => setIsCreateOpen(true)}
                     >
                         <Plus />
-                        <span className="hidden md:inline">
-                            Log
-                        </span>
+                        <span className="hidden md:inline">Log</span>
                     </Button>
                 </Tooltip>
             </div>
             <TransactionDialog
                 isOpen={isCreateOpen}
                 onClose={() => setIsCreateOpen(false)}
-                defaultIsBigBuck={isViewingBigBucks}
+                defaultIsBigBuck={isOnlyBigBucks}
             />
         </div>
     );

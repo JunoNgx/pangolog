@@ -3,13 +3,13 @@ import { useEffect, useState } from "react";
 const STORAGE_KEY = "pangolog-log-view-settings";
 
 interface LogViewSettings {
-    isViewingBigBucks: boolean;
-    shouldIncludeBucksInDimes: boolean;
+    shouldShowSmallDimes: boolean;
+    shouldShowBigBucks: boolean;
 }
 
 const DEFAULT_SETTINGS: LogViewSettings = {
-    isViewingBigBucks: false,
-    shouldIncludeBucksInDimes: false,
+    shouldShowSmallDimes: true,
+    shouldShowBigBucks: false,
 };
 
 function loadSettings(): LogViewSettings {
@@ -29,30 +29,35 @@ function saveSettings(settings: LogViewSettings): void {
 }
 
 export function useLogViewSettings() {
-    const [isViewingBigBucks, setIsViewingBigBucksState] = useState(false);
-    const [shouldIncludeBucksInDimes, setShouldIncludeBucksInDimesState] =
-        useState(false);
+    const [shouldShowSmallDimes, setShouldShowSmallDimesState] = useState(true);
+    const [shouldShowBigBucks, setShouldShowBigBucksState] = useState(false);
 
     useEffect(() => {
         const settings = loadSettings();
-        setIsViewingBigBucksState(settings.isViewingBigBucks);
-        setShouldIncludeBucksInDimesState(settings.shouldIncludeBucksInDimes);
+        setShouldShowSmallDimesState(settings.shouldShowSmallDimes);
+        setShouldShowBigBucksState(settings.shouldShowBigBucks);
     }, []);
 
-    function setIsViewingBigBucks(value: boolean) {
-        setIsViewingBigBucksState(value);
-        saveSettings({ isViewingBigBucks: value, shouldIncludeBucksInDimes });
+    function setShouldShowSmallDimes(value: boolean) {
+        setShouldShowSmallDimesState(value);
+        saveSettings({
+            shouldShowSmallDimes: value,
+            shouldShowBigBucks,
+        });
     }
 
-    function setShouldIncludeBucksInDimes(value: boolean) {
-        setShouldIncludeBucksInDimesState(value);
-        saveSettings({ isViewingBigBucks, shouldIncludeBucksInDimes: value });
+    function setShouldShowBigBucks(value: boolean) {
+        setShouldShowBigBucksState(value);
+        saveSettings({
+            shouldShowSmallDimes,
+            shouldShowBigBucks: value,
+        });
     }
 
     return {
-        isViewingBigBucks,
-        setIsViewingBigBucks,
-        shouldIncludeBucksInDimes,
-        setShouldIncludeBucksInDimes,
+        shouldShowSmallDimes,
+        setShouldShowSmallDimes,
+        shouldShowBigBucks,
+        setShouldShowBigBucks,
     };
 }
