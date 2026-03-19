@@ -5,16 +5,16 @@ const STORAGE_KEY = "pangolog-summary-view-settings";
 
 interface SummaryViewSettings {
     isYearly: boolean;
-    isViewingBucksOnly: boolean;
-    shouldIncludeBucks: boolean;
+    shouldShowSmallDimes: boolean;
+    shouldShowBigBucks: boolean;
     selectedYear: number;
     selectedMonth: number;
 }
 
 const DEFAULT_SETTINGS: SummaryViewSettings = {
     isYearly: false,
-    isViewingBucksOnly: false,
-    shouldIncludeBucks: false,
+    shouldShowSmallDimes: true,
+    shouldShowBigBucks: false,
     selectedYear: DateTime.now().year,
     selectedMonth: DateTime.now().month,
 };
@@ -37,8 +37,8 @@ function saveSettings(settings: SummaryViewSettings): void {
 
 export function useSummaryViewSettings() {
     const [isYearly, setIsYearlyState] = useState(false);
-    const [isViewingBucksOnly, setIsViewingBucksOnlyState] = useState(false);
-    const [shouldIncludeBucks, setShouldIncludeBucksState] = useState(false);
+    const [shouldShowSmallDimes, setShouldShowSmallDimesState] = useState(true);
+    const [shouldShowBigBucks, setShouldShowBigBucksState] = useState(false);
     const [selectedYear, setSelectedYearState] = useState(
         DEFAULT_SETTINGS.selectedYear,
     );
@@ -49,8 +49,8 @@ export function useSummaryViewSettings() {
     useEffect(() => {
         const settings = loadSettings();
         setIsYearlyState(settings.isYearly);
-        setIsViewingBucksOnlyState(settings.isViewingBucksOnly);
-        setShouldIncludeBucksState(settings.shouldIncludeBucks);
+        setShouldShowSmallDimesState(settings.shouldShowSmallDimes);
+        setShouldShowBigBucksState(settings.shouldShowBigBucks);
         setSelectedYearState(settings.selectedYear);
         setSelectedMonthState(settings.selectedMonth);
     }, []);
@@ -58,8 +58,8 @@ export function useSummaryViewSettings() {
     function persist(patch: Partial<SummaryViewSettings>) {
         saveSettings({
             isYearly,
-            isViewingBucksOnly,
-            shouldIncludeBucks,
+            shouldShowSmallDimes,
+            shouldShowBigBucks,
             selectedYear,
             selectedMonth,
             ...patch,
@@ -71,14 +71,14 @@ export function useSummaryViewSettings() {
         persist({ isYearly: value });
     }
 
-    function setIsViewingBucksOnly(value: boolean) {
-        setIsViewingBucksOnlyState(value);
-        persist({ isViewingBucksOnly: value });
+    function setShouldShowSmallDimes(value: boolean) {
+        setShouldShowSmallDimesState(value);
+        persist({ shouldShowSmallDimes: value });
     }
 
-    function setShouldIncludeBucks(value: boolean) {
-        setShouldIncludeBucksState(value);
-        persist({ shouldIncludeBucks: value });
+    function setShouldShowBigBucks(value: boolean) {
+        setShouldShowBigBucksState(value);
+        persist({ shouldShowBigBucks: value });
     }
 
     function setSelectedYear(value: number) {
@@ -94,10 +94,10 @@ export function useSummaryViewSettings() {
     return {
         isYearly,
         setIsYearly,
-        isViewingBucksOnly,
-        setIsViewingBucksOnly,
-        shouldIncludeBucks,
-        setShouldIncludeBucks,
+        shouldShowSmallDimes,
+        setShouldShowSmallDimes,
+        shouldShowBigBucks,
+        setShouldShowBigBucks,
         selectedYear,
         setSelectedYear,
         selectedMonth,

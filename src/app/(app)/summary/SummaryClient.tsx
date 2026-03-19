@@ -136,35 +136,33 @@ export default function SummaryClient() {
     const {
         isYearly,
         setIsYearly,
-        isViewingBucksOnly,
-        setIsViewingBucksOnly,
-        shouldIncludeBucks,
-        setShouldIncludeBucks,
+        shouldShowSmallDimes,
+        setShouldShowSmallDimes,
+        shouldShowBigBucks,
+        setShouldShowBigBucks,
         selectedYear,
         setSelectedYear,
         selectedMonth,
         setSelectedMonth,
     } = useSummaryViewSettings();
 
-    const toggleViewingBucksOnly = useCallback(
-        () => setIsViewingBucksOnly(!isViewingBucksOnly),
-        [isViewingBucksOnly, setIsViewingBucksOnly],
+    const toggleShouldShowSmallDimes = useCallback(
+        () => setShouldShowSmallDimes(!shouldShowSmallDimes),
+        [shouldShowSmallDimes, setShouldShowSmallDimes],
     );
-    const toggleIncludeBucks = useCallback(() => {
-        if (isYearly && isViewingBucksOnly) return;
-        setShouldIncludeBucks(!shouldIncludeBucks);
-    }, [
-        isYearly,
-        isViewingBucksOnly,
-        shouldIncludeBucks,
-        setShouldIncludeBucks,
-    ]);
+    const toggleShouldShowBigBucks = useCallback(
+        () => setShouldShowBigBucks(!shouldShowBigBucks),
+        [shouldShowBigBucks, setShouldShowBigBucks],
+    );
     const toggleIsYearly = useCallback(
         () => setIsYearly(!isYearly),
         [isYearly, setIsYearly],
     );
-    useHotkey("U", toggleViewingBucksOnly, { ctrlOrMeta: true, shift: true });
-    useHotkey("I", toggleIncludeBucks, { ctrlOrMeta: true, shift: true });
+    useHotkey("U", toggleShouldShowSmallDimes, {
+        ctrlOrMeta: true,
+        shift: true,
+    });
+    useHotkey("I", toggleShouldShowBigBucks, { ctrlOrMeta: true, shift: true });
     useHotkey("Y", toggleIsYearly, { ctrlOrMeta: true, shift: true });
 
     const { data: categories } = useCategories();
@@ -180,30 +178,22 @@ export default function SummaryClient() {
     );
 
     const transactions = useMemo<Transaction[]>(() => {
-        const yearly = yearlyTransactions ?? [];
-        const monthly = monthlyTransactions ?? [];
+        if (!shouldShowSmallDimes && !shouldShowBigBucks) return [];
 
-        if (isYearly && isViewingBucksOnly) {
-            return yearly.filter((t) => t.isBigBuck);
-        }
+        const src = isYearly
+            ? (yearlyTransactions ?? [])
+            : (monthlyTransactions ?? []);
+        const result: Transaction[] = [];
 
-        const base = isYearly
-            ? yearly.filter((t) => !t.isBigBuck)
-            : monthly.filter((t) => !t.isBigBuck);
+        if (shouldShowSmallDimes)
+            result.push(...src.filter((t) => !t.isBigBuck));
+        if (shouldShowBigBucks) result.push(...src.filter((t) => t.isBigBuck));
 
-        if (shouldIncludeBucks && isYearly) {
-            return [...base, ...yearly.filter((t) => t.isBigBuck)];
-        }
-
-        if (shouldIncludeBucks && !isYearly) {
-            return [...base, ...monthly.filter((t) => t.isBigBuck)];
-        }
-
-        return base;
+        return result;
     }, [
         isYearly,
-        isViewingBucksOnly,
-        shouldIncludeBucks,
+        shouldShowSmallDimes,
+        shouldShowBigBucks,
         monthlyTransactions,
         yearlyTransactions,
     ]);
@@ -232,18 +222,6 @@ export default function SummaryClient() {
                     />
                 </div>
 
-                {isYearly && (
-                    <div className="flex items-center gap-3">
-                        <span className="text-sm text-default-500">Type:</span>
-                        <ToggleSwitch
-                            isSelectingRight={isViewingBucksOnly}
-                            onValueChange={setIsViewingBucksOnly}
-                            leftLabel="Small Dimes"
-                            rightLabel="Big Bucks"
-                        />
-                    </div>
-                )}
-
                 <div className="flex items-center justify-between gap-4">
                     {isYearly ? (
                         <select
@@ -267,15 +245,22 @@ export default function SummaryClient() {
                             onMonthChange={setSelectedMonth}
                         />
                     )}
-                    {(!isYearly || !isViewingBucksOnly) && (
+                    <div className="flex items-center gap-4">
                         <Checkbox
-                            isSelected={shouldIncludeBucks}
-                            onValueChange={setShouldIncludeBucks}
+                            isSelected={shouldShowSmallDimes}
+                            onValueChange={setShouldShowSmallDimes}
                             size="md"
                         >
-                            <span className="text-sm">Include Big Bucks</span>
+                            <span className="text-sm">Small Dimes</span>
                         </Checkbox>
-                    )}
+                        <Checkbox
+                            isSelected={shouldShowBigBucks}
+                            onValueChange={setShouldShowBigBucks}
+                            size="md"
+                        >
+                            <span className="text-sm">Big Bucks</span>
+                        </Checkbox>
+                    </div>
                 </div>
             </div>
 
