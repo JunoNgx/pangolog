@@ -1,9 +1,9 @@
 "use client";
 
-import { Checkbox } from "@heroui/react";
 import { useCallback, useMemo } from "react";
-import { MonthYearPicker } from "@/components/MonthYearPicker";
+import { PeriodPicker } from "@/components/PeriodPicker";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
+import { TransactionTypeCheckboxes } from "@/components/TransactionTypeCheckboxes";
 import type { Category, Transaction } from "@/lib/db/types";
 import { useCategories } from "@/lib/hooks/useCategories";
 import { useHotkey } from "@/lib/hooks/useHotkey";
@@ -12,7 +12,7 @@ import {
     useTransactionsByMonth,
     useTransactionsByYear,
 } from "@/lib/hooks/useTransactions";
-import { formatAmount, SELECT_CLASSES, YEAR_OPTIONS } from "@/lib/utils";
+import { formatAmount } from "@/lib/utils";
 
 const OTHER_COLOUR = "#9ca3af";
 
@@ -223,44 +223,19 @@ export default function SummaryClient() {
                 </div>
 
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                    {isYearly ? (
-                        <select
-                            value={selectedYear}
-                            onChange={(e) =>
-                                setSelectedYear(Number(e.target.value))
-                            }
-                            className={SELECT_CLASSES}
-                        >
-                            {YEAR_OPTIONS.map((y) => (
-                                <option key={y} value={y}>
-                                    {y}
-                                </option>
-                            ))}
-                        </select>
-                    ) : (
-                        <MonthYearPicker
-                            selectedYear={selectedYear}
-                            selectedMonth={selectedMonth}
-                            onYearChange={setSelectedYear}
-                            onMonthChange={setSelectedMonth}
-                        />
-                    )}
-                    <div className="flex items-center gap-4 self-end sm:self-auto">
-                        <Checkbox
-                            isSelected={shouldShowSmallDimes}
-                            onValueChange={setShouldShowSmallDimes}
-                            size="md"
-                        >
-                            <span className="text-sm">Small Dimes</span>
-                        </Checkbox>
-                        <Checkbox
-                            isSelected={shouldShowBigBucks}
-                            onValueChange={setShouldShowBigBucks}
-                            size="md"
-                        >
-                            <span className="text-sm">Big Bucks</span>
-                        </Checkbox>
-                    </div>
+                    <PeriodPicker
+                        isYearly={isYearly}
+                        selectedYear={selectedYear}
+                        selectedMonth={selectedMonth}
+                        onYearChange={setSelectedYear}
+                        onMonthChange={setSelectedMonth}
+                    />
+                    <TransactionTypeCheckboxes
+                        shouldShowSmallDimes={shouldShowSmallDimes}
+                        onSmallDimesChange={setShouldShowSmallDimes}
+                        shouldShowBigBucks={shouldShowBigBucks}
+                        onBigBucksChange={setShouldShowBigBucks}
+                    />
                 </div>
             </div>
 
