@@ -361,3 +361,6 @@ This phase will render existing cloud data and json files obsolete and incompati
 
 ### Task 10d: search mode
 - [x] Implement search mode UI
+
+### Task 11d: empty mode
+- [ ] Implement an easter egg animation when both small dimes and big bucks are unchecked in Transactions or Summary view
