@@ -23,7 +23,7 @@ export function PeriodPicker({
             <select
                 value={selectedYear}
                 onChange={(e) => onYearChange(Number(e.target.value))}
-                className={SELECT_CLASSES}
+                className={`w-fit ${SELECT_CLASSES}`}
             >
                 {YEAR_OPTIONS.map((y) => (
                     <option key={y} value={y}>
