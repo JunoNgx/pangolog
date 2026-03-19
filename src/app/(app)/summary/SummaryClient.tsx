@@ -222,7 +222,7 @@ export default function SummaryClient() {
                     />
                 </div>
 
-                <div className="flex items-center justify-between gap-4">
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                     {isYearly ? (
                         <select
                             value={selectedYear}
@@ -245,7 +245,7 @@ export default function SummaryClient() {
                             onMonthChange={setSelectedMonth}
                         />
                     )}
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-4 self-end sm:self-auto">
                         <Checkbox
                             isSelected={shouldShowSmallDimes}
                             onValueChange={setShouldShowSmallDimes}
