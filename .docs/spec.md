@@ -334,13 +334,12 @@ Approach:
 - Hotkey shortcuts:
     - Ctrl/Cmd + K: (main pages) open command palette
     - Ctrl/Cmd + /: (main pages) show keyboard shortcuts
-    - Ctrl/Cmd + 1: go to Log
-    - Ctrl/Cmd + 2: go to Summary
-    - Ctrl/Cmd + 3: go to Manage
-    - Ctrl/Cmd + 4 / Ctrl/Cmd + .: go to Settings
+    - Ctrl/Cmd + ]: go to next page (Log -> Summary -> Manage -> Settings, loops)
+    - Ctrl/Cmd + [: go to previous page (loops)
+    - Ctrl/Cmd + .: go to Settings
     - Ctrl/Cmd + Enter: open create dialog on Log, Categories, and Recurring rules pages
-    - Ctrl/Cmd + Shift + U: (Transactions; Summary) toggle between viewing Small Dimes and Big Bucks
-    - Ctrl/Cmd + Shift + I: (Transactions; Summary) when viewing Small Dimes/Summary route, toggle `Include Big Bucks`
+    - Ctrl/Cmd + Shift + U: (Summary) toggle Small Dimes checkbox
+    - Ctrl/Cmd + Shift + I: (Summary) toggle Big Bucks checkbox
     - Ctrl/Cmd + Shift + Y: (Summary) switch year/month view
     - Ctrl/Cmd + Shift + U: (Manage route) toggle between tabs
     - Ctrl/Cmd + S: (Transaction view) manually trigger sync

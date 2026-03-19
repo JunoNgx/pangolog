@@ -75,13 +75,23 @@ export function CommandPalette() {
     const goToSettings = useCallback(() => router.push("/settings"), [router]);
     useHotkey(".", goToSettings, { ctrlOrMeta: true });
 
-    const goToLog = useCallback(() => router.push("/log"), [router]);
-    const goToSummary = useCallback(() => router.push("/summary"), [router]);
-    const goToManage = useCallback(() => router.push("/manage"), [router]);
-    useHotkey("1", goToLog, { ctrlOrMeta: true });
-    useHotkey("2", goToSummary, { ctrlOrMeta: true });
-    useHotkey("3", goToManage, { ctrlOrMeta: true });
-    useHotkey("4", goToSettings, { ctrlOrMeta: true });
+    const NAV_ROUTES = ["/log", "/summary", "/manage", "/settings"];
+
+    const goToNextRoute = useCallback(() => {
+        const currentIndex = NAV_ROUTES.indexOf(pathname);
+        const nextIndex = (currentIndex + 1) % NAV_ROUTES.length;
+        router.push(NAV_ROUTES[nextIndex]);
+    }, [pathname, router]);
+
+    const goToPrevRoute = useCallback(() => {
+        const currentIndex = NAV_ROUTES.indexOf(pathname);
+        const prevIndex =
+            (currentIndex - 1 + NAV_ROUTES.length) % NAV_ROUTES.length;
+        router.push(NAV_ROUTES[prevIndex]);
+    }, [pathname, router]);
+
+    useHotkey("]", goToNextRoute, { ctrlOrMeta: true });
+    useHotkey("[", goToPrevRoute, { ctrlOrMeta: true });
 
     const createCommand = useMemo((): Command | null => {
         if (pathname === "/log") {
