@@ -504,18 +504,6 @@ export default function SettingsClient() {
                     </Button>
                 </section>
 
-                <section>
-                    <h3 className="text-lg font-semibold mb-4">Legal</h3>
-                    <div className="flex flex-wrap gap-2">
-                        <Button as="a" href="/privacy" variant="flat">
-                            Privacy Policy
-                        </Button>
-                        <Button as="a" href="/terms" variant="flat">
-                            Terms of Service
-                        </Button>
-                    </div>
-                </section>
-
                 {/* DEBUG */}
                 {isDebugVisible && (
                     <section className="mt-8">
@@ -567,11 +555,45 @@ export default function SettingsClient() {
                 {/* END DEBUG */}
 
                 <section>
-                    <h3 className="text-lg font-semibold mb-2">Version</h3>
-                    <p className="text-xs text-default-400 font-mono">
-                        v{process.env.NEXT_PUBLIC_VERSION} (
-                        {process.env.NEXT_PUBLIC_COMMIT_HASH})
-                    </p>
+                    <h3 className="text-lg font-semibold mb-2">About</h3>
+                    <div className="flex flex-col gap-1">
+                        <p className="text-xs text-default-400">
+                            Pangolog is developed by{" "}
+                            <a
+                                href="https://junongx.com"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-primary-500 hover:underline"
+                            >
+                                Juno Nguyen
+                            </a>
+                            , with playfulness and curiosity.
+                        </p>
+                        <p className="text-xs text-default-400">
+                            This project is free and{" "}
+                            <a
+                                href="https://github.com/JunoNgx/pangolog"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-primary-500 hover:underline"
+                            >
+                                open source software
+                            </a>
+                            .
+                        </p>
+                        <p className="text-xs text-default-400 font-mono mt-2">
+                            v{process.env.NEXT_PUBLIC_VERSION} (
+                            {process.env.NEXT_PUBLIC_COMMIT_HASH})
+                        </p>
+                        <div className="flex flex-wrap gap-2 mt-2">
+                            <Button as="a" href="/privacy" variant="flat" size="sm">
+                                Privacy Policy
+                            </Button>
+                            <Button as="a" href="/terms" variant="flat" size="sm">
+                                Terms of Service
+                            </Button>
+                        </div>
+                    </div>
                 </section>
 
                 <section className="mt-8">
