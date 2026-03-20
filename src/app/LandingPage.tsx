@@ -2,31 +2,29 @@
 
 import { Button } from "@heroui/react";
 import Link from "next/link";
+import type { ReactNode } from "react";
 
-const FEATURES = [
+const FEATURES: { headline: string; body: ReactNode }[] = [
     {
-        headline: "Built around human life",
-        points: [
-            "Small dimes: small and daily expenses",
-            "Big bucks: irregular and large purchases",
-            "Barebones and does only what it should",
-        ],
+        headline: "Built around how you spend",
+        body: (
+            <>
+                Two flavours of expenses:{" "}
+                <span className="text-sky-500">small dimes</span> for the daily
+                small stuff, and{" "}
+                <span className="text-amber-500">big bucks</span> for irregular
+                and large purchases. Recurring bills, summary charts, and
+                filters included.
+            </>
+        ),
     },
     {
-        headline: "Privacy-first and offline-first",
-        points: [
-            "Data lives only on your device, and optionally on your Google Drive",
-            "PWA-ready and works without an internet connection",
-            "Zero data collection",
-        ],
+        headline: "Made with care and respect",
+        body: "Your data lives only on your device, and on your Google Drive only if you choose to. PWA-ready and fully functional without an internet connection. A healthy dose of keyboard shortcuts for productivity nerds.",
     },
     {
-        headline: "Free and open-source",
-        points: [
-            "Made by indie developer for fun",
-            "Free forever",
-            "Fork or host it yourself",
-        ],
+        headline: "Crafted with love",
+        body: "Typical indie software. Free forever. Made for personal use first and fun second. Fork it or host it all you want. Zero data collection by design.",
     },
 ];
 
@@ -45,7 +43,7 @@ export default function LandingPage() {
         font-semibold text-default-700 mb-2
     `;
 
-    const featurePointClasses = `
+    const featureBodyClasses = `
         text-sm text-default-500
     `;
 
@@ -84,13 +82,7 @@ export default function LandingPage() {
                         <p className={featureHeadlineClasses}>
                             {feature.headline}
                         </p>
-                        <ul className="flex flex-col gap-1 list-disc pl-4">
-                            {feature.points.map((point) => (
-                                <li key={point} className={featurePointClasses}>
-                                    {point}
-                                </li>
-                            ))}
-                        </ul>
+                        <p className={featureBodyClasses}>{feature.body}</p>
                     </li>
                 ))}
             </ul>
