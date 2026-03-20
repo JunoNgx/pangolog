@@ -33,7 +33,7 @@ export function SyncButton() {
               : `Synced ${lastSyncLabel}`;
 
     return (
-        <Tooltip content="Ctrl/Cmd + Shift + S" placement="bottom">
+        <Tooltip content="Cmd + S" placement="bottom">
             <Button
                 size="sm"
                 variant="flat"
