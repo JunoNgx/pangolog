@@ -1,5 +1,7 @@
 "use client";
 
+import { Button } from "@heroui/react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { MonthYearPicker } from "@/components/MonthYearPicker";
 import { SELECT_CLASSES, YEAR_OPTIONS } from "@/lib/utils";
 
@@ -11,6 +13,9 @@ interface PeriodPickerProps {
     onMonthChange: (month: number) => void;
 }
 
+const MIN_YEAR = YEAR_OPTIONS[0];
+const MAX_YEAR = YEAR_OPTIONS[YEAR_OPTIONS.length - 1];
+
 export function PeriodPicker({
     isYearly,
     selectedYear,
@@ -18,28 +23,91 @@ export function PeriodPicker({
     onYearChange,
     onMonthChange,
 }: PeriodPickerProps) {
-    if (isYearly) {
-        return (
-            <select
-                value={selectedYear}
-                onChange={(e) => onYearChange(Number(e.target.value))}
-                className={`w-fit ${SELECT_CLASSES}`}
-            >
-                {YEAR_OPTIONS.map((y) => (
-                    <option key={y} value={y}>
-                        {y}
-                    </option>
-                ))}
-            </select>
-        );
+    function handlePrev() {
+        if (isYearly) {
+            if (selectedYear <= MIN_YEAR) return;
+            onYearChange(selectedYear - 1);
+            return;
+        }
+        if (selectedMonth === 1) {
+            if (selectedYear <= MIN_YEAR) return;
+            onYearChange(selectedYear - 1);
+            onMonthChange(12);
+            return;
+        }
+        onMonthChange(selectedMonth - 1);
     }
 
-    return (
+    function handleNext() {
+        if (isYearly) {
+            if (selectedYear >= MAX_YEAR) return;
+            onYearChange(selectedYear + 1);
+            return;
+        }
+        if (selectedMonth === 12) {
+            if (selectedYear >= MAX_YEAR) return;
+            onYearChange(selectedYear + 1);
+            onMonthChange(1);
+            return;
+        }
+        onMonthChange(selectedMonth + 1);
+    }
+
+    const isPrevDisabled = isYearly
+        ? selectedYear <= MIN_YEAR
+        : selectedYear <= MIN_YEAR && selectedMonth === 1;
+
+    const isNextDisabled = isYearly
+        ? selectedYear >= MAX_YEAR
+        : selectedYear >= MAX_YEAR && selectedMonth === 12;
+
+    const picker = isYearly ? (
+        <select
+            value={selectedYear}
+            onChange={(e) => onYearChange(Number(e.target.value))}
+            className={`w-fit ${SELECT_CLASSES}`}
+        >
+            {YEAR_OPTIONS.map((y) => (
+                <option key={y} value={y}>
+                    {y}
+                </option>
+            ))}
+        </select>
+    ) : (
         <MonthYearPicker
             selectedYear={selectedYear}
             selectedMonth={selectedMonth}
             onYearChange={onYearChange}
             onMonthChange={onMonthChange}
         />
+    );
+
+    const chevronClasses = `
+        min-w-0
+        w-9 h-9 p-0
+    `;
+
+    return (
+        <div className="flex items-center gap-1">
+            <Button
+                size="sm"
+                variant="flat"
+                isDisabled={isPrevDisabled}
+                onPress={handlePrev}
+                className={chevronClasses}
+            >
+                <ChevronLeft size={14} />
+            </Button>
+            {picker}
+            <Button
+                size="sm"
+                variant="flat"
+                isDisabled={isNextDisabled}
+                onPress={handleNext}
+                className={chevronClasses}
+            >
+                <ChevronRight size={14} />
+            </Button>
+        </div>
     );
 }
