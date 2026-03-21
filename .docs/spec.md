@@ -403,6 +403,7 @@ To add an entry in a logbook
         - IMPORTANT: create only one new row per execution
             - Implication: For users who do not use the app frequently, gap in history is silently lost.
             - User should be warned of this implication somewhere.
+        - Advancing `nextGenerationAt`/`lastGeneratedAt` must NOT update `updatedAt`. Bumping `updatedAt` here would cause a stale device (one that has not yet synced a user's deactivation) to win the last-write-wins merge and silently revert the deactivation on the next sync.
 
 ### Monthly/yearly day clamping
 For monthly and yearly rules, if `dayOfMonth` exceeds the number of days in the target month (e.g. the 31st in April, or the 29th in a non-leap February), the date is clamped to the last day of that month. This is computed as `Math.min(dayOfMonth, lastDayOfMonth)`.

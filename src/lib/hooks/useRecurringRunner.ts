@@ -4,8 +4,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import { DateTime } from "luxon";
 import { useCallback, useEffect, useRef } from "react";
 import {
+    advanceRecurringRule,
     getDueRecurringRules,
-    updateRecurringRule,
 } from "../db/recurringRules";
 import { createTransaction } from "../db/transactions";
 import type { RecurringRule } from "../db/types";
@@ -68,17 +68,11 @@ async function processRule(rule: RecurringRule): Promise<void> {
         description: rule.description,
     });
 
-    await updateRecurringRule(rule.id, {
-        nextGenerationAt: current
-            .set({
-                hour: 0,
-                minute: 0,
-                second: 0,
-                millisecond: 0,
-            })
-            .toISO()!,
-        lastGeneratedAt: now.toUTC().toISO()!,
-    });
+    await advanceRecurringRule(
+        rule.id,
+        current.set({ hour: 0, minute: 0, second: 0, millisecond: 0 }).toISO()!,
+        now.toUTC().toISO()!,
+    );
 }
 
 export function useRecurringRunner() {
