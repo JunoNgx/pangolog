@@ -122,6 +122,40 @@ export async function restoreRecurringRule(id: string): Promise<void> {
     });
 }
 
+export async function advanceRecurringRule(
+    id: string,
+    nextGenerationAt: string,
+    lastGeneratedAt: string,
+): Promise<void> {
+    const db = await getDb();
+
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction("recurring-rules", "readwrite");
+        const store = tx.objectStore("recurring-rules");
+        const getReq = store.get(id);
+
+        getReq.onerror = () => reject(getReq.error);
+        getReq.onsuccess = () => {
+            const existing: RecurringRule | undefined = getReq.result;
+            if (!existing) {
+                reject(new Error(`RecurringRule ${id} not found`));
+                return;
+            }
+
+            const putReq = store.put({
+                ...existing,
+                nextGenerationAt,
+                lastGeneratedAt,
+                // updatedAt is intentionally NOT changed - this is an operational
+                // update, not a user action, so it must not win sync conflicts
+                // over explicit user changes (e.g. deactivating a rule).
+            });
+            putReq.onsuccess = () => resolve();
+            putReq.onerror = () => reject(putReq.error);
+        };
+    });
+}
+
 export async function getAllRecurringRules(): Promise<RecurringRule[]> {
     const db = await getDb();
 
