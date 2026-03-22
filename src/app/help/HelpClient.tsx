@@ -196,6 +196,13 @@ export default function HelpClient() {
                     <span className="font-mono text-xs">updatedAt</span>.
                     Deleted records are soft-deleted and purged after 60 days.
                 </p>
+                <p className="text-sm text-default-500 mb-3">
+                    Google Drive does not propagate file changes to all servers
+                    instantly - this process can take up to an hour. This is an
+                    unfortunately known limitation of the Google Drive platform
+                    (which is free for both developers and users). If the second device does not pick up
+                    changes from the first, wait a while and sync again.
+                </p>
                 <h3 className="text-sm font-medium text-default-600 mb-1">
                     Storage structure
                 </h3>
