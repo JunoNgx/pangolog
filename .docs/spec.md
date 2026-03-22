@@ -186,6 +186,7 @@ Approach:
 - RecurringRules are stored in `recurring-rules.json`.
 - All transactions (dimes and bucks) for a given year are stored in a single `YYYY.json` file.
 - Smart sync: only years with local mutations since `lastSyncTime` are uploaded; Drive's `modifiedTime` is used to skip downloading files unchanged since `lastSyncTime`.
+- `lastSyncTime` is set to the moment captured at the **start** of `syncAll`, before any Drive API calls are made. This ensures any Drive file modified during the sync window has a `modifiedTime` newer than `lastSyncTime`, so it will be downloaded on the next sync rather than skipped. Using the time after all uploads finish would create a blind spot: a remote upload that lands while a local sync is in flight would have a `modifiedTime` that falls within the sync duration, causing it to be permanently skipped.
 
 ## Design system
 - User-switchable dark/light theme

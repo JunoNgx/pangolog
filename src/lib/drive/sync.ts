@@ -64,7 +64,12 @@ function mergeRecords<T extends { id: string; updatedAt: string }>(
     return Array.from(map.values());
 }
 
-export async function syncAll(token: string, folderId: string): Promise<void> {
+export async function syncAll(
+    token: string,
+    folderId: string,
+): Promise<string> {
+    const syncStartTime = DateTime.now().toUTC().toISO()!;
+
     await purgeExpiredRecords();
 
     const lastSyncTime = useLocalSettingsStore.getState().lastSyncTime;
@@ -213,12 +218,14 @@ export async function syncAll(token: string, folderId: string): Promise<void> {
     // --- Autobackup ---
 
     const { isAutobackupEnabled } = useLocalSettingsStore.getState();
-    if (!isAutobackupEnabled) return;
+    if (!isAutobackupEnabled) return syncStartTime;
 
     const now = DateTime.now();
     const fileName = backupFileName(now.year, now.month);
-    if (driveFileMap.has(fileName)) return;
+    if (driveFileMap.has(fileName)) return syncStartTime;
 
     const backupData = await buildExportData();
     await createFile(token, folderId, fileName, backupData);
+
+    return syncStartTime;
 }

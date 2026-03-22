@@ -1,7 +1,6 @@
 "use client";
 
 import { useQueryClient } from "@tanstack/react-query";
-import { DateTime } from "luxon";
 import { useCallback, useEffect, useRef } from "react";
 import { toast } from "sonner";
 import { getOrCreatePangoFolder } from "@/lib/drive/client";
@@ -66,11 +65,11 @@ export function useSyncFn() {
                     setDriveFolderId(folderId);
                 }
 
-                await syncAll(token, folderId);
+                const syncStartTime = await syncAll(token, folderId);
                 await queryClient.invalidateQueries();
 
                 setSyncStatus("idle");
-                setLastSyncTime(DateTime.now().toUTC().toISO()!);
+                setLastSyncTime(syncStartTime);
                 toast.dismiss("auth-reconnect");
                 if (!isSilent) {
                     toast.success("Sync complete");
@@ -128,7 +127,10 @@ export function useSyncFn() {
 
 function isSyncStale(lastSyncTime: string | null): boolean {
     if (!lastSyncTime) return true;
-    return Date.now() - new Date(lastSyncTime).getTime() > RESTORE_SYNC_THRESHOLD_MS;
+    return (
+        Date.now() - new Date(lastSyncTime).getTime() >
+        RESTORE_SYNC_THRESHOLD_MS
+    );
 }
 
 export function useSync() {
