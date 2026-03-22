@@ -254,9 +254,7 @@ Approach:
     - Toggle switch: income vs expense.
     - Toggle switch: Small Dimes vs Big Bucks.
     - Date of transaction: current date by default
-    - Category accordion:
-        - Collapsed: 7 categories of highest priority.
-        - Expended: show all categories in a half-screen scrollable area.
+    - Category picker: all categories are always shown.
         - Selecting a Category is performed by clicking on a Category that is not yet selected.
         - Deselecting a Category is performed by clicking on the selected Category.
     - Input is capped to two decimal points.

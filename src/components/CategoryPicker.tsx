@@ -2,10 +2,7 @@
 
 import { Button } from "@heroui/react";
 import { Plus } from "lucide-react";
-import { useState } from "react";
 import type { Category } from "@/lib/db/types";
-
-const COLLAPSED_LIMIT = 10;
 
 interface CategoryPickerProps {
     categories: Category[];
@@ -20,12 +17,6 @@ export function CategoryPicker({
     onChange,
     onAdd,
 }: CategoryPickerProps) {
-    const [isExpanded, setIsExpanded] = useState(false);
-
-    const hasMore = categories.length > COLLAPSED_LIMIT;
-    const displayedCategories = isExpanded
-        ? categories
-        : categories.slice(0, COLLAPSED_LIMIT);
 
     return (
         <div>
@@ -55,7 +46,7 @@ export function CategoryPicker({
                 </p>
             )}
             <div className="flex flex-wrap gap-2">
-                {displayedCategories.map((cat) => (
+                {categories.map((cat) => (
                     <Button
                         key={cat.id}
                         size="sm"
@@ -75,17 +66,6 @@ export function CategoryPicker({
                         <span>{cat.name}</span>
                     </Button>
                 ))}
-                {hasMore && (
-                    <Button
-                        size="sm"
-                        variant="light"
-                        onPress={() => setIsExpanded((prev) => !prev)}
-                    >
-                        {isExpanded
-                            ? "Show less"
-                            : `+${categories.length - COLLAPSED_LIMIT} more`}
-                    </Button>
-                )}
             </div>
         </div>
     );
