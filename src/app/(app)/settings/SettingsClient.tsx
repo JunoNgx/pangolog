@@ -362,6 +362,19 @@ export default function SettingsClient() {
                 </section>
 
                 <section>
+                    <h3 className="text-lg font-semibold mb-4">Time Format</h3>
+                    <RadioGroup
+                        orientation="horizontal"
+                        value={timeFormat}
+                        onValueChange={(v) => setTimeFormat(v as "12h" | "24h")}
+                        classNames={{ wrapper: "gap-6" }}
+                    >
+                        <Radio value="12h">12-hour</Radio>
+                        <Radio value="24h">24-hour</Radio>
+                    </RadioGroup>
+                </section>
+
+                <section>
                     <h3 className="text-lg font-semibold mb-4">Theme</h3>
                     <RadioGroup
                         orientation="horizontal"
@@ -372,19 +385,6 @@ export default function SettingsClient() {
                         <Radio value="light">Light</Radio>
                         <Radio value="dark">Dark</Radio>
                         <Radio value="system">System</Radio>
-                    </RadioGroup>
-                </section>
-
-                <section>
-                    <h3 className="text-lg font-semibold mb-4">Time Format</h3>
-                    <RadioGroup
-                        orientation="horizontal"
-                        value={timeFormat}
-                        onValueChange={(v) => setTimeFormat(v as "12h" | "24h")}
-                        classNames={{ wrapper: "gap-6" }}
-                    >
-                        <Radio value="12h">12-hour</Radio>
-                        <Radio value="24h">24-hour</Radio>
                     </RadioGroup>
                 </section>
 
