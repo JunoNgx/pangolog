@@ -248,7 +248,12 @@ export default function SettingsClient() {
                             <p className="text-xs text-default-400">
                                 Last synced:{" "}
                                 {DateTime.fromISO(lastSyncTime).toLocaleString(
-                                    DateTime.DATETIME_MED,
+                                    timeFormat === "24h"
+                                        ? {
+                                              ...DateTime.DATETIME_MED,
+                                              hour12: false,
+                                          }
+                                        : DateTime.DATETIME_MED,
                                 )}
                             </p>
                         )}
