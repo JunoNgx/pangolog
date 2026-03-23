@@ -59,6 +59,19 @@ export function fromDateInputValue(dateStr: string): string {
         .toISO()!;
 }
 
+export function detectSystemTimeFormat(): "12h" | "24h" {
+    try {
+        const isSystemUsing12h = new Intl.DateTimeFormat(navigator.language, {
+            hour: "numeric",
+        })
+            .formatToParts(new Date())
+            .some((p) => p.type === "dayPeriod");
+        return isSystemUsing12h ? "12h" : "24h";
+    } catch {
+        return "24h";
+    }
+}
+
 export function getTimeFormatOptions(
     format: "12h" | "24h",
 ): Intl.DateTimeFormatOptions {
