@@ -21,8 +21,14 @@ export function SyncButton() {
         ${syncStatus === "error" ? "text-danger-500" : ""}
     `;
 
-    const lastSyncLabel = lastSyncTime
-        ? DateTime.fromISO(lastSyncTime).toRelative()
+    const lastSyncDt = lastSyncTime ? DateTime.fromISO(lastSyncTime) : null;
+    const isWithin24Hours = lastSyncDt
+        ? lastSyncDt.diffNow("hours").hours > -24
+        : false;
+    const lastSyncLabel = lastSyncDt
+        ? isWithin24Hours
+            ? lastSyncDt.toLocaleString(DateTime.TIME_SIMPLE)
+            : lastSyncDt.toRelative()
         : "Never";
 
     const statusLabel =
