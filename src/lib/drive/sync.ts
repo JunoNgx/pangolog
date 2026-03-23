@@ -210,7 +210,10 @@ export async function syncAll(
         ) {
             continue;
         }
-        uploads.push(upsertFile(token, folderId, yearFile, transactions));
+        const sorted = [...transactions].sort((a, b) =>
+            a.transactedAt.localeCompare(b.transactedAt),
+        );
+        uploads.push(upsertFile(token, folderId, yearFile, sorted));
     }
 
     await Promise.all(uploads);
