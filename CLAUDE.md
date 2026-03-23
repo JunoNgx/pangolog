@@ -49,6 +49,7 @@ Personal expense tracker PWA. See `.docs/spec.md` and `.docs/plan.md` for full d
 - Prioritise using guard clause and early termination. Avoid `else` and deeply nested codes.
 - Use only `yarn` to manage packages
 - Use `camelCase` for hooks and `PascalCase` for components
+- Exercise "Camel Case Acronyms"; treat acronyms and initialisms as one single word. E.g. `extractFromDb` instead of `extractFromDB`; `convertToUtc` instead of `convertToUTC`
 - Use the term `Dialog` instead of `Modal`
 - Complicated handler function, taking up more than one line, should be implemented separately outside of the template.
 - Do not use the deprecated `FormEvent` and `React.FormEventHandler`
