@@ -148,7 +148,7 @@ export async function createFile(
 ): Promise<string> {
     const { body, boundary } = buildMultipart(
         { name, parents: [folderId] },
-        JSON.stringify(data),
+        JSON.stringify(data, null, 2),
     );
     const res = await expectOk(
         await fetch(
@@ -172,7 +172,10 @@ export async function updateFile(
     fileId: string,
     data: unknown,
 ): Promise<void> {
-    const { body, boundary } = buildMultipart({}, JSON.stringify(data));
+    const { body, boundary } = buildMultipart(
+        {},
+        JSON.stringify(data, null, 2),
+    );
     await expectOk(
         await fetch(
             `${DRIVE_UPLOAD_API}/files/${fileId}?uploadType=multipart`,
