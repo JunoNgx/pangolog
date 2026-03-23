@@ -31,7 +31,7 @@ export async function buildExportData() {
         getAllRecurringRulesForSync(),
     ]);
 
-    const { customCurrency, isPrefixCurrency, timeFormat, settingsUpdatedAt } =
+    const { customCurrency, isPrefixCurrency, settingsUpdatedAt } =
         useProfileSettingsStore.getState();
 
     return {
@@ -39,7 +39,6 @@ export async function buildExportData() {
         settings: {
             customCurrency,
             isPrefixCurrency,
-            timeFormat,
             updatedAt: settingsUpdatedAt,
         },
         transactions: transactions.filter((t) => t.deletedAt === null),

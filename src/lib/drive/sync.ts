@@ -28,7 +28,6 @@ import {
 interface DriveSettings {
     customCurrency: string;
     isPrefixCurrency: boolean;
-    timeFormat: "12h" | "24h";
     updatedAt: string;
 }
 
@@ -108,7 +107,6 @@ export async function syncAll(
     const {
         customCurrency,
         isPrefixCurrency,
-        timeFormat,
         settingsUpdatedAt,
         applyRemoteSettings,
     } = useProfileSettingsStore.getState();
@@ -123,7 +121,6 @@ export async function syncAll(
             applyRemoteSettings(
                 remote.customCurrency,
                 remote.isPrefixCurrency,
-                remote.timeFormat ?? "12h",
                 remote.updatedAt,
             );
         }
@@ -132,7 +129,6 @@ export async function syncAll(
     const localSettings: DriveSettings = {
         customCurrency,
         isPrefixCurrency,
-        timeFormat,
         updatedAt: settingsUpdatedAt,
     };
     await upsertFile(token, folderId, SETTINGS_FILE, localSettings);

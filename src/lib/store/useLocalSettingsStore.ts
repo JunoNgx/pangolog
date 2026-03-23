@@ -19,6 +19,8 @@ interface LocalSettingsStore {
     setLastSyncTime: (time: string | null) => void;
     isAutobackupEnabled: boolean;
     setIsAutobackupEnabled: (enabled: boolean) => void;
+    timeFormat: "12h" | "24h";
+    setTimeFormat: (format: "12h" | "24h") => void;
     shouldShowDemoDataBanner: boolean;
     setShouldShowDemoDataBanner: (show: boolean) => void;
     syncStatus: SyncStatus;
@@ -42,6 +44,8 @@ export const useLocalSettingsStore = create<LocalSettingsStore>()(
             isAutobackupEnabled: false,
             setIsAutobackupEnabled: (enabled) =>
                 set({ isAutobackupEnabled: enabled }),
+            timeFormat: "12h",
+            setTimeFormat: (format) => set({ timeFormat: format }),
             shouldShowDemoDataBanner: true,
             setShouldShowDemoDataBanner: (show) =>
                 set({ shouldShowDemoDataBanner: show }),
@@ -61,6 +65,7 @@ export const useLocalSettingsStore = create<LocalSettingsStore>()(
                 lastSyncTime: state.lastSyncTime,
                 isAutobackupEnabled: state.isAutobackupEnabled,
                 shouldShowDemoDataBanner: state.shouldShowDemoDataBanner,
+                timeFormat: state.timeFormat,
             }),
             onRehydrateStorage: () => () => {
                 useLocalSettingsStore.setState({ hasHydrated: true });

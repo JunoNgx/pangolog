@@ -12,7 +12,6 @@ import { useProfileSettingsStore } from "./store/useProfileSettingsStore";
 interface ImportSettings {
     customCurrency: string;
     isPrefixCurrency: boolean;
-    timeFormat?: "12h" | "24h";
     updatedAt: string;
 }
 
@@ -158,7 +157,6 @@ export async function executeImport(data: ImportData): Promise<ImportPreview> {
             applyRemoteSettings(
                 data.settings.customCurrency,
                 data.settings.isPrefixCurrency,
-                data.settings.timeFormat ?? "12h",
                 data.settings.updatedAt,
             );
         }
