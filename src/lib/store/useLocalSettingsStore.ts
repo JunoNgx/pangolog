@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { AuthToken } from "@/lib/auth/types";
+import { detectSystemTimeFormat } from "@/lib/utils";
 
 export type SyncStatus = "idle" | "syncing" | "error";
 export type LoggerEntry = {
@@ -44,7 +45,7 @@ export const useLocalSettingsStore = create<LocalSettingsStore>()(
             isAutobackupEnabled: false,
             setIsAutobackupEnabled: (enabled) =>
                 set({ isAutobackupEnabled: enabled }),
-            timeFormat: "12h",
+            timeFormat: detectSystemTimeFormat(),
             setTimeFormat: (format) => set({ timeFormat: format }),
             shouldShowDemoDataBanner: true,
             setShouldShowDemoDataBanner: (show) =>
