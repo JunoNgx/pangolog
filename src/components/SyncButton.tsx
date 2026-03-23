@@ -7,6 +7,7 @@ import { useGoogleAuth } from "@/lib/hooks/useGoogleAuth";
 import { useSyncFn } from "@/lib/hooks/useSync";
 import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
+import { getTimeFormatOptions } from "@/lib/utils";
 
 export function SyncButton() {
     const { isConnected } = useGoogleAuth();
@@ -27,11 +28,9 @@ export function SyncButton() {
     const isWithin24Hours = lastSyncDt
         ? lastSyncDt.diffNow("hours").hours > -24
         : false;
-    const timeFormatOptions =
-        timeFormat === "24h" ? DateTime.TIME_24_SIMPLE : DateTime.TIME_SIMPLE;
     const lastSyncLabel = lastSyncDt
         ? isWithin24Hours
-            ? lastSyncDt.toLocaleString(timeFormatOptions)
+            ? lastSyncDt.toLocaleString(getTimeFormatOptions(timeFormat))
             : lastSyncDt.toRelative()
         : "Never";
 

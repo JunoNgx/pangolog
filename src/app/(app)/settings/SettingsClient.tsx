@@ -30,6 +30,7 @@ import {
 } from "@/lib/import";
 import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
+import { getTimeFormatOptions } from "@/lib/utils";
 
 export default function SettingsClient() {
     const {
@@ -247,14 +248,10 @@ export default function SettingsClient() {
                         {lastSyncTime && (
                             <p className="text-xs text-default-400">
                                 Last synced:{" "}
-                                {DateTime.fromISO(lastSyncTime).toLocaleString(
-                                    timeFormat === "24h"
-                                        ? {
-                                              ...DateTime.DATETIME_MED,
-                                              hour12: false,
-                                          }
-                                        : DateTime.DATETIME_MED,
-                                )}
+                                {DateTime.fromISO(lastSyncTime).toLocaleString({
+                                    ...DateTime.DATETIME_MED,
+                                    ...getTimeFormatOptions(timeFormat),
+                                })}
                             </p>
                         )}
                         {isConnected ? (
