@@ -6,10 +6,12 @@ import { DateTime } from "luxon";
 import { useGoogleAuth } from "@/lib/hooks/useGoogleAuth";
 import { useSyncFn } from "@/lib/hooks/useSync";
 import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
+import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
 
 export function SyncButton() {
     const { isConnected } = useGoogleAuth();
     const { syncStatus, syncError, lastSyncTime } = useLocalSettingsStore();
+    const { timeFormat } = useProfileSettingsStore();
     const { sync } = useSyncFn();
 
     if (!isConnected) return null;
@@ -25,9 +27,11 @@ export function SyncButton() {
     const isWithin24Hours = lastSyncDt
         ? lastSyncDt.diffNow("hours").hours > -24
         : false;
+    const timeFormatOptions =
+        timeFormat === "24h" ? DateTime.TIME_24_SIMPLE : DateTime.TIME_SIMPLE;
     const lastSyncLabel = lastSyncDt
         ? isWithin24Hours
-            ? lastSyncDt.toLocaleString(DateTime.TIME_SIMPLE)
+            ? lastSyncDt.toLocaleString(timeFormatOptions)
             : lastSyncDt.toRelative()
         : "Never";
 
