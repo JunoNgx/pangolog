@@ -36,10 +36,8 @@ export default function SettingsClient() {
     const {
         customCurrency,
         isPrefixCurrency,
-        timeFormat,
         setCustomCurrency,
         setIsPrefixCurrency,
-        setTimeFormat,
     } = useProfileSettingsStore();
     const { authToken, isConnected, isConnecting, error, connect, disconnect } =
         useGoogleAuth();
@@ -53,6 +51,8 @@ export default function SettingsClient() {
         setIsAutobackupEnabled,
         setShouldShowDemoDataBanner,
         setLastSyncTime,
+        timeFormat,
+        setTimeFormat,
     } = useLocalSettingsStore();
     const { getLoggerEntries, clearLoggerEntries } = useLogger();
 

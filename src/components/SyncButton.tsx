@@ -6,13 +6,12 @@ import { DateTime } from "luxon";
 import { useGoogleAuth } from "@/lib/hooks/useGoogleAuth";
 import { useSyncFn } from "@/lib/hooks/useSync";
 import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
-import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
 import { getTimeFormatOptions } from "@/lib/utils";
 
 export function SyncButton() {
     const { isConnected } = useGoogleAuth();
-    const { syncStatus, syncError, lastSyncTime } = useLocalSettingsStore();
-    const { timeFormat } = useProfileSettingsStore();
+    const { syncStatus, syncError, lastSyncTime, timeFormat } =
+        useLocalSettingsStore();
     const { sync } = useSyncFn();
 
     if (!isConnected) return null;
