@@ -41,7 +41,9 @@ export async function buildExportData() {
             isPrefixCurrency,
             updatedAt: settingsUpdatedAt,
         },
-        transactions: transactions.filter((t) => t.deletedAt === null),
+        transactions: transactions
+            .filter((t) => t.deletedAt === null)
+            .sort((a, b) => a.transactedAt.localeCompare(b.transactedAt)),
         categories: categories.filter((c) => c.deletedAt === null),
         recurringRules: recurringRules.filter((r) => r.deletedAt === null),
     };
