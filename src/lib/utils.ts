@@ -59,6 +59,12 @@ export function fromDateInputValue(dateStr: string): string {
         .toISO()!;
 }
 
+export function getTimeFormatOptions(
+    format: "12h" | "24h",
+): Intl.DateTimeFormatOptions {
+    return { ...DateTime.TIME_SIMPLE, hour12: format === "12h" };
+}
+
 export function formatAmount(minorUnits: number): string {
     const { customCurrency, isPrefixCurrency } =
         useProfileSettingsStore.getState();
