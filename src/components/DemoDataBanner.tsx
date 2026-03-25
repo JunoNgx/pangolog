@@ -47,6 +47,9 @@ export function DemoDataBanner() {
 
                 /* VISUAL EFFECTS */
                 border border-default-200 bg-default-50
+
+                /* BEHAVIOR */
+                mb-4
             `}
         >
             <p className="flex-1 text-sm text-default-600 text-center sm:text-left">
