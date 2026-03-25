@@ -12,8 +12,7 @@ A minimalist, offline-first, and privacy-first personal expense tracker Progress
 - Separation of regular daily (Small Dimes) and irregular large (Big Bucks) transactions.
 - Assigning transactions to categories, with label, colour, and emoji-based icon.
 - Overview and summary by month and year.
-- (Post-release) Recurring transactions.
-- (Post-release) Monthly budgeting.
+- Recurring transactions.
 
 ## Methodology
 
@@ -28,6 +27,8 @@ A significant degree of human oversight is present in the process, involving:
 - Review and scrutinising generated code.
 - Refactor of deeply nested code, and un-intuitively organised components.
 - Fixing misleading variable names.
+
+The project is developed with the standard that the codebase is maintainable without the intervention of AI Agents.
 
 ## Tech stack
 
