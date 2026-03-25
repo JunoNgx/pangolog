@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider, useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { Toaster } from "sonner";
+import { ServiceWorkerRegistration } from "@/components/ServiceWorkerRegistration";
 import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
 
 function ThemeColorSync() {
@@ -56,6 +57,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
                     <StoreHydration />
                     <ThemeColorSync />
                     <ThemedToaster />
+                    <ServiceWorkerRegistration />
                 </HeroUIProvider>
             </ThemeProvider>
         </QueryClientProvider>
