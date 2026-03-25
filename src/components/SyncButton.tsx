@@ -3,7 +3,9 @@
 import { Button, Tooltip } from "@heroui/react";
 import { RefreshCw } from "lucide-react";
 import { DateTime } from "luxon";
+import { toast } from "sonner";
 import { useGoogleAuth } from "@/lib/hooks/useGoogleAuth";
+import { useOnlineStatus } from "@/lib/hooks/useOnlineStatus";
 import { useSyncFn } from "@/lib/hooks/useSync";
 import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
 import { getTimeFormatOptions } from "@/lib/utils";
@@ -13,8 +15,17 @@ export function SyncButton() {
     const { syncStatus, syncError, lastSyncTime, timeFormat } =
         useLocalSettingsStore();
     const { sync } = useSyncFn();
+    const { isOnline } = useOnlineStatus();
 
     if (!isConnected) return null;
+
+    function handleSync() {
+        if (!isOnline) {
+            toast.warning("You are offline.");
+            return;
+        }
+        sync();
+    }
 
     const iconClass = `
         shrink-0
@@ -46,7 +57,7 @@ export function SyncButton() {
                 size="sm"
                 variant="flat"
                 isDisabled={syncStatus === "syncing"}
-                onPress={() => sync()}
+                onPress={handleSync}
                 className="flex items-center gap-1.5 px-2 h-7 min-w-0 text-default-500"
             >
                 <RefreshCw size={12} className={iconClass} />

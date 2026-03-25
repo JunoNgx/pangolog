@@ -20,6 +20,7 @@ import { clearAllData, forceDeleteDb } from "@/lib/db";
 import { exportJson } from "@/lib/export";
 import { useGoogleAuth } from "@/lib/hooks/useGoogleAuth";
 import { useLogger } from "@/lib/hooks/useLogger";
+import { useOnlineStatus } from "@/lib/hooks/useOnlineStatus";
 import { useSync } from "@/lib/hooks/useSync";
 import {
     executeImport,
@@ -30,6 +31,7 @@ import {
 } from "@/lib/import";
 import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
+import { clearSwCaches } from "@/lib/serviceWorker";
 import { getTimeFormatOptions } from "@/lib/utils";
 
 export default function SettingsClient() {
@@ -41,6 +43,7 @@ export default function SettingsClient() {
     } = useProfileSettingsStore();
     const { authToken, isConnected, isConnecting, error, connect, disconnect } =
         useGoogleAuth();
+    const { isOnline } = useOnlineStatus();
     const { theme, setTheme } = useTheme();
     const { sync } = useSync();
     const {
@@ -124,6 +127,7 @@ export default function SettingsClient() {
             localStorage.clear();
             sessionStorage.clear();
             await forceDeleteDb();
+            await clearSwCaches();
             toast.success("App reset. Reloading...");
             await new Promise((resolve) => setTimeout(resolve, 1500));
             window.location.href = "/";
@@ -192,6 +196,11 @@ export default function SettingsClient() {
             : `${previewAmount} ${customCurrency}`
         : previewAmount;
 
+    async function handleClearSwCache() {
+        await clearSwCaches();
+        toast.success("Offline cache cleared.");
+    }
+
     function handleClearDebugLoggerEntry() {
         clearLoggerEntries();
     }
@@ -252,6 +261,11 @@ export default function SettingsClient() {
                                     ...DateTime.DATETIME_MED,
                                     ...getTimeFormatOptions(timeFormat),
                                 })}
+                            </p>
+                        )}
+                        {!isOnline && (
+                            <p className="text-xs text-warning-600 dark:text-warning-400">
+                                You are offline.
                             </p>
                         )}
                         {isConnected ? (
@@ -545,7 +559,7 @@ export default function SettingsClient() {
                         </Button>
 
                         <Button
-                            className="block mt-8"
+                            className="block mt-2"
                             color="danger"
                             variant="flat"
                             onPress={handleClearDebugLoggerEntry}
@@ -570,6 +584,20 @@ export default function SettingsClient() {
                     </section>
                 )}
                 {/* END DEBUG */}
+
+                <section>
+                    <h3 className="text-lg font-semibold mb-1">
+                        Troubleshooting
+                    </h3>
+                    <p className="text-xs text-default-400 mb-4">
+                        If the app appears outdated after an update, clear the
+                        offline cache to force a fresh reload. Your data is
+                        stored separately and will not be affected.
+                    </p>
+                    <Button variant="flat" onPress={handleClearSwCache}>
+                        Clear offline cache
+                    </Button>
+                </section>
 
                 <section>
                     <h3 className="text-lg font-semibold mb-2">About</h3>
