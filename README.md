@@ -63,6 +63,11 @@ You would need
 ### For SEO configuration
 - `NEXT_PUBLIC_BASE_URL` (optional - defaults to the value in `src/lib/constants.ts`)
 
+### Service worker
+- `NEXT_PUBLIC_SW_ENABLED`
+
+Only for service worker debugging during development.
+
 ## Support and Contribution
 
 To get support, provide feedback, or contribute, please open a PR for this repository, or contact me via email or BlueSky.
