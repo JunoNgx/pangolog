@@ -31,6 +31,8 @@ const SHORTCUT_GROUPS: ShortcutGroup[] = [
         shortcuts: [
             { keys: ["Ctrl/Cmd", "Enter"], description: "Open create dialog" },
             { keys: ["Ctrl/Cmd", "F"], description: "Enter search mode" },
+            { keys: ["["], description: "Go to previous period" },
+            { keys: ["]"], description: "Go to next period" },
             {
                 keys: ["Ctrl/Cmd", "Shift", "U"],
                 description: "Toggle Small Dimes / Big Bucks",
@@ -57,6 +59,8 @@ const SHORTCUT_GROUPS: ShortcutGroup[] = [
     {
         title: "Summary view",
         shortcuts: [
+            { keys: ["["], description: "Go to previous period" },
+            { keys: ["]"], description: "Go to next period" },
             {
                 keys: ["Ctrl/Cmd", "Shift", "Y"],
                 description: "Switch monthly / yearly view",

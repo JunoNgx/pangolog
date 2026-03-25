@@ -342,6 +342,7 @@ Approach:
     - Ctrl/Cmd + Shift + Y: (Summary) switch year/month view
     - Ctrl/Cmd + Shift + U: (Manage route) toggle between tabs
     - Ctrl/Cmd + S: (Transaction view) manually trigger sync
+    - [ / ]: (Transaction view, Summary view) navigate to previous/next period
 - Recurring rules
     - Creation-triggering events/logic (`visibilitychange)
     - Quirk: if not used for a long time, will skip previous possible entries, and only create the newest possible entry.

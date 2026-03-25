@@ -3,6 +3,7 @@
 import { Button } from "@heroui/react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { MonthYearPicker } from "@/components/MonthYearPicker";
+import { useHotkey } from "@/lib/hooks/useHotkey";
 import { SELECT_CLASSES, YEAR_OPTIONS } from "@/lib/utils";
 
 interface PeriodPickerProps {
@@ -52,6 +53,9 @@ export function PeriodPicker({
         }
         onMonthChange(selectedMonth + 1);
     }
+
+    useHotkey("[", handlePrev);
+    useHotkey("]", handleNext);
 
     const isPrevDisabled = isYearly
         ? selectedYear <= MIN_YEAR
