@@ -47,6 +47,7 @@ Personal expense tracker PWA. See `.docs/spec.md` and `.docs/plan.md` for full d
 - Use 4 space indentation
 - Variable names for boolean type must always have the appropriate prefix (e.g. is-, should-, does-, has-). There is no exception.
 - Prioritise using guard clause and early termination. Avoid `else` and deeply nested codes.
+- Use leading operators style for multi-line logical/binary expressions: place the operator at the start of the continuation line, not the end of the preceding one. (Not yet supported by Biome - it will reformat to trailing operators.)
 - Use only `yarn` to manage packages
 - Use `camelCase` for hooks and `PascalCase` for components
 - Exercise "Camel Case Acronyms"; treat acronyms and initialisms as one single word. E.g. `extractFromDb` instead of `extractFromDB`; `convertToUtc` instead of `convertToUTC`
