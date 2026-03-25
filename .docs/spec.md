@@ -71,10 +71,15 @@ Approach:
 ### Other settings
 - Freely user-set custom currency (as a string), as a prefix or suffix. E.g. `$12` or `12k IDR`. This is merely a cosmetic display unit, and has no bearing on the logic and/or data.
 
-### Offline support *(not yet implemented)*
-- Works offline without an internet connection
-- Offline indicator
-- Queue changes made offline for sync when connection returns
+### Offline support
+- Works offline without an internet connection via a hand-written service worker (`public/sw.js`)
+- Cache-first for `/_next/static/` assets (content-addressed, immutable); network-first with cache fallback for page navigations; network-only for `/api/`
+- Cache versioned via `?v=NEXT_PUBLIC_VERSION` URL param on SW registration - no manual bumping needed
+- Disabled in dev (`NODE_ENV === 'development'`) and overridable via `NEXT_PUBLIC_SW_ENABLED=false`
+- Offline indicator shown in SyncButton (connected users) and LogClient (non-connected users)
+- Sync attempted while offline triggers a warning toast instead of a network call
+- "Clear offline cache" button in Settings > Troubleshooting for mobile users who cannot hard-refresh
+- App reset (`handleResetApp`) also clears SW cache via `clearSwCaches()` in `src/lib/serviceWorker.ts`
 
 ### Demo data
 - Demo data is opt-in. New users see a banner on their first visit to `/log`  or `/manage` (categories).
