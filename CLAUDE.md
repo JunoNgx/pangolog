@@ -46,6 +46,7 @@ Personal expense tracker PWA. See `.docs/spec.md` and `.docs/plan.md` for full d
 ## Maintainer's preferences
 - Use 4 space indentation
 - Variable names for boolean type must always have the appropriate prefix (e.g. is-, should-, does-, has-). There is no exception.
+- Do not name variables with a bare adjective (e.g. `existing`, `filtered`, `updated`). Use a noun-based name that reflects what the variable holds (e.g. `storedCategory`, `filteredTransactions`, `updatedToken`).
 - Prioritise using guard clause and early termination. Avoid `else` and deeply nested codes.
 - Use leading operators style for multi-line logical/binary expressions: place the operator at the start of the continuation line, not the end of the preceding one. (Not yet supported by Biome - it will reformat to trailing operators.)
 - Use only `yarn` to manage packages
