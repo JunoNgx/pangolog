@@ -41,27 +41,28 @@ export async function updateTransaction(
 
         getReq.onerror = () => reject(getReq.error);
         getReq.onsuccess = () => {
-            const existing: Transaction | undefined = getReq.result;
-            if (!existing) {
+            const storedTransaction: Transaction | undefined = getReq.result;
+            if (!storedTransaction) {
                 reject(new Error(`Transaction ${id} not found`));
                 return;
             }
 
-            const transactedAt = input.transactedAt ?? existing.transactedAt;
+            const transactedAt =
+                input.transactedAt ?? storedTransaction.transactedAt;
             const dt = DateTime.fromISO(transactedAt);
-            const updated: Transaction = {
-                ...existing,
+            const updatedTransaction: Transaction = {
+                ...storedTransaction,
                 ...input,
-                id: existing.id,
+                id: storedTransaction.id,
                 transactedAt,
-                deletedAt: existing.deletedAt,
+                deletedAt: storedTransaction.deletedAt,
                 year: dt.year,
                 month: dt.month,
                 updatedAt: DateTime.now().toUTC().toISO()!,
             };
 
-            const putReq = store.put(updated);
-            putReq.onsuccess = () => resolve(updated);
+            const putReq = store.put(updatedTransaction);
+            putReq.onsuccess = () => resolve(updatedTransaction);
             putReq.onerror = () => reject(putReq.error);
         };
     });
@@ -77,20 +78,20 @@ export async function deleteTransaction(id: string): Promise<void> {
 
         getReq.onerror = () => reject(getReq.error);
         getReq.onsuccess = () => {
-            const existing: Transaction | undefined = getReq.result;
-            if (!existing) {
+            const storedTransaction: Transaction | undefined = getReq.result;
+            if (!storedTransaction) {
                 reject(new Error(`Transaction ${id} not found`));
                 return;
             }
 
             const now = DateTime.now().toUTC().toISO()!;
-            const updated: Transaction = {
-                ...existing,
+            const updatedTransaction: Transaction = {
+                ...storedTransaction,
                 deletedAt: now,
                 updatedAt: now,
             };
 
-            const putReq = store.put(updated);
+            const putReq = store.put(updatedTransaction);
             putReq.onsuccess = () => resolve();
             putReq.onerror = () => reject(putReq.error);
         };
@@ -107,14 +108,14 @@ export async function restoreTransaction(id: string): Promise<void> {
 
         getReq.onerror = () => reject(getReq.error);
         getReq.onsuccess = () => {
-            const existing: Transaction | undefined = getReq.result;
-            if (!existing) {
+            const storedTransaction: Transaction | undefined = getReq.result;
+            if (!storedTransaction) {
                 reject(new Error(`Transaction ${id} not found`));
                 return;
             }
 
             const putReq = store.put({
-                ...existing,
+                ...storedTransaction,
                 deletedAt: null,
                 updatedAt: DateTime.now().toUTC().toISO()!,
             });

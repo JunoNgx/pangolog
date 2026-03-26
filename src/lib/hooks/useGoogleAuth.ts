@@ -121,13 +121,13 @@ export function useGoogleAuth() {
             if (!res.ok) return null;
 
             const data = await res.json();
-            const updated: AuthToken = {
+            const updatedToken: AuthToken = {
                 ...authToken,
                 accessToken: data.accessToken,
                 expiresAt: data.expiresAt,
             };
-            setAuthToken(updated);
-            return updated.accessToken;
+            setAuthToken(updatedToken);
+            return updatedToken.accessToken;
         },
         [authToken, setAuthToken],
     );

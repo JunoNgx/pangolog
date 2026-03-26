@@ -74,10 +74,10 @@ export async function previewImport(data: ImportData): Promise<ImportPreview> {
     let transactionsAdded = 0;
     let transactionsUpdated = 0;
     for (const tx of data.transactions ?? []) {
-        const existing = transactionMap.get(tx.id);
-        if (!existing) {
+        const storedTx = transactionMap.get(tx.id);
+        if (!storedTx) {
             transactionsAdded++;
-        } else if (tx.updatedAt > existing.updatedAt) {
+        } else if (tx.updatedAt > storedTx.updatedAt) {
             transactionsUpdated++;
         }
     }
@@ -85,10 +85,10 @@ export async function previewImport(data: ImportData): Promise<ImportPreview> {
     let categoriesAdded = 0;
     let categoriesUpdated = 0;
     for (const cat of data.categories) {
-        const existing = categoryMap.get(cat.id);
-        if (!existing) {
+        const storedCat = categoryMap.get(cat.id);
+        if (!storedCat) {
             categoriesAdded++;
-        } else if (cat.updatedAt > existing.updatedAt) {
+        } else if (cat.updatedAt > storedCat.updatedAt) {
             categoriesUpdated++;
         }
     }
@@ -96,10 +96,10 @@ export async function previewImport(data: ImportData): Promise<ImportPreview> {
     let rulesAdded = 0;
     let rulesUpdated = 0;
     for (const rule of data.recurringRules ?? []) {
-        const existing = ruleMap.get(rule.id);
-        if (!existing) {
+        const storedRule = ruleMap.get(rule.id);
+        if (!storedRule) {
             rulesAdded++;
-        } else if (rule.updatedAt > existing.updatedAt) {
+        } else if (rule.updatedAt > storedRule.updatedAt) {
             rulesUpdated++;
         }
     }
@@ -130,18 +130,18 @@ export async function executeImport(data: ImportData): Promise<ImportPreview> {
     const ruleMap = new Map(existingRules.map((r) => [r.id, r]));
 
     const transactionsToPut = (data.transactions ?? []).filter((t) => {
-        const existing = transactionMap.get(t.id);
-        return !existing || t.updatedAt > existing.updatedAt;
+        const storedTx = transactionMap.get(t.id);
+        return !storedTx || t.updatedAt > storedTx.updatedAt;
     });
 
     const categoriesToPut = data.categories.filter((c) => {
-        const existing = categoryMap.get(c.id);
-        return !existing || c.updatedAt > existing.updatedAt;
+        const storedCat = categoryMap.get(c.id);
+        return !storedCat || c.updatedAt > storedCat.updatedAt;
     });
 
     const rulesToPut = (data.recurringRules ?? []).filter((r) => {
-        const existing = ruleMap.get(r.id);
-        return !existing || r.updatedAt > existing.updatedAt;
+        const storedRule = ruleMap.get(r.id);
+        return !storedRule || r.updatedAt > storedRule.updatedAt;
     });
 
     await Promise.all([
