@@ -108,10 +108,12 @@ export function CategoryFilterDropdown({
             onChange(allIds.filter((i) => i !== id));
             return;
         }
-        const next = selectedIds.includes(id)
+        const nextSelectedIds = selectedIds.includes(id)
             ? selectedIds.filter((i) => i !== id)
             : [...selectedIds, id];
-        onChange(next.length === totalCount ? null : next);
+        onChange(
+            nextSelectedIds.length === totalCount ? null : nextSelectedIds,
+        );
     }
 
     const label = isFiltered
