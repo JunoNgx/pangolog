@@ -49,14 +49,14 @@ function mergeRecords<T extends { id: string; updatedAt: string }>(
     const map = new Map<string, T>();
     for (const r of local) map.set(r.id, r);
     for (const r of remote) {
-        const existing = map.get(r.id);
-        if (!existing) {
+        const localRecord = map.get(r.id);
+        if (!localRecord) {
             map.set(r.id, r);
             continue;
         }
-        if (r.updatedAt > existing.updatedAt) {
+        if (r.updatedAt > localRecord.updatedAt) {
             console.debug(
-                `[sync] conflict on ${r.id}: remote (${r.updatedAt}) > local (${existing.updatedAt}), remote wins`,
+                `[sync] conflict on ${r.id}: remote (${r.updatedAt}) > local (${localRecord.updatedAt}), remote wins`,
             );
             map.set(r.id, r);
         }
@@ -210,10 +210,10 @@ export async function syncAll(
         ) {
             continue;
         }
-        const sorted = [...transactions].sort((a, b) =>
+        const sortedTransactions = [...transactions].sort((a, b) =>
             a.transactedAt.localeCompare(b.transactedAt),
         );
-        uploads.push(upsertFile(token, folderId, yearFile, sorted));
+        uploads.push(upsertFile(token, folderId, yearFile, sortedTransactions));
     }
 
     await Promise.all(uploads);

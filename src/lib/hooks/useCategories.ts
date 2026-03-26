@@ -49,14 +49,14 @@ export function useReorderCategories() {
             reorderCategories(updates),
         onMutate: async (updates) => {
             await queryClient.cancelQueries({ queryKey: CATEGORIES_KEY });
-            const previous =
+            const previousCategories =
                 queryClient.getQueryData<Category[]>(CATEGORIES_KEY);
 
-            if (previous) {
+            if (previousCategories) {
                 const priorityMap = new Map(
                     updates.map((u) => [u.id, u.priority]),
                 );
-                const reordered = [...previous]
+                const reordered = [...previousCategories]
                     .map((cat) => ({
                         ...cat,
                         priority: priorityMap.get(cat.id) ?? cat.priority,
@@ -65,11 +65,14 @@ export function useReorderCategories() {
                 queryClient.setQueryData(CATEGORIES_KEY, reordered);
             }
 
-            return { previous };
+            return { previousCategories };
         },
         onError: (_err, _vars, context) => {
-            if (context?.previous) {
-                queryClient.setQueryData(CATEGORIES_KEY, context.previous);
+            if (context?.previousCategories) {
+                queryClient.setQueryData(
+                    CATEGORIES_KEY,
+                    context.previousCategories,
+                );
             }
         },
         onSettled: () =>

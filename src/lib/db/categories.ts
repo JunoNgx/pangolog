@@ -37,23 +37,23 @@ export async function updateCategory(
 
         getReq.onerror = () => reject(getReq.error);
         getReq.onsuccess = () => {
-            const existing: Category | undefined = getReq.result;
-            if (!existing) {
+            const storedCategory: Category | undefined = getReq.result;
+            if (!storedCategory) {
                 reject(new Error(`Category ${id} not found`));
                 return;
             }
 
-            const updated: Category = {
-                ...existing,
+            const updatedCategory: Category = {
+                ...storedCategory,
                 ...input,
-                id: existing.id,
-                createdAt: existing.createdAt,
-                deletedAt: existing.deletedAt,
+                id: storedCategory.id,
+                createdAt: storedCategory.createdAt,
+                deletedAt: storedCategory.deletedAt,
                 updatedAt: DateTime.now().toUTC().toISO()!,
             };
 
-            const putReq = store.put(updated);
-            putReq.onsuccess = () => resolve(updated);
+            const putReq = store.put(updatedCategory);
+            putReq.onsuccess = () => resolve(updatedCategory);
             putReq.onerror = () => reject(putReq.error);
         };
     });
@@ -69,20 +69,20 @@ export async function deleteCategory(id: string): Promise<void> {
 
         getReq.onerror = () => reject(getReq.error);
         getReq.onsuccess = () => {
-            const existing: Category | undefined = getReq.result;
-            if (!existing) {
+            const storedCategory: Category | undefined = getReq.result;
+            if (!storedCategory) {
                 reject(new Error(`Category ${id} not found`));
                 return;
             }
 
             const now = DateTime.now().toUTC().toISO()!;
-            const updated: Category = {
-                ...existing,
+            const updatedCategory: Category = {
+                ...storedCategory,
                 deletedAt: now,
                 updatedAt: now,
             };
 
-            const putReq = store.put(updated);
+            const putReq = store.put(updatedCategory);
             putReq.onsuccess = () => resolve();
             putReq.onerror = () => reject(putReq.error);
         };
@@ -99,14 +99,14 @@ export async function restoreCategory(id: string): Promise<void> {
 
         getReq.onerror = () => reject(getReq.error);
         getReq.onsuccess = () => {
-            const existing: Category | undefined = getReq.result;
-            if (!existing) {
+            const storedCategory: Category | undefined = getReq.result;
+            if (!storedCategory) {
                 reject(new Error(`Category ${id} not found`));
                 return;
             }
 
             const putReq = store.put({
-                ...existing,
+                ...storedCategory,
                 deletedAt: null,
                 updatedAt: DateTime.now().toUTC().toISO()!,
             });
@@ -132,9 +132,9 @@ export async function reorderCategories(
         for (const { id, priority } of updates) {
             const getReq = store.get(id);
             getReq.onsuccess = () => {
-                const existing: Category | undefined = getReq.result;
-                if (existing) {
-                    store.put({ ...existing, priority, updatedAt: now });
+                const storedCategory: Category | undefined = getReq.result;
+                if (storedCategory) {
+                    store.put({ ...storedCategory, priority, updatedAt: now });
                 }
             };
         }

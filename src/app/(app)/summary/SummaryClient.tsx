@@ -35,10 +35,12 @@ function buildSlices(
     categoryMap: Map<string, Category>,
     isIncome: boolean,
 ): SliceResult {
-    const filtered = transactions.filter((t) => t.isIncome === isIncome);
+    const filteredTransactions = transactions.filter(
+        (t) => t.isIncome === isIncome,
+    );
 
     const totalsById = new Map<string | null, number>();
-    for (const tx of filtered) {
+    for (const tx of filteredTransactions) {
         const key = tx.categoryId ?? null;
         totalsById.set(key, (totalsById.get(key) ?? 0) + tx.amount);
     }

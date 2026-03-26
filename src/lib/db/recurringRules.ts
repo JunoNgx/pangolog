@@ -45,23 +45,23 @@ export async function updateRecurringRule(
 
         getReq.onerror = () => reject(getReq.error);
         getReq.onsuccess = () => {
-            const existing: RecurringRule | undefined = getReq.result;
-            if (!existing) {
+            const storedRule: RecurringRule | undefined = getReq.result;
+            if (!storedRule) {
                 reject(new Error(`RecurringRule ${id} not found`));
                 return;
             }
 
-            const updated: RecurringRule = {
-                ...existing,
+            const updatedRule: RecurringRule = {
+                ...storedRule,
                 ...input,
-                id: existing.id,
-                createdAt: existing.createdAt,
-                deletedAt: existing.deletedAt,
+                id: storedRule.id,
+                createdAt: storedRule.createdAt,
+                deletedAt: storedRule.deletedAt,
                 updatedAt: DateTime.now().toUTC().toISO()!,
             };
 
-            const putReq = store.put(updated);
-            putReq.onsuccess = () => resolve(updated);
+            const putReq = store.put(updatedRule);
+            putReq.onsuccess = () => resolve(updatedRule);
             putReq.onerror = () => reject(putReq.error);
         };
     });
@@ -77,15 +77,15 @@ export async function deleteRecurringRule(id: string): Promise<void> {
 
         getReq.onerror = () => reject(getReq.error);
         getReq.onsuccess = () => {
-            const existing: RecurringRule | undefined = getReq.result;
-            if (!existing) {
+            const storedRule: RecurringRule | undefined = getReq.result;
+            if (!storedRule) {
                 reject(new Error(`RecurringRule ${id} not found`));
                 return;
             }
 
             const now = DateTime.now().toUTC().toISO()!;
             const putReq = store.put({
-                ...existing,
+                ...storedRule,
                 deletedAt: now,
                 updatedAt: now,
             });
@@ -105,14 +105,14 @@ export async function restoreRecurringRule(id: string): Promise<void> {
 
         getReq.onerror = () => reject(getReq.error);
         getReq.onsuccess = () => {
-            const existing: RecurringRule | undefined = getReq.result;
-            if (!existing) {
+            const storedRule: RecurringRule | undefined = getReq.result;
+            if (!storedRule) {
                 reject(new Error(`RecurringRule ${id} not found`));
                 return;
             }
 
             const putReq = store.put({
-                ...existing,
+                ...storedRule,
                 deletedAt: null,
                 updatedAt: DateTime.now().toUTC().toISO()!,
             });
@@ -136,14 +136,14 @@ export async function advanceRecurringRule(
 
         getReq.onerror = () => reject(getReq.error);
         getReq.onsuccess = () => {
-            const existing: RecurringRule | undefined = getReq.result;
-            if (!existing) {
+            const storedRule: RecurringRule | undefined = getReq.result;
+            if (!storedRule) {
                 reject(new Error(`RecurringRule ${id} not found`));
                 return;
             }
 
             const putReq = store.put({
-                ...existing,
+                ...storedRule,
                 nextGenerationAt,
                 lastGeneratedAt,
                 // updatedAt is intentionally NOT changed - this is an operational

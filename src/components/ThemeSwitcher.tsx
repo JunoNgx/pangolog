@@ -46,8 +46,8 @@ export function ThemeSwitcher() {
                 selectionMode="single"
                 selectedKeys={new Set([theme ?? "system"])}
                 onSelectionChange={(keys) => {
-                    const selected = [...keys][0] as string;
-                    setTheme(selected);
+                    const selectedKey = [...keys][0] as string;
+                    setTheme(selectedKey);
                 }}
             >
                 {themes.map((t) => (
