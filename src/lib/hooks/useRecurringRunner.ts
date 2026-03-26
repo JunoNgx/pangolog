@@ -44,16 +44,16 @@ function computeNextDate(from: DateTime, rule: RecurringRule): DateTime {
 
 async function processRule(rule: RecurringRule): Promise<void> {
     const now = DateTime.now();
-    let current = DateTime.fromISO(rule.nextGenerationAt);
-    let previous = current;
+    let currentDate = DateTime.fromISO(rule.nextGenerationAt);
+    let previousDate = currentDate;
 
-    while (current <= now) {
-        previous = current;
-        current = computeNextDate(current, rule);
+    while (currentDate <= now) {
+        previousDate = currentDate;
+        currentDate = computeNextDate(currentDate, rule);
     }
 
     await createTransaction({
-        transactedAt: previous
+        transactedAt: previousDate
             .set({
                 hour: now.hour,
                 minute: now.minute,
@@ -70,7 +70,9 @@ async function processRule(rule: RecurringRule): Promise<void> {
 
     await advanceRecurringRule(
         rule.id,
-        current.set({ hour: 0, minute: 0, second: 0, millisecond: 0 }).toISO()!,
+        currentDate
+            .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+            .toISO()!,
         now.toUTC().toISO()!,
     );
 }

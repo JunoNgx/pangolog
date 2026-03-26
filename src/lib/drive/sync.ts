@@ -113,15 +113,15 @@ export async function syncAll(
 
     const settingsEntry = driveFileMap.get(SETTINGS_FILE);
     if (settingsEntry) {
-        const remote = await downloadFile<DriveSettings>(
+        const remoteSettings = await downloadFile<DriveSettings>(
             token,
             settingsEntry.id,
         );
-        if (remote.updatedAt > settingsUpdatedAt) {
+        if (remoteSettings.updatedAt > settingsUpdatedAt) {
             applyRemoteSettings(
-                remote.customCurrency,
-                remote.isPrefixCurrency,
-                remote.updatedAt,
+                remoteSettings.customCurrency,
+                remoteSettings.isPrefixCurrency,
+                remoteSettings.updatedAt,
             );
         }
     }
@@ -137,20 +137,22 @@ export async function syncAll(
 
     const categoriesEntry = driveFileMap.get(CATEGORIES_FILE);
     if (categoriesEntry) {
-        const remote = await downloadFile<Category[]>(
+        const remoteCategories = await downloadFile<Category[]>(
             token,
             categoriesEntry.id,
         );
-        await bulkPutCategories(mergeRecords(localCategories, remote));
+        await bulkPutCategories(
+            mergeRecords(localCategories, remoteCategories),
+        );
     }
 
     const rulesEntry = driveFileMap.get(RECURRING_RULES_FILE);
     if (rulesEntry) {
-        const remote = await downloadFile<RecurringRule[]>(
+        const remoteRules = await downloadFile<RecurringRule[]>(
             token,
             rulesEntry.id,
         );
-        await bulkPutRecurringRules(mergeRecords(localRules, remote));
+        await bulkPutRecurringRules(mergeRecords(localRules, remoteRules));
     }
 
     // --- Download and merge transactions (YYYY.json, smart sync) ---
