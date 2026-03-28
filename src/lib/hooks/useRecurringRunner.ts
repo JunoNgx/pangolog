@@ -42,18 +42,30 @@ function computeNextDate(from: DateTime, rule: RecurringRule): DateTime {
     }
 }
 
+function computeRulePeriod(date: DateTime, rule: RecurringRule): string {
+    switch (rule.frequency) {
+        case "daily":
+        case "weekly":
+            return date.toISODate()!;
+        case "monthly":
+            return date.toFormat("yyyy-MM");
+        case "yearly":
+            return date.toFormat("yyyy");
+    }
+}
+
 async function processRule(rule: RecurringRule): Promise<void> {
     const now = DateTime.now();
-    let currentDate = DateTime.fromISO(rule.nextGenerationAt);
-    let previousDate = currentDate;
+    let nextScheduledDate = DateTime.fromISO(rule.nextGenerationAt);
+    let scheduledDate = nextScheduledDate;
 
-    while (currentDate <= now) {
-        previousDate = currentDate;
-        currentDate = computeNextDate(currentDate, rule);
+    while (nextScheduledDate <= now) {
+        scheduledDate = nextScheduledDate;
+        nextScheduledDate = computeNextDate(nextScheduledDate, rule);
     }
 
     await createTransaction({
-        transactedAt: previousDate
+        transactedAt: scheduledDate
             .set({
                 hour: now.hour,
                 minute: now.minute,
@@ -66,11 +78,13 @@ async function processRule(rule: RecurringRule): Promise<void> {
         isBigBuck: rule.isBigBuck,
         categoryId: rule.categoryId,
         description: rule.description,
+        ruleId: rule.id,
+        rulePeriod: computeRulePeriod(scheduledDate, rule),
     });
 
     await advanceRecurringRule(
         rule.id,
-        currentDate
+        nextScheduledDate
             .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
             .toISO()!,
         now.toUTC().toISO()!,
