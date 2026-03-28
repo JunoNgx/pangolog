@@ -371,28 +371,24 @@ GitHub issue: pangolog#10
 
 Root cause: two devices can both see a rule as due before either syncs, each generating a transaction with a different UUID. Since sync merges by ID, both survive. Fix: tag runner-generated transactions with `ruleId` + `rulePeriod`, then deduplicate post-sync.
 
-### Task 12a: Extend Transaction type
-- [x] Add optional `ruleId: string | null` to `Transaction` type
-- [x] Add optional `rulePeriod: string | null` to `Transaction` type
+### Task 12a: Add fields to Transaction type and update all callers
+- [x] Add `ruleId: string | null` and `rulePeriod: string | null` to `Transaction` type
+- [x] Pass `ruleId: null, rulePeriod: null` in `TransactionDialog` (manual transactions)
+- [x] Pass `ruleId: null, rulePeriod: null` in `demo.ts` (seed transactions)
 
-### Task 12b: Update DB layer
-- [x] Update `createTransaction` to accept and persist `ruleId` and `rulePeriod`
-- [x] Update IDB store/index if needed (no new index required - dedup is done in-memory)
-
-### Task 12c: Update recurring runner
-- [ ] Compute `rulePeriod` based on rule frequency:
-    - daily: `YYYY-MM-DD`
-    - weekly: `YYYY-MM-DD` (date of the Monday of that week, or the scheduled date)
+### Task 12b: Update recurring runner
+- [ ] Compute `rulePeriod` from the scheduled date based on rule frequency:
+    - daily/weekly: `YYYY-MM-DD`
     - monthly: `YYYY-MM`
     - yearly: `YYYY`
-- [ ] Pass `ruleId: rule.id` and `rulePeriod` when calling `createTransaction`
+- [ ] Pass `ruleId: rule.id` and computed `rulePeriod` when calling `createTransaction`
 
-### Task 12d: Post-sync deduplication
+### Task 12c: Post-sync deduplication
 - [ ] After sync merges remote transactions locally, run a dedup pass
 - [ ] Group non-deleted transactions by `(ruleId, rulePeriod)`, skip where `ruleId` is null
 - [ ] For each group with more than one entry, soft-delete all but the one with the earliest `updatedAt`
 - [ ] Persist soft-deletes to IDB
 
-### Task 12e: Update export/import
+### Task 12d: Update export/import
 - [ ] Include `ruleId` and `rulePeriod` in JSON export
 - [ ] Handle `ruleId`/`rulePeriod` as optional on import (backwards compatibility)
