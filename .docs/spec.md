@@ -52,6 +52,7 @@ Approach:
 - Data is sync'ed after any mutation, debounced to 30s. Pending debounce is cancelled when the app goes hidden.
 - Data is sync'ed when the app becomes visible again, only if the last sync was more than 24 hours ago.
 - Data is resolved on the "Last write wins", using `updatedAt`.
+- After merging remote transactions, a deduplication pass soft-deletes runner-generated duplicates - transactions sharing the same `ruleId` and `rulePeriod`, keeping the one with the earliest `updatedAt`.
 - Transactions are not hard-deleted. Use `deletedAt`.
 - Deleted transactions remain stored to facilitate deletion propagation.
 - Data with `deletedAt` older than 60 days are removed on both local and cloud instance.
@@ -413,6 +414,7 @@ To add an entry in a logbook
             - Implication: For users who do not use the app frequently, gap in history is silently lost.
             - User should be warned of this implication somewhere.
         - Advancing `nextGenerationAt`/`lastGeneratedAt` must NOT update `updatedAt`. Bumping `updatedAt` here would cause a stale device (one that has not yet synced a user's deactivation) to win the last-write-wins merge and silently revert the deactivation on the next sync.
+        - Trade-off: since the runner never bumps `updatedAt`, two devices can both see the rule as due before either syncs, each generating a transaction. `ruleId` and `rulePeriod` on generated transactions exist to detect and resolve these post-sync duplicates.
 
 ### Monthly/yearly day clamping
 For monthly and yearly rules, if `dayOfMonth` exceeds the number of days in the target month (e.g. the 31st in April, or the 29th in a non-leap February), the date is clamped to the last day of that month. This is computed as `Math.min(dayOfMonth, lastDayOfMonth)`.
