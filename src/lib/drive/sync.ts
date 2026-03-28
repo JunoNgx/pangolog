@@ -42,6 +42,40 @@ function groupBy<T>(arr: T[], key: (item: T) => string): Map<string, T[]> {
     return map;
 }
 
+function deduplicateRecurringTransactions(
+    transactions: Transaction[],
+): Transaction[] {
+    const now = DateTime.now().toUTC().toISO()!;
+    const groups = new Map<string, Transaction[]>();
+
+    for (const transaction of transactions) {
+        if (transaction.deletedAt !== null) continue;
+        if (!transaction.ruleId || !transaction.rulePeriod) continue;
+        const key = `${transaction.ruleId}:${transaction.rulePeriod}`;
+        const group = groups.get(key) ?? [];
+        group.push(transaction);
+        groups.set(key, group);
+    }
+
+    const softDeletedDuplicates: Transaction[] = [];
+    for (const group of groups.values()) {
+        if (group.length <= 1) continue;
+        const keeper = group.reduce((a, b) =>
+            a.updatedAt < b.updatedAt ? a : b,
+        );
+        for (const transaction of group) {
+            if (transaction.id === keeper.id) continue;
+            softDeletedDuplicates.push({
+                ...transaction,
+                deletedAt: now,
+                updatedAt: now,
+            });
+        }
+    }
+
+    return softDeletedDuplicates;
+}
+
 function mergeRecords<T extends { id: string; updatedAt: string }>(
     local: T[],
     remote: T[],
@@ -177,9 +211,23 @@ export async function syncAll(
         // Smart sync: skip download if file not modified since last sync
         if (lastSyncTime && driveEntry.modifiedTime <= lastSyncTime) continue;
 
-        const local = localTransactionsByYear.get(yearFile) ?? [];
-        const remote = await downloadFile<Transaction[]>(token, driveEntry.id);
-        await bulkPutTransactions(mergeRecords(local, remote));
+        const localTransactions = localTransactionsByYear.get(yearFile) ?? [];
+        const remoteTransactions = await downloadFile<Transaction[]>(
+            token,
+            driveEntry.id,
+        );
+        await bulkPutTransactions(
+            mergeRecords(localTransactions, remoteTransactions),
+        );
+    }
+
+    // --- Deduplicate runner-generated transactions ---
+
+    const softDeletedDuplicates = deduplicateRecurringTransactions(
+        await getAllTransactions(),
+    );
+    if (softDeletedDuplicates.length > 0) {
+        await bulkPutTransactions(softDeletedDuplicates);
     }
 
     // --- Upload merged local data ---

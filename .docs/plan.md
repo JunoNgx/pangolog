@@ -364,3 +364,43 @@ This phase will render existing cloud data and json files obsolete and incompati
 
 ### Task 11d: empty mode
 - [ ] Implement an easter egg animation when both small dimes and big bucks are unchecked in Transactions or Summary view
+
+## Task 12 (bug): Fix duplicate recurring transactions across devices
+
+GitHub issue: pangolog#10
+
+Root cause: two devices can both see a rule as due before either syncs, each generating a transaction with a different UUID. Since sync merges by ID, both survive. Fix: tag runner-generated transactions with `ruleId` + `rulePeriod`, then deduplicate post-sync.
+
+### Task 12a: Add fields to Transaction type and update all callers
+- [x] Add `ruleId: string | null` and `rulePeriod: string | null` to `Transaction` type
+- [x] Pass `ruleId: null, rulePeriod: null` in `TransactionDialog` (manual transactions)
+- [x] Pass `ruleId: null, rulePeriod: null` in `demo.ts` (seed transactions)
+
+### Task 12b-migration: DB migration for ruleId and rulePeriod
+- [x] Bump DB version and set `ruleId: null, rulePeriod: null` on all existing transactions
+
+### Task 12b: Update recurring runner
+- [x] Compute `rulePeriod` from the scheduled date based on rule frequency:
+    - daily/weekly: `YYYY-MM-DD`
+    - monthly: `YYYY-MM`
+    - yearly: `YYYY`
+- [x] Pass `ruleId: rule.id` and computed `rulePeriod` when calling `createTransaction`
+
+### Task 12c: Post-sync deduplication
+- [x] Normalize incoming Drive transactions: default missing `ruleId`/`rulePeriod` to `null` before storing
+- [x] After sync merges remote transactions locally, run a dedup pass
+- [x] Group non-deleted transactions by `(ruleId, rulePeriod)`, skip where `ruleId` is null
+- [x] For each group with more than one entry, soft-delete all but the one with the earliest `updatedAt`
+- [x] Persist soft-deletes to IDB
+
+### Task 12d: Update export/import
+- [x] Include `ruleId` and `rulePeriod` in JSON export
+- [x] Normalize incoming transactions on import: default missing `ruleId`/`rulePeriod` to `null` before storing
+
+### Task 12e: Make ruleId and rulePeriod optional
+- [x] Change `ruleId` and `rulePeriod` in `Transaction` type to `ruleId?: string` and `rulePeriod?: string`
+- [x] Remove explicit `ruleId: null, rulePeriod: null` from `TransactionDialog`
+- [x] Remove explicit `ruleId: null, rulePeriod: null` from `demo.ts`
+- [x] Revert DB v5 migration (no longer needed - absent and undefined are equivalent in IDB)
+- [x] Update dedup check in `sync.ts` to use `!t.ruleId` or `t.ruleId == null`
+- [x] Remove normalization from `sync.ts` and `import.ts` (no longer needed)
