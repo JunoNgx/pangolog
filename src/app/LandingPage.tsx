@@ -101,6 +101,35 @@ export default function LandingPage() {
                     (like, now; no account or signup needed)
                 </p>
             </div>
+
+            <footer className="flex flex-col items-center gap-2">
+                <p className="text-xs text-default-400">
+                    by{" "}
+                    <Link
+                        href="https://junongx.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-default-600"
+                    >
+                        Juno Nguyen
+                    </Link>
+                </p>
+                <div className="flex items-center gap-3">
+                    <Link
+                        href="/privacy"
+                        className="text-xs text-default-400 hover:text-default-600"
+                    >
+                        Privacy Policy
+                    </Link>
+                    <span className="text-xs text-default-300">|</span>
+                    <Link
+                        href="/terms"
+                        className="text-xs text-default-400 hover:text-default-600"
+                    >
+                        Terms of Service
+                    </Link>
+                </div>
+            </footer>
         </div>
     );
 }
