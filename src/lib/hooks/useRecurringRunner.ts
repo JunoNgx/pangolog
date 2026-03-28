@@ -42,6 +42,18 @@ function computeNextDate(from: DateTime, rule: RecurringRule): DateTime {
     }
 }
 
+function computeRulePeriod(date: DateTime, rule: RecurringRule): string {
+    switch (rule.frequency) {
+        case "daily":
+        case "weekly":
+            return date.toISODate()!;
+        case "monthly":
+            return date.toFormat("yyyy-MM");
+        case "yearly":
+            return date.toFormat("yyyy");
+    }
+}
+
 async function processRule(rule: RecurringRule): Promise<void> {
     const now = DateTime.now();
     let currentDate = DateTime.fromISO(rule.nextGenerationAt);
@@ -66,6 +78,8 @@ async function processRule(rule: RecurringRule): Promise<void> {
         isBigBuck: rule.isBigBuck,
         categoryId: rule.categoryId,
         description: rule.description,
+        ruleId: rule.id,
+        rulePeriod: computeRulePeriod(previousDate, rule),
     });
 
     await advanceRecurringRule(
