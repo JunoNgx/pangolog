@@ -211,12 +211,14 @@ export async function syncAll(
         // Smart sync: skip download if file not modified since last sync
         if (lastSyncTime && driveEntry.modifiedTime <= lastSyncTime) continue;
 
-        const local = localTransactionsByYear.get(yearFile) ?? [];
+        const localTransactions = localTransactionsByYear.get(yearFile) ?? [];
         const remoteTransactions = await downloadFile<Transaction[]>(
             token,
             driveEntry.id,
         );
-        await bulkPutTransactions(mergeRecords(local, remoteTransactions));
+        await bulkPutTransactions(
+            mergeRecords(localTransactions, remoteTransactions),
+        );
     }
 
     // --- Deduplicate runner-generated transactions ---
