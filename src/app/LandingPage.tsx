@@ -116,6 +116,15 @@ export default function LandingPage() {
                 </p>
                 <div className="flex items-center gap-3">
                     <Link
+                        href="https://github.com/JunoNgx/pangolog"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs text-default-400 hover:text-default-600"
+                    >
+                        Source
+                    </Link>
+                    <span className="text-xs text-default-300">|</span>
+                    <Link
                         href="/privacy"
                         className="text-xs text-default-400 hover:text-default-600"
                     >
