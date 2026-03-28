@@ -42,14 +42,6 @@ function groupBy<T>(arr: T[], key: (item: T) => string): Map<string, T[]> {
     return map;
 }
 
-function normalizeTransaction(transaction: Transaction): Transaction {
-    return {
-        ...transaction,
-        ruleId: transaction.ruleId ?? null,
-        rulePeriod: transaction.rulePeriod ?? null,
-    };
-}
-
 function deduplicateRecurringTransactions(
     transactions: Transaction[],
 ): Transaction[] {
@@ -58,8 +50,7 @@ function deduplicateRecurringTransactions(
 
     for (const transaction of transactions) {
         if (transaction.deletedAt !== null) continue;
-        if (transaction.ruleId === null || transaction.rulePeriod === null)
-            continue;
+        if (!transaction.ruleId || !transaction.rulePeriod) continue;
         const key = `${transaction.ruleId}:${transaction.rulePeriod}`;
         const group = groups.get(key) ?? [];
         group.push(transaction);
@@ -221,12 +212,10 @@ export async function syncAll(
         if (lastSyncTime && driveEntry.modifiedTime <= lastSyncTime) continue;
 
         const local = localTransactionsByYear.get(yearFile) ?? [];
-        const downloadedTransactions = await downloadFile<Transaction[]>(
+        const remoteTransactions = await downloadFile<Transaction[]>(
             token,
             driveEntry.id,
         );
-        const remoteTransactions =
-            downloadedTransactions.map(normalizeTransaction);
         await bulkPutTransactions(mergeRecords(local, remoteTransactions));
     }
 
