@@ -138,6 +138,8 @@ Approach:
 - `description`: string, user description for the transaction.
 - `isIncome`: boolean, whether the transaction is a positive income instead of expense.
 - `isBigBuck`: boolean. Discriminant field used to distinguish dimes from bucks.
+- `ruleId`: uuid | null, foreign key to `recurring-rules`. `null` for manual transactions.
+- `rulePeriod`: string | null, period covered by this generated transaction for deduplication. Format: `YYYY-MM-DD` (daily/weekly), `YYYY-MM` (monthly), `YYYY` (yearly). `null` for manual transactions.
 - indexes:
     - [year, month] for month queries
     - year for year queries
