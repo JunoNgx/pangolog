@@ -387,6 +387,7 @@ Root cause: two devices can both see a rule as due before either syncs, each gen
 - [x] Pass `ruleId: rule.id` and computed `rulePeriod` when calling `createTransaction`
 
 ### Task 12c: Post-sync deduplication
+- [ ] Normalize incoming Drive transactions: default missing `ruleId`/`rulePeriod` to `null` before storing
 - [ ] After sync merges remote transactions locally, run a dedup pass
 - [ ] Group non-deleted transactions by `(ruleId, rulePeriod)`, skip where `ruleId` is null
 - [ ] For each group with more than one entry, soft-delete all but the one with the earliest `updatedAt`
@@ -394,4 +395,4 @@ Root cause: two devices can both see a rule as due before either syncs, each gen
 
 ### Task 12d: Update export/import
 - [ ] Include `ruleId` and `rulePeriod` in JSON export
-- [ ] Handle `ruleId`/`rulePeriod` as optional on import (backwards compatibility)
+- [ ] Normalize incoming transactions on import: default missing `ruleId`/`rulePeriod` to `null` before storing
