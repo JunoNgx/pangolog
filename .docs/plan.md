@@ -394,5 +394,5 @@ Root cause: two devices can both see a rule as due before either syncs, each gen
 - [x] Persist soft-deletes to IDB
 
 ### Task 12d: Update export/import
-- [ ] Include `ruleId` and `rulePeriod` in JSON export
-- [ ] Normalize incoming transactions on import: default missing `ruleId`/`rulePeriod` to `null` before storing
+- [x] Include `ruleId` and `rulePeriod` in JSON export
+- [x] Normalize incoming transactions on import: default missing `ruleId`/`rulePeriod` to `null` before storing
