@@ -142,8 +142,6 @@ export function TransactionDialog({
             isBigBuck: isBigBuck,
             categoryId,
             description,
-            ruleId: null,
-            rulePeriod: null,
         };
 
         if (isEditing) {
