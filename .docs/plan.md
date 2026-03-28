@@ -398,9 +398,9 @@ Root cause: two devices can both see a rule as due before either syncs, each gen
 - [x] Normalize incoming transactions on import: default missing `ruleId`/`rulePeriod` to `null` before storing
 
 ### Task 12e: Make ruleId and rulePeriod optional
-- [ ] Change `ruleId` and `rulePeriod` in `Transaction` type to `ruleId?: string` and `rulePeriod?: string`
-- [ ] Remove explicit `ruleId: null, rulePeriod: null` from `TransactionDialog`
-- [ ] Remove explicit `ruleId: null, rulePeriod: null` from `demo.ts`
-- [ ] Revert DB v5 migration (no longer needed - absent and undefined are equivalent in IDB)
-- [ ] Update dedup check in `sync.ts` to use `!t.ruleId` or `t.ruleId == null`
-- [ ] Remove normalization from `sync.ts` and `import.ts` (no longer needed)
+- [x] Change `ruleId` and `rulePeriod` in `Transaction` type to `ruleId?: string` and `rulePeriod?: string`
+- [x] Remove explicit `ruleId: null, rulePeriod: null` from `TransactionDialog`
+- [x] Remove explicit `ruleId: null, rulePeriod: null` from `demo.ts`
+- [x] Revert DB v5 migration (no longer needed - absent and undefined are equivalent in IDB)
+- [x] Update dedup check in `sync.ts` to use `!t.ruleId` or `t.ruleId == null`
+- [x] Remove normalization from `sync.ts` and `import.ts` (no longer needed)
