@@ -364,3 +364,35 @@ This phase will render existing cloud data and json files obsolete and incompati
 
 ### Task 11d: empty mode
 - [ ] Implement an easter egg animation when both small dimes and big bucks are unchecked in Transactions or Summary view
+
+## Task 10 (bug): Fix duplicate recurring transactions across devices
+
+GitHub issue: pangolog#10
+
+Root cause: two devices can both see a rule as due before either syncs, each generating a transaction with a different UUID. Since sync merges by ID, both survive. Fix: tag runner-generated transactions with `ruleId` + `rulePeriod`, then deduplicate post-sync.
+
+### Task 10-bug-a: Extend Transaction type
+- [ ] Add optional `ruleId: string | null` to `Transaction` type
+- [ ] Add optional `rulePeriod: string | null` to `Transaction` type
+
+### Task 10-bug-b: Update DB layer
+- [ ] Update `createTransaction` to accept and persist `ruleId` and `rulePeriod`
+- [ ] Update IDB store/index if needed (no new index required - dedup is done in-memory)
+
+### Task 10-bug-c: Update recurring runner
+- [ ] Compute `rulePeriod` based on rule frequency:
+    - daily: `YYYY-MM-DD`
+    - weekly: `YYYY-MM-DD` (date of the Monday of that week, or the scheduled date)
+    - monthly: `YYYY-MM`
+    - yearly: `YYYY`
+- [ ] Pass `ruleId: rule.id` and `rulePeriod` when calling `createTransaction`
+
+### Task 10-bug-d: Post-sync deduplication
+- [ ] After sync merges remote transactions locally, run a dedup pass
+- [ ] Group non-deleted transactions by `(ruleId, rulePeriod)`, skip where `ruleId` is null
+- [ ] For each group with more than one entry, soft-delete all but the one with the earliest `updatedAt`
+- [ ] Persist soft-deletes to IDB
+
+### Task 10-bug-e: Update export/import
+- [ ] Include `ruleId` and `rulePeriod` in JSON export
+- [ ] Handle `ruleId`/`rulePeriod` as optional on import (backwards compatibility)
