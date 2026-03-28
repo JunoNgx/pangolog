@@ -69,12 +69,13 @@ function deduplicateRecurringTransactions(
     const softDeletedDuplicates: Transaction[] = [];
     for (const group of groups.values()) {
         if (group.length <= 1) continue;
-        const sortedGroup = [...group].sort((a, b) =>
-            a.updatedAt.localeCompare(b.updatedAt),
+        const keeper = group.reduce((a, b) =>
+            a.updatedAt < b.updatedAt ? a : b,
         );
-        for (const duplicate of sortedGroup.slice(1)) {
+        for (const transaction of group) {
+            if (transaction.id === keeper.id) continue;
             softDeletedDuplicates.push({
-                ...duplicate,
+                ...transaction,
                 deletedAt: now,
                 updatedAt: now,
             });
