@@ -32,7 +32,7 @@ export default function PrivacyClient() {
         <div className="container mx-auto max-w-2xl px-4 pt-6 pb-24">
             <h1 className="text-xl font-bold mb-2">Privacy Policy</h1>
             <p className="text-sm text-default-400 mb-8">
-                Last updated: February 2026
+                Last updated: March 2026
             </p>
 
             <Section title="Overview">
@@ -52,8 +52,8 @@ export default function PrivacyClient() {
                     browser&apos;s IndexedDB storage on your device.
                 </p>
                 <p className="text-sm text-default-500">
-                    If you connect to Google Drive, we store a short-lived
-                    session token in an encrypted HTTP-only cookie solely to
+                    If you connect to Google Drive, we store a session token in
+                    an encrypted HTTP-only cookie (valid for 30 days) solely to
                     facilitate token refresh. Your Google email address is
                     stored locally on your device and displayed in Settings. No
                     data is transmitted to or stored on Pangolog servers.
