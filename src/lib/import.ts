@@ -129,10 +129,16 @@ export async function executeImport(data: ImportData): Promise<ImportPreview> {
     const categoryMap = new Map(existingCategories.map((c) => [c.id, c]));
     const ruleMap = new Map(existingRules.map((r) => [r.id, r]));
 
-    const transactionsToPut = (data.transactions ?? []).filter((t) => {
-        const storedTx = transactionMap.get(t.id);
-        return !storedTx || t.updatedAt > storedTx.updatedAt;
-    });
+    const transactionsToPut = (data.transactions ?? [])
+        .filter((t) => {
+            const storedTx = transactionMap.get(t.id);
+            return !storedTx || t.updatedAt > storedTx.updatedAt;
+        })
+        .map((t) => ({
+            ...t,
+            ruleId: t.ruleId ?? null,
+            rulePeriod: t.rulePeriod ?? null,
+        }));
 
     const categoriesToPut = data.categories.filter((c) => {
         const storedCat = categoryMap.get(c.id);
