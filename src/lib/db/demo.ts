@@ -116,6 +116,8 @@ export async function seedDemoData(): Promise<void> {
             month: yesterday.month,
             updatedAt: auditNow,
             deletedAt: null,
+            ruleId: null,
+            rulePeriod: null,
         });
         txStore.put({
             id: generateId(),
@@ -129,6 +131,8 @@ export async function seedDemoData(): Promise<void> {
             month: yesterday.month,
             updatedAt: auditNow,
             deletedAt: null,
+            ruleId: null,
+            rulePeriod: null,
         });
         txStore.put({
             id: generateId(),
@@ -142,6 +146,8 @@ export async function seedDemoData(): Promise<void> {
             month: now.month,
             updatedAt: auditNow,
             deletedAt: null,
+            ruleId: null,
+            rulePeriod: null,
         });
         txStore.put({
             id: generateId(),
@@ -155,6 +161,8 @@ export async function seedDemoData(): Promise<void> {
             month: now.month,
             updatedAt: auditNow,
             deletedAt: null,
+            ruleId: null,
+            rulePeriod: null,
         });
         txStore.put({
             id: generateId(),
@@ -168,6 +176,8 @@ export async function seedDemoData(): Promise<void> {
             month: yesterday.month,
             updatedAt: auditNow,
             deletedAt: null,
+            ruleId: null,
+            rulePeriod: null,
         });
         txStore.put({
             id: generateId(),
@@ -181,6 +191,8 @@ export async function seedDemoData(): Promise<void> {
             month: now.month,
             updatedAt: auditNow,
             deletedAt: null,
+            ruleId: null,
+            rulePeriod: null,
         });
         txStore.put({
             id: generateId(),
@@ -194,6 +206,8 @@ export async function seedDemoData(): Promise<void> {
             month: now.month,
             updatedAt: auditNow,
             deletedAt: null,
+            ruleId: null,
+            rulePeriod: null,
         });
 
         const rrStore = tx.objectStore("recurring-rules");
