@@ -10,8 +10,8 @@ export interface Transaction {
     description: string;
     isIncome: boolean;
     isBigBuck: boolean;
-    ruleId: string | null;
-    rulePeriod: string | null;
+    ruleId?: string;
+    rulePeriod?: string;
 }
 
 export type TransactionInput = Omit<
