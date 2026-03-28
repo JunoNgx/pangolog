@@ -377,11 +377,11 @@ Root cause: two devices can both see a rule as due before either syncs, each gen
 - [x] Pass `ruleId: null, rulePeriod: null` in `demo.ts` (seed transactions)
 
 ### Task 12b: Update recurring runner
-- [ ] Compute `rulePeriod` from the scheduled date based on rule frequency:
+- [x] Compute `rulePeriod` from the scheduled date based on rule frequency:
     - daily/weekly: `YYYY-MM-DD`
     - monthly: `YYYY-MM`
     - yearly: `YYYY`
-- [ ] Pass `ruleId: rule.id` and computed `rulePeriod` when calling `createTransaction`
+- [x] Pass `ruleId: rule.id` and computed `rulePeriod` when calling `createTransaction`
 
 ### Task 12c: Post-sync deduplication
 - [ ] After sync merges remote transactions locally, run a dedup pass
