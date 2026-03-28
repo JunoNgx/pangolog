@@ -376,6 +376,9 @@ Root cause: two devices can both see a rule as due before either syncs, each gen
 - [x] Pass `ruleId: null, rulePeriod: null` in `TransactionDialog` (manual transactions)
 - [x] Pass `ruleId: null, rulePeriod: null` in `demo.ts` (seed transactions)
 
+### Task 12b-migration: DB migration for ruleId and rulePeriod
+- [x] Bump DB version and set `ruleId: null, rulePeriod: null` on all existing transactions
+
 ### Task 12b: Update recurring runner
 - [x] Compute `rulePeriod` from the scheduled date based on rule frequency:
     - daily/weekly: `YYYY-MM-DD`
