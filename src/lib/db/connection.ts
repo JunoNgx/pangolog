@@ -1,7 +1,7 @@
 import { DateTime } from "luxon";
 
 const DB_NAME = "pangolog";
-const DB_VERSION = 5;
+const DB_VERSION = 4;
 
 const REQUIRED_STORES = ["categories", "recurring-rules", "transactions"];
 
@@ -105,26 +105,6 @@ function openDbRaw(): Promise<IDBDatabase> {
                         txStore.put({ ...buck, isBigBuck: true });
                     }
                     db.deleteObjectStore("bucks");
-                };
-            }
-
-            if (event.oldVersion < 5) {
-                const upgradeTx = (event.target as IDBOpenDBRequest)
-                    .transaction;
-                if (!upgradeTx) return;
-
-                const txStore = upgradeTx.objectStore("transactions");
-                const cursorReq = txStore.openCursor();
-                cursorReq.onsuccess = (e) => {
-                    const cursor = (e.target as IDBRequest<IDBCursorWithValue>)
-                        .result;
-                    if (!cursor) return;
-                    cursor.update({
-                        ...cursor.value,
-                        ruleId: cursor.value.ruleId ?? null,
-                        rulePeriod: cursor.value.rulePeriod ?? null,
-                    });
-                    cursor.continue();
                 };
             }
         };
