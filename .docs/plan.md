@@ -408,7 +408,7 @@ Root cause: two devices can both see a rule as due before either syncs, each gen
 ## Task 13: Fix identified code weaknesses
 
 ### Task 13a: Fix SubmitEvent type in form submit handlers
-- [ ] Change `handleSubmit(e: React.SyntheticEvent)` to `handleSubmit(e: SubmitEvent)` in `TransactionDialog.tsx` and `RecurringRuleDialog.tsx`
+- [x] Change `handleSubmit(e: React.SyntheticEvent)` to `handleSubmit(e: SubmitEvent)` in `TransactionDialog.tsx` and `RecurringRuleDialog.tsx`
 - `SubmitEvent` is the correct native type for a form submit handler. `React.SyntheticEvent` is a generic synthetic event type that doesn't communicate intent. `CategoryDialog.tsx` already uses the correct pattern and should be used as reference.
 
 ### Task 13b: Fix resolveTransactedAt in TransactionDialog
