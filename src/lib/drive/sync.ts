@@ -138,12 +138,8 @@ export async function syncAll(
 
     // --- Settings sync ---
 
-    const {
-        customCurrency,
-        isPrefixCurrency,
-        settingsUpdatedAt,
-        applyRemoteSettings,
-    } = useProfileSettingsStore.getState();
+    const { settingsUpdatedAt, applyRemoteSettings } =
+        useProfileSettingsStore.getState();
 
     const settingsEntry = driveFileMap.get(SETTINGS_FILE);
     if (settingsEntry) {
@@ -160,10 +156,15 @@ export async function syncAll(
         }
     }
 
+    const {
+        customCurrency,
+        isPrefixCurrency,
+        settingsUpdatedAt: resolvedSettingsUpdatedAt,
+    } = useProfileSettingsStore.getState();
     const localSettings: DriveSettings = {
         customCurrency,
         isPrefixCurrency,
-        updatedAt: settingsUpdatedAt,
+        updatedAt: resolvedSettingsUpdatedAt,
     };
     await upsertFile(token, folderId, SETTINGS_FILE, localSettings);
 
