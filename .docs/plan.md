@@ -421,5 +421,5 @@ Root cause: two devices can both see a rule as due before either syncs, each gen
     - Won't fix: the existing code is correct and the comment already explains its intent clearly. This would be a pure convention change with no logic impact.
 
 ### Task 13d: Fix settings sync TOCTOU in sync.ts
-- [ ] Re-read from `useProfileSettingsStore.getState()` after potentially calling `applyRemoteSettings`, before building `localSettings` for upload
+- [x] Re-read from `useProfileSettingsStore.getState()` after potentially calling `applyRemoteSettings`, before building `localSettings` for upload
 - This is a time-of-check to time-of-use bug: `customCurrency`, `isPrefixCurrency`, and `settingsUpdatedAt` are destructured from store state (time of check) before the remote settings comparison. If remote is newer, `applyRemoteSettings` updates the store - but `localSettings` is then built from the original destructured variables, which are now stale (time of use). `upsertFile` then immediately overwrites the newer remote value with the losing local one. The fix is to call `useProfileSettingsStore.getState()` again after the conditional block to get the winning values before uploading.
