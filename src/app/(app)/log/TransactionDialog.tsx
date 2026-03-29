@@ -12,7 +12,13 @@ import {
 } from "@heroui/react";
 import { DateTime } from "luxon";
 import type React from "react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import {
+    type SubmitEventHandler,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from "react";
 import { toast } from "sonner";
 import { CategoryDialog } from "@/components/CategoryDialog";
 import { CategoryPicker } from "@/components/CategoryPicker";
@@ -121,8 +127,7 @@ export function TransactionDialog({
 
     function resolveTransactedAt(): string {
         if (isEditing && transaction) {
-            const originalDateStr = toDateInputValue(transaction.transactedAt);
-            if (transactedAt === originalDateStr)
+            if (transactedAt === toDateInputValue(transaction.transactedAt))
                 return transaction.transactedAt;
             return fromDateInputValue(transactedAt);
         }
@@ -130,7 +135,7 @@ export function TransactionDialog({
         return fromDateInputValue(transactedAt);
     }
 
-    function handleSubmit(e: React.SyntheticEvent) {
+    const handleSubmit: SubmitEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault();
         const amountMinor = Math.round(Number.parseFloat(amount) * 100);
         if (Number.isNaN(amountMinor) || amountMinor <= 0) return;
@@ -153,7 +158,7 @@ export function TransactionDialog({
         }
 
         createTransaction.mutate(input, { onSuccess: handleClose });
-    }
+    };
 
     // Ctrl/Cmd+Enter submits the form from anywhere in the dialog, including
     // when a category button is focused. HeroUI buttons call stopPropagation on
