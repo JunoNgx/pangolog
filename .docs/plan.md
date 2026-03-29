@@ -412,7 +412,7 @@ Root cause: two devices can both see a rule as due before either syncs, each gen
 - `SubmitEvent` is the correct native type for a form submit handler. `React.SyntheticEvent` is a generic synthetic event type that doesn't communicate intent. `CategoryDialog.tsx` already uses the correct pattern and should be used as reference.
 
 ### Task 13b: Fix resolveTransactedAt in TransactionDialog
-- [ ] Remove redundant `originalDateStr` local variable; compare `transactedAt` directly against `toDateInputValue(transaction.transactedAt)`
+- [x] Remove redundant `originalDateStr` local variable; compare `transactedAt` directly against `toDateInputValue(transaction.transactedAt)`
 - The `transactedAt` state is initialized to `toDateInputValue(transaction.transactedAt)` in the `useEffect`. Re-deriving `originalDateStr` inside `resolveTransactedAt` is redundant and a source of potential timezone drift: if the stored ISO was written on a device in a different timezone (e.g. `2026-03-28T23:00:00+07:00`), `toDateInputValue` calls `.toLocal()` before `.toISODate()`, which may produce a different date on the current device. A false negative causes `fromDateInputValue` to be called, silently rewriting the time component to 12:00 local. The fix makes the invariant explicit: if the input string equals what we initialized it to, the user didn't change the date.
 
 ### Task 13c: Replace module-level isSyncing flag in useSync
