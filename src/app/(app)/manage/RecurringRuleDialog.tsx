@@ -11,7 +11,7 @@ import {
     Switch,
 } from "@heroui/react";
 import { DateTime } from "luxon";
-import { useEffect, useMemo, useState } from "react";
+import { type SubmitEventHandler, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { CategoryDialog } from "@/components/CategoryDialog";
 import { CategoryPicker } from "@/components/CategoryPicker";
@@ -152,7 +152,7 @@ export function RecurringRuleDialog({
         setFrequency(e.target.value as Frequency);
     }
 
-    function handleSubmit(e: React.SyntheticEvent) {
+    const handleSubmit: SubmitEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault();
         const amountMinor = Math.round(Number.parseFloat(amount) * 100);
         if (Number.isNaN(amountMinor) || amountMinor <= 0) return;
@@ -181,7 +181,7 @@ export function RecurringRuleDialog({
         }
 
         createRule.mutate(input, { onSuccess: handleClose });
-    }
+    };
 
     function handleDelete() {
         if (!rule) return;
