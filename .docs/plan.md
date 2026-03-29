@@ -416,8 +416,9 @@ Root cause: two devices can both see a rule as due before either syncs, each gen
 - The `transactedAt` state is initialized to `toDateInputValue(transaction.transactedAt)` in the `useEffect`. Re-deriving `originalDateStr` inside `resolveTransactedAt` is redundant and a source of potential timezone drift: if the stored ISO was written on a device in a different timezone (e.g. `2026-03-28T23:00:00+07:00`), `toDateInputValue` calls `.toLocal()` before `.toISODate()`, which may produce a different date on the current device. A false negative causes `fromDateInputValue` to be called, silently rewriting the time component to 12:00 local. The fix makes the invariant explicit: if the input string equals what we initialized it to, the user didn't change the date.
 
 ### Task 13c: Replace module-level isSyncing flag in useSync
-- [ ] Replace `let isSyncing = false` with `const isSyncingRef = { current: false }` and update all reads/writes to use `isSyncingRef.current`
+- [won't do] Replace `let isSyncing = false` with `const isSyncingRef = { current: false }` and update all reads/writes to use `isSyncingRef.current`
 - The module-level mutable boolean is invisible to React DevTools, won't reset on hot reload during development, and can't be observed or tested without calling the hook. A ref-like object keeps the cross-instance shared guard semantics (all hook instances share the same lock) while being semantically consistent with how React tracks mutable values that don't trigger re-renders.
+    - Won't fix: the existing code is correct and the comment already explains its intent clearly. This would be a pure convention change with no logic impact.
 
 ### Task 13d: Fix settings sync TOCTOU in sync.ts
 - [ ] Re-read from `useProfileSettingsStore.getState()` after potentially calling `applyRemoteSettings`, before building `localSettings` for upload
