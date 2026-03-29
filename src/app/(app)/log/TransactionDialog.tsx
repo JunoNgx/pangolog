@@ -127,8 +127,7 @@ export function TransactionDialog({
 
     function resolveTransactedAt(): string {
         if (isEditing && transaction) {
-            const originalDateStr = toDateInputValue(transaction.transactedAt);
-            if (transactedAt === originalDateStr)
+            if (transactedAt === toDateInputValue(transaction.transactedAt))
                 return transaction.transactedAt;
             return fromDateInputValue(transactedAt);
         }
