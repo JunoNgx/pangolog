@@ -7,6 +7,7 @@ import { getOrCreatePangoFolder } from "@/lib/drive/client";
 import { syncAll } from "@/lib/drive/sync";
 import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
 import { useGoogleAuth } from "./useGoogleAuth";
+import { useLogger } from "./useLogger";
 
 const DEBOUNCE_MS = 30_000;
 const RESTORE_SYNC_THRESHOLD_MS = 24 * 60 * 60 * 1000;
@@ -36,6 +37,7 @@ export function useSyncFn() {
     } = useLocalSettingsStore();
 
     const { getValidToken } = useGoogleAuth();
+    const { addLoggerEntry } = useLogger();
     const queryClient = useQueryClient();
 
     const sync = useCallback(
@@ -46,6 +48,10 @@ export function useSyncFn() {
             const token = await getValidToken();
             if (!token) {
                 if (useLocalSettingsStore.getState().authToken) {
+                    addLoggerEntry(
+                        "Session expired before sync started.",
+                        "SYNC_AUTH_PRE_SYNC",
+                    );
                     toast.error(
                         "Google Drive session expired (pre-sync). Please reconnect in Settings.",
                         { id: "auth-reconnect", duration: Infinity },
@@ -99,6 +105,10 @@ export function useSyncFn() {
                 const freshToken = await getValidToken(true);
                 if (!freshToken) {
                     setSyncStatus("idle");
+                    addLoggerEntry(
+                        "Session expired: token refresh failed after 401.",
+                        "SYNC_AUTH_REFRESH_FAILED",
+                    );
                     toast.error(
                         "Google Drive session expired (token refresh failed). Please reconnect in Settings.",
                         { id: "auth-reconnect", duration: Infinity },
@@ -119,6 +129,7 @@ export function useSyncFn() {
             setLastSyncTime,
             setSyncError,
             setSyncStatus,
+            addLoggerEntry,
         ],
     );
 
