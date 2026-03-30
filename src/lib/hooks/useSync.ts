@@ -47,7 +47,7 @@ export function useSyncFn() {
             if (!token) {
                 if (useLocalSettingsStore.getState().authToken) {
                     toast.error(
-                        "Google Drive session expired. Please reconnect in Settings.",
+                        "Google Drive session expired (pre-sync). Please reconnect in Settings.",
                         { id: "auth-reconnect", duration: Infinity },
                     );
                 }
@@ -100,7 +100,7 @@ export function useSyncFn() {
                 if (!freshToken) {
                     setSyncStatus("idle");
                     toast.error(
-                        "Google Drive session expired. Please reconnect in Settings.",
+                        "Google Drive session expired (token refresh failed). Please reconnect in Settings.",
                         { id: "auth-reconnect", duration: Infinity },
                     );
                     return;
