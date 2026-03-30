@@ -46,6 +46,8 @@ export function useSyncFn() {
     const { addLoggerEntry } = useLogger();
     const queryClient = useQueryClient();
 
+    // TODO: consider refactoring handleAuthExpired with preset logcode/messages
+    // if the current free-form parameters prove not useful for debugging.
     const handleAuthExpired = useCallback(
         (logMessage: string, logcode: string, toastMessage: string) => {
             addLoggerEntry(logMessage, logcode);
@@ -124,9 +126,9 @@ export function useSyncFn() {
                 if (isExpiredResult(refreshResult)) {
                     setSyncStatus("idle");
                     handleAuthExpired(
-                        `Session expired, token refresh failed: ${refreshResult.expired}`,
-                        "SYNC_AUTH_REFRESH_FAILED",
-                        "Google Drive session expired (token refresh failed). Please reconnect in Settings.",
+                        `Session expired mid-sync: ${refreshResult.expired}`,
+                        "SYNC_AUTH_MID_SYNC",
+                        "Google Drive session expired (mid-sync). Please reconnect in Settings.",
                     );
                     return;
                 }
