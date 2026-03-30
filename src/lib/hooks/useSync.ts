@@ -3,6 +3,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef } from "react";
 import { toast } from "sonner";
+import type { TokenResult } from "@/lib/auth/types";
 import { getOrCreatePangoFolder } from "@/lib/drive/client";
 import { syncAll } from "@/lib/drive/sync";
 import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
@@ -14,6 +15,10 @@ const RESTORE_SYNC_THRESHOLD_MS = 24 * 60 * 60 * 1000;
 
 // Module-level flag prevents concurrent syncs across hook instances.
 let isSyncing = false;
+
+function isExpiredResult(result: TokenResult): result is { expired: string } {
+    return typeof result === "object" && result !== null;
+}
 
 function isAuthError(err: unknown): boolean {
     return err instanceof Error && err.message.includes("401");
@@ -34,6 +39,7 @@ export function useSyncFn() {
         setSyncStatus,
         setLastSyncTime,
         setSyncError,
+        setAuthToken,
     } = useLocalSettingsStore();
 
     const { getValidToken } = useGoogleAuth();
@@ -45,21 +51,25 @@ export function useSyncFn() {
             if (isSyncing) return;
             isSyncing = true;
 
-            const token = await getValidToken();
-            if (!token) {
-                if (useLocalSettingsStore.getState().authToken) {
-                    addLoggerEntry(
-                        "Session expired before sync started.",
-                        "SYNC_AUTH_PRE_SYNC",
-                    );
-                    toast.error(
-                        "Google Drive session expired (pre-sync). Please reconnect in Settings.",
-                        { id: "auth-reconnect", duration: Infinity },
-                    );
-                }
+            const tokenResult = await getValidToken();
+            if (isExpiredResult(tokenResult)) {
+                addLoggerEntry(
+                    `Session expired before sync: ${tokenResult.expired}`,
+                    "SYNC_AUTH_PRE_SYNC",
+                );
+                if (navigator.onLine) setAuthToken(null);
+                toast.error(
+                    "Google Drive session expired (pre-sync). Please reconnect in Settings.",
+                    { id: "auth-reconnect", duration: Infinity },
+                );
                 isSyncing = false;
                 return;
             }
+            if (!tokenResult) {
+                isSyncing = false;
+                return;
+            }
+            const token = tokenResult;
 
             setSyncStatus("syncing");
             setSyncError(null);
@@ -102,13 +112,14 @@ export function useSyncFn() {
                 // Drive returned 401 - attempt a silent token refresh.
                 // Recovers from clock-skew expiry without user interaction.
                 // The refreshed token will be picked up by the next sync.
-                const freshToken = await getValidToken(true);
-                if (!freshToken) {
+                const refreshResult = await getValidToken(true);
+                if (isExpiredResult(refreshResult)) {
                     setSyncStatus("idle");
                     addLoggerEntry(
-                        "Session expired: token refresh failed after 401.",
+                        `Session expired, token refresh failed: ${refreshResult.expired}`,
                         "SYNC_AUTH_REFRESH_FAILED",
                     );
+                    if (navigator.onLine) setAuthToken(null);
                     toast.error(
                         "Google Drive session expired (token refresh failed). Please reconnect in Settings.",
                         { id: "auth-reconnect", duration: Infinity },
@@ -125,6 +136,7 @@ export function useSyncFn() {
             driveFolderId,
             getValidToken,
             queryClient,
+            setAuthToken,
             setDriveFolderId,
             setLastSyncTime,
             setSyncError,
