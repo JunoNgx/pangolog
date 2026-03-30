@@ -119,9 +119,6 @@ export function useSyncFn() {
                     return;
                 }
 
-                // Drive returned 401 - attempt a silent token refresh.
-                // Recovers from clock-skew expiry without user interaction.
-                // The refreshed token will be picked up by the next sync.
                 const refreshResult = await getValidToken(true);
                 if (isExpiredResult(refreshResult)) {
                     setSyncStatus("idle");
