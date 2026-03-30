@@ -1,3 +1,5 @@
+export type TokenResult = string | null | { expired: string };
+
 export interface AuthToken {
     id: "google";
     accessToken: string;

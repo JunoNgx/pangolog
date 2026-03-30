@@ -29,9 +29,9 @@ import {
     previewImport,
     validateImportData,
 } from "@/lib/import";
+import { clearSwCaches } from "@/lib/serviceWorker";
 import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
-import { clearSwCaches } from "@/lib/serviceWorker";
 import { getTimeFormatOptions } from "@/lib/utils";
 
 export default function SettingsClient() {
@@ -312,6 +312,11 @@ export default function SettingsClient() {
                                 >
                                     Connect Google Drive
                                 </Button>
+                                <p className="text-xs text-default-400">
+                                    Your email address is requested solely to
+                                    display which account is connected. This is
+                                    never sent anywhere.
+                                </p>
                             </>
                         )}
                         {error && (
