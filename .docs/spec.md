@@ -446,6 +446,14 @@ If `/api/auth/refresh` returns a non-ok response (cookie missing or refresh toke
 
 Since `client_secret` is kept server-side and the code exchange happens server-to-server, the secret itself provides the security guarantee that PKCE is designed for in public clients. GIS `initCodeClient` with `ux_mode: "popup"` and server-side exchange is the standard pattern for confidential clients.
 
+#### OAuth scopes
+
+The app requests two scopes: `drive.file` and `email`.
+
+`drive.file` is the minimum scope for creating and accessing user-visible files in Google Drive. It only grants access to files created or opened by the app itself - no other files in the user's Drive are accessible.
+
+`email` is requested solely to display the connected account in Settings ("Connected as email@gmail.com"), allowing the user to confirm which Google account is linked. It is never sent to any server beyond the initial Google auth flow. This is explained to the user in the Settings UI before they connect.
+
 #### Known limitation: immediate retry after 401
 
 When a Drive API 401 triggers `getValidToken(true)` and the refresh succeeds, the current sync attempt is still discarded. The next auto-sync will use the fresh token. A more aggressive approach would retry `syncAll` immediately, but this was omitted for code clarity.
