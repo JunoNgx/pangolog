@@ -2,7 +2,7 @@
 
 import { useCallback, useState } from "react";
 import { toast } from "sonner";
-import type { AuthToken } from "@/lib/auth/types";
+import type { AuthToken, TokenResult } from "@/lib/auth/types";
 import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
 
 const CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ?? "";
@@ -111,14 +111,17 @@ export function useGoogleAuth() {
     }, [setAuthToken]);
 
     const getValidToken = useCallback(
-        async (shouldForceRefresh = false): Promise<string | null> => {
+        async (shouldForceRefresh = false): Promise<TokenResult> => {
             if (!authToken) return null;
             if (!shouldForceRefresh && isTokenValid(authToken)) {
                 return authToken.accessToken;
             }
 
             const res = await fetch("/api/auth/refresh", { method: "POST" });
-            if (!res.ok) return null;
+            if (!res.ok) {
+                const data = await res.json();
+                return { expired: data.error ?? "Token refresh failed" };
+            }
 
             const data = await res.json();
             const updatedToken: AuthToken = {
