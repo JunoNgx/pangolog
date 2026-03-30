@@ -46,6 +46,18 @@ export function useSyncFn() {
     const { addLoggerEntry } = useLogger();
     const queryClient = useQueryClient();
 
+    const handleAuthExpired = useCallback(
+        (logMessage: string, logcode: string, toastMessage: string) => {
+            addLoggerEntry(logMessage, logcode);
+            if (navigator.onLine) setAuthToken(null);
+            toast.error(toastMessage, {
+                id: "auth-reconnect",
+                duration: Infinity,
+            });
+        },
+        [addLoggerEntry, setAuthToken],
+    );
+
     const sync = useCallback(
         async (isSilent = false) => {
             if (isSyncing) return;
@@ -53,14 +65,10 @@ export function useSyncFn() {
 
             const tokenResult = await getValidToken();
             if (isExpiredResult(tokenResult)) {
-                addLoggerEntry(
+                handleAuthExpired(
                     `Session expired before sync: ${tokenResult.expired}`,
                     "SYNC_AUTH_PRE_SYNC",
-                );
-                if (navigator.onLine) setAuthToken(null);
-                toast.error(
                     "Google Drive session expired (pre-sync). Please reconnect in Settings.",
-                    { id: "auth-reconnect", duration: Infinity },
                 );
                 isSyncing = false;
                 return;
@@ -115,14 +123,10 @@ export function useSyncFn() {
                 const refreshResult = await getValidToken(true);
                 if (isExpiredResult(refreshResult)) {
                     setSyncStatus("idle");
-                    addLoggerEntry(
+                    handleAuthExpired(
                         `Session expired, token refresh failed: ${refreshResult.expired}`,
                         "SYNC_AUTH_REFRESH_FAILED",
-                    );
-                    if (navigator.onLine) setAuthToken(null);
-                    toast.error(
                         "Google Drive session expired (token refresh failed). Please reconnect in Settings.",
-                        { id: "auth-reconnect", duration: Infinity },
                     );
                     return;
                 }
@@ -136,12 +140,11 @@ export function useSyncFn() {
             driveFolderId,
             getValidToken,
             queryClient,
-            setAuthToken,
             setDriveFolderId,
             setLastSyncTime,
             setSyncError,
             setSyncStatus,
-            addLoggerEntry,
+            handleAuthExpired,
         ],
     );
 
