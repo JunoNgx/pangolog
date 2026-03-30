@@ -3,16 +3,22 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef } from "react";
 import { toast } from "sonner";
+import type { TokenResult } from "@/lib/auth/types";
 import { getOrCreatePangoFolder } from "@/lib/drive/client";
 import { syncAll } from "@/lib/drive/sync";
 import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
 import { useGoogleAuth } from "./useGoogleAuth";
+import { useLogger } from "./useLogger";
 
 const DEBOUNCE_MS = 30_000;
 const RESTORE_SYNC_THRESHOLD_MS = 24 * 60 * 60 * 1000;
 
 // Module-level flag prevents concurrent syncs across hook instances.
 let isSyncing = false;
+
+function isExpiredResult(result: TokenResult): result is { expired: string } {
+    return typeof result === "object" && result !== null;
+}
 
 function isAuthError(err: unknown): boolean {
     return err instanceof Error && err.message.includes("401");
@@ -33,27 +39,47 @@ export function useSyncFn() {
         setSyncStatus,
         setLastSyncTime,
         setSyncError,
+        setAuthToken,
     } = useLocalSettingsStore();
 
     const { getValidToken } = useGoogleAuth();
+    const { addLoggerEntry } = useLogger();
     const queryClient = useQueryClient();
+
+    // TODO: consider refactoring handleAuthExpired with preset logcode/messages
+    // if the current free-form parameters prove not useful for debugging.
+    const handleAuthExpired = useCallback(
+        (logMessage: string, logcode: string, toastMessage: string) => {
+            addLoggerEntry(logMessage, logcode);
+            if (navigator.onLine) setAuthToken(null);
+            toast.error(toastMessage, {
+                id: "auth-reconnect",
+                duration: Infinity,
+            });
+        },
+        [addLoggerEntry, setAuthToken],
+    );
 
     const sync = useCallback(
         async (isSilent = false) => {
             if (isSyncing) return;
             isSyncing = true;
 
-            const token = await getValidToken();
-            if (!token) {
-                if (useLocalSettingsStore.getState().authToken) {
-                    toast.error(
-                        "Google Drive session expired. Please reconnect in Settings.",
-                        { id: "auth-reconnect", duration: Infinity },
-                    );
-                }
+            const tokenResult = await getValidToken();
+            if (isExpiredResult(tokenResult)) {
+                handleAuthExpired(
+                    `Session expired before sync: ${tokenResult.expired}`,
+                    "SYNC_AUTH_PRE_SYNC",
+                    "Google Drive session expired (pre-sync). Please reconnect in Settings.",
+                );
                 isSyncing = false;
                 return;
             }
+            if (!tokenResult) {
+                isSyncing = false;
+                return;
+            }
+            const token = tokenResult;
 
             setSyncStatus("syncing");
             setSyncError(null);
@@ -93,15 +119,13 @@ export function useSyncFn() {
                     return;
                 }
 
-                // Drive returned 401 - attempt a silent token refresh.
-                // Recovers from clock-skew expiry without user interaction.
-                // The refreshed token will be picked up by the next sync.
-                const freshToken = await getValidToken(true);
-                if (!freshToken) {
+                const refreshResult = await getValidToken(true);
+                if (isExpiredResult(refreshResult)) {
                     setSyncStatus("idle");
-                    toast.error(
-                        "Google Drive session expired. Please reconnect in Settings.",
-                        { id: "auth-reconnect", duration: Infinity },
+                    handleAuthExpired(
+                        `Session expired mid-sync: ${refreshResult.expired}`,
+                        "SYNC_AUTH_MID_SYNC",
+                        "Google Drive session expired (mid-sync). Please reconnect in Settings.",
                     );
                     return;
                 }
@@ -119,6 +143,7 @@ export function useSyncFn() {
             setLastSyncTime,
             setSyncError,
             setSyncStatus,
+            handleAuthExpired,
         ],
     );
 
