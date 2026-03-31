@@ -62,6 +62,10 @@ function ExpensesByMonthChart({ transactions }: ExpensesByMonthChartProps) {
     }
 
     const tallestIndex = monthlyTotals.indexOf(maxTotal);
+    const nonZeroMonthCount = monthlyTotals.filter((t) => t > 0).length;
+    const average =
+        monthlyTotals.reduce((a, b) => a + b, 0) / nonZeroMonthCount;
+    const averagePct = (average / maxTotal) * 100;
 
     const bars = monthlyTotals.map((total, index) => (
         <div
@@ -89,12 +93,27 @@ function ExpensesByMonthChart({ transactions }: ExpensesByMonthChartProps) {
         </span>
     ));
 
+    const averageMarker = (
+        <div
+            className="absolute left-0 right-0 pointer-events-none"
+            style={{ bottom: `${averagePct}%` }}
+        >
+            <div className="border-t border-dashed border-primary-400" />
+            <span className="absolute right-0 -top-5 text-xs font-mono text-primary-400 whitespace-nowrap">
+                avg {formatAmount(average)}
+            </span>
+        </div>
+    );
+
     return (
         <div className="mb-6">
             <p className="font-semibold text-default-500 mb-3">
                 Expenses by month
             </p>
-            <div className="flex items-end gap-1 h-24 mb-1 mt-10">{bars}</div>
+            <div className="relative flex items-end gap-1 h-24 mb-1 mt-10">
+                {bars}
+                {averageMarker}
+            </div>
             <div className="flex gap-1">{monthLabels}</div>
         </div>
     );
