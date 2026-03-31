@@ -94,7 +94,7 @@ function ExpensesByMonthChart({ transactions }: ExpensesByMonthChartProps) {
             <p className="font-semibold text-default-500 mb-3">
                 Expenses by month
             </p>
-            <div className="flex items-end gap-1 h-24 mb-1 mt-6">{bars}</div>
+            <div className="flex items-end gap-1 h-24 mb-1 mt-10">{bars}</div>
             <div className="flex gap-1">{monthLabels}</div>
         </div>
     );
