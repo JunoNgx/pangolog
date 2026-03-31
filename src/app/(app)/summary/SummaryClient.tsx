@@ -1,5 +1,6 @@
 "use client";
 
+import { DateTime } from "luxon";
 import { useCallback, useMemo } from "react";
 import { PeriodPicker } from "@/components/PeriodPicker";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
@@ -15,6 +16,92 @@ import {
 import { formatAmount } from "@/lib/utils";
 
 const OTHER_COLOUR = "#9ca3af";
+
+const MONTH_LABELS = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+];
+
+function buildExpensesByMonth(transactions: Transaction[]): number[] {
+    const totals: number[] = new Array(12).fill(0);
+    for (const tx of transactions) {
+        if (tx.isIncome) continue;
+        const month = DateTime.fromISO(tx.transactedAt).month;
+        totals[month - 1] += tx.amount;
+    }
+    return totals;
+}
+
+interface ExpensesByMonthChartProps {
+    transactions: Transaction[];
+}
+
+function ExpensesByMonthChart({ transactions }: ExpensesByMonthChartProps) {
+    const monthlyTotals = buildExpensesByMonth(transactions);
+    const maxTotal = Math.max(...monthlyTotals);
+
+    if (maxTotal === 0) {
+        return (
+            <div className="mb-6">
+                <p className="font-semibold text-default-500 mb-2">
+                    Expenses by month
+                </p>
+                <p className="text-sm text-default-400">No data.</p>
+            </div>
+        );
+    }
+
+    const tallestIndex = monthlyTotals.indexOf(maxTotal);
+
+    return (
+        <div className="mb-6">
+            <p className="font-semibold text-default-500 mb-3">
+                Expenses by month
+            </p>
+            <div className="flex items-end gap-1 h-24 mb-1 mt-6">
+                {monthlyTotals.map((total, index) => (
+                    <div
+                        key={MONTH_LABELS[index]}
+                        className="relative flex-1"
+                        style={{
+                            height:
+                                total > 0
+                                    ? `${(total / maxTotal) * 100}%`
+                                    : "0%",
+                        }}
+                    >
+                        <div className="w-full h-full bg-default-400 rounded-sm" />
+                        {index === tallestIndex && (
+                            <span className="absolute -top-5 left-1/2 -translate-x-1/2 text-xs font-mono text-default-500 whitespace-nowrap">
+                                {formatAmount(total)}
+                            </span>
+                        )}
+                    </div>
+                ))}
+            </div>
+            <div className="flex gap-1">
+                {MONTH_LABELS.map((label) => (
+                    <span
+                        key={label}
+                        className="flex-1 text-center text-xs text-default-400 font-mono"
+                    >
+                        {label}
+                    </span>
+                ))}
+            </div>
+        </div>
+    );
+}
 
 interface CategorySlice {
     categoryId: string | null;
@@ -240,6 +327,8 @@ export default function SummaryClient() {
                     />
                 </div>
             </div>
+
+            {isYearly && <ExpensesByMonthChart transactions={transactions} />}
 
             <SegmentBar
                 label="Expenses"
