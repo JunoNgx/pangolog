@@ -328,7 +328,7 @@ export default function SummaryClient() {
             {isYearly && <ExpensesByMonthChart transactions={transactions} />}
 
             <SegmentBar
-                label="Expenses"
+                label="Expenses by category"
                 slices={expenseSlices}
                 total={expenseTotal}
             />
