@@ -13,6 +13,7 @@ import {
     useTransactionsByYear,
 } from "@/lib/hooks/useTransactions";
 import { formatAmount } from "@/lib/utils";
+import ExpensesByMonthChart from "./ExpensesByMonthChart";
 
 const OTHER_COLOUR = "#9ca3af";
 
@@ -93,7 +94,7 @@ function SegmentBar({ label, slices, total }: SegmentBarProps) {
                     {formatAmount(total)}
                 </p>
             </div>
-            <div className="flex rounded-none overflow-hidden h-5 mb-3">
+            <div className="flex rounded-sm overflow-hidden h-5 mb-3">
                 {slices.map((slice) => (
                     <div
                         key={slice.categoryId ?? `__${slice.name}__`}
@@ -241,8 +242,10 @@ export default function SummaryClient() {
                 </div>
             </div>
 
+            {isYearly && <ExpensesByMonthChart transactions={transactions} />}
+
             <SegmentBar
-                label="Expenses"
+                label="Expenses by category"
                 slices={expenseSlices}
                 total={expenseTotal}
             />
