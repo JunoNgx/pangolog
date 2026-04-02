@@ -44,19 +44,50 @@ function hasRequiredFields(
     return typeof item.id === "string" && typeof item.updatedAt === "string";
 }
 
-export function validateImportData(data: unknown): data is ImportData {
-    if (!isRecord(data)) return false;
-    if (!Array.isArray(data.categories)) return false;
-    if (!data.categories.every(hasRequiredFields)) return false;
+const VALID_FREQUENCIES = new Set(["daily", "weekly", "monthly", "yearly"]);
+
+function isValidTransaction(item: unknown): item is Transaction {
+    if (!isRecord(item)) return false;
+    return (
+        typeof item.amount === "number" &&
+        typeof item.transactedAt === "string" &&
+        typeof item.isBigBuck === "boolean"
+    );
+}
+
+function isValidCategory(item: unknown): item is Category {
+    if (!isRecord(item)) return false;
+    return typeof item.name === "string";
+}
+
+function isValidRecurringRule(item: unknown): item is RecurringRule {
+    if (!isRecord(item)) return false;
+    return (
+        typeof item.amount === "number" &&
+        VALID_FREQUENCIES.has(item.frequency as string)
+    );
+}
+
+/** Returns null if valid, or a descriptive error string if not. */
+export function validateImportData(data: unknown): string | null {
+    if (!isRecord(data)) return "File content is not a valid JSON object.";
+    if (!Array.isArray(data.categories))
+        return "Missing or invalid categories array.";
+    if (!data.categories.every(hasRequiredFields))
+        return "One or more categories are missing required fields (id, updatedAt).";
     if (data.transactions !== undefined) {
-        if (!Array.isArray(data.transactions)) return false;
-        if (!data.transactions.every(hasRequiredFields)) return false;
+        if (!Array.isArray(data.transactions))
+            return "transactions field must be an array.";
+        if (!data.transactions.every(hasRequiredFields))
+            return "One or more transactions are missing required fields (id, updatedAt).";
     }
     if (data.recurringRules !== undefined) {
-        if (!Array.isArray(data.recurringRules)) return false;
-        if (!data.recurringRules.every(hasRequiredFields)) return false;
+        if (!Array.isArray(data.recurringRules))
+            return "recurringRules field must be an array.";
+        if (!data.recurringRules.every(hasRequiredFields))
+            return "One or more recurring rules are missing required fields (id, updatedAt).";
     }
-    return true;
+    return null;
 }
 
 export async function previewImport(data: ImportData): Promise<ImportPreview> {
@@ -71,9 +102,18 @@ export async function previewImport(data: ImportData): Promise<ImportPreview> {
     const categoryMap = new Map(existingCategories.map((c) => [c.id, c]));
     const ruleMap = new Map(existingRules.map((r) => [r.id, r]));
 
+    const errors: string[] = [];
+
     let transactionsAdded = 0;
     let transactionsUpdated = 0;
-    for (const tx of data.transactions ?? []) {
+    for (const [txIndex, tx] of (data.transactions ?? []).entries()) {
+        const { id: txId } = tx;
+        if (!isValidTransaction(tx)) {
+            errors.push(
+                `Transaction #${txIndex + 1} (${txId}) skipped: missing required fields (amount, transactedAt, isBigBuck).`,
+            );
+            continue;
+        }
         const storedTx = transactionMap.get(tx.id);
         if (!storedTx) {
             transactionsAdded++;
@@ -84,7 +124,14 @@ export async function previewImport(data: ImportData): Promise<ImportPreview> {
 
     let categoriesAdded = 0;
     let categoriesUpdated = 0;
-    for (const cat of data.categories) {
+    for (const [catIndex, cat] of data.categories.entries()) {
+        const { id: catId } = cat;
+        if (!isValidCategory(cat)) {
+            errors.push(
+                `Category #${catIndex + 1} (${catId}) skipped: missing required field (name).`,
+            );
+            continue;
+        }
         const storedCat = categoryMap.get(cat.id);
         if (!storedCat) {
             categoriesAdded++;
@@ -95,7 +142,14 @@ export async function previewImport(data: ImportData): Promise<ImportPreview> {
 
     let rulesAdded = 0;
     let rulesUpdated = 0;
-    for (const rule of data.recurringRules ?? []) {
+    for (const [ruleIndex, rule] of (data.recurringRules ?? []).entries()) {
+        const { id: ruleId } = rule;
+        if (!isValidRecurringRule(rule)) {
+            errors.push(
+                `Recurring rule #${ruleIndex + 1} (${ruleId}) skipped: missing required fields (amount, frequency).`,
+            );
+            continue;
+        }
         const storedRule = ruleMap.get(rule.id);
         if (!storedRule) {
             rulesAdded++;
@@ -111,7 +165,7 @@ export async function previewImport(data: ImportData): Promise<ImportPreview> {
         categoriesUpdated,
         rulesAdded,
         rulesUpdated,
-        errors: [],
+        errors,
     };
 }
 
@@ -130,25 +184,32 @@ export async function executeImport(data: ImportData): Promise<ImportPreview> {
     const ruleMap = new Map(existingRules.map((r) => [r.id, r]));
 
     const transactionsToPut = (data.transactions ?? []).filter((t) => {
+        if (!isValidTransaction(t)) return false;
         const storedTx = transactionMap.get(t.id);
         return !storedTx || t.updatedAt > storedTx.updatedAt;
     });
 
     const categoriesToPut = data.categories.filter((c) => {
+        if (!isValidCategory(c)) return false;
         const storedCat = categoryMap.get(c.id);
         return !storedCat || c.updatedAt > storedCat.updatedAt;
     });
 
     const rulesToPut = (data.recurringRules ?? []).filter((r) => {
+        if (!isValidRecurringRule(r)) return false;
         const storedRule = ruleMap.get(r.id);
         return !storedRule || r.updatedAt > storedRule.updatedAt;
     });
 
-    await Promise.all([
-        bulkPutTransactions(transactionsToPut),
-        bulkPutCategories(categoriesToPut),
-        bulkPutRecurringRules(rulesToPut),
-    ]);
+    try {
+        await Promise.all([
+            bulkPutTransactions(transactionsToPut),
+            bulkPutCategories(categoriesToPut),
+            bulkPutRecurringRules(rulesToPut),
+        ]);
+    } catch (err) {
+        throw new Error(`Failed to write records to database: ${err}`);
+    }
 
     if (data.settings) {
         const { settingsUpdatedAt, applyRemoteSettings } =
