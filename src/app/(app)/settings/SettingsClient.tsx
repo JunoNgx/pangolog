@@ -156,14 +156,14 @@ export default function SettingsClient() {
         try {
             const text = await file.text();
             const parsed: unknown = JSON.parse(text);
-            if (!validateImportData(parsed)) {
-                setImportError(
-                    "Invalid file format. Please select a valid Pangolog JSON export.",
-                );
+            const validationError = validateImportData(parsed);
+            if (validationError !== null) {
+                setImportError(validationError);
                 return;
             }
-            const preview = await previewImport(parsed);
-            setImportData(parsed);
+            const validData = parsed as ImportData;
+            const preview = await previewImport(validData);
+            setImportData(validData);
             setImportPreview(preview);
         } catch {
             setImportError(
@@ -175,11 +175,16 @@ export default function SettingsClient() {
     async function handleConfirmImport() {
         if (!importData) return;
         setIsImporting(true);
-        const result = await executeImport(importData);
-        setIsImporting(false);
-        setImportResult(result);
-        setImportData(null);
-        setImportPreview(null);
+        try {
+            const result = await executeImport(importData);
+            setImportResult(result);
+            setImportData(null);
+            setImportPreview(null);
+        } catch (err) {
+            setImportError(`Import failed: ${err}`);
+        } finally {
+            setIsImporting(false);
+        }
     }
 
     function handleCancelImport() {
@@ -478,6 +483,14 @@ export default function SettingsClient() {
                                     Recurring rules: +{importPreview.rulesAdded}{" "}
                                     new, {importPreview.rulesUpdated} updated
                                 </p>
+                                {importPreview.errors.length > 0 && (
+                                    <ul className="text-xs text-warning-600 dark:text-warning-400 list-disc list-inside">
+                                        {importPreview.errors.map((err, i) => (
+                                            // biome-ignore lint/suspicious/noArrayIndexKey: static list
+                                            <li key={i}>{err}</li>
+                                        ))}
+                                    </ul>
+                                )}
                                 <div className="flex gap-2 mt-1">
                                     <Button
                                         size="sm"
@@ -516,6 +529,14 @@ export default function SettingsClient() {
                                     Recurring rules: +{importResult.rulesAdded}{" "}
                                     new, {importResult.rulesUpdated} updated
                                 </p>
+                                {importResult.errors.length > 0 && (
+                                    <ul className="text-xs text-warning-600 dark:text-warning-400 list-disc list-inside mt-1">
+                                        {importResult.errors.map((err, i) => (
+                                            // biome-ignore lint/suspicious/noArrayIndexKey: static list
+                                            <li key={i}>{err}</li>
+                                        ))}
+                                    </ul>
+                                )}
                             </div>
                         )}
                     </div>
