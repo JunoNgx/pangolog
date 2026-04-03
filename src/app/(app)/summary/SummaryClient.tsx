@@ -210,6 +210,10 @@ export default function SummaryClient() {
         [transactions, categoryMap],
     );
 
+    const expenseLabel = isYearly
+        ? "Expenses by category"
+        : "Expenses";
+
     return (
         <div>
             <h2 className="text-xl font-bold mb-4">Summary</h2>
@@ -245,7 +249,7 @@ export default function SummaryClient() {
             {isYearly && <ExpensesByMonthChart transactions={transactions} />}
 
             <SegmentBar
-                label="Expenses by category"
+                label={expenseLabel}
                 slices={expenseSlices}
                 total={expenseTotal}
             />
