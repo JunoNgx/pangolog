@@ -433,8 +433,8 @@ GitHub issue: pangolog#17
 - Covers `animate-spin` on SyncButton, all `transition-*` classes, and Sonner toast animations in one rule
 
 ### Task 17b: Skip-to-main-content link
-- [ ] Add visually-hidden skip link before `<AppNavbar />` in `src/app/(app)/layout.tsx`
-- [ ] Add `id="main-content"` to the `<main>` element
+- [x] Add visually-hidden skip link before `<AppNavbar />` in `src/app/(app)/layout.tsx`
+- [x] Add `id="main-content"` to the `<main>` element
 - Allows keyboard users to bypass navbar on every page
 
 ### Task 17c: `aria-label` on icon-only buttons
