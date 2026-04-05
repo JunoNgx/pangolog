@@ -70,6 +70,7 @@ function SortableCategoryItem({
                 type="button"
                 ref={handleRef}
                 onClick={(e) => e.stopPropagation()}
+                aria-label={`Drag to reorder ${cat.name}`}
                 className="py-3 pr-4 text-default-400 cursor-grab active:cursor-grabbing select-none bg-transparent border-0"
             >
                 <GripVertical />

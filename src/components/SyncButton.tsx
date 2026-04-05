@@ -58,10 +58,17 @@ export function SyncButton() {
                 variant="flat"
                 isDisabled={syncStatus === "syncing"}
                 onPress={handleSync}
+                aria-label="Sync with Google Drive"
                 className="flex items-center gap-1.5 px-2 h-7 min-w-0 text-default-500"
             >
-                <RefreshCw size={12} className={iconClass} />
-                <span className="text-xs font-normal">{statusLabel}</span>
+                <RefreshCw size={12} className={iconClass} aria-hidden="true" />
+                <span
+                    aria-live="polite"
+                    aria-atomic="true"
+                    className="text-xs font-normal"
+                >
+                    {statusLabel}
+                </span>
             </Button>
         </Tooltip>
     );

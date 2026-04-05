@@ -423,3 +423,30 @@ Root cause: two devices can both see a rule as due before either syncs, each gen
 ### Task 13d: Fix settings sync TOCTOU in sync.ts
 - [x] Re-read from `useProfileSettingsStore.getState()` after potentially calling `applyRemoteSettings`, before building `localSettings` for upload
 - This is a time-of-check to time-of-use bug: `customCurrency`, `isPrefixCurrency`, and `settingsUpdatedAt` are destructured from store state (time of check) before the remote settings comparison. If remote is newer, `applyRemoteSettings` updates the store - but `localSettings` is then built from the original destructured variables, which are now stale (time of use). `upsertFile` then immediately overwrites the newer remote value with the losing local one. The fix is to call `useProfileSettingsStore.getState()` again after the conditional block to get the winning values before uploading.
+
+## Task 17: Accessibility improvements
+
+GitHub issue: pangolog#17
+
+### Task 17a: `prefers-reduced-motion` support
+- [x] Add `@media (prefers-reduced-motion: reduce)` rule to `src/app/globals.css`
+- Covers `animate-spin` on SyncButton, all `transition-*` classes, and Sonner toast animations in one rule
+
+### Task 17b: Skip-to-main-content link
+- [x] Add visually-hidden skip link before `<AppNavbar />` in `src/app/(app)/layout.tsx`
+- [x] Add `id="main-content"` to the `<main>` element
+- Allows keyboard users to bypass navbar on every page
+
+### Task 17c: `aria-label` on icon-only buttons
+- [x] `src/components/PeriodPicker.tsx`: add dynamic `aria-label` to prev/next chevron buttons (`"Previous month"` / `"Next month"` or `"Previous year"` / `"Next year"` based on `isYearly`)
+- [x] `src/app/(app)/manage/CategoryList.tsx`: add `aria-label={`Drag to reorder ${cat.name}`}` to drag handle button
+- [x] `src/components/CategoryDialog.tsx`: add `aria-label="Choose icon"` to emoji picker trigger, `aria-label={`Choose colour, currently ${colour}`}` to colour picker trigger, replace `title="Random colour"` with `aria-label="Random colour"` on random colour button
+
+### Task 17d: `aria-live` region for SyncButton status text
+- [x] Wrap status text `<span>` in `aria-live="polite" aria-atomic="true"` in `src/components/SyncButton.tsx`
+- [x] Add `aria-label="Sync with Google Drive"` to the Button
+- [x] Add `aria-hidden="true"` to the RefreshCw icon
+- Screen readers will announce sync status changes without user interaction
+
+### Task 17e: Verify Sonner toast accessibility
+- [x] Sonner v2.0.7 renders toasts inside `<ol aria-live="polite">` natively -- no changes needed
