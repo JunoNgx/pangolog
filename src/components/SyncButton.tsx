@@ -52,7 +52,7 @@ export function SyncButton() {
               : `Synced ${lastSyncLabel}`;
 
     return (
-        <Tooltip content="Cmd + S" placement="bottom">
+        <Tooltip content="Ctrl/Cmd + S" placement="bottom">
             <Button
                 size="sm"
                 variant="flat"
