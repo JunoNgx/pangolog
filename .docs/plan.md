@@ -429,7 +429,7 @@ Root cause: two devices can both see a rule as due before either syncs, each gen
 GitHub issue: pangolog#17
 
 ### Task 17a: `prefers-reduced-motion` support
-- [ ] Add `@media (prefers-reduced-motion: reduce)` rule to `src/app/globals.css`
+- [x] Add `@media (prefers-reduced-motion: reduce)` rule to `src/app/globals.css`
 - Covers `animate-spin` on SyncButton, all `transition-*` classes, and Sonner toast animations in one rule
 
 ### Task 17b: Skip-to-main-content link
