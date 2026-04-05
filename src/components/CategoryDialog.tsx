@@ -232,7 +232,11 @@ export function CategoryDialog({
                 onOpenChange={setIsEmojiPickerOpen}
             >
                 <PopoverTrigger>
-                    <button type="button" className={iconTriggerClasses}>
+                    <button
+                        type="button"
+                        className={iconTriggerClasses}
+                        aria-label="Choose icon"
+                    >
                         <span className="text-xl">{icon}</span>
                     </button>
                 </PopoverTrigger>
@@ -268,7 +272,11 @@ export function CategoryDialog({
             <div className="flex gap-2">
                 <Popover placement="bottom-end">
                     <PopoverTrigger>
-                        <button type="button" className={colourTriggerClasses}>
+                        <button
+                            type="button"
+                            className={colourTriggerClasses}
+                            aria-label={`Choose colour, currently ${colour}`}
+                        >
                             <div
                                 className="size-6 shrink-0 rounded-full"
                                 style={{ backgroundColor: colour }}
@@ -306,7 +314,7 @@ export function CategoryDialog({
                     type="button"
                     onClick={() => setColour(randomHexColor())}
                     className={randomColourButtonClasses}
-                    title="Random colour"
+                    aria-label="Random colour"
                 >
                     <Shuffle size={16} />
                 </button>
