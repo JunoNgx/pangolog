@@ -438,9 +438,9 @@ GitHub issue: pangolog#17
 - Allows keyboard users to bypass navbar on every page
 
 ### Task 17c: `aria-label` on icon-only buttons
-- [ ] `src/components/PeriodPicker.tsx`: add dynamic `aria-label` to prev/next chevron buttons (`"Previous month"` / `"Next month"` or `"Previous year"` / `"Next year"` based on `isYearly`)
-- [ ] `src/app/(app)/manage/CategoryList.tsx`: add `aria-label={`Drag to reorder ${cat.name}`}` to drag handle button
-- [ ] `src/components/CategoryDialog.tsx`: add `aria-label="Choose icon"` to emoji picker trigger, `aria-label={`Choose colour, currently ${colour}`}` to colour picker trigger, replace `title="Random colour"` with `aria-label="Random colour"` on random colour button
+- [x] `src/components/PeriodPicker.tsx`: add dynamic `aria-label` to prev/next chevron buttons (`"Previous month"` / `"Next month"` or `"Previous year"` / `"Next year"` based on `isYearly`)
+- [x] `src/app/(app)/manage/CategoryList.tsx`: add `aria-label={`Drag to reorder ${cat.name}`}` to drag handle button
+- [x] `src/components/CategoryDialog.tsx`: add `aria-label="Choose icon"` to emoji picker trigger, `aria-label={`Choose colour, currently ${colour}`}` to colour picker trigger, replace `title="Random colour"` with `aria-label="Random colour"` on random colour button
 
 ### Task 17d: `aria-live` region for SyncButton status text
 - [ ] Wrap status text `<span>` in `aria-live="polite" aria-atomic="true"` in `src/components/SyncButton.tsx`
