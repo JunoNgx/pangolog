@@ -443,9 +443,9 @@ GitHub issue: pangolog#17
 - [x] `src/components/CategoryDialog.tsx`: add `aria-label="Choose icon"` to emoji picker trigger, `aria-label={`Choose colour, currently ${colour}`}` to colour picker trigger, replace `title="Random colour"` with `aria-label="Random colour"` on random colour button
 
 ### Task 17d: `aria-live` region for SyncButton status text
-- [ ] Wrap status text `<span>` in `aria-live="polite" aria-atomic="true"` in `src/components/SyncButton.tsx`
-- [ ] Add `aria-label="Sync with Google Drive"` to the Button
-- [ ] Add `aria-hidden="true"` to the RefreshCw icon
+- [x] Wrap status text `<span>` in `aria-live="polite" aria-atomic="true"` in `src/components/SyncButton.tsx`
+- [x] Add `aria-label="Sync with Google Drive"` to the Button
+- [x] Add `aria-hidden="true"` to the RefreshCw icon
 - Screen readers will announce sync status changes without user interaction
 
 ### Task 17e: Verify Sonner toast accessibility
