@@ -480,4 +480,4 @@ A mode that hides income-related UI to reduce clutter for users who only track e
 - [x] `src/app/(app)/summary/SummaryClient.tsx`: hide the Income chart section when `isExpenseOnlyMode` is true
 
 ### Task 19g: Hide income-only checkbox in CategoryDialog
-- [ ] `src/components/CategoryDialog.tsx`: hide the "Income only" checkbox when `isExpenseOnlyMode` is true
+- [x] `src/components/CategoryDialog.tsx`: hide the "Income only" checkbox when `isExpenseOnlyMode` is true
