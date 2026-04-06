@@ -463,9 +463,9 @@ A mode that hides income-related UI to reduce clutter for users who only track e
 - [x] Add `isExpenseOnlyMode` to `applyRemoteSettings` signature and body
 
 ### Task 19b: Sync, export, import
-- [ ] `src/lib/drive/sync.ts`: add `isExpenseOnlyMode` to `DriveSettings` type; include in upload payload and pass to `applyRemoteSettings` on download (fallback `?? false` for old files)
-- [ ] `src/lib/export.ts`: include `isExpenseOnlyMode` in exported settings object
-- [ ] `src/lib/import.ts`: add `isExpenseOnlyMode` to `ImportedSettings` type; pass to `applyRemoteSettings` with `?? false` fallback for old export files
+- [x] `src/lib/drive/sync.ts`: add `isExpenseOnlyMode` to `DriveSettings` type; include in upload payload and pass to `applyRemoteSettings` on download (fallback `?? false` for old files)
+- [x] `src/lib/export.ts`: include `isExpenseOnlyMode` in exported settings object
+- [x] `src/lib/import.ts`: add `isExpenseOnlyMode` to `ImportedSettings` type; pass to `applyRemoteSettings` with `?? false` fallback for old export files
 
 ### Task 19c: Settings UI toggle
 - [ ] `src/app/(app)/settings/SettingsClient.tsx`: add a Switch toggle for `isExpenseOnlyMode`
