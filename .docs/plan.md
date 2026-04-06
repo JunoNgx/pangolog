@@ -450,3 +450,31 @@ GitHub issue: pangolog#17
 
 ### Task 17e: Verify Sonner toast accessibility
 - [x] Sonner v2.0.7 renders toasts inside `<ol aria-live="polite">` natively -- no changes needed
+
+## Task 19: Expense only mode
+
+GitHub issue: JunoNgx/pangolog#19
+
+A mode that hides income-related UI to reduce clutter for users who only track expenses.
+
+### Task 19a: Store
+- [ ] Add `isExpenseOnlyMode: boolean` (default `false`) to `useProfileSettingsStore`
+- [ ] Add `setIsExpenseOnlyMode` setter, updating `settingsUpdatedAt`
+- [ ] Add `isExpenseOnlyMode` to `applyRemoteSettings` signature and body
+
+### Task 19b: Sync, export, import
+- [ ] `src/lib/drive/sync.ts`: add `isExpenseOnlyMode` to `DriveSettings` type; include in upload payload and pass to `applyRemoteSettings` on download (fallback `?? false` for old files)
+- [ ] `src/lib/export.ts`: include `isExpenseOnlyMode` in exported settings object
+- [ ] `src/lib/import.ts`: add `isExpenseOnlyMode` to `ImportedSettings` type; pass to `applyRemoteSettings` with `?? false` fallback for old export files
+
+### Task 19c: Settings UI toggle
+- [ ] `src/app/(app)/settings/SettingsClient.tsx`: add a Switch toggle for `isExpenseOnlyMode`
+
+### Task 19d: Hide income toggle in TransactionDialog
+- [ ] `src/app/(app)/log/TransactionDialog.tsx`: hide the Expense/Income segmented control when `isExpenseOnlyMode` is true (create mode only, as per existing behaviour); force `isIncome` to `false`
+
+### Task 19e: Hide income toggle in RecurringRuleDialog
+- [ ] `src/app/(app)/manage/RecurringRuleDialog.tsx`: same as 19d -- hide Expense/Income toggle when `isExpenseOnlyMode` is true; force `isIncome` to `false`
+
+### Task 19f: Hide income chart in SummaryClient
+- [ ] `src/app/(app)/summary/SummaryClient.tsx`: hide the Income chart section when `isExpenseOnlyMode` is true
