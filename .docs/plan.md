@@ -468,7 +468,7 @@ A mode that hides income-related UI to reduce clutter for users who only track e
 - [x] `src/lib/import.ts`: add `isExpenseOnlyMode` to `ImportedSettings` type; pass to `applyRemoteSettings` with `?? false` fallback for old export files
 
 ### Task 19c: Settings UI toggle
-- [ ] `src/app/(app)/settings/SettingsClient.tsx`: add a Switch toggle for `isExpenseOnlyMode`
+- [x] `src/app/(app)/settings/SettingsClient.tsx`: add a Switch toggle for `isExpenseOnlyMode`
 
 ### Task 19d: Hide income toggle in TransactionDialog
 - [ ] `src/app/(app)/log/TransactionDialog.tsx`: hide the Expense/Income segmented control when `isExpenseOnlyMode` is true (create mode only, as per existing behaviour); force `isIncome` to `false`
