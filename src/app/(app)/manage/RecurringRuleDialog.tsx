@@ -24,6 +24,7 @@ import {
     useRestoreRecurringRule,
     useUpdateRecurringRule,
 } from "@/lib/hooks/useRecurringRules";
+import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
 import {
     fromDateInputValue,
     getLocaleDateFormat,
@@ -200,6 +201,7 @@ export function RecurringRuleDialog({
         });
     }
 
+    const { isExpenseOnlyMode } = useProfileSettingsStore();
     const isPending = createRule.isPending || updateRule.isPending;
     const isDeleting = deleteRule.isPending;
     const repeatLabel = getRepeatLabel(frequency, startDate);
@@ -249,14 +251,17 @@ export function RecurringRuleDialog({
         </div>
     );
 
-    const typeToggleRow = (
+    const isTypeToggleRowVisible = !isExpenseOnlyMode || !isEditing;
+    const typeToggleRow = isTypeToggleRowVisible && (
         <div className={toggleRowClasses}>
-            <ToggleSwitch
-                isSelectingRight={isIncome}
-                onValueChange={setIsIncome}
-                leftLabel="Expense"
-                rightLabel="Income"
-            />
+            {!isExpenseOnlyMode && (
+                <ToggleSwitch
+                    isSelectingRight={isIncome}
+                    onValueChange={setIsIncome}
+                    leftLabel="Expense"
+                    rightLabel="Income"
+                />
+            )}
             {!isEditing && (
                 <ToggleSwitch
                     isSelectingRight={isBigBuck}

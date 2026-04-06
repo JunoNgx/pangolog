@@ -38,8 +38,10 @@ export default function SettingsClient() {
     const {
         customCurrency,
         isPrefixCurrency,
+        isExpenseOnlyMode,
         setCustomCurrency,
         setIsPrefixCurrency,
+        setIsExpenseOnlyMode,
     } = useProfileSettingsStore();
     const { authToken, isConnected, isConnecting, error, connect, disconnect } =
         useGoogleAuth();
@@ -383,30 +385,42 @@ export default function SettingsClient() {
                 </section>
 
                 <section>
-                    <h3 className="text-lg font-semibold mb-4">Time Format</h3>
-                    <RadioGroup
-                        orientation="horizontal"
-                        value={timeFormat}
-                        onValueChange={(v) => setTimeFormat(v as "12h" | "24h")}
-                        classNames={{ wrapper: "gap-6" }}
-                    >
-                        <Radio value="12h">12-hour</Radio>
-                        <Radio value="24h">24-hour</Radio>
-                    </RadioGroup>
-                </section>
-
-                <section>
-                    <h3 className="text-lg font-semibold mb-4">Theme</h3>
-                    <RadioGroup
-                        orientation="horizontal"
-                        value={isMounted ? (theme ?? "system") : "system"}
-                        onValueChange={setTheme}
-                        classNames={{ wrapper: "gap-6" }}
-                    >
-                        <Radio value="light">Light</Radio>
-                        <Radio value="dark">Dark</Radio>
-                        <Radio value="system">System</Radio>
-                    </RadioGroup>
+                    <h3 className="text-lg font-semibold mb-4">Preferences</h3>
+                    <div className="flex flex-col gap-4">
+                        <Checkbox
+                            isSelected={isExpenseOnlyMode}
+                            onValueChange={setIsExpenseOnlyMode}
+                            size="sm"
+                        >
+                            <span className="text-sm">Expense only mode</span>
+                            <p className="text-xs text-default-400">
+                                Hides income-related UI to reduce clutter.
+                            </p>
+                        </Checkbox>
+                        <RadioGroup
+                            label="Time format"
+                            orientation="horizontal"
+                            value={timeFormat}
+                            onValueChange={(v) =>
+                                setTimeFormat(v as "12h" | "24h")
+                            }
+                            classNames={{ wrapper: "gap-6" }}
+                        >
+                            <Radio value="12h">12-hour</Radio>
+                            <Radio value="24h">24-hour</Radio>
+                        </RadioGroup>
+                        <RadioGroup
+                            label="Theme"
+                            orientation="horizontal"
+                            value={isMounted ? (theme ?? "system") : "system"}
+                            onValueChange={setTheme}
+                            classNames={{ wrapper: "gap-6" }}
+                        >
+                            <Radio value="light">Light</Radio>
+                            <Radio value="dark">Dark</Radio>
+                            <Radio value="system">System</Radio>
+                        </RadioGroup>
+                    </div>
                 </section>
 
                 <section>
