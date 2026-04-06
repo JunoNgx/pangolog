@@ -343,6 +343,12 @@ export function CategoryDialog({
                             {emojiPickerSection}
                             {colourPickerSection}
                         </div>
+                        <Checkbox
+                            isSelected={isBuckOnly}
+                            onValueChange={setIsBuckOnly}
+                        >
+                            Big-buck only
+                        </Checkbox>
                         {!isExpenseOnlyMode && (
                             <Checkbox
                                 isSelected={isIncomeOnly}
@@ -351,12 +357,6 @@ export function CategoryDialog({
                                 Income only
                             </Checkbox>
                         )}
-                        <Checkbox
-                            isSelected={isBuckOnly}
-                            onValueChange={setIsBuckOnly}
-                        >
-                            Big-buck only
-                        </Checkbox>
                     </ModalBody>
                     <ModalFooter>
                         {isEditing && (
