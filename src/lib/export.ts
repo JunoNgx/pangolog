@@ -31,14 +31,19 @@ export async function buildExportData() {
         getAllRecurringRulesForSync(),
     ]);
 
-    const { customCurrency, isPrefixCurrency, settingsUpdatedAt } =
-        useProfileSettingsStore.getState();
+    const {
+        customCurrency,
+        isPrefixCurrency,
+        isExpenseOnlyMode,
+        settingsUpdatedAt,
+    } = useProfileSettingsStore.getState();
 
     return {
         exportedAt: DateTime.now().toUTC().toISO()!,
         settings: {
             customCurrency,
             isPrefixCurrency,
+            isExpenseOnlyMode,
             updatedAt: settingsUpdatedAt,
         },
         transactions: transactions
