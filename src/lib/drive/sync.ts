@@ -26,9 +26,9 @@ import {
 } from "./client";
 
 interface DriveSettings {
-    customCurrency: string;
-    isPrefixCurrency: boolean;
-    isExpenseOnlyMode: boolean;
+    customCurrency?: string;
+    isPrefixCurrency?: boolean;
+    isExpenseOnlyMode?: boolean;
     updatedAt: string;
 }
 
@@ -150,8 +150,8 @@ export async function syncAll(
         );
         if (remoteSettings.updatedAt > settingsUpdatedAt) {
             applyRemoteSettings(
-                remoteSettings.customCurrency,
-                remoteSettings.isPrefixCurrency,
+                remoteSettings.customCurrency ?? "",
+                remoteSettings.isPrefixCurrency ?? true,
                 remoteSettings.isExpenseOnlyMode ?? false,
                 remoteSettings.updatedAt,
             );
