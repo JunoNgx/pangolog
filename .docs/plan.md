@@ -458,9 +458,9 @@ GitHub issue: JunoNgx/pangolog#19
 A mode that hides income-related UI to reduce clutter for users who only track expenses.
 
 ### Task 19a: Store
-- [ ] Add `isExpenseOnlyMode: boolean` (default `false`) to `useProfileSettingsStore`
-- [ ] Add `setIsExpenseOnlyMode` setter, updating `settingsUpdatedAt`
-- [ ] Add `isExpenseOnlyMode` to `applyRemoteSettings` signature and body
+- [x] Add `isExpenseOnlyMode: boolean` (default `false`) to `useProfileSettingsStore`
+- [x] Add `setIsExpenseOnlyMode` setter, updating `settingsUpdatedAt`
+- [x] Add `isExpenseOnlyMode` to `applyRemoteSettings` signature and body
 
 ### Task 19b: Sync, export, import
 - [ ] `src/lib/drive/sync.ts`: add `isExpenseOnlyMode` to `DriveSettings` type; include in upload payload and pass to `applyRemoteSettings` on download (fallback `?? false` for old files)
