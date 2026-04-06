@@ -471,10 +471,10 @@ A mode that hides income-related UI to reduce clutter for users who only track e
 - [x] `src/app/(app)/settings/SettingsClient.tsx`: add a Switch toggle for `isExpenseOnlyMode`
 
 ### Task 19d: Hide income toggle in TransactionDialog
-- [ ] `src/app/(app)/log/TransactionDialog.tsx`: hide the Expense/Income segmented control when `isExpenseOnlyMode` is true (create mode only, as per existing behaviour); force `isIncome` to `false`
+- [x] `src/app/(app)/log/TransactionDialog.tsx`: hide the Expense/Income segmented control when `isExpenseOnlyMode` is true (create mode only, as per existing behaviour); force `isIncome` to `false`
 
 ### Task 19e: Hide income toggle in RecurringRuleDialog
-- [ ] `src/app/(app)/manage/RecurringRuleDialog.tsx`: same as 19d -- hide Expense/Income toggle when `isExpenseOnlyMode` is true; force `isIncome` to `false`
+- [x] `src/app/(app)/manage/RecurringRuleDialog.tsx`: same as 19d -- hide Expense/Income toggle when `isExpenseOnlyMode` is true; force `isIncome` to `false`
 
 ### Task 19f: Hide income chart in SummaryClient
-- [ ] `src/app/(app)/summary/SummaryClient.tsx`: hide the Income chart section when `isExpenseOnlyMode` is true
+- [x] `src/app/(app)/summary/SummaryClient.tsx`: hide the Income chart section when `isExpenseOnlyMode` is true
