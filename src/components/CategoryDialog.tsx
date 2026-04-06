@@ -25,6 +25,7 @@ import {
     useRestoreCategory,
     useUpdateCategory,
 } from "@/lib/hooks/useCategories";
+import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
 
 // biome-ignore-start format: Formatting is intentional
 const EMOJI_DEFAULTS = [
@@ -204,6 +205,7 @@ export function CategoryDialog({
         });
     };
 
+    const { isExpenseOnlyMode } = useProfileSettingsStore();
     const isPending = createCategory.isPending || updateCategory.isPending;
 
     function handleDelete() {
@@ -341,12 +343,14 @@ export function CategoryDialog({
                             {emojiPickerSection}
                             {colourPickerSection}
                         </div>
-                        <Checkbox
-                            isSelected={isIncomeOnly}
-                            onValueChange={setIsIncomeOnly}
-                        >
-                            Income only
-                        </Checkbox>
+                        {!isExpenseOnlyMode && (
+                            <Checkbox
+                                isSelected={isIncomeOnly}
+                                onValueChange={setIsIncomeOnly}
+                            >
+                                Income only
+                            </Checkbox>
+                        )}
                         <Checkbox
                             isSelected={isBuckOnly}
                             onValueChange={setIsBuckOnly}
