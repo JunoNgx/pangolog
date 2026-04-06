@@ -28,6 +28,7 @@ import {
 interface DriveSettings {
     customCurrency: string;
     isPrefixCurrency: boolean;
+    isExpenseOnlyMode: boolean;
     updatedAt: string;
 }
 
@@ -151,6 +152,7 @@ export async function syncAll(
             applyRemoteSettings(
                 remoteSettings.customCurrency,
                 remoteSettings.isPrefixCurrency,
+                remoteSettings.isExpenseOnlyMode ?? false,
                 remoteSettings.updatedAt,
             );
         }
@@ -159,11 +161,13 @@ export async function syncAll(
     const {
         customCurrency,
         isPrefixCurrency,
+        isExpenseOnlyMode,
         settingsUpdatedAt: resolvedSettingsUpdatedAt,
     } = useProfileSettingsStore.getState();
     const localSettings: DriveSettings = {
         customCurrency,
         isPrefixCurrency,
+        isExpenseOnlyMode,
         updatedAt: resolvedSettingsUpdatedAt,
     };
     await upsertFile(token, folderId, SETTINGS_FILE, localSettings);

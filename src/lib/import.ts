@@ -12,6 +12,7 @@ import { useProfileSettingsStore } from "./store/useProfileSettingsStore";
 interface ImportSettings {
     customCurrency: string;
     isPrefixCurrency: boolean;
+    isExpenseOnlyMode?: boolean;
     updatedAt: string;
 }
 
@@ -218,6 +219,7 @@ export async function executeImport(data: ImportData): Promise<ImportPreview> {
             applyRemoteSettings(
                 data.settings.customCurrency,
                 data.settings.isPrefixCurrency,
+                data.settings.isExpenseOnlyMode ?? false,
                 data.settings.updatedAt,
             );
         }
