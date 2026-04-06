@@ -31,6 +31,7 @@ import {
     useRestoreTransaction,
     useUpdateTransaction,
 } from "@/lib/hooks/useTransactions";
+import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
 import {
     fromDateInputValue,
     getLocaleDateFormat,
@@ -65,6 +66,7 @@ export function TransactionDialog({
     const deleteTransaction = useDeleteTransaction();
     const restoreTransaction = useRestoreTransaction();
 
+    const { isExpenseOnlyMode } = useProfileSettingsStore();
     const isEditing = !!transaction;
     const formRef = useRef<HTMLFormElement>(null);
 
@@ -217,7 +219,7 @@ export function TransactionDialog({
                             {isEditing ? "Edit Transaction" : "New Transaction"}
                         </ModalHeader>
                         <ModalBody className="gap-4">
-                            {!isEditing && (
+                            {!isEditing && !isExpenseOnlyMode && (
                                 <div className="flex justify-center items-center gap-4 mb-4">
                                     <ToggleSwitch
                                         isSelectingRight={isIncome}

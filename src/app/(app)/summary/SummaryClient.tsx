@@ -12,6 +12,7 @@ import {
     useTransactionsByMonth,
     useTransactionsByYear,
 } from "@/lib/hooks/useTransactions";
+import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
 import { formatAmount } from "@/lib/utils";
 import ExpensesByMonthChart from "./ExpensesByMonthChart";
 
@@ -136,6 +137,7 @@ function SegmentBar({ label, slices, total }: SegmentBarProps) {
 }
 
 export default function SummaryClient() {
+    const { isExpenseOnlyMode } = useProfileSettingsStore();
     const {
         isYearly,
         setIsYearly,
@@ -210,9 +212,7 @@ export default function SummaryClient() {
         [transactions, categoryMap],
     );
 
-    const expenseLabel = isYearly
-        ? "Expenses by category"
-        : "Expenses";
+    const expenseLabel = isYearly ? "Expenses by category" : "Expenses";
 
     return (
         <div>
@@ -253,11 +253,13 @@ export default function SummaryClient() {
                 slices={expenseSlices}
                 total={expenseTotal}
             />
-            <SegmentBar
-                label="Income"
-                slices={incomeSlices}
-                total={incomeTotal}
-            />
+            {!isExpenseOnlyMode && (
+                <SegmentBar
+                    label="Income"
+                    slices={incomeSlices}
+                    total={incomeTotal}
+                />
+            )}
         </div>
     );
 }
