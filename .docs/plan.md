@@ -490,9 +490,9 @@ A mode that hides income-related UI to reduce clutter for users who only track e
 - [x] Add `isCategoryAlphabetical` to `applyRemoteSettings` signature and body
 
 ### Task 21b: Sync, export, import
-- [ ] `src/lib/drive/sync.ts`: add `isCategoryAlphabetical` to `DriveSettings` type; include in upload payload and pass to `applyRemoteSettings` on download (fallback `?? false` for old files)
-- [ ] `src/lib/export.ts`: include `isCategoryAlphabetical` in exported settings object
-- [ ] `src/lib/import.ts`: add `isCategoryAlphabetical` to `ImportedSettings` type; pass to `applyRemoteSettings` with `?? false` fallback
+- [x] `src/lib/drive/sync.ts`: add `isCategoryAlphabetical` to `DriveSettings` type; include in upload payload and pass to `applyRemoteSettings` on download (fallback `?? false` for old files)
+- [x] `src/lib/export.ts`: include `isCategoryAlphabetical` in exported settings object
+- [x] `src/lib/import.ts`: add `isCategoryAlphabetical` to `ImportedSettings` type; pass to `applyRemoteSettings` with `?? false` fallback
 
 ### Task 21c: Hook
 - [ ] `src/lib/hooks/useCategories.ts`: in `useCategories`, read `isCategoryAlphabetical` from `useProfileSettingsStore`; when true, return data sorted by `name` (case-insensitive) instead of `priority`
