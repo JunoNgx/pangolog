@@ -5,8 +5,10 @@ import { Plus } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { CategoryDialog } from "@/components/CategoryDialog";
 import { DemoDataBanner } from "@/components/DemoDataBanner";
+import { ToggleSwitch } from "@/components/ToggleSwitch";
 import { createAction } from "@/lib/createAction";
 import { useHotkey } from "@/lib/hooks/useHotkey";
+import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
 import { CategoryList } from "./CategoryList";
 
 export default function CategoriesClient() {
@@ -18,11 +20,19 @@ export default function CategoriesClient() {
         [openCreateDialog],
     );
 
+    const { isCategoryAlphabetical, setIsCategoryAlphabetical } =
+        useProfileSettingsStore();
+
     return (
         <div>
-            <p className="text-sm text-default-400 mb-4">
-                Drag to reorder. Order is reflected when choosing a category.
-            </p>
+            <div className="mt-2 mb-4">
+                <ToggleSwitch
+                    leftLabel="Custom order"
+                    rightLabel="Alphabetical"
+                    isSelectingRight={isCategoryAlphabetical}
+                    onValueChange={setIsCategoryAlphabetical}
+                />
+            </div>
             <DemoDataBanner />
             <CategoryList />
             <div className="FloatingActionButtonContainer">

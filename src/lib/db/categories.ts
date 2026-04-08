@@ -151,9 +151,9 @@ export async function getAllCategories(): Promise<Category[]> {
 
         request.onerror = () => reject(request.error);
         request.onsuccess = () => {
-            const results: Category[] = request.result
-                .filter((c: Category) => c.deletedAt === null)
-                .sort((a: Category, b: Category) => a.priority - b.priority);
+            const results: Category[] = request.result.filter(
+                (c: Category) => c.deletedAt === null,
+            );
             resolve(results);
         };
     });
