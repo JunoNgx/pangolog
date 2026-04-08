@@ -29,6 +29,7 @@ interface DriveSettings {
     customCurrency?: string;
     isPrefixCurrency?: boolean;
     isExpenseOnlyMode?: boolean;
+    isCategoryAlphabetical?: boolean;
     updatedAt: string;
 }
 
@@ -153,6 +154,7 @@ export async function syncAll(
                 remoteSettings.customCurrency ?? "",
                 remoteSettings.isPrefixCurrency ?? true,
                 remoteSettings.isExpenseOnlyMode ?? false,
+                remoteSettings.isCategoryAlphabetical ?? false,
                 remoteSettings.updatedAt,
             );
         }
