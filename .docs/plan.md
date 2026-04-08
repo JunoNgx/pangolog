@@ -495,7 +495,8 @@ A mode that hides income-related UI to reduce clutter for users who only track e
 - [x] `src/lib/import.ts`: add `isCategoryAlphabetical` to `ImportedSettings` type; pass to `applyRemoteSettings` with `?? false` fallback
 
 ### Task 21c: Hook
-- [ ] `src/lib/hooks/useCategories.ts`: in `useCategories`, read `isCategoryAlphabetical` from `useProfileSettingsStore`; when true, return data sorted by `name` (case-insensitive) instead of `priority`
+- [x] `src/lib/hooks/useCategories.ts`: in `useCategories`, read `isCategoryAlphabetical` from `useProfileSettingsStore`; when true, return data sorted by `name` (case-insensitive) instead of `priority`
+- [x] Move priority sort out of `getAllCategories` in `src/lib/db/categories.ts` into the hook alongside alphabetical sort
 
 ### Task 21d: CategoryList UI
 - [ ] `src/app/(app)/manage/CategoryList.tsx`: hide drag handles and disable `DragDropProvider` when `isCategoryAlphabetical` is true; show a note indicating manual order is disabled
