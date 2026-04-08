@@ -39,9 +39,11 @@ export default function SettingsClient() {
         customCurrency,
         isPrefixCurrency,
         isExpenseOnlyMode,
+        isCategoryAlphabetical,
         setCustomCurrency,
         setIsPrefixCurrency,
         setIsExpenseOnlyMode,
+        setIsCategoryAlphabetical,
     } = useProfileSettingsStore();
     const { authToken, isConnected, isConnecting, error, connect, disconnect } =
         useGoogleAuth();
@@ -397,6 +399,18 @@ export default function SettingsClient() {
                                 Hides income-related UI to reduce clutter.
                             </p>
                         </Checkbox>
+                        <RadioGroup
+                            label="Category order"
+                            orientation="horizontal"
+                            value={isCategoryAlphabetical ? "alpha" : "custom"}
+                            onValueChange={(v) =>
+                                setIsCategoryAlphabetical(v === "alpha")
+                            }
+                            classNames={{ wrapper: "gap-6" }}
+                        >
+                            <Radio value="custom">Custom order</Radio>
+                            <Radio value="alpha">Alphabetical</Radio>
+                        </RadioGroup>
                         <RadioGroup
                             label="Time format"
                             orientation="horizontal"
