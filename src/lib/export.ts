@@ -35,6 +35,7 @@ export async function buildExportData() {
         customCurrency,
         isPrefixCurrency,
         isExpenseOnlyMode,
+        isCategoryAlphabetical,
         settingsUpdatedAt,
     } = useProfileSettingsStore.getState();
 
@@ -44,6 +45,7 @@ export async function buildExportData() {
             customCurrency,
             isPrefixCurrency,
             isExpenseOnlyMode,
+            isCategoryAlphabetical,
             updatedAt: settingsUpdatedAt,
         },
         transactions: transactions

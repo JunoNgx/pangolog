@@ -164,12 +164,14 @@ export async function syncAll(
         customCurrency,
         isPrefixCurrency,
         isExpenseOnlyMode,
+        isCategoryAlphabetical,
         settingsUpdatedAt: resolvedSettingsUpdatedAt,
     } = useProfileSettingsStore.getState();
     const localSettings: DriveSettings = {
         customCurrency,
         isPrefixCurrency,
         isExpenseOnlyMode,
+        isCategoryAlphabetical,
         updatedAt: resolvedSettingsUpdatedAt,
     };
     await upsertFile(token, folderId, SETTINGS_FILE, localSettings);
