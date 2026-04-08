@@ -499,7 +499,7 @@ A mode that hides income-related UI to reduce clutter for users who only track e
 - [x] Move priority sort out of `getAllCategories` in `src/lib/db/categories.ts` into the hook alongside alphabetical sort
 
 ### Task 21d: CategoryList UI
-- [ ] `src/app/(app)/manage/CategoryList.tsx`: hide drag handles and disable `DragDropProvider` when `isCategoryAlphabetical` is true; show a note indicating manual order is disabled
+- [x] `src/app/(app)/manage/CategoryList.tsx`: hide drag handles and disable `DragDropProvider` when `isCategoryAlphabetical` is true; show a note indicating manual order is disabled
 
 ### Task 21e: Settings UI toggle
-- [ ] `src/app/(app)/settings/SettingsClient.tsx`: add a Switch toggle for `isCategoryAlphabetical`
+- [x] `src/app/(app)/manage/CategoriesClient.tsx`: add a `ToggleSwitch` for `isCategoryAlphabetical` above the category list; remove stale description paragraph
