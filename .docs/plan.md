@@ -485,9 +485,9 @@ A mode that hides income-related UI to reduce clutter for users who only track e
 ## Task 21: Alphabetical category sort option
 
 ### Task 21a: Store
-- [ ] Add `isCategoryAlphabetical: boolean` (default `false`) to `useProfileSettingsStore`
-- [ ] Add `setIsCategoryAlphabetical` setter, updating `settingsUpdatedAt`
-- [ ] Add `isCategoryAlphabetical` to `applyRemoteSettings` signature and body
+- [x] Add `isCategoryAlphabetical: boolean` (default `false`) to `useProfileSettingsStore`
+- [x] Add `setIsCategoryAlphabetical` setter, updating `settingsUpdatedAt`
+- [x] Add `isCategoryAlphabetical` to `applyRemoteSettings` signature and body
 
 ### Task 21b: Sync, export, import
 - [ ] `src/lib/drive/sync.ts`: add `isCategoryAlphabetical` to `DriveSettings` type; include in upload payload and pass to `applyRemoteSettings` on download (fallback `?? false` for old files)
