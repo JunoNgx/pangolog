@@ -9,13 +9,24 @@ import {
     updateCategory,
 } from "../db/categories";
 import type { Category, CategoryInput, CategoryUpdate } from "../db/types";
+import { useProfileSettingsStore } from "../store/useProfileSettingsStore";
 
 const CATEGORIES_KEY = ["categories"];
 
 export function useCategories() {
+    const { isCategoryAlphabetical } = useProfileSettingsStore();
+
     return useQuery({
         queryKey: CATEGORIES_KEY,
         queryFn: getAllCategories,
+        select: (data) => {
+            if (!isCategoryAlphabetical) return data;
+            return [...data].sort((a, b) =>
+                a.name.localeCompare(b.name, undefined, {
+                    sensitivity: "base",
+                }),
+            );
+        },
     });
 }
 
