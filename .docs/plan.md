@@ -502,4 +502,5 @@ A mode that hides income-related UI to reduce clutter for users who only track e
 - [x] `src/app/(app)/manage/CategoryList.tsx`: hide drag handles and disable `DragDropProvider` when `isCategoryAlphabetical` is true; show a note indicating manual order is disabled
 
 ### Task 21e: Settings UI toggle
-- [x] `src/app/(app)/manage/CategoriesClient.tsx`: add a `ToggleSwitch` for `isCategoryAlphabetical` above the category list; remove stale description paragraph
+- [x] `src/app/(app)/settings/SettingsClient.tsx`: add a `RadioGroup` for `isCategoryAlphabetical` in Preferences section
+- [ ] `src/app/(app)/manage/CategoriesClient.tsx`: add a `ToggleSwitch` for `isCategoryAlphabetical` above the category list; remove stale description paragraph
