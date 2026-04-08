@@ -140,7 +140,17 @@ export function CategoryList() {
         );
     }
 
-    const categoryList = (
+    const notice = (
+        <div className="text-center text-default-400 text-sm py-2">
+            <p>
+                This display order is also used in transaction and recurring
+                rule dialogs.
+            </p>
+            {!isCategoryAlphabetical && <p>Drag to set a custom sort order.</p>}
+        </div>
+    );
+
+    const alphabeticalList = (
         <ul className="MainListContainer gap-2">
             {categories.map((cat, index) => (
                 <SortableCategoryItem
@@ -148,29 +158,32 @@ export function CategoryList() {
                     cat={cat}
                     index={index}
                     onEdit={handleEdit}
-                    isDragEnabled={!isCategoryAlphabetical}
+                    isDragEnabled={false}
                 />
             ))}
         </ul>
     );
 
+    const customSortList = (
+        <DragDropProvider onDragEnd={handleDragEnd}>
+            <ul className="MainListContainer gap-2">
+                {categories.map((cat, index) => (
+                    <SortableCategoryItem
+                        key={cat.id}
+                        cat={cat}
+                        index={index}
+                        onEdit={handleEdit}
+                        isDragEnabled={true}
+                    />
+                ))}
+            </ul>
+        </DragDropProvider>
+    );
+
     return (
         <>
-            <p className="text-center text-default-400 text-sm py-2">
-                This display order is also used in transaction and recurring rule dialogs.
-            </p>
-            {!isCategoryAlphabetical && (
-                <p className="text-center text-default-400 text-sm pb-2">
-                    Drag to set a custom sort order.
-                </p>
-            )}
-            {isCategoryAlphabetical ? (
-                categoryList
-            ) : (
-                <DragDropProvider onDragEnd={handleDragEnd}>
-                    {categoryList}
-                </DragDropProvider>
-            )}
+            {notice}
+            {isCategoryAlphabetical ? alphabeticalList : customSortList}
             <CategoryDialog
                 isOpen={isDialogOpen}
                 onClose={handleCloseDialog}
