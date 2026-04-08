@@ -20,12 +20,14 @@ export function useCategories() {
         queryKey: CATEGORIES_KEY,
         queryFn: getAllCategories,
         select: (data) => {
-            if (!isCategoryAlphabetical) return data;
-            return [...data].sort((a, b) =>
-                a.name.localeCompare(b.name, undefined, {
-                    sensitivity: "base",
-                }),
-            );
+            if (isCategoryAlphabetical) {
+                return [...data].sort((a, b) =>
+                    a.name.localeCompare(b.name, undefined, {
+                        sensitivity: "base",
+                    }),
+                );
+            }
+            return [...data].sort((a, b) => a.priority - b.priority);
         },
     });
 }
