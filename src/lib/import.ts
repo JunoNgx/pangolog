@@ -13,6 +13,7 @@ interface ImportSettings {
     customCurrency: string;
     isPrefixCurrency: boolean;
     isExpenseOnlyMode?: boolean;
+    isCategoryAlphabetical?: boolean;
     updatedAt: string;
 }
 
@@ -220,6 +221,7 @@ export async function executeImport(data: ImportData): Promise<ImportPreview> {
                 data.settings.customCurrency,
                 data.settings.isPrefixCurrency,
                 data.settings.isExpenseOnlyMode ?? false,
+                data.settings.isCategoryAlphabetical ?? false,
                 data.settings.updatedAt,
             );
         }

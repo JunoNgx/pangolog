@@ -9,17 +9,20 @@ import { useState } from "react";
 import { CategoryDialog } from "@/components/CategoryDialog";
 import type { Category } from "@/lib/db/types";
 import { useCategories, useReorderCategories } from "@/lib/hooks/useCategories";
+import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
 
 interface SortableCategoryItemProps {
     cat: Category;
     index: number;
     onEdit: (cat: Category) => void;
+    isDragEnabled: boolean;
 }
 
 function SortableCategoryItem({
     cat,
     index,
     onEdit,
+    isDragEnabled,
 }: SortableCategoryItemProps) {
     const { ref, handleRef, isDragging } = useSortable({
         id: cat.id,
@@ -66,15 +69,17 @@ function SortableCategoryItem({
                     <span className={`ChipLabel text-amber-500`}>BIG BUCK</span>
                 )}
             </button>
-            <button
-                type="button"
-                ref={handleRef}
-                onClick={(e) => e.stopPropagation()}
-                aria-label={`Drag to reorder ${cat.name}`}
-                className="py-3 pr-4 text-default-400 cursor-grab active:cursor-grabbing select-none bg-transparent border-0"
-            >
-                <GripVertical />
-            </button>
+            {isDragEnabled && (
+                <button
+                    type="button"
+                    ref={handleRef}
+                    onClick={(e) => e.stopPropagation()}
+                    aria-label={`Drag to reorder ${cat.name}`}
+                    className="py-3 pr-4 text-default-400 cursor-grab active:cursor-grabbing select-none bg-transparent border-0"
+                >
+                    <GripVertical />
+                </button>
+            )}
         </li>
     );
 }
@@ -82,6 +87,7 @@ function SortableCategoryItem({
 export function CategoryList() {
     const { data: categories, isLoading } = useCategories();
     const reorderCategories = useReorderCategories();
+    const { isCategoryAlphabetical } = useProfileSettingsStore();
     const [editingCategory, setEditingCategory] = useState<
         Category | undefined
     >();
@@ -134,20 +140,50 @@ export function CategoryList() {
         );
     }
 
+    const notice = (
+        <div className="text-center text-default-400 text-sm py-2">
+            <p>
+                This display order is also used in transaction and recurring
+                rule dialogs.
+            </p>
+            {!isCategoryAlphabetical && <p>Drag to set a custom sort order.</p>}
+        </div>
+    );
+
+    const alphabeticalList = (
+        <ul className="MainListContainer gap-2">
+            {categories.map((cat, index) => (
+                <SortableCategoryItem
+                    key={cat.id}
+                    cat={cat}
+                    index={index}
+                    onEdit={handleEdit}
+                    isDragEnabled={false}
+                />
+            ))}
+        </ul>
+    );
+
+    const customSortList = (
+        <DragDropProvider onDragEnd={handleDragEnd}>
+            <ul className="MainListContainer gap-2">
+                {categories.map((cat, index) => (
+                    <SortableCategoryItem
+                        key={cat.id}
+                        cat={cat}
+                        index={index}
+                        onEdit={handleEdit}
+                        isDragEnabled={true}
+                    />
+                ))}
+            </ul>
+        </DragDropProvider>
+    );
+
     return (
         <>
-            <DragDropProvider onDragEnd={handleDragEnd}>
-                <ul className="MainListContainer gap-2">
-                    {categories.map((cat, index) => (
-                        <SortableCategoryItem
-                            key={cat.id}
-                            cat={cat}
-                            index={index}
-                            onEdit={handleEdit}
-                        />
-                    ))}
-                </ul>
-            </DragDropProvider>
+            {notice}
+            {isCategoryAlphabetical ? alphabeticalList : customSortList}
             <CategoryDialog
                 isOpen={isDialogOpen}
                 onClose={handleCloseDialog}
