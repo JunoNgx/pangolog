@@ -481,3 +481,24 @@ A mode that hides income-related UI to reduce clutter for users who only track e
 
 ### Task 19g: Hide income-only checkbox in CategoryDialog
 - [x] `src/components/CategoryDialog.tsx`: hide the "Income only" checkbox when `isExpenseOnlyMode` is true
+
+## Task 21: Alphabetical category sort option
+
+### Task 21a: Store
+- [ ] Add `isCategoryAlphabetical: boolean` (default `false`) to `useProfileSettingsStore`
+- [ ] Add `setIsCategoryAlphabetical` setter, updating `settingsUpdatedAt`
+- [ ] Add `isCategoryAlphabetical` to `applyRemoteSettings` signature and body
+
+### Task 21b: Sync, export, import
+- [ ] `src/lib/drive/sync.ts`: add `isCategoryAlphabetical` to `DriveSettings` type; include in upload payload and pass to `applyRemoteSettings` on download (fallback `?? false` for old files)
+- [ ] `src/lib/export.ts`: include `isCategoryAlphabetical` in exported settings object
+- [ ] `src/lib/import.ts`: add `isCategoryAlphabetical` to `ImportedSettings` type; pass to `applyRemoteSettings` with `?? false` fallback
+
+### Task 21c: Hook
+- [ ] `src/lib/hooks/useCategories.ts`: in `useCategories`, read `isCategoryAlphabetical` from `useProfileSettingsStore`; when true, return data sorted by `name` (case-insensitive) instead of `priority`
+
+### Task 21d: CategoryList UI
+- [ ] `src/app/(app)/manage/CategoryList.tsx`: hide drag handles and disable `DragDropProvider` when `isCategoryAlphabetical` is true; show a note indicating manual order is disabled
+
+### Task 21e: Settings UI toggle
+- [ ] `src/app/(app)/settings/SettingsClient.tsx`: add a Switch toggle for `isCategoryAlphabetical`
