@@ -529,5 +529,5 @@ Audit all `useEffect` usages in the codebase and fix identified issues.
 ### Task 23f: Fragile store access in useSync visibility handler
 - [ ] `src/lib/hooks/useSync.ts:181`: the `visibilitychange` handler reads `useLocalSettingsStore.getState()` directly inside the event listener. This works because `getState()` always returns the latest state, but it bypasses the React dependency model and is non-obvious. Consider whether this warrants a comment or refactor.
 
-### Task 23g: useHotkey options object dependency instability
-- [ ] `src/lib/hooks/useHotkey.ts:8`: the `options` object is destructured in the dependency array (`options?.ctrlOrMeta`, `options?.shift`). If callers pass a new object literal on every render, the effect re-registers the listener unnecessarily. Audit call sites to check if any pass inline object literals; memoize if so.
+### Task 23g: useHotkey refactor
+- [x] `src/lib/hooks/useHotkey.ts`: switch from `useEffect` to `useLayoutEffect` to better communicate lifecycle intent; use refs for `callback` and `options` so the listener registers once per `key` change and always reads the latest values without stale closure issues.
