@@ -504,3 +504,30 @@ A mode that hides income-related UI to reduce clutter for users who only track e
 ### Task 21e: Settings UI toggle
 - [x] `src/app/(app)/settings/SettingsClient.tsx`: add a `RadioGroup` for `isCategoryAlphabetical` in Preferences section
 - [x] `src/app/(app)/manage/CategoriesClient.tsx`: add a `ToggleSwitch` for `isCategoryAlphabetical` above the category list; remove stale description paragraph
+
+## Task 23: useEffect audit and fixes
+
+Audit all `useEffect` usages in the codebase and fix identified issues.
+
+### Task 23a: Fix flash-on-navigation from localStorage hooks
+- [x] `src/lib/hooks/useSummaryViewSettings.ts`: initialize all state directly from `loadSettings()` in `useState`; remove `useEffect`
+- [x] `src/lib/hooks/useLogViewSettings.ts`: same fix
+
+### Task 23b: Fix flash-on-navigation in useOnlineStatus
+- [ ] `src/lib/hooks/useOnlineStatus.ts`: `isOnline` is initialized to `true` (hardcoded) then a `useEffect` sets it from `navigator.onLine` after first render. Since `navigator.onLine` is a synchronous read, move it directly into `useState(navigator.onLine)` and remove the mount effect.
+
+### Task 23c: Fix isMounted anti-pattern
+- [ ] `src/app/(app)/settings/SettingsClient.tsx:79`: `useEffect(() => setIsMounted(true), [])` is used to gate rendering of something after hydration. Investigate what `isMounted` guards and apply the appropriate fix (e.g. `suppressHydrationWarning`, or lazy `useState` initializer).
+- [ ] `src/components/ThemeSwitcher.tsx:25`: same pattern — `isMounted` gates the theme icon render to avoid SSR mismatch. Same investigation and fix approach.
+
+### Task 23d: Document createAction singleton
+- [x] `src/lib/createAction.ts`: add comment explaining the singleton bridge pattern
+
+### Task 23e: Verify createAction/shortcutsAction cleanup
+- [ ] `src/app/(app)/log/LogClient.tsx:37`, `src/app/(app)/manage/CategoriesClient.tsx:18`, `src/app/(app)/manage/RecurringClient.tsx:43`, `src/components/ShortcutsDialog.tsx:116`: all register callbacks via `useEffect` with no explicit cleanup. Audit finding initially flagged as memory leak, but `createAction.register()` already returns a cleanup function which `useEffect` uses as its return value — this is correct. Verify the same holds for `shortcutsAction.register()`.
+
+### Task 23f: Fragile store access in useSync visibility handler
+- [ ] `src/lib/hooks/useSync.ts:181`: the `visibilitychange` handler reads `useLocalSettingsStore.getState()` directly inside the event listener. This works because `getState()` always returns the latest state, but it bypasses the React dependency model and is non-obvious. Consider whether this warrants a comment or refactor.
+
+### Task 23g: useHotkey options object dependency instability
+- [ ] `src/lib/hooks/useHotkey.ts:8`: the `options` object is destructured in the dependency array (`options?.ctrlOrMeta`, `options?.shift`). If callers pass a new object literal on every render, the effect re-registers the listener unnecessarily. Audit call sites to check if any pass inline object literals; memoize if so.
