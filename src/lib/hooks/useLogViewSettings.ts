@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const STORAGE_KEY = "pangolog-log-view-settings";
 
@@ -29,14 +29,13 @@ function saveSettings(settings: LogViewSettings): void {
 }
 
 export function useLogViewSettings() {
-    const [shouldShowSmallDimes, setShouldShowSmallDimesState] = useState(true);
-    const [shouldShowBigBucks, setShouldShowBigBucksState] = useState(false);
-
-    useEffect(() => {
-        const settings = loadSettings();
-        setShouldShowSmallDimesState(settings.shouldShowSmallDimes);
-        setShouldShowBigBucksState(settings.shouldShowBigBucks);
-    }, []);
+    const initial = loadSettings();
+    const [shouldShowSmallDimes, setShouldShowSmallDimesState] = useState(
+        initial.shouldShowSmallDimes,
+    );
+    const [shouldShowBigBucks, setShouldShowBigBucksState] = useState(
+        initial.shouldShowBigBucks,
+    );
 
     function setShouldShowSmallDimes(value: boolean) {
         setShouldShowSmallDimesState(value);
