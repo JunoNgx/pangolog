@@ -1,11 +1,17 @@
-import { useEffect } from "react";
+import { useLayoutEffect, useRef } from "react";
 
 export function useHotkey(
     key: string,
     callback: () => void,
     options?: { ctrlOrMeta?: boolean; shift?: boolean },
 ) {
-    useEffect(() => {
+    const callbackRef = useRef(callback);
+    const optionsRef = useRef(options);
+
+    callbackRef.current = callback;
+    optionsRef.current = options;
+
+    useLayoutEffect(() => {
         function handleKeyDown(e: KeyboardEvent) {
             const activeEl = document.activeElement;
             if (
@@ -15,15 +21,16 @@ export function useHotkey(
                 (activeEl instanceof HTMLElement && activeEl.isContentEditable)
             )
                 return;
-            if (options?.ctrlOrMeta && !(e.metaKey || e.ctrlKey)) return;
-            if (options?.shift && !e.shiftKey) return;
+            if (optionsRef.current?.ctrlOrMeta && !(e.metaKey || e.ctrlKey))
+                return;
+            if (optionsRef.current?.shift && !e.shiftKey) return;
             if (e.key !== key) return;
 
             e.preventDefault();
-            callback();
+            callbackRef.current();
         }
 
         window.addEventListener("keydown", handleKeyDown);
         return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [key, callback, options?.ctrlOrMeta, options?.shift]);
+    }, [key]);
 }
