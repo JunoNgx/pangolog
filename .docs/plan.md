@@ -517,8 +517,8 @@ Audit all `useEffect` usages in the codebase and fix identified issues.
 - [x] `src/lib/hooks/useOnlineStatus.ts`: initialize `isOnline` directly from `navigator.onLine` via lazy `useState` initializer; remove mount-time `setIsOnline` call; switch to `useLayoutEffect` for event listener lifecycle.
 
 ### Task 23c: Fix isMounted anti-pattern
-- [ ] `src/app/(app)/settings/SettingsClient.tsx:79`: `useEffect(() => setIsMounted(true), [])` is used to gate rendering of something after hydration. Investigate what `isMounted` guards and apply the appropriate fix (e.g. `suppressHydrationWarning`, or lazy `useState` initializer).
-- [ ] `src/components/ThemeSwitcher.tsx:25`: same pattern — `isMounted` gates the theme icon render to avoid SSR mismatch. Same investigation and fix approach.
+- [x] `src/app/(app)/settings/SettingsClient.tsx:79`: `isMounted` only gated the theme RadioGroup value fallback. Removed `isMounted` state and `useEffect`; replaced with `theme ?? "system"` directly.
+- [x] `src/components/ThemeSwitcher.tsx:25`: `isMounted` pattern is the correct approach for `next-themes` SSR mismatch; switched `useEffect` to `useLayoutEffect` to better communicate lifecycle intent.
 
 ### Task 23d: Document createAction singleton
 - [x] `src/lib/createAction.ts`: add comment explaining the singleton bridge pattern
