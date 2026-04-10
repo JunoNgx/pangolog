@@ -8,6 +8,7 @@ import { Toaster } from "sonner";
 import { ServiceWorkerRegistration } from "@/components/ServiceWorkerRegistration";
 import { useLocalAppDataStore } from "@/lib/store/useLocalAppDataStore";
 import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
+import { useLocalUserSettingsStore } from "@/lib/store/useLocalUserSettingsStore";
 
 function ThemeColorSync() {
     const { resolvedTheme } = useTheme();
@@ -44,6 +45,7 @@ function StoreHydration() {
     useEffect(() => {
         useLocalSettingsStore.persist.rehydrate();
         useLocalAppDataStore.persist.rehydrate();
+        useLocalUserSettingsStore.persist.rehydrate();
     }, []);
     return null;
 }

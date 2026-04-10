@@ -8,12 +8,13 @@ import { useGoogleAuth } from "@/lib/hooks/useGoogleAuth";
 import { useOnlineStatus } from "@/lib/hooks/useOnlineStatus";
 import { useSyncFn } from "@/lib/hooks/useSync";
 import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
+import { useLocalUserSettingsStore } from "@/lib/store/useLocalUserSettingsStore";
 import { getTimeFormatOptions } from "@/lib/utils";
 
 export function SyncButton() {
     const { isConnected } = useGoogleAuth();
-    const { syncStatus, syncError, lastSyncTime, timeFormat } =
-        useLocalSettingsStore();
+    const { syncStatus, syncError, lastSyncTime } = useLocalSettingsStore();
+    const { timeFormat } = useLocalUserSettingsStore();
     const { sync } = useSyncFn();
     const { isOnline } = useOnlineStatus();
 

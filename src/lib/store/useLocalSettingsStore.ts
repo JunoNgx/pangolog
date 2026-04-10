@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { AuthToken } from "@/lib/auth/types";
-import { detectSystemTimeFormat } from "@/lib/utils";
 
 export type SyncStatus = "idle" | "syncing" | "error";
 
@@ -12,10 +11,6 @@ interface LocalSettingsStore {
     setDriveFolderId: (id: string | null) => void;
     lastSyncTime: string | null;
     setLastSyncTime: (time: string | null) => void;
-    isAutobackupEnabled: boolean;
-    setIsAutobackupEnabled: (enabled: boolean) => void;
-    timeFormat: "12h" | "24h";
-    setTimeFormat: (format: "12h" | "24h") => void;
     syncStatus: SyncStatus;
     setSyncStatus: (status: SyncStatus) => void;
     syncError: string | null;
@@ -31,11 +26,6 @@ export const useLocalSettingsStore = create<LocalSettingsStore>()(
             setDriveFolderId: (id) => set({ driveFolderId: id }),
             lastSyncTime: null,
             setLastSyncTime: (time) => set({ lastSyncTime: time }),
-            isAutobackupEnabled: false,
-            setIsAutobackupEnabled: (enabled) =>
-                set({ isAutobackupEnabled: enabled }),
-            timeFormat: detectSystemTimeFormat(),
-            setTimeFormat: (format) => set({ timeFormat: format }),
             syncStatus: "idle",
             setSyncStatus: (status) => set({ syncStatus: status }),
             syncError: null,
@@ -47,8 +37,6 @@ export const useLocalSettingsStore = create<LocalSettingsStore>()(
                 authToken: state.authToken,
                 driveFolderId: state.driveFolderId,
                 lastSyncTime: state.lastSyncTime,
-                isAutobackupEnabled: state.isAutobackupEnabled,
-                timeFormat: state.timeFormat,
             }),
         },
     ),

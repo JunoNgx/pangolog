@@ -11,6 +11,7 @@ import {
 import type { Category, RecurringRule, Transaction } from "@/lib/db/types";
 import { buildExportData } from "@/lib/export";
 import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
+import { useLocalUserSettingsStore } from "@/lib/store/useLocalUserSettingsStore";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
 import {
     backupFileName,
@@ -279,7 +280,7 @@ export async function syncAll(
 
     // --- Autobackup ---
 
-    const { isAutobackupEnabled } = useLocalSettingsStore.getState();
+    const { isAutobackupEnabled } = useLocalUserSettingsStore.getState();
     if (!isAutobackupEnabled) return syncStartTime;
 
     const now = DateTime.now();
