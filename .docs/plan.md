@@ -539,8 +539,8 @@ GitHub issue: JunoNgx/pangolog#25
 Split `useLocalSettingsStore` into three focused stores with clear responsibilities.
 
 ### Task 25a: Create useLocalAppDataStore
-- [ ] Create `src/lib/store/useLocalAppDataStore.ts` with `shouldShowDemoDataBanner`, `hasHydrated`, `loggerEntries`
-- [ ] Update all consumers
+- [x] Create `src/lib/store/useLocalAppDataStore.ts` with `shouldShowDemoDataBanner`, `hasHydrated`, `loggerEntries`
+- [x] Update all consumers
 
 ### Task 25b: Create useLocalUserSettingsStore
 - [ ] Create `src/lib/store/useLocalUserSettingsStore.ts` with `timeFormat`, `isAutobackupEnabled`
