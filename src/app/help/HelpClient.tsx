@@ -200,8 +200,9 @@ export default function HelpClient() {
                     Google Drive does not propagate file changes to all servers
                     instantly - this process can take up to an hour. This is an
                     unfortunately known limitation of the Google Drive platform
-                    (which is free for both developers and users). If the second device does not pick up
-                    changes from the first, wait a while and sync again.
+                    (which is free for both developers and users). If the second
+                    device does not pick up changes from the first, wait a while
+                    and sync again.
                 </p>
                 <h3 className="text-sm font-medium text-default-600 mb-1">
                     Storage structure
@@ -213,6 +214,125 @@ export default function HelpClient() {
                     <li className="pl-4">recurring-rules.json</li>
                     <li className="pl-4">settings.json</li>
                     <li className="pl-4">backup-YYYY-MM.json</li>
+                </ul>
+            </Section>
+
+            <Section title="Export / import format">
+                <p className="text-sm text-default-500 mb-3">
+                    The JSON file exported from Settings contains all your data
+                    and can be re-imported on any device. You can also
+                    hand-craft a file in this format to migrate data from
+                    another app. The field references below are formatted to be
+                    paste-friendly for an LLM - you can share this section with
+                    one to help generate a valid import file.
+                </p>
+                <p className="text-sm text-default-500 mb-2">
+                    Top-level structure:
+                </p>
+                <pre className="font-mono text-xs bg-default-100 rounded p-3 overflow-x-auto text-default-600 mb-3 leading-relaxed">{`{
+  "exportedAt":     "2026-04-10T00:00:00.000Z",
+  "categories":     [ ... ],  // required, may be empty
+  "transactions":   [ ... ],  // optional
+  "recurringRules": [ ... ]   // optional
+}`}</pre>
+                <p className="text-sm text-default-500 mb-4">
+                    Import is additive and non-destructive. Records are merged
+                    by <span className="font-mono text-xs">updatedAt</span> -
+                    incoming records with a newer timestamp overwrite existing
+                    ones; older records are ignored.
+                </p>
+
+                <h3 className="text-sm font-medium text-default-600 mb-2">
+                    Transaction
+                </h3>
+                <pre className="font-mono text-xs bg-default-100 rounded p-3 overflow-x-auto text-default-600 mb-4 leading-relaxed">{`// * = required for import
+id:           string        // * unique, UUID v4 recommended
+transactedAt: string        // * local-offset ISO "2026-04-10T14:30:00+07:00"
+updatedAt:    string        // * UTC ISO "2026-04-10T07:30:00.000Z"
+deletedAt:    null          //   null for active records
+amount:       number        // * integer, minor units (1500 = $15.00)
+year:         number        // * integer - must match transactedAt year
+month:        number        // * integer 1-12, must match transactedAt month
+isBigBuck:    boolean       // * false = Small Dimes, true = Big Bucks
+isIncome:     boolean       // * false = expense, true = income
+description:  string        //   can be ""
+categoryId:   string | null //   references a category id, or null
+ruleId?:      string        //   only present on rule-generated transactions
+rulePeriod?:  string        //   only present on rule-generated transactions`}</pre>
+
+                <h3 className="text-sm font-medium text-default-600 mb-2">
+                    Category
+                </h3>
+                <pre className="font-mono text-xs bg-default-100 rounded p-3 overflow-x-auto text-default-600 mb-4 leading-relaxed">{`// * = required for import
+id:           string        // * unique, UUID v4 recommended
+name:         string        // * display name
+updatedAt:    string        // * UTC ISO "2026-04-10T07:30:00.000Z"
+createdAt:    string        //   UTC ISO
+deletedAt:    null          //   null for active records
+colour:       string        //   hex color e.g. "#4f6bed"
+icon:         string        //   emoji e.g. "🍔"
+priority:     number        //   integer; lower = appears earlier in picker
+isBuckOnly:   boolean       //   true = hidden from Small Dimes picker
+isIncomeOnly: boolean       //   true = hidden from expense picker`}</pre>
+
+                <h3 className="text-sm font-medium text-default-600 mb-2">
+                    Recurring rule
+                </h3>
+                <pre className="font-mono text-xs bg-default-100 rounded p-3 overflow-x-auto text-default-600 mb-4 leading-relaxed">{`// * = required for import
+id:               string              // * unique, UUID v4 recommended
+updatedAt:        string              // * UTC ISO "2026-04-10T07:30:00.000Z"
+amount:           number              // * integer, minor units
+frequency:        "daily"             // * one of:
+                | "weekly"           //     daily, weekly, monthly, yearly
+                | "monthly"
+                | "yearly"
+isIncome:         boolean             // * false = expense, true = income
+isBigBuck:        boolean             // * false = Small Dimes, true = Big Bucks
+isActive:         boolean             // * true = rule is running
+nextGenerationAt: string              // * local-offset ISO; when the rule next fires
+description:      string              //   can be ""
+categoryId:       string | null       //   references a category id, or null
+createdAt:        string              //   UTC ISO
+deletedAt:        null                //   null for active records
+lastGeneratedAt:  string | null       //   null if rule has never fired
+dayOfWeek:        number(1-7) | null  //   Mon=1 Sun=7; weekly rules only
+dayOfMonth:       number(1-31) | null //   monthly/yearly rules; clamped to month end
+monthOfYear:      number(1-12) | null //   yearly rules only`}</pre>
+
+                <h3 className="text-sm font-medium text-default-600 mb-2">
+                    Timestamp formats
+                </h3>
+                <ul className="text-sm text-default-500 space-y-1 list-disc list-inside">
+                    <li>
+                        <span className="font-mono text-xs">transactedAt</span>{" "}
+                        and{" "}
+                        <span className="font-mono text-xs">
+                            nextGenerationAt
+                        </span>{" "}
+                        - local-offset ISO:{" "}
+                        <span className="font-mono text-xs">
+                            2026-04-10T14:30:00+07:00
+                        </span>
+                    </li>
+                    <li>
+                        Audit fields (
+                        <span className="font-mono text-xs">createdAt</span>,{" "}
+                        <span className="font-mono text-xs">updatedAt</span>,{" "}
+                        <span className="font-mono text-xs">deletedAt</span>,{" "}
+                        <span className="font-mono text-xs">
+                            lastGeneratedAt
+                        </span>
+                        ) - UTC ISO:{" "}
+                        <span className="font-mono text-xs">
+                            2026-04-10T07:30:00.000Z
+                        </span>
+                    </li>
+                    <li>
+                        Set <span className="font-mono text-xs">updatedAt</span>{" "}
+                        to a recent timestamp - records with an older{" "}
+                        <span className="font-mono text-xs">updatedAt</span>{" "}
+                        than the existing database entry are ignored on import.
+                    </li>
                 </ul>
             </Section>
 
