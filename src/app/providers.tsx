@@ -6,6 +6,7 @@ import { ThemeProvider, useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { Toaster } from "sonner";
 import { ServiceWorkerRegistration } from "@/components/ServiceWorkerRegistration";
+import { useLocalAppDataStore } from "@/lib/store/useLocalAppDataStore";
 import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
 
 function ThemeColorSync() {
@@ -42,6 +43,7 @@ function ThemedToaster() {
 function StoreHydration() {
     useEffect(() => {
         useLocalSettingsStore.persist.rehydrate();
+        useLocalAppDataStore.persist.rehydrate();
     }, []);
     return null;
 }
