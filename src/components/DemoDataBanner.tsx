@@ -4,7 +4,7 @@ import { Button } from "@heroui/react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { seedDemoData } from "@/lib/db/demo";
-import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
+import { useLocalAppDataStore } from "@/lib/store/useLocalAppDataStore";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
 
 export function DemoDataBanner() {
@@ -13,7 +13,7 @@ export function DemoDataBanner() {
         hasHydrated,
         shouldShowDemoDataBanner,
         setShouldShowDemoDataBanner,
-    } = useLocalSettingsStore();
+    } = useLocalAppDataStore();
     const [isLoading, setIsLoading] = useState(false);
 
     if (!hasHydrated || !shouldShowDemoDataBanner) return null;

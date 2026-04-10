@@ -1,18 +1,18 @@
 "use client";
 
 import { DateTime } from "luxon";
-import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
+import { useLocalAppDataStore } from "@/lib/store/useLocalAppDataStore";
 
 const MAX_LOG_ENTRIES = 500;
 const LOG_RETENTION_DAYS = 30;
 
 export function useLogger() {
-    const setLoggerEntries = useLocalSettingsStore(
+    const setLoggerEntries = useLocalAppDataStore(
         (state) => state.setLoggerEntries,
     );
 
     function getLoggerEntries() {
-        const currentEntries = useLocalSettingsStore.getState().loggerEntries;
+        const currentEntries = useLocalAppDataStore.getState().loggerEntries;
         return [...currentEntries];
     }
 
@@ -26,7 +26,7 @@ export function useLogger() {
         };
 
         const cutoff = now.minus({ days: LOG_RETENTION_DAYS });
-        const currentEntries = useLocalSettingsStore.getState().loggerEntries;
+        const currentEntries = useLocalAppDataStore.getState().loggerEntries;
         const pruned = [...currentEntries, newEntry].filter(
             (e) => DateTime.fromISO(e.timestamp) >= cutoff,
         );
