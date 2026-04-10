@@ -32,6 +32,7 @@ import {
 import { clearSwCaches } from "@/lib/serviceWorker";
 import { useLocalAppDataStore } from "@/lib/store/useLocalAppDataStore";
 import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
+import { useLocalUserSettingsStore } from "@/lib/store/useLocalUserSettingsStore";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
 import { getTimeFormatOptions } from "@/lib/utils";
 
@@ -51,17 +52,15 @@ export default function SettingsClient() {
     const { isOnline } = useOnlineStatus();
     const { theme, setTheme } = useTheme();
     const { sync } = useSync();
+    const { syncStatus, lastSyncTime, syncError, setLastSyncTime } =
+        useLocalSettingsStore();
+    const { setShouldShowDemoDataBanner } = useLocalAppDataStore();
     const {
-        syncStatus,
-        lastSyncTime,
-        syncError,
-        isAutobackupEnabled,
-        setIsAutobackupEnabled,
-        setLastSyncTime,
         timeFormat,
         setTimeFormat,
-    } = useLocalSettingsStore();
-    const { setShouldShowDemoDataBanner } = useLocalAppDataStore();
+        isAutobackupEnabled,
+        setIsAutobackupEnabled,
+    } = useLocalUserSettingsStore();
     const { getLoggerEntries, clearLoggerEntries } = useLogger();
 
     const [isPrettyPrint, setIsPrettyPrint] = useState(true);
