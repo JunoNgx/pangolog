@@ -9,7 +9,7 @@ import {
 } from "@heroui/react";
 import { Monitor, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 
 const themes = [
     { key: "light", label: "Light", icon: Sun },
@@ -22,7 +22,7 @@ export function ThemeSwitcher() {
     const [isMounted, setMounted] = useState(false);
     const CurrentIcon = themes.find((t) => t.key === theme)?.icon ?? Monitor;
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         setMounted(true);
     }, []);
 
