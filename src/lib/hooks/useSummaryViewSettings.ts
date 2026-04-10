@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const STORAGE_KEY = "pangolog-summary-view-settings";
 
@@ -36,24 +36,18 @@ function saveSettings(settings: SummaryViewSettings): void {
 }
 
 export function useSummaryViewSettings() {
-    const [isYearly, setIsYearlyState] = useState(false);
-    const [shouldShowSmallDimes, setShouldShowSmallDimesState] = useState(true);
-    const [shouldShowBigBucks, setShouldShowBigBucksState] = useState(false);
-    const [selectedYear, setSelectedYearState] = useState(
-        DEFAULT_SETTINGS.selectedYear,
+    const initial = loadSettings();
+    const [isYearly, setIsYearlyState] = useState(initial.isYearly);
+    const [shouldShowSmallDimes, setShouldShowSmallDimesState] = useState(
+        initial.shouldShowSmallDimes,
     );
+    const [shouldShowBigBucks, setShouldShowBigBucksState] = useState(
+        initial.shouldShowBigBucks,
+    );
+    const [selectedYear, setSelectedYearState] = useState(initial.selectedYear);
     const [selectedMonth, setSelectedMonthState] = useState(
-        DEFAULT_SETTINGS.selectedMonth,
+        initial.selectedMonth,
     );
-
-    useEffect(() => {
-        const settings = loadSettings();
-        setIsYearlyState(settings.isYearly);
-        setShouldShowSmallDimesState(settings.shouldShowSmallDimes);
-        setShouldShowBigBucksState(settings.shouldShowBigBucks);
-        setSelectedYearState(settings.selectedYear);
-        setSelectedMonthState(settings.selectedMonth);
-    }, []);
 
     function persist(patch: Partial<SummaryViewSettings>) {
         saveSettings({
