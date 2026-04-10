@@ -6,7 +6,7 @@ import { useCallback, useEffect, useState } from "react";
 import { CategoryDialog } from "@/components/CategoryDialog";
 import { DemoDataBanner } from "@/components/DemoDataBanner";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
-import { createAction } from "@/lib/createAction";
+import { commandPaletteCreateActions } from "@/lib/commandPaletteActionRegistry";
 import { useHotkey } from "@/lib/hooks/useHotkey";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
 import { CategoryList } from "./CategoryList";
@@ -15,10 +15,10 @@ export default function CategoriesClient() {
     const [isCreateOpen, setIsCreateOpen] = useState(false);
     const openCreateDialog = useCallback(() => setIsCreateOpen(true), []);
     useHotkey("Enter", openCreateDialog, { ctrlOrMeta: true });
-    useEffect(
-        () => createAction.register(openCreateDialog),
-        [openCreateDialog],
-    );
+    useEffect(() => {
+        commandPaletteCreateActions.register(openCreateDialog);
+        return () => commandPaletteCreateActions.unregister();
+    }, [openCreateDialog]);
 
     const { isCategoryAlphabetical, setIsCategoryAlphabetical } =
         useProfileSettingsStore();

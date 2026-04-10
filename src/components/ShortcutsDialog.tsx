@@ -2,8 +2,8 @@
 
 import { Modal, ModalBody, ModalContent, ModalHeader } from "@heroui/react";
 import { useCallback, useEffect, useState } from "react";
+import { commandPaletteShortcutsActions } from "@/lib/commandPaletteActionRegistry";
 import { useHotkey } from "@/lib/hooks/useHotkey";
-import { shortcutsAction } from "@/lib/shortcutsAction";
 
 type Shortcut = {
     keys: string[];
@@ -113,7 +113,10 @@ export function ShortcutsDialog() {
     const close = useCallback(() => setIsOpen(false), []);
     const toggle = useCallback(() => setIsOpen((prev) => !prev), []);
 
-    useEffect(() => shortcutsAction.register(open), [open]);
+    useEffect(() => {
+        commandPaletteShortcutsActions.register(open);
+        return () => commandPaletteShortcutsActions.unregister();
+    }, [open]);
     useHotkey("/", toggle, { ctrlOrMeta: true });
 
     return (

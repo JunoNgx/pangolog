@@ -8,7 +8,7 @@ import { DemoDataBanner } from "@/components/DemoDataBanner";
 import { PeriodPicker } from "@/components/PeriodPicker";
 import { SyncButton } from "@/components/SyncButton";
 import { TransactionTypeCheckboxes } from "@/components/TransactionTypeCheckboxes";
-import { createAction } from "@/lib/createAction";
+import { commandPaletteCreateActions } from "@/lib/commandPaletteActionRegistry";
 import { useCategories } from "@/lib/hooks/useCategories";
 import { useGoogleAuth } from "@/lib/hooks/useGoogleAuth";
 import { useHotkey } from "@/lib/hooks/useHotkey";
@@ -34,10 +34,10 @@ export default function LogClient() {
     const [isCreateOpen, setIsCreateOpen] = useState(false);
     const openCreateDialog = useCallback(() => setIsCreateOpen(true), []);
     useHotkey("Enter", openCreateDialog, { ctrlOrMeta: true });
-    useEffect(
-        () => createAction.register(openCreateDialog),
-        [openCreateDialog],
-    );
+    useEffect(() => {
+        commandPaletteCreateActions.register(openCreateDialog);
+        return () => commandPaletteCreateActions.unregister();
+    }, [openCreateDialog]);
 
     const {
         shouldShowSmallDimes,
