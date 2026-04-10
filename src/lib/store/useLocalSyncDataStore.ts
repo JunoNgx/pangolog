@@ -4,7 +4,7 @@ import type { AuthToken } from "@/lib/auth/types";
 
 export type SyncStatus = "idle" | "syncing" | "error";
 
-interface LocalSettingsStore {
+interface LocalSyncDataStore {
     authToken: AuthToken | null;
     setAuthToken: (token: AuthToken | null) => void;
     driveFolderId: string | null;
@@ -17,7 +17,7 @@ interface LocalSettingsStore {
     setSyncError: (error: string | null) => void;
 }
 
-export const useLocalSettingsStore = create<LocalSettingsStore>()(
+export const useLocalSyncDataStore = create<LocalSyncDataStore>()(
     persist(
         (set) => ({
             authToken: null,

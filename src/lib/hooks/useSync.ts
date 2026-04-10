@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import type { TokenResult } from "@/lib/auth/types";
 import { getOrCreatePangoFolder } from "@/lib/drive/client";
 import { syncAll } from "@/lib/drive/sync";
-import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
+import { useLocalSyncDataStore } from "@/lib/store/useLocalSyncDataStore";
 import { useGoogleAuth } from "./useGoogleAuth";
 import { useLogger } from "./useLogger";
 
@@ -40,7 +40,7 @@ export function useSyncFn() {
         setLastSyncTime,
         setSyncError,
         setAuthToken,
-    } = useLocalSettingsStore();
+    } = useLocalSyncDataStore();
 
     const { getValidToken } = useGoogleAuth();
     const { addLoggerEntry } = useLogger();
@@ -188,7 +188,7 @@ export function useSync() {
                 }
                 return;
             }
-            const { lastSyncTime } = useLocalSettingsStore.getState();
+            const { lastSyncTime } = useLocalSyncDataStore.getState();
             if (isSyncStale(lastSyncTime)) sync(true);
         };
         document.addEventListener("visibilitychange", handleVisibilityChange);

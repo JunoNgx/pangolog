@@ -31,7 +31,7 @@ import {
 } from "@/lib/import";
 import { clearSwCaches } from "@/lib/serviceWorker";
 import { useLocalAppDataStore } from "@/lib/store/useLocalAppDataStore";
-import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
+import { useLocalSyncDataStore } from "@/lib/store/useLocalSyncDataStore";
 import { useLocalUserSettingsStore } from "@/lib/store/useLocalUserSettingsStore";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
 import { getTimeFormatOptions } from "@/lib/utils";
@@ -53,7 +53,7 @@ export default function SettingsClient() {
     const { theme, setTheme } = useTheme();
     const { sync } = useSync();
     const { syncStatus, lastSyncTime, syncError, setLastSyncTime } =
-        useLocalSettingsStore();
+        useLocalSyncDataStore();
     const { setShouldShowDemoDataBanner } = useLocalAppDataStore();
     const {
         timeFormat,
