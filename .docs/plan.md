@@ -514,7 +514,7 @@ Audit all `useEffect` usages in the codebase and fix identified issues.
 - [x] `src/lib/hooks/useLogViewSettings.ts`: same fix
 
 ### Task 23b: Fix flash-on-navigation in useOnlineStatus
-- [ ] `src/lib/hooks/useOnlineStatus.ts`: `isOnline` is initialized to `true` (hardcoded) then a `useEffect` sets it from `navigator.onLine` after first render. Since `navigator.onLine` is a synchronous read, move it directly into `useState(navigator.onLine)` and remove the mount effect.
+- [x] `src/lib/hooks/useOnlineStatus.ts`: initialize `isOnline` directly from `navigator.onLine` via lazy `useState` initializer; remove mount-time `setIsOnline` call; switch to `useLayoutEffect` for event listener lifecycle.
 
 ### Task 23c: Fix isMounted anti-pattern
 - [ ] `src/app/(app)/settings/SettingsClient.tsx:79`: `useEffect(() => setIsMounted(true), [])` is used to gate rendering of something after hydration. Investigate what `isMounted` guards and apply the appropriate fix (e.g. `suppressHydrationWarning`, or lazy `useState` initializer).
