@@ -531,3 +531,21 @@ Audit all `useEffect` usages in the codebase and fix identified issues.
 
 ### Task 23g: useHotkey refactor
 - [x] `src/lib/hooks/useHotkey.ts`: switch from `useEffect` to `useLayoutEffect` to better communicate lifecycle intent; use refs for `callback` and `options` so the listener registers once per `key` change and always reads the latest values without stale closure issues.
+
+## Task 25: Split useLocalSettingsStore
+
+GitHub issue: JunoNgx/pangolog#25
+
+Split `useLocalSettingsStore` into three focused stores with clear responsibilities.
+
+### Task 25a: Create useLocalAppDataStore
+- [x] Create `src/lib/store/useLocalAppDataStore.ts` with `shouldShowDemoDataBanner`, `hasHydrated`, `loggerEntries`
+- [x] Update all consumers
+
+### Task 25b: Create useLocalUserSettingsStore
+- [x] Create `src/lib/store/useLocalUserSettingsStore.ts` with `timeFormat`, `isAutobackupEnabled`
+- [x] Update all consumers
+
+### Task 25c: Rename useLocalSettingsStore to useLocalSyncDataStore
+- [x] Remove migrated fields from `useLocalSettingsStore`; rename store and file to `useLocalSyncDataStore`
+- [x] Update all consumers

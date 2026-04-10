@@ -3,7 +3,7 @@
 import { useCallback, useState } from "react";
 import { toast } from "sonner";
 import type { AuthToken, TokenResult } from "@/lib/auth/types";
-import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
+import { useLocalSyncDataStore } from "@/lib/store/useLocalSyncDataStore";
 
 const CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ?? "";
 const SCOPE = "https://www.googleapis.com/auth/drive.file email";
@@ -26,7 +26,7 @@ function isTokenValid(token: AuthToken): boolean {
 }
 
 export function useGoogleAuth() {
-    const { authToken, setAuthToken } = useLocalSettingsStore();
+    const { authToken, setAuthToken } = useLocalSyncDataStore();
     const [isConnecting, setIsConnecting] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
