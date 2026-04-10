@@ -524,7 +524,7 @@ Audit all `useEffect` usages in the codebase and fix identified issues.
 - [x] `src/lib/createAction.ts`: add comment explaining the singleton bridge pattern
 
 ### Task 23e: Verify createAction/shortcutsAction cleanup
-- [ ] `src/app/(app)/log/LogClient.tsx:37`, `src/app/(app)/manage/CategoriesClient.tsx:18`, `src/app/(app)/manage/RecurringClient.tsx:43`, `src/components/ShortcutsDialog.tsx:116`: all register callbacks via `useEffect` with no explicit cleanup. Audit finding initially flagged as memory leak, but `createAction.register()` already returns a cleanup function which `useEffect` uses as its return value — this is correct. Verify the same holds for `shortcutsAction.register()`.
+- [won't do] `shortcutsAction.register()` is identical to `createAction.register()` — both return a cleanup function that `useEffect` uses as its return value. No memory leak. No fix needed.
 
 ### Task 23f: Fragile store access in useSync visibility handler
 - [won't do] `src/lib/hooks/useSync.ts:181`: `getState()` is the correct way to read Zustand state inside an event listener — it always returns current state without a stale closure issue. No fix needed.
