@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { Toaster } from "sonner";
 import { ServiceWorkerRegistration } from "@/components/ServiceWorkerRegistration";
 import { useLocalAppDataStore } from "@/lib/store/useLocalAppDataStore";
-import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
+import { useLocalSyncDataStore } from "@/lib/store/useLocalSyncDataStore";
 import { useLocalUserSettingsStore } from "@/lib/store/useLocalUserSettingsStore";
 
 function ThemeColorSync() {
@@ -43,7 +43,7 @@ function ThemedToaster() {
 
 function StoreHydration() {
     useEffect(() => {
-        useLocalSettingsStore.persist.rehydrate();
+        useLocalSyncDataStore.persist.rehydrate();
         useLocalAppDataStore.persist.rehydrate();
         useLocalUserSettingsStore.persist.rehydrate();
     }, []);

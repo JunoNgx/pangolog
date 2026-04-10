@@ -10,7 +10,7 @@ import {
 } from "@/lib/db/bulk";
 import type { Category, RecurringRule, Transaction } from "@/lib/db/types";
 import { buildExportData } from "@/lib/export";
-import { useLocalSettingsStore } from "@/lib/store/useLocalSettingsStore";
+import { useLocalSyncDataStore } from "@/lib/store/useLocalSyncDataStore";
 import { useLocalUserSettingsStore } from "@/lib/store/useLocalUserSettingsStore";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
 import {
@@ -109,7 +109,7 @@ export async function syncAll(
 
     await purgeExpiredRecords();
 
-    const lastSyncTime = useLocalSettingsStore.getState().lastSyncTime;
+    const lastSyncTime = useLocalSyncDataStore.getState().lastSyncTime;
 
     const [localTransactions, localCategories, localRules] = await Promise.all([
         getAllTransactions(),
