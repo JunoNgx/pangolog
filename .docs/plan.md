@@ -527,7 +527,7 @@ Audit all `useEffect` usages in the codebase and fix identified issues.
 - [ ] `src/app/(app)/log/LogClient.tsx:37`, `src/app/(app)/manage/CategoriesClient.tsx:18`, `src/app/(app)/manage/RecurringClient.tsx:43`, `src/components/ShortcutsDialog.tsx:116`: all register callbacks via `useEffect` with no explicit cleanup. Audit finding initially flagged as memory leak, but `createAction.register()` already returns a cleanup function which `useEffect` uses as its return value — this is correct. Verify the same holds for `shortcutsAction.register()`.
 
 ### Task 23f: Fragile store access in useSync visibility handler
-- [ ] `src/lib/hooks/useSync.ts:181`: the `visibilitychange` handler reads `useLocalSettingsStore.getState()` directly inside the event listener. This works because `getState()` always returns the latest state, but it bypasses the React dependency model and is non-obvious. Consider whether this warrants a comment or refactor.
+- [won't do] `src/lib/hooks/useSync.ts:181`: `getState()` is the correct way to read Zustand state inside an event listener — it always returns current state without a stale closure issue. No fix needed.
 
 ### Task 23g: useHotkey refactor
 - [x] `src/lib/hooks/useHotkey.ts`: switch from `useEffect` to `useLayoutEffect` to better communicate lifecycle intent; use refs for `callback` and `options` so the listener registers once per `key` change and always reads the latest values without stale closure issues.
