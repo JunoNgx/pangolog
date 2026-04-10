@@ -547,5 +547,5 @@ Split `useLocalSettingsStore` into three focused stores with clear responsibilit
 - [x] Update all consumers
 
 ### Task 25c: Rename useLocalSettingsStore to useLocalSyncDataStore
-- [ ] Remove migrated fields from `useLocalSettingsStore`; rename store and file to `useLocalSyncDataStore`
-- [ ] Update all consumers
+- [x] Remove migrated fields from `useLocalSettingsStore`; rename store and file to `useLocalSyncDataStore`
+- [x] Update all consumers
