@@ -14,7 +14,7 @@ import {
 } from "@heroui/react";
 import { DateTime } from "luxon";
 import { useTheme } from "next-themes";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { toast } from "sonner";
 import { clearAllData, forceDeleteDb } from "@/lib/db";
 import { exportJson } from "@/lib/export";
@@ -75,8 +75,6 @@ export default function SettingsClient() {
         null,
     );
     const [isImporting, setIsImporting] = useState(false);
-    const [isMounted, setIsMounted] = useState(false);
-    useEffect(() => setIsMounted(true), []);
 
     const [isClearRecordsDialogOpen, setIsResetDialogOpen] = useState(false);
     const [isClearingRecords, setIsResetting] = useState(false);
@@ -426,7 +424,7 @@ export default function SettingsClient() {
                         <RadioGroup
                             label="Theme"
                             orientation="horizontal"
-                            value={isMounted ? (theme ?? "system") : "system"}
+                            value={theme ?? "system"}
                             onValueChange={setTheme}
                             classNames={{ wrapper: "gap-6" }}
                         >
