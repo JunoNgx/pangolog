@@ -19,12 +19,14 @@ import {
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useTheme } from "next-themes";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { createAction } from "@/lib/createAction";
+import {
+    commandPaletteCreateActions,
+    commandPaletteShortcutsActions,
+} from "@/lib/commandPaletteActionRegistry";
 import { exportJson } from "@/lib/export";
 import { useGoogleAuth } from "@/lib/hooks/useGoogleAuth";
 import { useHotkey } from "@/lib/hooks/useHotkey";
 import { useSyncFn } from "@/lib/hooks/useSync";
-import { shortcutsAction } from "@/lib/shortcutsAction";
 
 type Command = {
     id: string;
@@ -100,7 +102,7 @@ export function CommandPalette() {
                 group: "Create",
                 label: "New transaction",
                 icon: <Plus size={16} />,
-                action: () => createAction.trigger(),
+                action: () => commandPaletteCreateActions.trigger(),
             };
         }
         if (pathname === "/manage") {
@@ -111,7 +113,7 @@ export function CommandPalette() {
                 label:
                     tab === "recurring" ? "New recurring rule" : "New category",
                 icon: <Plus size={16} />,
-                action: () => createAction.trigger(),
+                action: () => commandPaletteCreateActions.trigger(),
             };
         }
         return null;
@@ -190,7 +192,7 @@ export function CommandPalette() {
                 group: "Actions",
                 label: "Show keyboard shortcuts",
                 icon: <Keyboard size={16} />,
-                action: () => shortcutsAction.trigger(),
+                action: () => commandPaletteShortcutsActions.trigger(),
             },
             {
                 id: "export",
