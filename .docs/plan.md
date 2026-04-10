@@ -504,3 +504,30 @@ A mode that hides income-related UI to reduce clutter for users who only track e
 ### Task 21e: Settings UI toggle
 - [x] `src/app/(app)/settings/SettingsClient.tsx`: add a `RadioGroup` for `isCategoryAlphabetical` in Preferences section
 - [x] `src/app/(app)/manage/CategoriesClient.tsx`: add a `ToggleSwitch` for `isCategoryAlphabetical` above the category list; remove stale description paragraph
+
+## Task 23: useEffect audit and fixes
+
+Audit all `useEffect` usages in the codebase and fix identified issues.
+
+### Task 23a: Fix flash-on-navigation from localStorage hooks
+- [x] `src/lib/hooks/useSummaryViewSettings.ts`: initialize all state directly from `loadSettings()` in `useState`; remove `useEffect`
+- [x] `src/lib/hooks/useLogViewSettings.ts`: same fix
+
+### Task 23b: Fix flash-on-navigation in useOnlineStatus
+- [x] `src/lib/hooks/useOnlineStatus.ts`: initialize `isOnline` directly from `navigator.onLine` via lazy `useState` initializer; remove mount-time `setIsOnline` call; switch to `useLayoutEffect` for event listener lifecycle.
+
+### Task 23c: Fix isMounted anti-pattern
+- [x] `src/app/(app)/settings/SettingsClient.tsx:79`: `isMounted` only gated the theme RadioGroup value fallback. Removed `isMounted` state and `useEffect`; replaced with `theme ?? "system"` directly.
+- [x] `src/components/ThemeSwitcher.tsx:25`: `isMounted` pattern is the correct approach for `next-themes` SSR mismatch; switched `useEffect` to `useLayoutEffect` to better communicate lifecycle intent.
+
+### Task 23d: Document createAction singleton
+- [x] `src/lib/createAction.ts`: add comment explaining the singleton bridge pattern
+
+### Task 23e: Verify createAction/shortcutsAction cleanup
+- [won't do] `shortcutsAction.register()` is identical to `createAction.register()` — both return a cleanup function that `useEffect` uses as its return value. No memory leak. No fix needed.
+
+### Task 23f: Fragile store access in useSync visibility handler
+- [won't do] `src/lib/hooks/useSync.ts:181`: `getState()` is the correct way to read Zustand state inside an event listener — it always returns current state without a stale closure issue. No fix needed.
+
+### Task 23g: useHotkey refactor
+- [x] `src/lib/hooks/useHotkey.ts`: switch from `useEffect` to `useLayoutEffect` to better communicate lifecycle intent; use refs for `callback` and `options` so the listener registers once per `key` change and always reads the latest values without stale closure issues.

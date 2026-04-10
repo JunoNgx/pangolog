@@ -1,11 +1,9 @@
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 
 export function useOnlineStatus() {
-    const [isOnline, setIsOnline] = useState(true);
+    const [isOnline, setIsOnline] = useState(() => navigator.onLine);
 
-    useEffect(() => {
-        setIsOnline(navigator.onLine);
-
+    useLayoutEffect(() => {
         function handleOnline() {
             setIsOnline(true);
         }
