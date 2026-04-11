@@ -580,7 +580,7 @@ Reduce Drive sync round trips by collapsing serial downloads and eliminating a r
 - Replaces the existing `allYearFiles` Set + `for...await` loop
 
 ### Task 27b: Collapse all downloads into one `Promise.all`
-- [ ] Replace the three serial `await downloadFile` calls and the year-file `for...await` loop with a single `Promise.all` firing all Drive reads concurrently
+- [x] Replace the three serial `await downloadFile` calls and the year-file `for...await` loop with a single `Promise.all` firing all Drive reads concurrently
 - Result shape:
     - `remoteSettingsResult: DriveSettings | null` (null if no Drive entry)
     - `remoteCategoriesResult: Category[] | null`
