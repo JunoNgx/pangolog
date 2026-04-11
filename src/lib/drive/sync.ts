@@ -167,26 +167,52 @@ export async function runFullDriveSync(
                 entry !== null,
         );
 
+    // --- Parallel downloads ---
+
+    const settingsEntry = driveFileMap.get(SETTINGS_FILE);
+    const categoriesEntry = driveFileMap.get(CATEGORIES_FILE);
+    const rulesEntry = driveFileMap.get(RECURRING_RULES_FILE);
+
+    const [
+        remoteSettingsResult,
+        remoteCategoriesResult,
+        remoteRulesResult,
+        remoteYearResults,
+    ] = await Promise.all([
+        settingsEntry
+            ? downloadFile<DriveSettings>(token, settingsEntry.id)
+            : Promise.resolve(null),
+        categoriesEntry
+            ? downloadFile<Category[]>(token, categoriesEntry.id)
+            : Promise.resolve(null),
+        rulesEntry
+            ? downloadFile<RecurringRule[]>(token, rulesEntry.id)
+            : Promise.resolve(null),
+        Promise.all(
+            relevantYearFiles.map(({ yearFile, driveId }) =>
+                downloadFile<Transaction[]>(token, driveId).then(
+                    (remoteTransactions) => ({ yearFile, remoteTransactions }),
+                ),
+            ),
+        ),
+    ]);
+
     // --- Settings sync ---
 
     const { settingsUpdatedAt, applyRemoteSettings } =
         useProfileSettingsStore.getState();
 
-    const settingsEntry = driveFileMap.get(SETTINGS_FILE);
-    if (settingsEntry) {
-        const remoteSettings = await downloadFile<DriveSettings>(
-            token,
-            settingsEntry.id,
+    if (
+        remoteSettingsResult &&
+        remoteSettingsResult.updatedAt > settingsUpdatedAt
+    ) {
+        applyRemoteSettings(
+            remoteSettingsResult.customCurrency ?? "",
+            remoteSettingsResult.isPrefixCurrency ?? true,
+            remoteSettingsResult.isExpenseOnlyMode ?? false,
+            remoteSettingsResult.isCategoryAlphabetical ?? false,
+            remoteSettingsResult.updatedAt,
         );
-        if (remoteSettings.updatedAt > settingsUpdatedAt) {
-            applyRemoteSettings(
-                remoteSettings.customCurrency ?? "",
-                remoteSettings.isPrefixCurrency ?? true,
-                remoteSettings.isExpenseOnlyMode ?? false,
-                remoteSettings.isCategoryAlphabetical ?? false,
-                remoteSettings.updatedAt,
-            );
-        }
     }
 
     const {
@@ -205,37 +231,25 @@ export async function runFullDriveSync(
     };
     await upsertFile(token, folderId, SETTINGS_FILE, localSettings);
 
-    // --- Download and merge categories + rules ---
+    // --- Merge categories + rules ---
 
-    const categoriesEntry = driveFileMap.get(CATEGORIES_FILE);
-    if (categoriesEntry) {
-        const remoteCategories = await downloadFile<Category[]>(
-            token,
-            categoriesEntry.id,
-        );
+    if (remoteCategoriesResult) {
         await bulkPutCategories(
-            mergeRecords(localCategories, remoteCategories),
+            mergeRecords(localCategories, remoteCategoriesResult),
         );
     }
 
-    const rulesEntry = driveFileMap.get(RECURRING_RULES_FILE);
-    if (rulesEntry) {
-        const remoteRules = await downloadFile<RecurringRule[]>(
-            token,
-            rulesEntry.id,
+    if (remoteRulesResult) {
+        await bulkPutRecurringRules(
+            mergeRecords(localRules, remoteRulesResult),
         );
-        await bulkPutRecurringRules(mergeRecords(localRules, remoteRules));
     }
 
-    // --- Download and merge transactions (YYYY.json, smart sync) ---
+    // --- Merge transactions (YYYY.json) ---
 
-    for (const { yearFile, driveId } of relevantYearFiles) {
+    for (const { yearFile, remoteTransactions } of remoteYearResults) {
         const localYearTransactions =
             localTransactionsByYear.get(yearFile) ?? [];
-        const remoteTransactions = await downloadFile<Transaction[]>(
-            token,
-            driveId,
-        );
         await bulkPutTransactions(
             mergeRecords(localYearTransactions, remoteTransactions),
         );
