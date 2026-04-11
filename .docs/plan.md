@@ -554,12 +554,11 @@ Split `useLocalSettingsStore` into three focused stores with clear responsibilit
 
 GitHub issue: JunoNgx/pangolog#27
 
-Reduce Drive sync round trips by collapsing serial downloads and eliminating a redundant DB read.
+Reduce Drive sync round trips by collapsing serial downloads into parallel batches.
 
 **Current bottlenecks:**
 - Settings, categories, rules, and year transaction files downloaded sequentially
 - Year files downloaded one-by-one in a `for...await` loop
-- `getAllTransactions()` called twice (lines 115 and 247); second call exists only because merged data was written to DB and re-read
 - Settings uploaded immediately after download, blocking subsequent category/rule downloads
 
 **Target execution order:**
@@ -569,11 +568,15 @@ Reduce Drive sync round trips by collapsing serial downloads and eliminating a r
 → Promise.all: [settings_dl, categories_dl, rules_dl, ...yearFiles_dl]
 → merge all in memory
 → Promise.all: [bulkPutCategories, bulkPutRecurringRules, bulkPutTransactions]
-→ deduplicateRecurringTransactions (in-memory, no DB read)
+→ deduplicateRecurringTransactions (reads from DB post-write)
 → bulkPutTransactions soft-deletes (if any)
+→ re-read from DB (authoritative state after dedup soft-deletes)
 → Promise.all: [settings_ul, categories_ul, rules_ul, ...yearFiles_ul]
 → autobackup (unchanged)
 ```
+
+**Design note -- DB re-read before upload:**
+After the parallel DB writes, dedup may write additional soft-deletes. Rather than patching the in-memory merged data to reflect those soft-deletes (which requires a `softDeleteMap` loop over `mergedTransactionsByYear`), we simply re-read all data from DB. Local DB reads are fast; the extra reads are not a bottleneck. The DB is the authoritative final state after `bulkPut` merges, so re-reading is correct and simpler to reason about.
 
 ### Task 27a: Build download manifest
 - [x] After the trash-duplicates block, compute `relevantYearFiles: Array<{ yearFile: string; driveId: string }>` -- union of local year keys and drive year file names, filtered to entries present in `driveFileMap` with `modifiedTime > lastSyncTime`
@@ -588,16 +591,15 @@ Reduce Drive sync round trips by collapsing serial downloads and eliminating a r
     - `remoteYearResults: Array<{ yearFile: string; remoteTransactions: Transaction[] }>`
 
 ### Task 27c: In-memory merges
-- [x] **Settings:** apply remote if newer via `applyRemoteSettings`; re-read store state after to build `localSettings` for upload (fixes TOCTOU, same as Task 13d)
-- [x] **Categories:** `mergedCategories = remoteCategoriesResult ? mergeRecords(localCategories, remoteCategoriesResult) : localCategories` -- no DB write yet
+- [x] **Settings:** apply remote if newer via `applyRemoteSettings`; re-read store state after to build `localSettings` for upload
+- [x] **Categories:** `mergedCategories = remoteCategoriesResult ? mergeRecords(localCategories, remoteCategoriesResult) : localCategories`
 - [x] **Rules:** same pattern → `mergedRules`
 - [x] **Transactions:** clone `localTransactionsByYear`, overwrite each downloaded year with `mergeRecords` result; flatten to `allMergedTransactions: Transaction[]`
 
 ### Task 27d: Parallel DB writes
 - [x] Replace scattered serial `bulkPut*` calls with a single `Promise.all([bulkPutCategories(mergedCategories), bulkPutRecurringRules(mergedRules), bulkPutTransactions(allMergedTransactions)])`
 
-### Task 27e: Eliminate second `getAllTransactions` call
-- [x] Pass `allMergedTransactions` directly to `deduplicateRecurringTransactions` -- no `await getAllTransactions()`
-- [x] If soft-deletes produced, call `bulkPutTransactions(softDeletedDuplicates)` and patch `mergedTransactionsByYear` in-memory (new arrays, no mutation) so upload phase sees final state
-- [x] Remove the second `Promise.all([getAllTransactions, getAllCategoriesForSync, getAllRecurringRulesForSync])` block entirely
+### Task 27e: Re-read from DB before upload
+- [x] After dedup soft-deletes, re-read `[getAllTransactions, getAllCategoriesForSync, getAllRecurringRulesForSync]` from DB -- authoritative state after all writes
+- [x] Upload uses re-read data (`uploadTransactions`, `uploadCategories`, `uploadRules`)
 
