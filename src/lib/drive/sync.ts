@@ -101,7 +101,7 @@ function mergeRecords<T extends { id: string; updatedAt: string }>(
     return Array.from(map.values());
 }
 
-export async function syncAll(
+export async function runFullDriveSync(
     token: string,
     folderId: string,
 ): Promise<string> {
