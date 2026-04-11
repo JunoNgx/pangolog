@@ -601,6 +601,3 @@ Reduce Drive sync round trips by collapsing serial downloads and eliminating a r
 - [x] If soft-deletes produced, call `bulkPutTransactions(softDeletedDuplicates)` and patch `mergedTransactionsByYear` in-memory (new arrays, no mutation) so upload phase sees final state
 - [x] Remove the second `Promise.all([getAllTransactions, getAllCategoriesForSync, getAllRecurringRulesForSync])` block entirely
 
-### Task 27f: Upload phase cleanup
-- [ ] Upload phase already uses `Promise.all(uploads)` -- verify it references in-memory `mergedCategories`, `mergedRules`, and the patched `mergedTransactionsByYear` (no changes to structure needed, just variable sources)
-- [ ] Confirm local-only year files (present in `localTransactionsByYear` but absent from Drive) are still included in upload iteration
