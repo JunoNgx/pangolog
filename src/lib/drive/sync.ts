@@ -124,10 +124,10 @@ export async function runFullDriveSync(
         string,
         { id: string; modifiedTime: string }
     >();
-    const toTrash: string[] = [];
+    const toTrashDriveFileIds: string[] = [];
     for (const f of driveFiles) {
         if (driveFileMap.has(f.name)) {
-            toTrash.push(f.id);
+            toTrashDriveFileIds.push(f.id);
         } else {
             driveFileMap.set(f.name, {
                 id: f.id,
@@ -135,8 +135,8 @@ export async function runFullDriveSync(
             });
         }
     }
-    if (toTrash.length > 0) {
-        await Promise.all(toTrash.map((id) => trashFile(token, id)));
+    if (toTrashDriveFileIds.length > 0) {
+        await Promise.all(toTrashDriveFileIds.map((id) => trashFile(token, id)));
     }
 
     // --- Download manifest ---
