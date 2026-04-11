@@ -588,18 +588,18 @@ Reduce Drive sync round trips by collapsing serial downloads and eliminating a r
     - `remoteYearResults: Array<{ yearFile: string; remoteTransactions: Transaction[] }>`
 
 ### Task 27c: In-memory merges
-- [ ] **Settings:** apply remote if newer via `applyRemoteSettings`; re-read store state after to build `localSettings` for upload (fixes TOCTOU, same as Task 13d)
-- [ ] **Categories:** `mergedCategories = remoteCategoriesResult ? mergeRecords(localCategories, remoteCategoriesResult) : localCategories` -- no DB write yet
-- [ ] **Rules:** same pattern → `mergedRules`
-- [ ] **Transactions:** clone `localTransactionsByYear`, overwrite each downloaded year with `mergeRecords` result; flatten to `allMergedTransactions: Transaction[]`
+- [x] **Settings:** apply remote if newer via `applyRemoteSettings`; re-read store state after to build `localSettings` for upload (fixes TOCTOU, same as Task 13d)
+- [x] **Categories:** `mergedCategories = remoteCategoriesResult ? mergeRecords(localCategories, remoteCategoriesResult) : localCategories` -- no DB write yet
+- [x] **Rules:** same pattern → `mergedRules`
+- [x] **Transactions:** clone `localTransactionsByYear`, overwrite each downloaded year with `mergeRecords` result; flatten to `allMergedTransactions: Transaction[]`
 
 ### Task 27d: Parallel DB writes
-- [ ] Replace scattered serial `bulkPut*` calls with a single `Promise.all([bulkPutCategories(mergedCategories), bulkPutRecurringRules(mergedRules), bulkPutTransactions(allMergedTransactions)])`
+- [x] Replace scattered serial `bulkPut*` calls with a single `Promise.all([bulkPutCategories(mergedCategories), bulkPutRecurringRules(mergedRules), bulkPutTransactions(allMergedTransactions)])`
 
 ### Task 27e: Eliminate second `getAllTransactions` call
-- [ ] Pass `allMergedTransactions` directly to `deduplicateRecurringTransactions` -- no `await getAllTransactions()`
-- [ ] If soft-deletes produced, call `bulkPutTransactions(softDeletedDuplicates)` and patch `mergedTransactionsByYear` in-memory (new arrays, no mutation) so upload phase sees final state
-- [ ] Remove the second `Promise.all([getAllTransactions, getAllCategoriesForSync, getAllRecurringRulesForSync])` block entirely
+- [x] Pass `allMergedTransactions` directly to `deduplicateRecurringTransactions` -- no `await getAllTransactions()`
+- [x] If soft-deletes produced, call `bulkPutTransactions(softDeletedDuplicates)` and patch `mergedTransactionsByYear` in-memory (new arrays, no mutation) so upload phase sees final state
+- [x] Remove the second `Promise.all([getAllTransactions, getAllCategoriesForSync, getAllRecurringRulesForSync])` block entirely
 
 ### Task 27f: Upload phase cleanup
 - [ ] Upload phase already uses `Promise.all(uploads)` -- verify it references in-memory `mergedCategories`, `mergedRules`, and the patched `mergedTransactionsByYear` (no changes to structure needed, just variable sources)
