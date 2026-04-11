@@ -576,7 +576,7 @@ Reduce Drive sync round trips by collapsing serial downloads and eliminating a r
 ```
 
 ### Task 27a: Build download manifest
-- [ ] After the trash-duplicates block, compute `relevantYearFiles: Array<{ yearFile: string; driveId: string }>` -- union of local year keys and drive year file names, filtered to entries present in `driveFileMap` with `modifiedTime > lastSyncTime`
+- [x] After the trash-duplicates block, compute `relevantYearFiles: Array<{ yearFile: string; driveId: string }>` -- union of local year keys and drive year file names, filtered to entries present in `driveFileMap` with `modifiedTime > lastSyncTime`
 - Replaces the existing `allYearFiles` Set + `for...await` loop
 
 ### Task 27b: Collapse all downloads into one `Promise.all`
