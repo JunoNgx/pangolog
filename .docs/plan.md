@@ -549,3 +549,57 @@ Split `useLocalSettingsStore` into three focused stores with clear responsibilit
 ### Task 25c: Rename useLocalSettingsStore to useLocalSyncDataStore
 - [x] Remove migrated fields from `useLocalSettingsStore`; rename store and file to `useLocalSyncDataStore`
 - [x] Update all consumers
+
+## Task 27: Parallelize sync
+
+GitHub issue: JunoNgx/pangolog#27
+
+Reduce Drive sync round trips by collapsing serial downloads into parallel batches.
+
+**Current bottlenecks:**
+- Settings, categories, rules, and year transaction files downloaded sequentially
+- Year files downloaded one-by-one in a `for...await` loop
+- Settings uploaded immediately after download, blocking subsequent category/rule downloads
+
+**Target execution order:**
+```
+→ Promise.all: [purgeExpiredRecords, listFiles]
+→ trash duplicates (parallel, unchanged)
+→ Promise.all: [settings_dl, categories_dl, rules_dl, ...yearFiles_dl]
+→ merge all in memory
+→ Promise.all: [bulkPutCategories, bulkPutRecurringRules, bulkPutTransactions]
+→ deduplicateRecurringTransactions (reads from DB post-write)
+→ bulkPutTransactions soft-deletes (if any)
+→ re-read from DB (authoritative state after dedup soft-deletes)
+→ Promise.all: [settings_ul, categories_ul, rules_ul, ...yearFiles_ul]
+→ autobackup (unchanged)
+```
+
+**Design note -- DB re-read before upload:**
+After the parallel DB writes, dedup may write additional soft-deletes. Rather than patching the in-memory merged data to reflect those soft-deletes (which requires a `softDeleteMap` loop over `mergedTransactionsByYear`), we simply re-read all data from DB. Local DB reads are fast; the extra reads are not a bottleneck. The DB is the authoritative final state after `bulkPut` merges, so re-reading is correct and simpler to reason about.
+
+### Task 27a: Build download manifest
+- [x] After the trash-duplicates block, compute `relevantYearFiles: Array<{ yearFile: string; driveId: string }>` -- union of local year keys and drive year file names, filtered to entries present in `driveFileMap` with `modifiedTime > lastSyncTime`
+- Replaces the existing `allYearFiles` Set + `for...await` loop
+
+### Task 27b: Collapse all downloads into one `Promise.all`
+- [x] Replace the three serial `await downloadFile` calls and the year-file `for...await` loop with a single `Promise.all` firing all Drive reads concurrently
+- Result shape:
+    - `remoteSettingsResult: DriveSettings | null` (null if no Drive entry)
+    - `remoteCategoriesResult: Category[] | null`
+    - `remoteRulesResult: RecurringRule[] | null`
+    - `remoteYearResults: Array<{ yearFile: string; remoteTransactions: Transaction[] }>`
+
+### Task 27c: In-memory merges
+- [x] **Settings:** apply remote if newer via `applyRemoteSettings`; re-read store state after to build `localSettings` for upload
+- [x] **Categories:** `mergedCategories = remoteCategoriesResult ? mergeRecords(localCategories, remoteCategoriesResult) : localCategories`
+- [x] **Rules:** same pattern → `mergedRules`
+- [x] **Transactions:** clone `localTransactionsByYear`, overwrite each downloaded year with `mergeRecords` result; flatten to `allMergedTransactions: Transaction[]`
+
+### Task 27d: Parallel DB writes
+- [x] Replace scattered serial `bulkPut*` calls with a single `Promise.all([bulkPutCategories(mergedCategories), bulkPutRecurringRules(mergedRules), bulkPutTransactions(allMergedTransactions)])`
+
+### Task 27e: Re-read from DB before upload
+- [x] After dedup soft-deletes, re-read `[getAllTransactions, getAllCategoriesForSync, getAllRecurringRulesForSync]` from DB -- authoritative state after all writes
+- [x] Upload uses re-read data (`uploadTransactions`, `uploadCategories`, `uploadRules`)
+

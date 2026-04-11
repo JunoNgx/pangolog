@@ -5,7 +5,7 @@ import { useCallback, useEffect, useRef } from "react";
 import { toast } from "sonner";
 import type { TokenResult } from "@/lib/auth/types";
 import { getOrCreatePangoFolder } from "@/lib/drive/client";
-import { syncAll } from "@/lib/drive/sync";
+import { runFullDriveSync } from "@/lib/drive/sync";
 import { useLocalSyncDataStore } from "@/lib/store/useLocalSyncDataStore";
 import { useGoogleAuth } from "./useGoogleAuth";
 import { useLogger } from "./useLogger";
@@ -91,7 +91,7 @@ export function useSyncFn() {
                     setDriveFolderId(folderId);
                 }
 
-                const syncStartTime = await syncAll(token, folderId);
+                const syncStartTime = await runFullDriveSync(token, folderId);
                 await queryClient.invalidateQueries();
 
                 setSyncStatus("idle");
