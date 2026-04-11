@@ -1,10 +1,12 @@
 import { useLayoutEffect, useState } from "react";
 
 export function useOnlineStatus() {
-    // Default to true for SSR (navigator unavailable); lazy init reads the real
-    // value on the client without a mount-time setState, avoiding flash on navigation.
-    const [isOnline, setIsOnline] = useState(
-        () => typeof navigator !== "undefined" && navigator.onLine,
+    // navigator is unavailable during SSR -- accessing it directly causes a hydration
+    // mismatch. Guard with a typeof check, defaulting to true (assume online) on the
+    // server. Lazy init preserves the accurate client value on navigation without a
+    // mount-time setState, which would cause a flash (see task 23b).
+    const [isOnline, setIsOnline] = useState(() =>
+        typeof navigator !== "undefined" ? navigator.onLine : true,
     );
 
     useLayoutEffect(() => {
