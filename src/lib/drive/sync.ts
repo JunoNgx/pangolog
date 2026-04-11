@@ -136,7 +136,9 @@ export async function runFullDriveSync(
         }
     }
     if (toTrashDriveFileIds.length > 0) {
-        await Promise.all(toTrashDriveFileIds.map((id) => trashFile(token, id)));
+        await Promise.all(
+            toTrashDriveFileIds.map((id) => trashFile(token, id)),
+        );
     }
 
     // --- Download manifest ---
@@ -231,47 +233,56 @@ export async function runFullDriveSync(
     };
     await upsertFile(token, folderId, SETTINGS_FILE, localSettings);
 
-    // --- Merge categories + rules ---
+    // --- In-memory merges ---
 
-    if (remoteCategoriesResult) {
-        await bulkPutCategories(
-            mergeRecords(localCategories, remoteCategoriesResult),
-        );
-    }
+    const mergedCategories = remoteCategoriesResult
+        ? mergeRecords(localCategories, remoteCategoriesResult)
+        : localCategories;
 
-    if (remoteRulesResult) {
-        await bulkPutRecurringRules(
-            mergeRecords(localRules, remoteRulesResult),
-        );
-    }
+    const mergedRules = remoteRulesResult
+        ? mergeRecords(localRules, remoteRulesResult)
+        : localRules;
 
-    // --- Merge transactions (YYYY.json) ---
-
+    const mergedTransactionsByYear = new Map(localTransactionsByYear);
     for (const { yearFile, remoteTransactions } of remoteYearResults) {
         const localYearTransactions =
             localTransactionsByYear.get(yearFile) ?? [];
-        await bulkPutTransactions(
+        mergedTransactionsByYear.set(
+            yearFile,
             mergeRecords(localYearTransactions, remoteTransactions),
         );
     }
+    const allMergedTransactions = [...mergedTransactionsByYear.values()].flat();
+
+    // --- Parallel DB writes ---
+
+    await Promise.all([
+        bulkPutCategories(mergedCategories),
+        bulkPutRecurringRules(mergedRules),
+        bulkPutTransactions(allMergedTransactions),
+    ]);
 
     // --- Deduplicate runner-generated transactions ---
 
     const softDeletedDuplicates = deduplicateRecurringTransactions(
-        await getAllTransactions(),
+        allMergedTransactions,
     );
     if (softDeletedDuplicates.length > 0) {
         await bulkPutTransactions(softDeletedDuplicates);
+        const softDeleteMap = new Map(
+            softDeletedDuplicates.map((t) => [t.id, t]),
+        );
+        for (const [yearFile, yearTransactions] of mergedTransactionsByYear) {
+            if (!yearTransactions.some((t) => softDeleteMap.has(t.id)))
+                continue;
+            mergedTransactionsByYear.set(
+                yearFile,
+                yearTransactions.map((t) => softDeleteMap.get(t.id) ?? t),
+            );
+        }
     }
 
     // --- Upload merged local data ---
-
-    const [mergedTransactions, mergedCategories, mergedRules] =
-        await Promise.all([
-            getAllTransactions(),
-            getAllCategoriesForSync(),
-            getAllRecurringRulesForSync(),
-        ]);
 
     const uploads: Promise<void>[] = [];
 
@@ -280,10 +291,6 @@ export async function runFullDriveSync(
     );
     uploads.push(
         upsertFile(token, folderId, RECURRING_RULES_FILE, mergedRules),
-    );
-
-    const mergedTransactionsByYear = groupBy(mergedTransactions, (t) =>
-        transactionFileName(t.year),
     );
 
     for (const [yearFile, transactions] of mergedTransactionsByYear) {
