@@ -139,6 +139,34 @@ export async function runFullDriveSync(
         await Promise.all(toTrash.map((id) => trashFile(token, id)));
     }
 
+    // --- Download manifest ---
+
+    const localTransactionsByYear = groupBy(localTransactions, (t) =>
+        transactionFileName(t.year),
+    );
+
+    const driveYearFileNames = driveFiles
+        .map((f) => f.name)
+        .filter((name) => /^\d{4}\.json$/.test(name));
+
+    const allYearFileNames = new Set([
+        ...localTransactionsByYear.keys(),
+        ...driveYearFileNames,
+    ]);
+
+    const relevantYearFiles = [...allYearFileNames]
+        .map((yearFile) => {
+            const driveEntry = driveFileMap.get(yearFile);
+            if (!driveEntry) return null;
+            if (lastSyncTime && driveEntry.modifiedTime <= lastSyncTime)
+                return null;
+            return { yearFile, driveId: driveEntry.id };
+        })
+        .filter(
+            (entry): entry is { yearFile: string; driveId: string } =>
+                entry !== null,
+        );
+
     // --- Settings sync ---
 
     const { settingsUpdatedAt, applyRemoteSettings } =
@@ -201,33 +229,15 @@ export async function runFullDriveSync(
 
     // --- Download and merge transactions (YYYY.json, smart sync) ---
 
-    const localTransactionsByYear = groupBy(localTransactions, (t) =>
-        transactionFileName(t.year),
-    );
-
-    const driveYearFiles = driveFiles
-        .map((f) => f.name)
-        .filter((name) => /^\d{4}\.json$/.test(name));
-
-    const allYearFiles = new Set([
-        ...localTransactionsByYear.keys(),
-        ...driveYearFiles,
-    ]);
-
-    for (const yearFile of allYearFiles) {
-        const driveEntry = driveFileMap.get(yearFile);
-        if (!driveEntry) continue;
-
-        // Smart sync: skip download if file not modified since last sync
-        if (lastSyncTime && driveEntry.modifiedTime <= lastSyncTime) continue;
-
-        const localTransactions = localTransactionsByYear.get(yearFile) ?? [];
+    for (const { yearFile, driveId } of relevantYearFiles) {
+        const localYearTransactions =
+            localTransactionsByYear.get(yearFile) ?? [];
         const remoteTransactions = await downloadFile<Transaction[]>(
             token,
-            driveEntry.id,
+            driveId,
         );
         await bulkPutTransactions(
-            mergeRecords(localTransactions, remoteTransactions),
+            mergeRecords(localYearTransactions, remoteTransactions),
         );
     }
 
