@@ -265,35 +265,38 @@ export async function runFullDriveSync(
     // --- Deduplicate runner-generated transactions ---
 
     const softDeletedDuplicates = deduplicateRecurringTransactions(
-        allMergedTransactions,
+        await getAllTransactions(),
     );
     if (softDeletedDuplicates.length > 0) {
         await bulkPutTransactions(softDeletedDuplicates);
-        const softDeleteMap = new Map(
-            softDeletedDuplicates.map((t) => [t.id, t]),
-        );
-        for (const [yearFile, yearTransactions] of mergedTransactionsByYear) {
-            if (!yearTransactions.some((t) => softDeleteMap.has(t.id)))
-                continue;
-            mergedTransactionsByYear.set(
-                yearFile,
-                yearTransactions.map((t) => softDeleteMap.get(t.id) ?? t),
-            );
-        }
     }
 
     // --- Upload merged local data ---
 
+    // Re-read from DB rather than reusing in-memory merged data: dedup may have
+    // written additional soft-deletes, and the parallel bulkPut above merges
+    // records by last-write-wins -- the DB is the authoritative final state.
+    const [uploadTransactions, uploadCategories, uploadRules] =
+        await Promise.all([
+            getAllTransactions(),
+            getAllCategoriesForSync(),
+            getAllRecurringRulesForSync(),
+        ]);
+
     const uploads: Promise<void>[] = [];
 
     uploads.push(
-        upsertFile(token, folderId, CATEGORIES_FILE, mergedCategories),
+        upsertFile(token, folderId, CATEGORIES_FILE, uploadCategories),
     );
     uploads.push(
-        upsertFile(token, folderId, RECURRING_RULES_FILE, mergedRules),
+        upsertFile(token, folderId, RECURRING_RULES_FILE, uploadRules),
     );
 
-    for (const [yearFile, transactions] of mergedTransactionsByYear) {
+    const uploadTransactionsByYear = groupBy(uploadTransactions, (t) =>
+        transactionFileName(t.year),
+    );
+
+    for (const [yearFile, transactions] of uploadTransactionsByYear) {
         // Smart sync: skip upload if no mutations since last sync
         if (
             lastSyncTime &&
