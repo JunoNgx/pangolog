@@ -87,3 +87,21 @@ export function formatAmount(minorUnits: number): string {
     if (isPrefixCurrency) return `${customCurrency}${value}`;
     return `${value} ${customCurrency}`;
 }
+
+export function formatAmountShort(minorUnits: number): string {
+    const { customCurrency, isPrefixCurrency } =
+        useProfileSettingsStore.getState();
+
+    let value: string;
+    if (minorUnits >= 100_000_000) {
+        value = `${(minorUnits / 100_000_000).toFixed(1)}M`;
+    } else if (minorUnits >= 100_000) {
+        value = `${(minorUnits / 100_000).toFixed(1)}K`;
+    } else {
+        value = (minorUnits / 100).toFixed(2);
+    }
+
+    if (!customCurrency) return value;
+    if (isPrefixCurrency) return `${customCurrency}${value}`;
+    return `${value} ${customCurrency}`;
+}
