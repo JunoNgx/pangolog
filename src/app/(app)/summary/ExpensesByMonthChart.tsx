@@ -1,7 +1,7 @@
 import { Popover, PopoverContent, PopoverTrigger } from "@heroui/react";
 import { DateTime } from "luxon";
 import type { Transaction } from "@/lib/db/types";
-import { formatAmount } from "@/lib/utils";
+import { formatAmount, formatAmountShort } from "@/lib/utils";
 
 const MONTH_LABELS = [
     "Jan",
@@ -50,6 +50,12 @@ export default function ExpensesByMonthChart({
     }
 
     const tallestIndex = monthlyTotals.indexOf(maxTotal);
+    const tallestLabelAlign =
+        tallestIndex < 2
+            ? "left-0 translate-x-0"
+            : tallestIndex > 9
+              ? "right-0 translate-x-0"
+              : "left-1/2 -translate-x-1/2";
     const nonZeroMonthCount = monthlyTotals.filter((t) => t > 0).length;
     const average =
         monthlyTotals.reduce((a, b) => a + b, 0) / nonZeroMonthCount;
@@ -67,8 +73,10 @@ export default function ExpensesByMonthChart({
                 >
                     <div className="w-full h-full bg-default-400 rounded-sm" />
                     {index === tallestIndex && (
-                        <span className="absolute -top-5 left-1/2 -translate-x-1/2 text-xs font-mono text-default-500 whitespace-nowrap">
-                            {formatAmount(total)}
+                        <span
+                            className={`absolute -top-5 ${tallestLabelAlign} text-xs font-mono text-default-500 whitespace-nowrap`}
+                        >
+                            {formatAmountShort(total)}
                         </span>
                     )}
                 </div>
