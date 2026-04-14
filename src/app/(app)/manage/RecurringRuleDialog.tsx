@@ -206,8 +206,11 @@ export function RecurringRuleDialog({
     const isDeleting = deleteRule.isPending;
     const repeatLabel = getRepeatLabel(frequency, startDate);
 
+    const isTxTypeSwitchVisible = !isExpenseOnlyMode;
+    const isExpenseTypeSwitchVisible = true;
     const isSingleToggle =
-        (isEditing && !isExpenseOnlyMode) || (!isEditing && isExpenseOnlyMode);
+        (isTxTypeSwitchVisible && !isExpenseTypeSwitchVisible)
+            || (!isTxTypeSwitchVisible && isExpenseTypeSwitchVisible);
 
     const toggleRowClasses = `
         flex gap-4 mt-2
@@ -254,10 +257,9 @@ export function RecurringRuleDialog({
         </div>
     );
 
-    const isTypeToggleRowVisible = !isExpenseOnlyMode || !isEditing;
-    const typeToggleRow = isTypeToggleRowVisible && (
+    const typeToggleRow = (
         <div className={toggleRowClasses}>
-            {!isExpenseOnlyMode && (
+            {isTxTypeSwitchVisible && (
                 <ToggleSwitch
                     isSelectingRight={isIncome}
                     onValueChange={setIsIncome}
@@ -265,7 +267,7 @@ export function RecurringRuleDialog({
                     rightLabel="Income"
                 />
             )}
-            {!isEditing && (
+            {isExpenseTypeSwitchVisible && (
                 <ToggleSwitch
                     isSelectingRight={isBigBuck}
                     onValueChange={setIsBigBuck}
