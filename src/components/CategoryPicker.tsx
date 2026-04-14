@@ -17,7 +17,6 @@ export function CategoryPicker({
     onChange,
     onAdd,
 }: CategoryPickerProps) {
-
     return (
         <div>
             <div className="flex items-center justify-between mb-2">

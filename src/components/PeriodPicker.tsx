@@ -99,7 +99,9 @@ export function PeriodPicker({
                 isDisabled={isPrevDisabled}
                 onPress={handlePrev}
                 className={chevronClasses}
-                aria-label={isYearly ? "Go to previous year" : "Go to previous month"}
+                aria-label={
+                    isYearly ? "Go to previous year" : "Go to previous month"
+                }
             >
                 <ChevronLeft size={14} />
             </Button>
