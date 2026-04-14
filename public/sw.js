@@ -71,11 +71,7 @@ self.addEventListener("fetch", (event) => {
                         .then((cache) => cache.put(request, response.clone()));
                     return response;
                 })
-                .catch(
-                    () =>
-                        caches.match(request) ??
-                        caches.match("/"),
-                ),
+                .catch(() => caches.match(request) ?? caches.match("/")),
         );
     }
 });

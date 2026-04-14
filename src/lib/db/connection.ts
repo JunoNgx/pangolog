@@ -145,7 +145,7 @@ export function getDb(): Promise<IDBDatabase> {
         })
         .catch((err) => {
             dbPromise = null;
-            console.error("Error retrieving db: ", err)
+            console.error("Error retrieving db: ", err);
             throw err;
         });
 

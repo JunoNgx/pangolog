@@ -209,8 +209,8 @@ export function RecurringRuleDialog({
     const isTxTypeSwitchVisible = !isExpenseOnlyMode;
     const isExpenseTypeSwitchVisible = true;
     const isSingleToggle =
-        (isTxTypeSwitchVisible && !isExpenseTypeSwitchVisible)
-            || (!isTxTypeSwitchVisible && isExpenseTypeSwitchVisible);
+        (isTxTypeSwitchVisible && !isExpenseTypeSwitchVisible) ||
+        (!isTxTypeSwitchVisible && isExpenseTypeSwitchVisible);
 
     const toggleRowClasses = `
         flex gap-4 mt-2
