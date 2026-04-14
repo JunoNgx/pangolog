@@ -206,9 +206,12 @@ export function RecurringRuleDialog({
     const isDeleting = deleteRule.isPending;
     const repeatLabel = getRepeatLabel(frequency, startDate);
 
+    const isSingleToggle =
+        (isEditing && !isExpenseOnlyMode) || (!isEditing && isExpenseOnlyMode);
+
     const toggleRowClasses = `
         flex gap-4 mt-2
-        ${isEditing ? "justify-around" : "justify-between"}
+        ${isSingleToggle ? "justify-center" : isEditing ? "justify-around" : "justify-between"}
     `;
 
     const amountInputClassNames = {
