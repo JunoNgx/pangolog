@@ -148,7 +148,7 @@ export function TransactionDialog({
             isIncome,
             isBigBuck: isBigBuck,
             categoryId,
-            description,
+            description: description?.trim(),
         };
 
         if (isEditing) {
