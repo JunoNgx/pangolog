@@ -2872,11 +2872,6 @@ detect-libc@^2.0.3, detect-libc@^2.1.2:
   resolved "https://registry.yarnpkg.com/detect-libc/-/detect-libc-2.1.2.tgz#689c5dcdc1900ef5583a4cb9f6d7b473742074ad"
   integrity sha512-Btj2BOOO83o3WyH59e8MgXsxEQVcarkUOpEYrubB0urwnN10yQ364rsiByU11nZlqWYZm05i/of7io4mzihBtQ==
 
-emoji-mart@^5.6.0:
-  version "5.6.0"
-  resolved "https://registry.yarnpkg.com/emoji-mart/-/emoji-mart-5.6.0.tgz#71b3ed0091d3e8c68487b240d9d6d9a73c27f023"
-  integrity sha512-eJp3QRe79pjwa+duv+n7+5YsNhRcMl812EcFVwrnRvYKoNPoQb5qxU8DG6Bgwji0akHdp6D4Ln6tYLG58MFSow==
-
 enhanced-resolve@^5.18.3:
   version "5.19.0"
   resolved "https://registry.yarnpkg.com/enhanced-resolve/-/enhanced-resolve-5.19.0.tgz#6687446a15e969eaa63c2fa2694510e17ae6d97c"
@@ -2884,15 +2879,6 @@ enhanced-resolve@^5.18.3:
   dependencies:
     graceful-fs "^4.2.4"
     tapable "^2.3.0"
-
-framer-motion@^12.34.0:
-  version "12.34.0"
-  resolved "https://registry.yarnpkg.com/framer-motion/-/framer-motion-12.34.0.tgz#0cecdf015cc4cbee55bd53130d043137642a5ced"
-  integrity sha512-+/H49owhzkzQyxtn7nZeF4kdH++I2FWrESQ184Zbcw5cEqNHYkE5yxWxcTLSj5lNx3NWdbIRy5FHqUvetD8FWg==
-  dependencies:
-    motion-dom "^12.34.0"
-    motion-utils "^12.29.2"
-    tslib "^2.4.0"
 
 frimousse@^0.3.0:
   version "0.3.0"
@@ -3033,18 +3019,6 @@ magic-string@^0.30.21:
   integrity sha512-vd2F4YUyEXKGcLHoq+TEyCjxueSeHnFxyyjNp80yg0XV4vUhnDer/lvvlqM/arB5bXQN5K2/3oinyCRyx8T2CQ==
   dependencies:
     "@jridgewell/sourcemap-codec" "^1.5.5"
-
-motion-dom@^12.34.0:
-  version "12.34.0"
-  resolved "https://registry.yarnpkg.com/motion-dom/-/motion-dom-12.34.0.tgz#d1776aaff750e09db66237c66daec31232a4cba8"
-  integrity sha512-Lql3NuEcScRDxTAO6GgUsRHBZOWI/3fnMlkMcH5NftzcN37zJta+bpbMAV9px4Nj057TuvRooMK7QrzMCgtz6Q==
-  dependencies:
-    motion-utils "^12.29.2"
-
-motion-utils@^12.29.2:
-  version "12.29.2"
-  resolved "https://registry.yarnpkg.com/motion-utils/-/motion-utils-12.29.2.tgz#8fdd28babe042c2456b078ab33b32daa3bf5938b"
-  integrity sha512-G3kc34H2cX2gI63RqU+cZq+zWRRPSsNIOjpdl9TN4AQwC4sgwYPl/Q/Obf/d53nOm569T0fYK+tcoSV50BWx8A==
 
 nanoid@^3.3.11, nanoid@^3.3.6:
   version "3.3.11"
