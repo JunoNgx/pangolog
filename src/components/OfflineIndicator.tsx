@@ -6,18 +6,18 @@ import { useOnlineStatus } from "@/lib/hooks/useOnlineStatus";
 
 type OfflineIndicatorProps = {
     variant: "icon" | "banner";
-    isSuppressedWhenConnected?: boolean;
+    isSuppressedWhenDisconnected?: boolean;
 };
 
 export function OfflineIndicator({
     variant,
-    isSuppressedWhenConnected = false,
+    isSuppressedWhenDisconnected = false,
 }: OfflineIndicatorProps) {
     const { isOnline } = useOnlineStatus();
     const { isConnected } = useGoogleAuth();
 
     if (isOnline) return null;
-    if (isSuppressedWhenConnected && isConnected) return null;
+    if (isSuppressedWhenDisconnected && !isConnected) return null;
 
     if (variant === "icon") {
         return <WifiOff size={14} className="text-warning-500" />;

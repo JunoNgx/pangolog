@@ -276,7 +276,10 @@ export default function SettingsClient() {
                                 })}
                             </p>
                         )}
-                        <OfflineIndicator variant="banner" />
+                        <OfflineIndicator
+                            variant="banner"
+                            isSuppressedWhenDisconnected
+                        />
                         {isConnected ? (
                             <>
                                 <p className="text-sm text-success-500">
