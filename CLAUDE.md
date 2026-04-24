@@ -12,7 +12,7 @@ Personal expense tracker PWA. See `.docs/spec.md` and `.docs/plan.md` for full d
 - IndexedDB = local cache/persistence
 - Google Drive = remote backup (optional)
 - Amounts stored as minor units (integers), e.g. 100 = $1.00 or 100 VND
-- Soft deletes via `deletedAt`, purged after 30 days
+- Soft deletes via `deletedAt`, purged after 60 days
 
 ## Key Concepts
 - **Small Dimes**: daily transactions, queried/stored by month (`2026-02.json`)
