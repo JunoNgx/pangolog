@@ -246,7 +246,7 @@ export default function LogClient() {
                     <SyncButton />
                     <OfflineIndicator
                         variant="icon"
-                        isSuppressedWhenConnected
+                        isSuppressedWhenDisconnected
                     />
                 </div>
                 <Button
