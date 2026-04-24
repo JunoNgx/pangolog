@@ -13,14 +13,21 @@ import {
     RadioGroup,
 } from "@heroui/react";
 import { DateTime } from "luxon";
+import dynamic from "next/dynamic";
 import { useTheme } from "next-themes";
+
+const OfflineIndicator = dynamic(
+    () =>
+        import("@/components/OfflineIndicator").then((m) => m.OfflineIndicator),
+    { ssr: false },
+);
+
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 import { clearAllData, forceDeleteDb } from "@/lib/db";
 import { exportJson } from "@/lib/export";
 import { useGoogleAuth } from "@/lib/hooks/useGoogleAuth";
 import { useLogger } from "@/lib/hooks/useLogger";
-import { useOnlineStatus } from "@/lib/hooks/useOnlineStatus";
 import { useSync } from "@/lib/hooks/useSync";
 import {
     executeImport,
@@ -49,7 +56,6 @@ export default function SettingsClient() {
     } = useProfileSettingsStore();
     const { authToken, isConnected, isConnecting, error, connect, disconnect } =
         useGoogleAuth();
-    const { isOnline } = useOnlineStatus();
     const { theme, setTheme } = useTheme();
     const { sync } = useSync();
     const { syncStatus, lastSyncTime, syncError, setLastSyncTime } =
@@ -270,11 +276,7 @@ export default function SettingsClient() {
                                 })}
                             </p>
                         )}
-                        {!isOnline && (
-                            <p className="text-xs text-warning-600 dark:text-warning-400">
-                                You are offline.
-                            </p>
-                        )}
+                        <OfflineIndicator variant="banner" />
                         {isConnected ? (
                             <>
                                 <p className="text-sm text-success-500">

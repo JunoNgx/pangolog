@@ -1,8 +1,9 @@
 "use client";
 
 import { Button, Input, Tooltip } from "@heroui/react";
-import { Plus, Search, WifiOff } from "lucide-react";
+import { Plus, Search } from "lucide-react";
 import { DateTime } from "luxon";
+import dynamic from "next/dynamic";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { DemoDataBanner } from "@/components/DemoDataBanner";
 import { PeriodPicker } from "@/components/PeriodPicker";
@@ -10,11 +11,16 @@ import { SyncButton } from "@/components/SyncButton";
 import { TransactionTypeCheckboxes } from "@/components/TransactionTypeCheckboxes";
 import { commandPaletteCreateActions } from "@/lib/commandPaletteActionRegistry";
 import { useCategories } from "@/lib/hooks/useCategories";
-import { useGoogleAuth } from "@/lib/hooks/useGoogleAuth";
 import { useHotkey } from "@/lib/hooks/useHotkey";
 import { useLogViewSettings } from "@/lib/hooks/useLogViewSettings";
-import { useOnlineStatus } from "@/lib/hooks/useOnlineStatus";
 import { useSyncFn } from "@/lib/hooks/useSync";
+
+const OfflineIndicator = dynamic(
+    () =>
+        import("@/components/OfflineIndicator").then((m) => m.OfflineIndicator),
+    { ssr: false },
+);
+
 import {
     useAllTransactions,
     useTransactionsByMonth,
@@ -29,8 +35,6 @@ import { TransactionDialog } from "./TransactionDialog";
 import { TransactionList } from "./TransactionList";
 
 export default function LogClient() {
-    const { isConnected } = useGoogleAuth();
-    const { isOnline } = useOnlineStatus();
     const [isCreateOpen, setIsCreateOpen] = useState(false);
     const openCreateDialog = useCallback(() => setIsCreateOpen(true), []);
     useHotkey("Enter", openCreateDialog, { ctrlOrMeta: true });
@@ -240,9 +244,10 @@ export default function LogClient() {
                 <div className="flex items-center gap-2">
                     <h2 className="text-xl font-bold">Transactions</h2>
                     <SyncButton />
-                    {!isOnline && !isConnected && (
-                        <WifiOff size={14} className="text-warning-500" />
-                    )}
+                    <OfflineIndicator
+                        variant="icon"
+                        isSuppressedWhenConnected
+                    />
                 </div>
                 <Button
                     isIconOnly
