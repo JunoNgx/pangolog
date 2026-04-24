@@ -194,7 +194,9 @@ export default function HelpClient() {
                 <p className="text-sm text-default-500 mb-3">
                     Conflicts are resolved by last-write-wins on{" "}
                     <span className="font-mono text-xs">updatedAt</span>.
-                    Deleted records are soft-deleted and purged after 60 days.
+                    Soft-deleted records are kept for 60 days to ensure correct
+                    synchronisation across devices. Sync regularly within this
+                    window to prevent stale data.
                 </p>
                 <p className="text-sm text-default-500 mb-3">
                     Google Drive does not propagate file changes to all servers
