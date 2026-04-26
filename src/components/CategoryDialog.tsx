@@ -15,7 +15,6 @@ import { EmojiPicker, type EmojiPickerListComponents } from "frimousse";
 import { Shuffle } from "lucide-react";
 import { type SubmitEventHandler, useEffect, useState } from "react";
 import { HexColorPicker } from "react-colorful";
-import { toast } from "sonner";
 import { DialogFooter } from "@/components/DialogFooter";
 import type { Category } from "@/lib/db/types";
 import {
@@ -25,6 +24,7 @@ import {
     useUpdateCategory,
 } from "@/lib/hooks/useCategories";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
+import { showDeleteToast } from "@/lib/utils";
 
 // biome-ignore-start format: Formatting is intentional
 const EMOJI_DEFAULTS = [
@@ -210,13 +210,7 @@ export function CategoryDialog({
         deleteCategory.mutate(id, {
             onSuccess: () => {
                 handleClose();
-                toast("Category deleted", {
-                    duration: 5000,
-                    action: {
-                        label: "Undo",
-                        onClick: () => restoreCategory.mutate(id),
-                    },
-                });
+                showDeleteToast("Category", () => restoreCategory.mutate(id));
             },
         });
     }

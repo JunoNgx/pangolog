@@ -1,4 +1,5 @@
 import { DateTime } from "luxon";
+import { toast } from "sonner";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
 
 export const MONTH_NAMES = [
@@ -62,11 +63,9 @@ export function toDateInputValue(isoString: string): string {
 }
 
 export function fromDateInputValue(dateStr: string): string {
-    return (
-        DateTime.fromISO(dateStr, { zone: "local" })
-            .set({ hour: 12, minute: 0, second: 0, millisecond: 0 })
-            .toISO()!
-    );
+    return DateTime.fromISO(dateStr, { zone: "local" })
+        .set({ hour: 12, minute: 0, second: 0, millisecond: 0 })
+        .toISO()!;
 }
 
 export function detectSystemTimeFormat(): "12h" | "24h" {
@@ -114,4 +113,14 @@ export function formatAmountShort(minorUnits: number): string {
     if (!customCurrency) return value;
     if (isPrefixCurrency) return `${customCurrency}${value}`;
     return `${value} ${customCurrency}`;
+}
+
+export function showDeleteToast(entityName: string, undoFn: () => void) {
+    toast(`${entityName} deleted`, {
+        duration: 5000,
+        action: {
+            label: "Undo",
+            onClick: undoFn,
+        },
+    });
 }
