@@ -7,6 +7,7 @@ import { Skeleton } from "@heroui/react";
 import { GripVertical } from "lucide-react";
 import { useState } from "react";
 import { CategoryDialog } from "@/components/CategoryDialog";
+import { ChipLabel } from "@/components/ChipLabel";
 import type { Category } from "@/lib/db/types";
 import { useCategories, useReorderCategories } from "@/lib/hooks/useCategories";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
@@ -63,10 +64,10 @@ function SortableCategoryItem({
                 </span>
                 <span className="flex-1">{cat.name}</span>
                 {cat.isIncomeOnly && (
-                    <span className={`ChipLabel text-green-600`}>INCOME</span>
+                    <ChipLabel className="text-green-600">INCOME</ChipLabel>
                 )}
                 {cat.isBuckOnly && (
-                    <span className={`ChipLabel text-amber-500`}>BIG BUCK</span>
+                    <ChipLabel className="text-amber-500">BIG BUCK</ChipLabel>
                 )}
             </button>
             {isDragEnabled && (

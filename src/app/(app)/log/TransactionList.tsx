@@ -3,6 +3,7 @@
 import { Skeleton } from "@heroui/react";
 import { DateTime } from "luxon";
 import { useState } from "react";
+import { ChipLabel } from "@/components/ChipLabel";
 import type { Category, Transaction } from "@/lib/db/types";
 import { formatAmount } from "@/lib/utils";
 import { TransactionDialog } from "./TransactionDialog";
@@ -202,7 +203,7 @@ function TransactionItem({
                 </div>
 
                 {isBigBuck && (
-                    <span className={`ChipLabel text-amber-500`}>BIG BUCK</span>
+                    <ChipLabel className="text-amber-500">BIG BUCK</ChipLabel>
                 )}
 
                 <span
