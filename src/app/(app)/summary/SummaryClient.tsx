@@ -81,7 +81,7 @@ function SegmentBar({ label, slices, total }: SegmentBarProps) {
     if (slices.length === 0) {
         return (
             <div className="mb-6">
-                <p className="font-semibold text-default-500 mb-2">{label}</p>
+                <p className="Label mb-2">{label}</p>
                 <p className="text-sm text-default-400">No data.</p>
             </div>
         );
@@ -90,8 +90,8 @@ function SegmentBar({ label, slices, total }: SegmentBarProps) {
     return (
         <div className="mb-6">
             <div className="flex items-baseline justify-between mb-2">
-                <p className="font-semibold text-default-500">{label}</p>
-                <p className="font-mono text-sm font-semibold text-default-700">
+                <p className="Label">{label}</p>
+                <p className="MonoTextSm font-semibold text-default-700">
                     {formatAmount(total)}
                 </p>
             </div>
@@ -123,10 +123,10 @@ function SegmentBar({ label, slices, total }: SegmentBarProps) {
                             </span>
                             {slice.name}
                         </span>
-                        <span className="font-mono text-default-500">
+                        <span className="MonoTextSm text-default-500">
                             {formatAmount(slice.total)}
                         </span>
-                        <span className="font-mono text-default-400 w-14 text-right">
+                        <span className="MonoTextSm text-default-400 w-14 text-right">
                             {slice.pct.toFixed(1)}%
                         </span>
                     </li>
