@@ -1,12 +1,10 @@
 "use client";
 
 import {
-    Button,
     Input,
     Modal,
     ModalBody,
     ModalContent,
-    ModalFooter,
     ModalHeader,
     Switch,
 } from "@heroui/react";
@@ -15,6 +13,7 @@ import { type SubmitEventHandler, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { CategoryDialog } from "@/components/CategoryDialog";
 import { CategoryPicker } from "@/components/CategoryPicker";
+import { DialogFooter } from "@/components/DialogFooter";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
 import type { RecurringRule } from "@/lib/db/types";
 import { useCategories } from "@/lib/hooks/useCategories";
@@ -361,34 +360,13 @@ export function RecurringRuleDialog({
                                 onAdd={() => setIsCategoryDialogOpen(true)}
                             />
                         </ModalBody>
-                        <ModalFooter
-                            className={
-                                isEditing ? "justify-between" : undefined
-                            }
-                        >
-                            {isEditing && (
-                                <Button
-                                    color="danger"
-                                    variant="light"
-                                    isLoading={isDeleting}
-                                    onPress={handleDelete}
-                                >
-                                    Delete
-                                </Button>
-                            )}
-                            <div className="flex gap-2">
-                                <Button
-                                    type="submit"
-                                    color="primary"
-                                    isLoading={isPending}
-                                >
-                                    {isEditing ? "Save" : "Create"}
-                                </Button>
-                                <Button variant="light" onPress={handleClose}>
-                                    Cancel
-                                </Button>
-                            </div>
-                        </ModalFooter>
+                        <DialogFooter
+                            isEditing={isEditing}
+                            onCancel={handleClose}
+                            onDelete={isEditing ? handleDelete : undefined}
+                            isSubmitting={isPending}
+                            isDeleting={isDeleting}
+                        />
                     </form>
                 </ModalContent>
             </Modal>
