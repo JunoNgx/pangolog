@@ -635,8 +635,8 @@ Post-architecture-review cleanup. No new features; only fixes and small refactor
 - IndexedDB supports transactions; the parallel-write approach now uses a single transaction wrapper
 
 ### Task 28f: Duplicate-ID check in import validation
-- [ ] `src/lib/import.ts`: in `validateImportData`, check for duplicate `id` values within each of `transactions`, `categories`, and `recurringRules` arrays
-- Return an error string if duplicates are found
+- [x] `src/lib/import.ts`: in `validateImportData`, check for duplicate `id` values within each of `transactions`, `categories`, and `recurringRules` arrays
+- Return an error string if duplicates are found, including debug info from both occurrences (e.g. name for categories, description/transactedAt/categoryId for transactions, description/categoryId for recurring rules)
 - Two items with the same `id` would silently overwrite each other during `executeImport`
 
 ### Task 28g: Remove non-null assertion in `computeNextDate`
