@@ -6,6 +6,7 @@ import {
     getAllRecurringRulesForSync,
     getAllTransactions,
 } from "./db/bulk";
+import { getDb } from "./db/connection";
 import type { Category, RecurringRule, Transaction } from "./db/types";
 import { useProfileSettingsStore } from "./store/useProfileSettingsStore";
 
@@ -204,10 +205,15 @@ export async function executeImport(data: ImportData): Promise<ImportPreview> {
     });
 
     try {
+        const db = await getDb();
+        const tx = db.transaction(
+            ["categories", "recurring-rules", "transactions"],
+            "readwrite",
+        );
         await Promise.all([
-            bulkPutTransactions(transactionsToPut),
-            bulkPutCategories(categoriesToPut),
-            bulkPutRecurringRules(rulesToPut),
+            bulkPutTransactions(transactionsToPut, tx),
+            bulkPutCategories(categoriesToPut, tx),
+            bulkPutRecurringRules(rulesToPut, tx),
         ]);
     } catch (err) {
         throw new Error(`Failed to write records to database: ${err}`);

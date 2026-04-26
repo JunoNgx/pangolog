@@ -74,7 +74,14 @@ export async function getAllTransactions(): Promise<Transaction[]> {
 
 export async function bulkPutTransactions(
     transactions: Transaction[],
+    existingTx?: IDBTransaction,
 ): Promise<void> {
+    if (existingTx) {
+        const store = existingTx.objectStore("transactions");
+        for (const transaction of transactions) store.put(transaction);
+        return;
+    }
+
     const db = await getDb();
     return new Promise((resolve, reject) => {
         const tx = db.transaction("transactions", "readwrite");
@@ -85,7 +92,16 @@ export async function bulkPutTransactions(
     });
 }
 
-export async function bulkPutCategories(categories: Category[]): Promise<void> {
+export async function bulkPutCategories(
+    categories: Category[],
+    existingTx?: IDBTransaction,
+): Promise<void> {
+    if (existingTx) {
+        const store = existingTx.objectStore("categories");
+        for (const category of categories) store.put(category);
+        return;
+    }
+
     const db = await getDb();
     return new Promise((resolve, reject) => {
         const tx = db.transaction("categories", "readwrite");
@@ -98,7 +114,14 @@ export async function bulkPutCategories(categories: Category[]): Promise<void> {
 
 export async function bulkPutRecurringRules(
     rules: RecurringRule[],
+    existingTx?: IDBTransaction,
 ): Promise<void> {
+    if (existingTx) {
+        const store = existingTx.objectStore("recurring-rules");
+        for (const rule of rules) store.put(rule);
+        return;
+    }
+
     const db = await getDb();
     return new Promise((resolve, reject) => {
         const tx = db.transaction("recurring-rules", "readwrite");
