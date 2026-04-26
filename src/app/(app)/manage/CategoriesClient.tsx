@@ -1,10 +1,9 @@
 "use client";
 
-import { Button, Tooltip } from "@heroui/react";
-import { Plus } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { CategoryDialog } from "@/components/CategoryDialog";
 import { DemoDataBanner } from "@/components/DemoDataBanner";
+import { FloatingActionButton } from "@/components/FloatingActionButton";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
 import { commandPaletteCreateActions } from "@/lib/commandPaletteActionRegistry";
 import { useHotkey } from "@/lib/hooks/useHotkey";
@@ -35,23 +34,10 @@ export default function CategoriesClient() {
             </div>
             <DemoDataBanner />
             <CategoryList />
-            <div className="FloatingActionButtonContainer">
-                <Tooltip
-                    content={
-                        <span className="text-center">Ctrl/Cmd + Enter</span>
-                    }
-                    placement="left"
-                >
-                    <Button
-                        color="primary"
-                        className="FloatingActionButton"
-                        onPress={() => setIsCreateOpen(true)}
-                    >
-                        <Plus />
-                        <span className="hidden md:inline">Category</span>
-                    </Button>
-                </Tooltip>
-            </div>
+            <FloatingActionButton
+                label="Category"
+                onPress={() => setIsCreateOpen(true)}
+            />
             <CategoryDialog
                 isOpen={isCreateOpen}
                 onClose={() => setIsCreateOpen(false)}

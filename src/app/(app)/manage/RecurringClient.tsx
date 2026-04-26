@@ -1,9 +1,10 @@
 "use client";
 
-import { Button, Checkbox, Tooltip } from "@heroui/react";
-import { ArrowDownAZ, ArrowUpAZ, Plus } from "lucide-react";
+import { Checkbox } from "@heroui/react";
+import { ArrowDownAZ, ArrowUpAZ } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { DemoDataBanner } from "@/components/DemoDataBanner";
+import { FloatingActionButton } from "@/components/FloatingActionButton";
 import { commandPaletteCreateActions } from "@/lib/commandPaletteActionRegistry";
 import { useCategories } from "@/lib/hooks/useCategories";
 import { useHotkey } from "@/lib/hooks/useHotkey";
@@ -164,23 +165,10 @@ export default function RecurringClient() {
                 isLoading={isLoading}
             />
 
-            <div className="FloatingActionButtonContainer">
-                <Tooltip
-                    content={
-                        <span className="text-center">Ctrl/Cmd + Enter</span>
-                    }
-                    placement="left"
-                >
-                    <Button
-                        color="primary"
-                        className="FloatingActionButton"
-                        onPress={() => setIsCreateOpen(true)}
-                    >
-                        <Plus />
-                        <span className="hidden md:inline">Rule</span>
-                    </Button>
-                </Tooltip>
-            </div>
+            <FloatingActionButton
+                label="Rule"
+                onPress={() => setIsCreateOpen(true)}
+            />
 
             <RecurringRuleDialog
                 isOpen={isCreateOpen}
