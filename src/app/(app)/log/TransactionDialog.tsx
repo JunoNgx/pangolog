@@ -16,7 +16,6 @@ import {
     useRef,
     useState,
 } from "react";
-import { toast } from "sonner";
 import { AmountInput } from "@/components/AmountInput";
 import { CategoryDialog } from "@/components/CategoryDialog";
 import { CategoryPicker } from "@/components/CategoryPicker";
@@ -35,6 +34,7 @@ import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
 import {
     fromDateInputValue,
     getLocaleDateFormat,
+    showDeleteToast,
     toDateInputValue,
     todayDateString,
 } from "@/lib/utils";
@@ -180,13 +180,9 @@ export function TransactionDialog({
         deleteTransaction.mutate(id, {
             onSuccess: () => {
                 handleClose();
-                toast("Transaction deleted", {
-                    duration: 5000,
-                    action: {
-                        label: "Undo",
-                        onClick: () => restoreTransaction.mutate(id),
-                    },
-                });
+                showDeleteToast("Transaction", () =>
+                    restoreTransaction.mutate(id),
+                );
             },
         });
     }

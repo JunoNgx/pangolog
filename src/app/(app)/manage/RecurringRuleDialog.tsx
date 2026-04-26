@@ -10,7 +10,6 @@ import {
 } from "@heroui/react";
 import { DateTime } from "luxon";
 import { type SubmitEventHandler, useEffect, useMemo, useState } from "react";
-import { toast } from "sonner";
 import { AmountInput } from "@/components/AmountInput";
 import { CategoryDialog } from "@/components/CategoryDialog";
 import { CategoryPicker } from "@/components/CategoryPicker";
@@ -30,6 +29,7 @@ import {
     getLocaleDateFormat,
     MONTH_NAMES,
     SELECT_CLASSES,
+    showDeleteToast,
     toDateInputValue,
     todayDateString,
 } from "@/lib/utils";
@@ -182,13 +182,7 @@ export function RecurringRuleDialog({
         deleteRule.mutate(id, {
             onSuccess: () => {
                 handleClose();
-                toast("Rule deleted", {
-                    duration: 5000,
-                    action: {
-                        label: "Undo",
-                        onClick: () => restoreRule.mutate(id),
-                    },
-                });
+                showDeleteToast("Rule", () => restoreRule.mutate(id));
             },
         });
     }
