@@ -663,7 +663,7 @@ Post-architecture-review cleanup. No new features; only fixes and small refactor
 
 ### Task 32a: Define new utility classes in `globals.css`
 
-Extend `@layer components` with the following. All use `@apply` with existing Tailwind/HeroUI classes.
+- [x] Extend `@layer components` with the following. All use `@apply` with existing Tailwind/HeroUI classes.
 
 **Text classes**
 - `.BodyText`: `text-sm text-default-500` - replaces ~40 occurrences
@@ -706,7 +706,7 @@ Extend `@layer components` with the following. All use `@apply` with existing Ta
 - [ ] Replace `font-mono text-xs` with `.MonoText`
 - [ ] Replace `pre` styling with `.CodeBlock`
 - [ ] Replace floating back button with `.FloatingBackButton`
-- [ ] Remove the local `Section` components if they become trivial wrappers
+- [ ] Keep local `Section` components (updated internals, not removed)
 
 ---
 
@@ -722,7 +722,7 @@ Extend `@layer components` with the following. All use `@apply` with existing Ta
 ### Task 32d: Refactor `LogClient.tsx`
 
 - [ ] Replace toolbar `flex items-center` patterns with `.HStack` variants
-- [ ] Replace `font-mono text-sm` amount displays with `.MonoTextSm`
+- [ ] Replace `font-mono text-sm` amount displays with `.MonoTextSm` (in TransactionList.tsx)
 - [ ] Replace repeated layout containers with `.VStack` variants where appropriate
 
 ---
@@ -737,6 +737,5 @@ Extend `@layer components` with the following. All use `@apply` with existing Ta
 ### Task 32f: Final lint and verification
 
 - [ ] Run `yarn efix` on all modified files
-- [ ] Verify no visual regressions by checking key pages in dev
 - [ ] Ensure TypeScript compiles cleanly
 
