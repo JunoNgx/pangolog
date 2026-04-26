@@ -2,23 +2,7 @@
 
 import { FloatingBackButton } from "@/components/FloatingBackButton";
 import { Kbd } from "@/components/Kbd";
-
-function Section({
-    title,
-    children,
-}: {
-    title: string;
-    children: React.ReactNode;
-}) {
-    return (
-        <section className="mb-8">
-            <h2 className="text-base font-semibold mb-3 text-default-700">
-                {title}
-            </h2>
-            {children}
-        </section>
-    );
-}
+import { Section } from "@/components/Section";
 
 function Term({
     name,
