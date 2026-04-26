@@ -38,7 +38,7 @@
 }
 
 @layer utilities {
-    /* Set in `@layer utilities` to overring HeroUI's classes */
+    /* Set in `@layer utilities` to override HeroUI's classes */
     .FloatingActionButtonContainer {
         @apply fixed inset-x-0 bottom-4 z-50 pointer-events-none
             max-w-5xl mx-auto
