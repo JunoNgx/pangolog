@@ -49,14 +49,24 @@ export function todayDateString(): string {
     return DateTime.now().toISODate()!;
 }
 
+export function utcNowString(): string {
+    const result = DateTime.now().toUTC().toISO();
+    if (!result) {
+        throw new Error("Failed to generate UTC timestamp");
+    }
+    return result;
+}
+
 export function toDateInputValue(isoString: string): string {
     return DateTime.fromISO(isoString).toLocal().toISODate()!;
 }
 
 export function fromDateInputValue(dateStr: string): string {
-    return DateTime.fromISO(dateStr, { zone: "local" })
-        .set({ hour: 12, minute: 0, second: 0, millisecond: 0 })
-        .toISO()!;
+    return (
+        DateTime.fromISO(dateStr, { zone: "local" })
+            .set({ hour: 12, minute: 0, second: 0, millisecond: 0 })
+            .toISO()!
+    );
 }
 
 export function detectSystemTimeFormat(): "12h" | "24h" {
