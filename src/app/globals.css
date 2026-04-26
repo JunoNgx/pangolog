@@ -137,6 +137,10 @@
             h-14 min-w-0 rounded-full
             md:right-6 md:rounded-lg;
     }
+
+    .DangerText {
+        @apply text-sm text-danger-500;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
