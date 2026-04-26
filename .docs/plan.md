@@ -621,7 +621,7 @@ Post-architecture-review cleanup. No new features; only fixes and small refactor
 - Prevents a crash in any dialog or list from unmounting the entire application and losing unsaved form state
 
 ### Task 28c: Unify `handleAuthExpired` presets
-- [ ] `src/lib/hooks/useSync.ts`: extract an `AUTH_ERRORS` constant with preset `{ code, message }` objects for the two call sites (pre-sync and mid-sync)
+- [x] `src/lib/hooks/useSync.ts`: extract an `AUTH_ERRORS` constant with preset `{ code, message }` objects for the two call sites (pre-sync and mid-sync)
 - Eliminates the inline TODO at line 49
 
 ### Task 28d: Consistent Luxon usage in `isSyncStale`
@@ -629,7 +629,7 @@ Post-architecture-review cleanup. No new features; only fixes and small refactor
 - `lastSyncTime` is a Luxon UTC ISO string; using `DateTime` is consistent with the rest of the codebase
 
 ### Task 28e: Document atomicity concern in `runFullDriveSync`
-- [ ] `src/lib/drive/sync.ts`: add a short comment above the parallel `Promise.all([bulkPutCategories, bulkPutRecurringRules, bulkPutTransactions])` noting that partial failure is acceptable because the next sync will reconcile
+- [x] `src/lib/drive/sync.ts`: add a short comment above the parallel `Promise.all([bulkPutCategories, bulkPutRecurringRules, bulkPutTransactions])` noting that partial failure is acceptable because the next sync will reconcile
 - IndexedDB supports transactions but the current parallel-write approach does not use a single transaction wrapper
 
 ### Task 28f: Duplicate-ID check in import validation
