@@ -8,6 +8,7 @@ import {
     getAllTransactions,
     purgeExpiredRecords,
 } from "@/lib/db/bulk";
+import { getDb } from "@/lib/db/connection";
 import type { Category, RecurringRule, Transaction } from "@/lib/db/types";
 import { buildExportData } from "@/lib/export";
 import { useLocalSyncDataStore } from "@/lib/store/useLocalSyncDataStore";
@@ -255,15 +256,19 @@ export async function runFullDriveSync(
     const allMergedTransactions = [...mergedTransactionsByYear.values()].flat();
 
     // --- Parallel DB writes ---
-    // IndexedDB supports transactions, but data is intentionally written in
-    // parallel without a single transaction wrapper. Partial failure is
-    // acceptable: the next sync run will reconcile any drift against the remote
-    // Drive state.
+    // All three stores are written inside a single IndexedDB transaction so
+    // that failure in any one store rolls back the entire batch.
+
+    const db = await getDb();
+    const tx = db.transaction(
+        ["categories", "recurring-rules", "transactions"],
+        "readwrite",
+    );
 
     await Promise.all([
-        bulkPutCategories(mergedCategories),
-        bulkPutRecurringRules(mergedRules),
-        bulkPutTransactions(allMergedTransactions),
+        bulkPutCategories(mergedCategories, tx),
+        bulkPutRecurringRules(mergedRules, tx),
+        bulkPutTransactions(allMergedTransactions, tx),
     ]);
 
     // --- Deduplicate runner-generated transactions ---
