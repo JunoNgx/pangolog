@@ -4,6 +4,7 @@ import { Skeleton } from "@heroui/react";
 import { DateTime } from "luxon";
 import { useState } from "react";
 import { ChipLabel } from "@/components/ChipLabel";
+import { MainListContainer } from "@/components/MainListContainer";
 import type { Category, RecurringRule } from "@/lib/db/types";
 import { formatAmount, MONTH_NAMES } from "@/lib/utils";
 import { RecurringRuleDialog } from "./RecurringRuleDialog";
@@ -61,11 +62,11 @@ export function RecurringList({
 
     if (isLoading) {
         return (
-            <ul className="MainListContainer gap-2">
+            <MainListContainer className="gap-2">
                 {["s1", "s2", "s3"].map((key) => (
                     <Skeleton key={key} className="h-16 w-full rounded-none" />
                 ))}
-            </ul>
+            </MainListContainer>
         );
     }
 
@@ -86,7 +87,7 @@ export function RecurringList({
 
     return (
         <>
-            <ul className="MainListContainer gap-2">
+            <MainListContainer className="gap-2">
                 {rules.map((rule) => (
                     <RecurringItem
                         key={rule.id}
@@ -99,7 +100,7 @@ export function RecurringList({
                         onEdit={handleEdit}
                     />
                 ))}
-            </ul>
+            </MainListContainer>
             <RecurringRuleDialog
                 isOpen={isDialogOpen}
                 onClose={handleCloseDialog}

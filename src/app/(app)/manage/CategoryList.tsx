@@ -8,6 +8,7 @@ import { GripVertical } from "lucide-react";
 import { useState } from "react";
 import { CategoryDialog } from "@/components/CategoryDialog";
 import { ChipLabel } from "@/components/ChipLabel";
+import { MainListContainer } from "@/components/MainListContainer";
 import type { Category } from "@/lib/db/types";
 import { useCategories, useReorderCategories } from "@/lib/hooks/useCategories";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
@@ -118,11 +119,11 @@ export function CategoryList() {
 
     if (isLoading) {
         return (
-            <ul className="MainListContainer gap-2">
+            <MainListContainer className="gap-2">
                 {["s1", "s2", "s3", "s4", "s5", "s6", "s7"].map((key) => (
                     <Skeleton key={key} className="h-12 w-full rounded-none" />
                 ))}
-            </ul>
+            </MainListContainer>
         );
     }
 
@@ -152,7 +153,7 @@ export function CategoryList() {
     );
 
     const alphabeticalList = (
-        <ul className="MainListContainer gap-2">
+        <MainListContainer className="gap-2">
             {categories.map((cat, index) => (
                 <SortableCategoryItem
                     key={cat.id}
@@ -162,12 +163,12 @@ export function CategoryList() {
                     isDragEnabled={false}
                 />
             ))}
-        </ul>
+        </MainListContainer>
     );
 
     const customSortList = (
         <DragDropProvider onDragEnd={handleDragEnd}>
-            <ul className="MainListContainer gap-2">
+            <MainListContainer className="gap-2">
                 {categories.map((cat, index) => (
                     <SortableCategoryItem
                         key={cat.id}
@@ -177,7 +178,7 @@ export function CategoryList() {
                         isDragEnabled={true}
                     />
                 ))}
-            </ul>
+            </MainListContainer>
         </DragDropProvider>
     );
 

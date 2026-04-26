@@ -25,12 +25,6 @@
     }
 }
 
-@layer components {
-    .MainListContainer {
-        @apply flex flex-col max-w-lg mx-auto;
-    }
-}
-
 @layer utilities {
     /* Set in `@layer utilities` to override HeroUI's classes */
 }
