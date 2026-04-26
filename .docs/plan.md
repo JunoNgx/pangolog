@@ -625,8 +625,8 @@ Post-architecture-review cleanup. No new features; only fixes and small refactor
 - Eliminates the inline TODO at line 49
 
 ### Task 28d: Consistent Luxon usage in `isSyncStale`
-- [ ] `src/lib/hooks/useSync.ts`: replace `new Date(lastSyncTime).getTime()` with `DateTime.fromISO(lastSyncTime).toMillis()`
-- `lastSyncTime` is a Luxon UTC ISO string; using `DateTime` is consistent with the rest of the codebase
+- [won't do] `src/lib/hooks/useSync.ts`: replace `new Date(lastSyncTime).getTime()` with `DateTime.fromISO(lastSyncTime).toMillis()`
+- `new Date(isoString)` is standard, well-defined JavaScript behavior. Switching to Luxon here is purely cosmetic and does not fix a bug or prevent a crash.
 
 ### Task 28e: Enforce atomicity for parallel DB writes
 - [x] `src/lib/db/bulk.ts`: add optional `existingTx?: IDBTransaction` parameter to `bulkPutCategories`, `bulkPutRecurringRules`, and `bulkPutTransactions`; when provided, use the transaction's object store instead of opening a new one
@@ -644,14 +644,14 @@ Post-architecture-review cleanup. No new features; only fixes and small refactor
 - The comment explaining why `!` is safe can then be removed; the fallback is self-documenting
 
 ### Task 28h: `aria-live` for PeriodPicker status changes
-- [ ] `src/components/PeriodPicker.tsx`: ensure screen readers announce month/year changes when the prev/next buttons are pressed
-- Consider adding an `aria-live="polite"` region for the displayed period, or verify HeroUI Button re-announces on `aria-label` change
+- [won't do] `src/components/PeriodPicker.tsx`: ensure screen readers announce month/year changes when the prev/next buttons are pressed
+- The displayed period is a native `<select>` (or contains one), which screen readers already announce on focus. Adding `aria-live` risks double-announcements. The `aria-label` on prev/next buttons already describes the action.
 
 ### Task 28i: Fix backup filename month boundary bug
 - [ ] `src/lib/drive/sync.ts`: in the autobackup block, use `syncStartTime` (captured at the top of `runFullDriveSync`) instead of `DateTime.now()` when computing `fileName`
 - Prevents a rare edge case where a long sync spanning a month boundary names the backup for the wrong month
 
 ### Task 28j: Recurring transaction time consistency (product decision)
-- [ ] `src/lib/hooks/useRecurringRunner.ts`: decide whether runner-generated transactions should use the current wall-clock time (`now.hour`, `now.minute`, etc.) or a fixed time (e.g. `12:00:00`)
-- If fixed time is preferred, replace the `.set({ hour: now.hour, ... })` block with a fixed timestamp
+- [won't do] `src/lib/hooks/useRecurringRunner.ts`: decide whether runner-generated transactions should use the current wall-clock time (`now.hour`, `now.minute`, etc.) or a fixed time (e.g. `12:00:00`)
+- The current wall-clock time behavior is functional and no user-reported issues exist. Deferred until a real need arises.
 
