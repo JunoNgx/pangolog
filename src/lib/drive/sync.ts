@@ -255,6 +255,10 @@ export async function runFullDriveSync(
     const allMergedTransactions = [...mergedTransactionsByYear.values()].flat();
 
     // --- Parallel DB writes ---
+    // IndexedDB supports transactions, but data is intentionally written in
+    // parallel without a single transaction wrapper. Partial failure is
+    // acceptable: the next sync run will reconcile any drift against the remote
+    // Drive state.
 
     await Promise.all([
         bulkPutCategories(mergedCategories),
