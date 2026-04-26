@@ -326,8 +326,8 @@ export async function runFullDriveSync(
     const { isAutobackupEnabled } = useLocalUserSettingsStore.getState();
     if (!isAutobackupEnabled) return syncStartTime;
 
-    const now = DateTime.now();
-    const fileName = backupFileName(now.year, now.month);
+    const backupTime = DateTime.fromISO(syncStartTime);
+    const fileName = backupFileName(backupTime.year, backupTime.month);
     if (driveFileMap.has(fileName)) return syncStartTime;
 
     const backupData = await buildExportData();
