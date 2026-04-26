@@ -11,6 +11,7 @@ import {
 import { DateTime } from "luxon";
 import { type SubmitEventHandler, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
+import { AmountInput } from "@/components/AmountInput";
 import { CategoryDialog } from "@/components/CategoryDialog";
 import { CategoryPicker } from "@/components/CategoryPicker";
 import { DialogFooter } from "@/components/DialogFooter";
@@ -128,11 +129,6 @@ export function RecurringRuleDialog({
         });
     }, [categories, isBigBuck, isIncome]);
 
-    function handleAmountChange(value: string) {
-        const match = value.match(/^\d*\.?\d{0,2}$/);
-        if (match) setAmount(value);
-    }
-
     function handleClose() {
         setAmount("");
         setDescription("");
@@ -213,14 +209,6 @@ export function RecurringRuleDialog({
         ${isSingleToggle ? "justify-center" : isEditing ? "justify-around" : "justify-between"}
     `;
 
-    const amountInputClassNames = {
-        base: "my-2",
-        input: `
-            text-4xl text-center font-mono
-            ${isIncome ? "!text-success" : "!text-foreground"}
-        `,
-    };
-
     const ruleStatusPanel = isEditing && rule && (
         <div className={statusPanelClasses}>
             <div className="flex flex-col gap-1">
@@ -292,16 +280,10 @@ export function RecurringRuleDialog({
                             {ruleStatusPanel}
                             {typeToggleRow}
 
-                            <Input
-                                variant="underlined"
+                            <AmountInput
                                 value={amount}
-                                onValueChange={handleAmountChange}
-                                isRequired
-                                autoFocus
-                                inputMode="decimal"
-                                placeholder="0.00"
-                                onFocus={(e) => e.target.select()}
-                                classNames={amountInputClassNames}
+                                onChange={setAmount}
+                                isIncome={isIncome}
                             />
 
                             <Input
