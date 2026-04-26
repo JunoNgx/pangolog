@@ -3,6 +3,7 @@
 import { Skeleton } from "@heroui/react";
 import { DateTime } from "luxon";
 import { useState } from "react";
+import { ChipLabel } from "@/components/ChipLabel";
 import type { Category, RecurringRule } from "@/lib/db/types";
 import { formatAmount, MONTH_NAMES } from "@/lib/utils";
 import { RecurringRuleDialog } from "./RecurringRuleDialog";
@@ -158,14 +159,14 @@ function RecurringItem({ rule, category, onEdit }: RecurringItemProps) {
                     {hasIndicator && (
                         <div className="flex gap-4 mt-1">
                             {rule.isBigBuck && (
-                                <span className="ChipLabel mx-0 text-amber-500">
+                                <ChipLabel className="mx-0 text-amber-500">
                                     BUCK
-                                </span>
+                                </ChipLabel>
                             )}
                             {!rule.isActive && (
-                                <span className="ChipLabel mx-0 text-default-400">
+                                <ChipLabel className="mx-0 text-default-400">
                                     PAUSED
-                                </span>
+                                </ChipLabel>
                             )}
                         </div>
                     )}
