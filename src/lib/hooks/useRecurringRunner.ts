@@ -10,8 +10,6 @@ import {
 import { createTransaction } from "../db/transactions";
 import type { RecurringRule } from "../db/types";
 
-// daysInMonth is typed number | undefined for invalid DateTimes, but next is
-// always valid here (produced by .plus()), so ! is safe.
 function computeNextDate(from: DateTime, rule: RecurringRule): DateTime {
     switch (rule.frequency) {
         case "daily":
@@ -22,7 +20,7 @@ function computeNextDate(from: DateTime, rule: RecurringRule): DateTime {
             let next = from.plus({ months: 1 });
             if (rule.dayOfMonth !== null) {
                 next = next.set({
-                    day: Math.min(rule.dayOfMonth, next.daysInMonth!),
+                    day: Math.min(rule.dayOfMonth, next.daysInMonth ?? 31),
                 });
             }
             return next;
@@ -34,7 +32,7 @@ function computeNextDate(from: DateTime, rule: RecurringRule): DateTime {
             }
             if (rule.dayOfMonth !== null) {
                 next = next.set({
-                    day: Math.min(rule.dayOfMonth, next.daysInMonth!),
+                    day: Math.min(rule.dayOfMonth, next.daysInMonth ?? 31),
                 });
             }
             return next;
