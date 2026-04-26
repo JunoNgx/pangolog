@@ -628,9 +628,11 @@ Post-architecture-review cleanup. No new features; only fixes and small refactor
 - [ ] `src/lib/hooks/useSync.ts`: replace `new Date(lastSyncTime).getTime()` with `DateTime.fromISO(lastSyncTime).toMillis()`
 - `lastSyncTime` is a Luxon UTC ISO string; using `DateTime` is consistent with the rest of the codebase
 
-### Task 28e: Document atomicity concern in `runFullDriveSync`
-- [x] `src/lib/drive/sync.ts`: add a short comment above the parallel `Promise.all([bulkPutCategories, bulkPutRecurringRules, bulkPutTransactions])` noting that partial failure is acceptable because the next sync will reconcile
-- IndexedDB supports transactions but the current parallel-write approach does not use a single transaction wrapper
+### Task 28e: Enforce atomicity for parallel DB writes
+- [x] `src/lib/db/bulk.ts`: add optional `existingTx?: IDBTransaction` parameter to `bulkPutCategories`, `bulkPutRecurringRules`, and `bulkPutTransactions`; when provided, use the transaction's object store instead of opening a new one
+- [x] `src/lib/drive/sync.ts`: open a single readwrite transaction spanning `["categories", "recurring-rules", "transactions"]` and pass it to all three bulk-put calls so failure in any store rolls back the entire batch
+- [x] `src/lib/import.ts`: apply the same single-transaction pattern in `executeImport`
+- IndexedDB supports transactions; the parallel-write approach now uses a single transaction wrapper
 
 ### Task 28f: Duplicate-ID check in import validation
 - [ ] `src/lib/import.ts`: in `validateImportData`, check for duplicate `id` values within each of `transactions`, `categories`, and `recurringRules` arrays
