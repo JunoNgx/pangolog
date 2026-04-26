@@ -6,6 +6,7 @@ import {
     getAllRecurringRulesForSync,
     getAllTransactions,
 } from "./db/bulk";
+import { getDb } from "./db/connection";
 import type { Category, RecurringRule, Transaction } from "./db/types";
 import { useProfileSettingsStore } from "./store/useProfileSettingsStore";
 
@@ -70,6 +71,24 @@ function isValidRecurringRule(item: unknown): item is RecurringRule {
     );
 }
 
+function findDuplicateId(
+    items: Record<string, unknown>[],
+    arrayName: string,
+    getDebugInfo: (item: Record<string, unknown>) => string,
+): string | null {
+    const seen = new Map<string, { index: number; debugInfo: string }>();
+    for (const [index, item] of items.entries()) {
+        const id = item.id as string;
+        const debugInfo = getDebugInfo(item);
+        const first = seen.get(id);
+        if (first) {
+            return `Duplicate ID in ${arrayName} at index ${index}: ${id} (first seen at index ${first.index}). First: { ${first.debugInfo} }. Duplicate: { ${debugInfo} }.`;
+        }
+        seen.set(id, { index, debugInfo });
+    }
+    return null;
+}
+
 /** Returns null if valid, or a descriptive error string if not. */
 export function validateImportData(data: unknown): string | null {
     if (!isRecord(data)) return "File content is not a valid JSON object.";
@@ -77,17 +96,44 @@ export function validateImportData(data: unknown): string | null {
         return "Missing or invalid categories array.";
     if (!data.categories.every(hasRequiredFields))
         return "One or more categories are missing required fields (id, updatedAt).";
+
+    const categories = data.categories as Record<string, unknown>[];
+    const catDup = findDuplicateId(
+        categories,
+        "categories",
+        (item) => `name: ${item.name ?? "n/a"}`,
+    );
+    if (catDup) return catDup;
+
     if (data.transactions !== undefined) {
         if (!Array.isArray(data.transactions))
             return "transactions field must be an array.";
         if (!data.transactions.every(hasRequiredFields))
             return "One or more transactions are missing required fields (id, updatedAt).";
+
+        const transactions = data.transactions as Record<string, unknown>[];
+        const txDup = findDuplicateId(
+            transactions,
+            "transactions",
+            (item) =>
+                `description: ${item.description ?? "n/a"}, transactedAt: ${item.transactedAt ?? "n/a"}, categoryId: ${item.categoryId ?? "n/a"}`,
+        );
+        if (txDup) return txDup;
     }
     if (data.recurringRules !== undefined) {
         if (!Array.isArray(data.recurringRules))
             return "recurringRules field must be an array.";
         if (!data.recurringRules.every(hasRequiredFields))
             return "One or more recurring rules are missing required fields (id, updatedAt).";
+
+        const recurringRules = data.recurringRules as Record<string, unknown>[];
+        const ruleDup = findDuplicateId(
+            recurringRules,
+            "recurring rules",
+            (item) =>
+                `description: ${item.description ?? "n/a"}, categoryId: ${item.categoryId ?? "n/a"}`,
+        );
+        if (ruleDup) return ruleDup;
     }
     return null;
 }
@@ -204,10 +250,15 @@ export async function executeImport(data: ImportData): Promise<ImportPreview> {
     });
 
     try {
+        const db = await getDb();
+        const tx = db.transaction(
+            ["categories", "recurring-rules", "transactions"],
+            "readwrite",
+        );
         await Promise.all([
-            bulkPutTransactions(transactionsToPut),
-            bulkPutCategories(categoriesToPut),
-            bulkPutRecurringRules(rulesToPut),
+            bulkPutTransactions(transactionsToPut, tx),
+            bulkPutCategories(categoriesToPut, tx),
+            bulkPutRecurringRules(rulesToPut, tx),
         ]);
     } catch (err) {
         throw new Error(`Failed to write records to database: ${err}`);
