@@ -698,44 +698,44 @@ Post-architecture-review cleanup. No new features; only fixes and small refactor
 
 ### Task 32b: Refactor info pages (Help, Privacy, Terms)
 
-- [ ] Replace outer `<div className="container ...">` with `.PageContainerNarrow`
-- [ ] Replace local `Section` component's `<section className="mb-8">` with `.InfoSection`
-- [ ] Replace local `Section` component's `<h2 className="text-base ...">` with `.InfoSectionTitle`
-- [ ] Replace all `text-sm text-default-500` with `.BodyText`
-- [ ] Replace `text-sm text-default-500 mb-3` with `.BodyTextBlock`
-- [ ] Replace `font-mono text-xs` with `.MonoText`
-- [ ] Replace `pre` styling with `.CodeBlock`
-- [ ] Replace floating back button with `.FloatingBackButton`
-- [ ] Keep local `Section` components (updated internals, not removed)
+- [x] Replace outer `<div className="container ...">` with `.PageContainerNarrow`
+- [x] Replace local `Section` component's `<section className="mb-8">` with `.InfoSection`
+- [x] Replace local `Section` component's `<h2 className="text-base ...">` with `.InfoSectionTitle`
+- [x] Replace all `text-sm text-default-500` with `.BodyText`
+- [x] Replace `text-sm text-default-500 mb-3` with `.BodyTextBlock`
+- [x] Replace `font-mono text-xs` with `.MonoText`
+- [x] Replace `pre` styling with `.CodeBlock`
+- [x] Replace floating back button with `.FloatingBackButton`
+- [x] Keep local `Section` components (updated internals, not removed)
 
 ---
 
 ### Task 32c: Refactor `SettingsClient.tsx`
 
-- [ ] Replace all section `<h3>` headings with `.SectionHeading`
-- [ ] Replace all helper/description `<p>` tags with `.Caption`
-- [ ] Replace `flex flex-col gap-3` / `gap-4` with `.VStackGap3` / `.VStackGap4`
-- [ ] Replace `flex items-center gap-3` toolbars with `.HStackGap3`
+- [x] Replace all section `<h3>` headings with `.SectionHeading`
+- [x] Replace all helper/description `<p>` tags with `.Caption`
+- [x] Replace `flex flex-col gap-3` / `gap-4` with `.VStackGap3` / `.VStackGap4`
+- [x] Replace `flex items-center gap-3` toolbars with `.HStackGap3`
 
 ---
 
 ### Task 32d: Refactor `LogClient.tsx`
 
-- [ ] Replace toolbar `flex items-center` patterns with `.HStack` variants
-- [ ] Replace `font-mono text-sm` amount displays with `.MonoTextSm` (in TransactionList.tsx)
-- [ ] Replace repeated layout containers with `.VStack` variants where appropriate
+- [x] Replace toolbar `flex items-center` patterns with `.HStack` variants
+- [x] Replace `font-mono text-sm` amount displays with `.MonoTextSm` (in TransactionList.tsx)
+- [x] Replace repeated layout containers with `.VStack` variants where appropriate
 
 ---
 
 ### Task 32e: Refactor `SummaryClient.tsx`
 
-- [ ] Replace `font-semibold text-default-500` labels with `.Label`
-- [ ] Replace `font-mono text-sm` amount displays with `.MonoTextSm`
+- [x] Replace `font-semibold text-default-500` labels with `.Label`
+- [x] Replace `font-mono text-sm` amount displays with `.MonoTextSm`
 
 ---
 
 ### Task 32f: Final lint and verification
 
-- [ ] Run `yarn efix` on all modified files
-- [ ] Ensure TypeScript compiles cleanly
+- [x] Run `yarn efix` on all modified files
+- [x] Ensure TypeScript compiles cleanly
 
