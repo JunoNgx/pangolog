@@ -15,6 +15,7 @@ import { CategoryDialog } from "@/components/CategoryDialog";
 import { CategoryPicker } from "@/components/CategoryPicker";
 import { DialogFooter } from "@/components/DialogFooter";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
+import { MONTH_NAMES, SELECT_CLASSES } from "@/lib/constants";
 import type { RecurringRule } from "@/lib/db/types";
 import { useCategories } from "@/lib/hooks/useCategories";
 import {
@@ -27,8 +28,6 @@ import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
 import {
     fromDateInputValue,
     getLocaleDateFormat,
-    MONTH_NAMES,
-    SELECT_CLASSES,
     showDeleteToast,
     toDateInputValue,
     todayDateString,

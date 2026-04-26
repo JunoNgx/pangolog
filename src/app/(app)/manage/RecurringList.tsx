@@ -5,8 +5,9 @@ import { DateTime } from "luxon";
 import { useState } from "react";
 import { ChipLabel } from "@/components/ChipLabel";
 import { MainListContainer } from "@/components/MainListContainer";
+import { MONTH_NAMES } from "@/lib/constants";
 import type { Category, RecurringRule } from "@/lib/db/types";
-import { formatAmount, MONTH_NAMES } from "@/lib/utils";
+import { formatAmount } from "@/lib/utils";
 import { RecurringRuleDialog } from "./RecurringRuleDialog";
 
 const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
