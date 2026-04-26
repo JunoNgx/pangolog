@@ -609,9 +609,10 @@ GitHub issue: JunoNgx/pangolog#30
 
 Post-architecture-review cleanup. No new features; only fixes and small refactors.
 
-### Task 28a: Guard `IRON_SESSION_SECRET` at runtime
-- [ ] `src/lib/session.ts`: add a runtime guard before `sessionOptions` that throws a descriptive error if `process.env.IRON_SESSION_SECRET` is missing
-- The auth callback route checks `CLIENT_SECRET` but this does not; a missing env var causes a cryptic crash at startup
+### Task 28a: Guard `IRON_SESSION_SECRET` and `GOOGLE_CLIENT_SECRET` at startup
+- [x] `src/instrumentation.ts`: add `register()` that throws a descriptive error if `IRON_SESSION_SECRET` or `GOOGLE_CLIENT_SECRET` is missing
+- [x] `next.config.ts`: add build-time guards with the same checks before exporting the config
+- The auth callback route checks `CLIENT_SECRET` inline but `IRON_SESSION_SECRET` had no validation, causing a cryptic crash from deep inside iron-session
 
 ### Task 28b: Add React Error Boundaries
 - [ ] Create `src/components/ErrorBoundary.tsx` (client component using `componentDidCatch`)
