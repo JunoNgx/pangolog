@@ -1,13 +1,11 @@
 "use client";
 
 import {
-    Button,
     Checkbox,
     Input,
     Modal,
     ModalBody,
     ModalContent,
-    ModalFooter,
     ModalHeader,
     Popover,
     PopoverContent,
@@ -18,6 +16,7 @@ import { Shuffle } from "lucide-react";
 import { type SubmitEventHandler, useEffect, useState } from "react";
 import { HexColorPicker } from "react-colorful";
 import { toast } from "sonner";
+import { DialogFooter } from "@/components/DialogFooter";
 import type { Category } from "@/lib/db/types";
 import {
     useCreateCategory,
@@ -358,29 +357,13 @@ export function CategoryDialog({
                             </Checkbox>
                         )}
                     </ModalBody>
-                    <ModalFooter>
-                        {isEditing && (
-                            <Button
-                                variant="light"
-                                color="danger"
-                                isLoading={deleteCategory.isPending}
-                                onPress={handleDelete}
-                                className="mr-auto"
-                            >
-                                Delete
-                            </Button>
-                        )}
-                        <Button
-                            type="submit"
-                            color="primary"
-                            isLoading={isPending}
-                        >
-                            {isEditing ? "Save" : "Create"}
-                        </Button>
-                        <Button variant="light" onPress={onClose}>
-                            Cancel
-                        </Button>
-                    </ModalFooter>
+                    <DialogFooter
+                        isEditing={isEditing}
+                        onCancel={onClose}
+                        onDelete={isEditing ? handleDelete : undefined}
+                        isSubmitting={isPending}
+                        isDeleting={deleteCategory.isPending}
+                    />
                 </form>
             </ModalContent>
         </Modal>

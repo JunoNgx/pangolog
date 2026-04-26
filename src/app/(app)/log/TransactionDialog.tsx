@@ -1,14 +1,11 @@
 "use client";
 
 import {
-    Button,
     Input,
     Modal,
     ModalBody,
     ModalContent,
-    ModalFooter,
     ModalHeader,
-    Tooltip,
 } from "@heroui/react";
 import { DateTime } from "luxon";
 import type React from "react";
@@ -22,6 +19,7 @@ import {
 import { toast } from "sonner";
 import { CategoryDialog } from "@/components/CategoryDialog";
 import { CategoryPicker } from "@/components/CategoryPicker";
+import { DialogFooter } from "@/components/DialogFooter";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
 import type { Transaction } from "@/lib/db/types";
 import { useCategories } from "@/lib/hooks/useCategories";
@@ -289,39 +287,14 @@ export function TransactionDialog({
                                 onAdd={() => setIsCategoryDialogOpen(true)}
                             />
                         </ModalBody>
-                        <ModalFooter
-                            className={
-                                isEditing ? "justify-between" : undefined
-                            }
-                        >
-                            {isEditing && (
-                                <Button
-                                    color="danger"
-                                    variant="light"
-                                    isLoading={isDeleting}
-                                    onPress={handleDelete}
-                                >
-                                    Delete
-                                </Button>
-                            )}
-                            <div className="flex gap-2">
-                                <Tooltip
-                                    content="Ctrl/Cmd + Enter"
-                                    placement="left"
-                                >
-                                    <Button
-                                        type="submit"
-                                        color="primary"
-                                        isLoading={isPending}
-                                    >
-                                        {isEditing ? "Save" : "Create"}
-                                    </Button>
-                                </Tooltip>
-                                <Button variant="light" onPress={handleClose}>
-                                    Cancel
-                                </Button>
-                            </div>
-                        </ModalFooter>
+                        <DialogFooter
+                            isEditing={isEditing}
+                            onCancel={handleClose}
+                            onDelete={isEditing ? handleDelete : undefined}
+                            isSubmitting={isPending}
+                            isDeleting={isDeleting}
+                            showSubmitTooltip
+                        />
                     </form>
                 </ModalContent>
             </Modal>
