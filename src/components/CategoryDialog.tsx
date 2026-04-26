@@ -46,10 +46,7 @@ function randomHexColor() {
         .padStart(6, "0")}`;
 }
 
-const modalClassNames = {
-    closeButton: "cursor-pointer",
-    body: "overflow-y-auto max-h-[calc(var(--visual-viewport-height,100svh)-10rem)]",
-};
+import { FORM_MODAL_CLASS_NAMES } from "@/lib/constants";
 
 const iconTriggerClasses = `
     rounded-lg
@@ -324,7 +321,11 @@ export function CategoryDialog({
     );
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose} classNames={modalClassNames}>
+        <Modal
+            isOpen={isOpen}
+            onClose={onClose}
+            classNames={FORM_MODAL_CLASS_NAMES}
+        >
             <ModalContent>
                 <form onSubmit={handleSubmit}>
                     <ModalHeader>

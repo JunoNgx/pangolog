@@ -59,10 +59,7 @@ function getRepeatLabel(frequency: Frequency, dateStr: string): string {
     }
 }
 
-const modalClassNames = {
-    closeButton: "cursor-pointer",
-    body: "overflow-y-auto max-h-[calc(var(--visual-viewport-height,100svh)-10rem)]",
-};
+import { FORM_MODAL_CLASS_NAMES } from "@/lib/constants";
 
 const statusPanelClasses = `
     p-3 rounded-lg border
@@ -282,7 +279,7 @@ export function RecurringRuleDialog({
             <Modal
                 isOpen={isOpen}
                 onClose={handleClose}
-                classNames={modalClassNames}
+                classNames={FORM_MODAL_CLASS_NAMES}
             >
                 <ModalContent>
                     <form onSubmit={handleSubmit}>
