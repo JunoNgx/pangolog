@@ -1,6 +1,7 @@
 "use client";
 
 import { FloatingBackButton } from "@/components/FloatingBackButton";
+import { Kbd } from "@/components/Kbd";
 
 function Section({
     title,
@@ -145,12 +146,8 @@ export default function HelpClient() {
 
             <Section title="Keyboard shortcuts">
                 <p className="text-sm text-default-500">
-                    Press{" "}
-                    <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
-                        Ctrl/Cmd + /
-                    </kbd>{" "}
-                    anywhere in the app to view the full list of keyboard
-                    shortcuts.
+                    Press <Kbd>Ctrl/Cmd + /</Kbd> anywhere in the app to view
+                    the full list of keyboard shortcuts.
                 </p>
             </Section>
 

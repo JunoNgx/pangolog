@@ -87,24 +87,7 @@ const SHORTCUT_GROUPS: ShortcutGroup[] = [
     },
 ];
 
-function Kbd({ children }: { children: React.ReactNode }) {
-    return (
-        <kbd
-            className={`
-                /* CONTAINER */
-                inline-block
-
-                /* CONTENT STYLES */
-                font-mono text-xs
-
-                /* VISUAL EFFECTS */
-                bg-default-100 border border-default-200 rounded px-1.5 py-0.5
-            `}
-        >
-            {children}
-        </kbd>
-    );
-}
+import { Kbd } from "./Kbd";
 
 export function ShortcutsDialog() {
     const [isOpen, setIsOpen] = useState(false);
