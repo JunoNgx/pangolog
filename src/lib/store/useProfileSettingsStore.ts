@@ -1,6 +1,7 @@
 import { DateTime } from "luxon";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { utcNowString } from "@/lib/utils";
 
 interface ProfileSettingsStore {
     customCurrency: string;
@@ -32,22 +33,22 @@ export const useProfileSettingsStore = create<ProfileSettingsStore>()(
             setCustomCurrency: (value) =>
                 set({
                     customCurrency: value,
-                    settingsUpdatedAt: DateTime.now().toUTC().toISO()!,
+                    settingsUpdatedAt: utcNowString(),
                 }),
             setIsPrefixCurrency: (value) =>
                 set({
                     isPrefixCurrency: value,
-                    settingsUpdatedAt: DateTime.now().toUTC().toISO()!,
+                    settingsUpdatedAt: utcNowString(),
                 }),
             setIsExpenseOnlyMode: (value) =>
                 set({
                     isExpenseOnlyMode: value,
-                    settingsUpdatedAt: DateTime.now().toUTC().toISO()!,
+                    settingsUpdatedAt: utcNowString(),
                 }),
             setIsCategoryAlphabetical: (value) =>
                 set({
                     isCategoryAlphabetical: value,
-                    settingsUpdatedAt: DateTime.now().toUTC().toISO()!,
+                    settingsUpdatedAt: utcNowString(),
                 }),
             applyRemoteSettings: (
                 customCurrency,

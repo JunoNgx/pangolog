@@ -1,11 +1,12 @@
 "use client";
 
-import { Button, Input, Tooltip } from "@heroui/react";
-import { Plus, Search } from "lucide-react";
+import { Button, Input } from "@heroui/react";
+import { Search } from "lucide-react";
 import { DateTime } from "luxon";
 import dynamic from "next/dynamic";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { DemoDataBanner } from "@/components/DemoDataBanner";
+import { FloatingActionButton } from "@/components/FloatingActionButton";
 import { PeriodPicker } from "@/components/PeriodPicker";
 import { SyncButton } from "@/components/SyncButton";
 import { TransactionTypeCheckboxes } from "@/components/TransactionTypeCheckboxes";
@@ -299,23 +300,10 @@ export default function LogClient() {
                 />
             )}
 
-            <div className="FloatingActionButtonContainer">
-                <Tooltip
-                    content={
-                        <span className="text-center">Ctrl/Cmd + Enter</span>
-                    }
-                    placement="left"
-                >
-                    <Button
-                        color="primary"
-                        className="FloatingActionButton"
-                        onPress={() => setIsCreateOpen(true)}
-                    >
-                        <Plus />
-                        <span className="hidden md:inline">Log</span>
-                    </Button>
-                </Tooltip>
-            </div>
+            <FloatingActionButton
+                label="Log"
+                onPress={() => setIsCreateOpen(true)}
+            />
             <TransactionDialog
                 isOpen={isCreateOpen}
                 onClose={() => setIsCreateOpen(false)}

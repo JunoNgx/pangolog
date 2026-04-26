@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { MONTH_NAMES, SELECT_CLASSES, YEAR_OPTIONS } from "@/lib/utils";
+import { MONTH_NAMES, SELECT_CLASSES, YEAR_OPTIONS } from "@/lib/constants";
 
 interface MonthYearPickerProps {
     selectedYear: number;

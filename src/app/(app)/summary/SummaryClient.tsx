@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useMemo } from "react";
+import { MainListContainer } from "@/components/MainListContainer";
 import { PeriodPicker } from "@/components/PeriodPicker";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
 import { TransactionTypeCheckboxes } from "@/components/TransactionTypeCheckboxes";
@@ -107,7 +108,7 @@ function SegmentBar({ label, slices, total }: SegmentBarProps) {
                     />
                 ))}
             </div>
-            <ul className="MainListContainer gap-1">
+            <MainListContainer className="gap-1">
                 {slices.map((slice) => (
                     <li
                         key={slice.categoryId ?? `__${slice.name}__`}
@@ -131,7 +132,7 @@ function SegmentBar({ label, slices, total }: SegmentBarProps) {
                         </span>
                     </li>
                 ))}
-            </ul>
+            </MainListContainer>
         </div>
     );
 }

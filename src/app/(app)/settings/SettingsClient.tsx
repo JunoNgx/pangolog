@@ -15,6 +15,8 @@ import {
 import { DateTime } from "luxon";
 import dynamic from "next/dynamic";
 import { useTheme } from "next-themes";
+import { MainListContainer } from "@/components/MainListContainer";
+import { DEFAULT_MODAL_CLASS_NAMES } from "@/lib/constants";
 
 const OfflineIndicator = dynamic(
     () =>
@@ -261,7 +263,7 @@ export default function SettingsClient() {
                 Settings
             </h2>
 
-            <div className="MainListContainer gap-8">
+            <MainListContainer as="div" className="gap-8">
                 <section>
                     <h3 className="text-lg font-semibold mb-4">
                         Google Drive Sync
@@ -725,12 +727,12 @@ export default function SettingsClient() {
                         Clear local records
                     </Button>
                 </section>
-            </div>
+            </MainListContainer>
 
             <Modal
                 isOpen={isClearRecordsDialogOpen}
                 onClose={() => setIsResetDialogOpen(false)}
-                classNames={{ closeButton: "cursor-pointer" }}
+                classNames={DEFAULT_MODAL_CLASS_NAMES}
             >
                 <ModalContent>
                     <ModalHeader>Clear local records?</ModalHeader>
@@ -760,7 +762,7 @@ export default function SettingsClient() {
             <Modal
                 isOpen={isResetAppDialogOpen}
                 onClose={() => setIsResetAppDialogOpen(false)}
-                classNames={{ closeButton: "cursor-pointer" }}
+                classNames={DEFAULT_MODAL_CLASS_NAMES}
             >
                 <ModalContent>
                     <ModalHeader>Confirm resetting app?</ModalHeader>
@@ -791,7 +793,7 @@ export default function SettingsClient() {
                 isOpen={isLogDialogOpen}
                 onClose={() => setIsLogDialogOpen(false)}
                 size="full"
-                classNames={{ closeButton: "cursor-pointer" }}
+                classNames={DEFAULT_MODAL_CLASS_NAMES}
             >
                 <ModalContent>
                     <ModalHeader>Logs</ModalHeader>
