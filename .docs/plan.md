@@ -603,3 +603,55 @@ After the parallel DB writes, dedup may write additional soft-deletes. Rather th
 - [x] After dedup soft-deletes, re-read `[getAllTransactions, getAllCategoriesForSync, getAllRecurringRulesForSync]` from DB -- authoritative state after all writes
 - [x] Upload uses re-read data (`uploadTransactions`, `uploadCategories`, `uploadRules`)
 
+## Task 28: Fix identified code weaknesses (second pass)
+
+GitHub issue: JunoNgx/pangolog#30
+
+Post-architecture-review cleanup. No new features; only fixes and small refactors.
+
+### Task 28a: Guard `IRON_SESSION_SECRET` and `GOOGLE_CLIENT_SECRET` at startup
+- [x] `src/instrumentation.ts`: add `register()` that throws a descriptive error if `IRON_SESSION_SECRET` or `GOOGLE_CLIENT_SECRET` is missing
+- [x] `next.config.ts`: add build-time guards with the same checks before exporting the config
+- The auth callback route checks `CLIENT_SECRET` inline but `IRON_SESSION_SECRET` had no validation, causing a cryptic crash from deep inside iron-session
+
+### Task 28b: Add React Error Boundaries
+- [x] Create `src/components/ErrorBoundary.tsx` (client component using `componentDidCatch`)
+- [x] Wrap the app tree in `src/app/layout.tsx`
+- [x] Wrap the navbar + main content in `src/app/(app)/layout.tsx`
+- Prevents a crash in any dialog or list from unmounting the entire application and losing unsaved form state
+
+### Task 28c: Unify `handleAuthExpired` presets
+- [x] `src/lib/hooks/useSync.ts`: extract an `AUTH_ERRORS` constant with preset `{ code, message }` objects for the two call sites (pre-sync and mid-sync)
+- Eliminates the inline TODO at line 49
+
+### Task 28d: Consistent Luxon usage in `isSyncStale`
+- [won't do] `src/lib/hooks/useSync.ts`: replace `new Date(lastSyncTime).getTime()` with `DateTime.fromISO(lastSyncTime).toMillis()`
+- `new Date(isoString)` is standard, well-defined JavaScript behavior. Switching to Luxon here is purely cosmetic and does not fix a bug or prevent a crash.
+
+### Task 28e: Enforce atomicity for parallel DB writes
+- [x] `src/lib/db/bulk.ts`: add optional `existingTx?: IDBTransaction` parameter to `bulkPutCategories`, `bulkPutRecurringRules`, and `bulkPutTransactions`; when provided, use the transaction's object store instead of opening a new one
+- [x] `src/lib/drive/sync.ts`: open a single readwrite transaction spanning `["categories", "recurring-rules", "transactions"]` and pass it to all three bulk-put calls so failure in any store rolls back the entire batch
+- [x] `src/lib/import.ts`: apply the same single-transaction pattern in `executeImport`
+- IndexedDB supports transactions; the parallel-write approach now uses a single transaction wrapper
+
+### Task 28f: Duplicate-ID check in import validation
+- [x] `src/lib/import.ts`: in `validateImportData`, check for duplicate `id` values within each of `transactions`, `categories`, and `recurringRules` arrays
+- Return an error string if duplicates are found, including debug info from both occurrences (e.g. name for categories, description/transactedAt/categoryId for transactions, description/categoryId for recurring rules)
+- Two items with the same `id` would silently overwrite each other during `executeImport`
+
+### Task 28g: Remove non-null assertion in `computeNextDate`
+- [x] `src/lib/hooks/useRecurringRunner.ts`: replace `next.daysInMonth!` with `next.daysInMonth ?? 31`
+- The comment explaining why `!` is safe can then be removed; the fallback is self-documenting
+
+### Task 28h: `aria-live` for PeriodPicker status changes
+- [won't do] `src/components/PeriodPicker.tsx`: ensure screen readers announce month/year changes when the prev/next buttons are pressed
+- The displayed period is a native `<select>` (or contains one), which screen readers already announce on focus. Adding `aria-live` risks double-announcements. The `aria-label` on prev/next buttons already describes the action.
+
+### Task 28i: Fix backup filename month boundary bug
+- [ ] `src/lib/drive/sync.ts`: in the autobackup block, use `syncStartTime` (captured at the top of `runFullDriveSync`) instead of `DateTime.now()` when computing `fileName`
+- Prevents a rare edge case where a long sync spanning a month boundary names the backup for the wrong month
+
+### Task 28j: Recurring transaction time consistency (product decision)
+- [won't do] `src/lib/hooks/useRecurringRunner.ts`: decide whether runner-generated transactions should use the current wall-clock time (`now.hour`, `now.minute`, etc.) or a fixed time (e.g. `12:00:00`)
+- The current wall-clock time behavior is functional and no user-reported issues exist. Deferred until a real need arises.
+

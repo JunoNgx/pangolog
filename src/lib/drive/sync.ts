@@ -8,6 +8,7 @@ import {
     getAllTransactions,
     purgeExpiredRecords,
 } from "@/lib/db/bulk";
+import { getDb } from "@/lib/db/connection";
 import type { Category, RecurringRule, Transaction } from "@/lib/db/types";
 import { buildExportData } from "@/lib/export";
 import { useLocalSyncDataStore } from "@/lib/store/useLocalSyncDataStore";
@@ -255,11 +256,19 @@ export async function runFullDriveSync(
     const allMergedTransactions = [...mergedTransactionsByYear.values()].flat();
 
     // --- Parallel DB writes ---
+    // All three stores are written inside a single IndexedDB transaction so
+    // that failure in any one store rolls back the entire batch.
+
+    const db = await getDb();
+    const tx = db.transaction(
+        ["categories", "recurring-rules", "transactions"],
+        "readwrite",
+    );
 
     await Promise.all([
-        bulkPutCategories(mergedCategories),
-        bulkPutRecurringRules(mergedRules),
-        bulkPutTransactions(allMergedTransactions),
+        bulkPutCategories(mergedCategories, tx),
+        bulkPutRecurringRules(mergedRules, tx),
+        bulkPutTransactions(allMergedTransactions, tx),
     ]);
 
     // --- Deduplicate runner-generated transactions ---
@@ -317,8 +326,8 @@ export async function runFullDriveSync(
     const { isAutobackupEnabled } = useLocalUserSettingsStore.getState();
     if (!isAutobackupEnabled) return syncStartTime;
 
-    const now = DateTime.now();
-    const fileName = backupFileName(now.year, now.month);
+    const backupTime = DateTime.fromISO(syncStartTime);
+    const fileName = backupFileName(backupTime.year, backupTime.month);
     if (driveFileMap.has(fileName)) return syncStartTime;
 
     const backupData = await buildExportData();

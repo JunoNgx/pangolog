@@ -15,6 +15,7 @@ const fontMono = Geist_Mono({
     variable: "--font-mono-var",
 });
 
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { BASE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -58,7 +59,9 @@ export default function RootLayout({
             <body
                 className={`${fontSans.variable} ${fontMono.variable} antialiased`}
             >
-                <Providers>{children}</Providers>
+                <ErrorBoundary>
+                    <Providers>{children}</Providers>
+                </ErrorBoundary>
             </body>
         </html>
     );
