@@ -14,10 +14,8 @@ function Section({
     children: React.ReactNode;
 }) {
     return (
-        <section className="mb-8">
-            <h2 className="text-base font-semibold mb-3 text-default-700">
-                {title}
-            </h2>
+        <section className="InfoSection">
+            <h2 className="InfoSectionTitle">{title}</h2>
             {children}
         </section>
     );
@@ -40,7 +38,7 @@ function Term({
             ) : (
                 <p className={nameClass}>{name}</p>
             )}
-            <p className="text-sm text-default-500">{children}</p>
+            <p className="BodyText">{children}</p>
         </div>
     );
 }
@@ -51,14 +49,14 @@ export default function HelpClient() {
     useHotkey("Escape", goBack);
 
     return (
-        <div className="container mx-auto max-w-2xl px-4 pt-6 pb-24">
+        <div className="PageContainerNarrow">
             <h1 className="text-xl font-bold mb-2">Manual</h1>
-            <p className="text-sm text-default-400 mb-8">
+            <p className="Caption mb-8">
                 Pangolog - a minimalist personal expense tracker.
             </p>
 
             <Section title="System requirements">
-                <p className="text-sm text-default-500">
+                <p className="BodyText">
                     Any modern browser (Chrome, Firefox, Safari, Edge) with
                     JavaScript enabled. IndexedDB is required for local storage
                     - all major browsers support it. Google Drive sync requires
@@ -67,7 +65,7 @@ export default function HelpClient() {
             </Section>
 
             <Section title="Installing as an app">
-                <p className="text-sm text-default-500 mb-3">
+                <p className="BodyTextBlock">
                     Pangolog can be installed as a standalone app on your device
                     for a better experience - no browser chrome, faster access
                     from your home screen.
@@ -88,8 +86,8 @@ export default function HelpClient() {
                 </Term>
                 <Term name="Other browsers" isHeading>
                     PWA installation support varies by browser and OS. Check
-                    your browser's documentation or look for extensions that add
-                    PWA support - for example,{" "}
+                    your browser&apos;s documentation or look for extensions
+                    that add PWA support - for example,{" "}
                     <a
                         href="https://addons.mozilla.org/en-US/firefox/addon/pwas-for-firefox/"
                         target="_blank"
@@ -152,7 +150,7 @@ export default function HelpClient() {
             </Section>
 
             <Section title="Keyboard shortcuts">
-                <p className="text-sm text-default-500">
+                <p className="BodyText">
                     Press{" "}
                     <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
                         Ctrl/Cmd + /
@@ -163,12 +161,12 @@ export default function HelpClient() {
             </Section>
 
             <Section title="Recurring rules">
-                <p className="text-sm text-default-500 mb-3">
+                <p className="BodyTextBlock">
                     Rules are checked and executed on app launch and whenever
                     the app becomes visible again (e.g. switching back from
                     another tab or app).
                 </p>
-                <p className="text-sm text-default-500">
+                <p className="BodyText">
                     Each rule generates at most one transaction per execution,
                     regardless of how much time has passed. If you have not
                     opened the app in a long time, only the most recent missed
@@ -177,28 +175,28 @@ export default function HelpClient() {
             </Section>
 
             <Section title="Debug">
-                <p className="text-sm text-default-500 mb-3">
+                <p className="BodyTextBlock">
                     A hidden debug section is available in Settings. Tap the
                     "Settings" heading 5 times to toggle its visibility.
                 </p>
             </Section>
 
             <Section title="Google Drive sync">
-                <p className="text-sm text-default-500 mb-3">
+                <p className="BodyTextBlock">
                     Sync is optional and can be enabled or disabled from
                     Settings. Once connected, sync happens automatically: 30
                     seconds after any change, and when returning to the app
                     after 24+ hours. You can also sync manually via the button
                     in the transaction view.
                 </p>
-                <p className="text-sm text-default-500 mb-3">
+                <p className="BodyTextBlock">
                     Conflicts are resolved by last-write-wins on{" "}
-                    <span className="font-mono text-xs">updatedAt</span>.
-                    Soft-deleted records are kept for 60 days to ensure correct
+                    <span className="MonoText">updatedAt</span>. Soft-deleted
+                    records are kept for 60 days to ensure correct
                     synchronisation across devices. Sync regularly within this
                     window to prevent stale data.
                 </p>
-                <p className="text-sm text-default-500 mb-3">
+                <p className="BodyTextBlock">
                     Google Drive does not propagate file changes to all servers
                     instantly - this process can take up to an hour. This is an
                     unfortunately known limitation of the Google Drive platform
@@ -206,10 +204,8 @@ export default function HelpClient() {
                     device does not pick up changes from the first, wait a while
                     and sync again.
                 </p>
-                <h3 className="text-sm font-medium text-default-600 mb-1">
-                    Storage structure
-                </h3>
-                <ul className="text-sm text-default-500 font-mono space-y-1">
+                <h3 className="SubsectionHeading">Storage structure</h3>
+                <ul className="BodyText font-mono space-y-1">
                     <li>Pangolog/</li>
                     <li className="pl-4">YYYY.json</li>
                     <li className="pl-4">categories.json</li>
@@ -220,7 +216,7 @@ export default function HelpClient() {
             </Section>
 
             <Section title="Export / import format">
-                <p className="text-sm text-default-500 mb-3">
+                <p className="BodyTextBlock">
                     The JSON file exported from Settings contains all your data
                     and can be re-imported on any device. You can also
                     hand-craft a file in this format to migrate data from
@@ -228,26 +224,22 @@ export default function HelpClient() {
                     paste-friendly for an LLM - you can share this section with
                     one to help generate a valid import file.
                 </p>
-                <p className="text-sm text-default-500 mb-2">
-                    Top-level structure:
-                </p>
-                <pre className="font-mono text-xs bg-default-100 rounded p-3 overflow-x-auto text-default-600 mb-3 leading-relaxed">{`{
+                <p className="BodyText mb-2">Top-level structure:</p>
+                <pre className="CodeBlock">{`{
   "exportedAt":     "2026-04-10T00:00:00.000Z",
   "categories":     [ ... ],  // required, may be empty
   "transactions":   [ ... ],  // optional
   "recurringRules": [ ... ]   // optional
 }`}</pre>
-                <p className="text-sm text-default-500 mb-4">
+                <p className="BodyText mb-4">
                     Import is additive and non-destructive. Records are merged
-                    by <span className="font-mono text-xs">updatedAt</span> -
-                    incoming records with a newer timestamp overwrite existing
-                    ones; older records are ignored.
+                    by <span className="MonoText">updatedAt</span> - incoming
+                    records with a newer timestamp overwrite existing ones;
+                    older records are ignored.
                 </p>
 
-                <h3 className="text-sm font-medium text-default-600 mb-2">
-                    Transaction
-                </h3>
-                <pre className="font-mono text-xs bg-default-100 rounded p-3 overflow-x-auto text-default-600 mb-4 leading-relaxed">{`// * = required for import
+                <h3 className="SubsectionHeading">Transaction</h3>
+                <pre className="CodeBlock">{`// * = required for import
 id:           string        // * unique, UUID v4 recommended
 transactedAt: string        // * local-offset ISO "2026-04-10T14:30:00+07:00"
 updatedAt:    string        // * UTC ISO "2026-04-10T07:30:00.000Z"
@@ -262,10 +254,8 @@ categoryId:   string | null //   references a category id, or null
 ruleId?:      string        //   only present on rule-generated transactions
 rulePeriod?:  string        //   only present on rule-generated transactions`}</pre>
 
-                <h3 className="text-sm font-medium text-default-600 mb-2">
-                    Category
-                </h3>
-                <pre className="font-mono text-xs bg-default-100 rounded p-3 overflow-x-auto text-default-600 mb-4 leading-relaxed">{`// * = required for import
+                <h3 className="SubsectionHeading">Category</h3>
+                <pre className="CodeBlock">{`// * = required for import
 id:           string        // * unique, UUID v4 recommended
 name:         string        // * display name
 updatedAt:    string        // * UTC ISO "2026-04-10T07:30:00.000Z"
@@ -277,10 +267,8 @@ priority:     number        //   integer; lower = appears earlier in picker
 isBuckOnly:   boolean       //   true = hidden from Small Dimes picker
 isIncomeOnly: boolean       //   true = hidden from expense picker`}</pre>
 
-                <h3 className="text-sm font-medium text-default-600 mb-2">
-                    Recurring rule
-                </h3>
-                <pre className="font-mono text-xs bg-default-100 rounded p-3 overflow-x-auto text-default-600 mb-4 leading-relaxed">{`// * = required for import
+                <h3 className="SubsectionHeading">Recurring rule</h3>
+                <pre className="CodeBlock">{`// * = required for import
 id:               string              // * unique, UUID v4 recommended
 updatedAt:        string              // * UTC ISO "2026-04-10T07:30:00.000Z"
 amount:           number              // * integer, minor units
@@ -301,39 +289,32 @@ dayOfWeek:        number(1-7) | null  //   Mon=1 Sun=7; weekly rules only
 dayOfMonth:       number(1-31) | null //   monthly/yearly rules; clamped to month end
 monthOfYear:      number(1-12) | null //   yearly rules only`}</pre>
 
-                <h3 className="text-sm font-medium text-default-600 mb-2">
-                    Timestamp formats
-                </h3>
-                <ul className="text-sm text-default-500 space-y-1 list-disc list-inside">
+                <h3 className="SubsectionHeading">Timestamp formats</h3>
+                <ul className="BodyText space-y-1 list-disc list-inside">
                     <li>
-                        <span className="font-mono text-xs">transactedAt</span>{" "}
-                        and{" "}
-                        <span className="font-mono text-xs">
-                            nextGenerationAt
-                        </span>{" "}
-                        - local-offset ISO:{" "}
-                        <span className="font-mono text-xs">
+                        <span className="MonoText">transactedAt</span> and{" "}
+                        <span className="MonoText">nextGenerationAt</span> -
+                        local-offset ISO:{" "}
+                        <span className="MonoText">
                             2026-04-10T14:30:00+07:00
                         </span>
                     </li>
                     <li>
                         Audit fields (
-                        <span className="font-mono text-xs">createdAt</span>,{" "}
-                        <span className="font-mono text-xs">updatedAt</span>,{" "}
-                        <span className="font-mono text-xs">deletedAt</span>,{" "}
-                        <span className="font-mono text-xs">
-                            lastGeneratedAt
-                        </span>
-                        ) - UTC ISO:{" "}
-                        <span className="font-mono text-xs">
+                        <span className="MonoText">createdAt</span>,{" "}
+                        <span className="MonoText">updatedAt</span>,{" "}
+                        <span className="MonoText">deletedAt</span>,{" "}
+                        <span className="MonoText">lastGeneratedAt</span>) - UTC
+                        ISO:{" "}
+                        <span className="MonoText">
                             2026-04-10T07:30:00.000Z
                         </span>
                     </li>
                     <li>
-                        Set <span className="font-mono text-xs">updatedAt</span>{" "}
-                        to a recent timestamp - records with an older{" "}
-                        <span className="font-mono text-xs">updatedAt</span>{" "}
-                        than the existing database entry are ignored on import.
+                        Set <span className="MonoText">updatedAt</span> to a
+                        recent timestamp - records with an older{" "}
+                        <span className="MonoText">updatedAt</span> than the
+                        existing database entry are ignored on import.
                     </li>
                 </ul>
             </Section>
@@ -341,7 +322,7 @@ monthOfYear:      number(1-12) | null //   yearly rules only`}</pre>
             <Tooltip content="Esc" placement="left">
                 <Button
                     color="default"
-                    className="fixed bottom-6 right-6 z-50 h-14 min-w-0"
+                    className="FloatingBackButton"
                     onPress={() => router.back()}
                 >
                     <ArrowLeft />
