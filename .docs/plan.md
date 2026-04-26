@@ -640,7 +640,7 @@ Post-architecture-review cleanup. No new features; only fixes and small refactor
 - Two items with the same `id` would silently overwrite each other during `executeImport`
 
 ### Task 28g: Remove non-null assertion in `computeNextDate`
-- [ ] `src/lib/hooks/useRecurringRunner.ts`: replace `next.daysInMonth!` with `next.daysInMonth ?? 31`
+- [x] `src/lib/hooks/useRecurringRunner.ts`: replace `next.daysInMonth!` with `next.daysInMonth ?? 31`
 - The comment explaining why `!` is safe can then be removed; the fallback is self-documenting
 
 ### Task 28h: `aria-live` for PeriodPicker status changes
