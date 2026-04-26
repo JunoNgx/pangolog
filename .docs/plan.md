@@ -603,3 +603,52 @@ After the parallel DB writes, dedup may write additional soft-deletes. Rather th
 - [x] After dedup soft-deletes, re-read `[getAllTransactions, getAllCategoriesForSync, getAllRecurringRulesForSync]` from DB -- authoritative state after all writes
 - [x] Upload uses re-read data (`uploadTransactions`, `uploadCategories`, `uploadRules`)
 
+## Task 28: Fix identified code weaknesses (second pass)
+
+GitHub issue: JunoNgx/pangolog#30
+
+Post-architecture-review cleanup. No new features; only fixes and small refactors.
+
+### Task 28a: Guard `IRON_SESSION_SECRET` at runtime
+- [ ] `src/lib/session.ts`: add a runtime guard before `sessionOptions` that throws a descriptive error if `process.env.IRON_SESSION_SECRET` is missing
+- The auth callback route checks `CLIENT_SECRET` but this does not; a missing env var causes a cryptic crash at startup
+
+### Task 28b: Add React Error Boundaries
+- [ ] Create `src/components/ErrorBoundary.tsx` (client component using `componentDidCatch`)
+- [ ] Wrap the app tree in `src/app/layout.tsx`
+- [ ] Wrap the navbar + main content in `src/app/(app)/layout.tsx`
+- Prevents a crash in any dialog or list from unmounting the entire application and losing unsaved form state
+
+### Task 28c: Unify `handleAuthExpired` presets
+- [ ] `src/lib/hooks/useSync.ts`: extract an `AUTH_ERRORS` constant with preset `{ code, message }` objects for the two call sites (pre-sync and mid-sync)
+- Eliminates the inline TODO at line 49
+
+### Task 28d: Consistent Luxon usage in `isSyncStale`
+- [ ] `src/lib/hooks/useSync.ts`: replace `new Date(lastSyncTime).getTime()` with `DateTime.fromISO(lastSyncTime).toMillis()`
+- `lastSyncTime` is a Luxon UTC ISO string; using `DateTime` is consistent with the rest of the codebase
+
+### Task 28e: Document atomicity concern in `runFullDriveSync`
+- [ ] `src/lib/drive/sync.ts`: add a short comment above the parallel `Promise.all([bulkPutCategories, bulkPutRecurringRules, bulkPutTransactions])` noting that partial failure is acceptable because the next sync will reconcile
+- IndexedDB supports transactions but the current parallel-write approach does not use a single transaction wrapper
+
+### Task 28f: Duplicate-ID check in import validation
+- [ ] `src/lib/import.ts`: in `validateImportData`, check for duplicate `id` values within each of `transactions`, `categories`, and `recurringRules` arrays
+- Return an error string if duplicates are found
+- Two items with the same `id` would silently overwrite each other during `executeImport`
+
+### Task 28g: Remove non-null assertion in `computeNextDate`
+- [ ] `src/lib/hooks/useRecurringRunner.ts`: replace `next.daysInMonth!` with `next.daysInMonth ?? 31`
+- The comment explaining why `!` is safe can then be removed; the fallback is self-documenting
+
+### Task 28h: `aria-live` for PeriodPicker status changes
+- [ ] `src/components/PeriodPicker.tsx`: ensure screen readers announce month/year changes when the prev/next buttons are pressed
+- Consider adding an `aria-live="polite"` region for the displayed period, or verify HeroUI Button re-announces on `aria-label` change
+
+### Task 28i: Fix backup filename month boundary bug
+- [ ] `src/lib/drive/sync.ts`: in the autobackup block, use `syncStartTime` (captured at the top of `runFullDriveSync`) instead of `DateTime.now()` when computing `fileName`
+- Prevents a rare edge case where a long sync spanning a month boundary names the backup for the wrong month
+
+### Task 28j: Recurring transaction time consistency (product decision)
+- [ ] `src/lib/hooks/useRecurringRunner.ts`: decide whether runner-generated transactions should use the current wall-clock time (`now.hour`, `now.minute`, etc.) or a fixed time (e.g. `12:00:00`)
+- If fixed time is preferred, replace the `.set({ hour: now.hour, ... })` block with a fixed timestamp
+
