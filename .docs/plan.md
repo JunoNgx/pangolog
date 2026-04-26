@@ -655,3 +655,100 @@ Post-architecture-review cleanup. No new features; only fixes and small refactor
 - [won't do] `src/lib/hooks/useRecurringRunner.ts`: decide whether runner-generated transactions should use the current wall-clock time (`now.hour`, `now.minute`, etc.) or a fixed time (e.g. `12:00:00`)
 - The current wall-clock time behavior is functional and no user-reported issues exist. Deferred until a real need arises.
 
+## Task 32: Centralise repeated Tailwind class combinations into utility component classes
+
+**Goal:** Reduce the ~421 inline `className` assignments by extracting the most repeated patterns into reusable CSS utility classes in `globals.css`. HeroUI semantic tokens are kept unchanged. All new classes use utility-style naming.
+
+---
+
+### Task 32a: Define new utility classes in `globals.css`
+
+Extend `@layer components` with the following. All use `@apply` with existing Tailwind/HeroUI classes.
+
+**Text classes**
+- `.bodyText`: `text-sm text-default-500` - replaces ~40 occurrences
+- `.bodyTextBlock`: `text-sm text-default-500 mb-3` - replaces ~9 occurrences
+- `.caption`: `text-xs text-default-400` - replaces ~23 occurrences
+- `.sectionHeading`: `text-lg font-semibold mb-4` - replaces ~11 occurrences
+- `.subsectionHeading`: `text-sm font-medium text-default-600 mb-2` - replaces ~5 occurrences
+- `.label`: `font-semibold text-default-500` - replaces ~4 occurrences
+
+**Mono/code classes**
+- `.monoText`: `font-mono text-xs` - replaces ~21 occurrences
+- `.monoTextSm`: `font-mono text-sm` - replaces ~8 occurrences
+- `.codeBlock`: `font-mono text-xs bg-default-100 rounded p-3 overflow-x-auto text-default-600 leading-relaxed mb-4` - replaces ~4 occurrences
+
+**Layout classes**
+- `.vStack`: `flex flex-col` - replaces ~24 occurrences
+- `.vStackGap2`: `flex flex-col gap-2` - replaces ~6 occurrences
+- `.vStackGap3`: `flex flex-col gap-3` - replaces ~5 occurrences
+- `.vStackGap4`: `flex flex-col gap-4` - replaces ~6 occurrences
+- `.hStack`: `flex items-center` - replaces ~28 occurrences
+- `.hStackGap1`: `flex items-center gap-1` - replaces ~9 occurrences
+- `.hStackGap2`: `flex items-center gap-2` - replaces ~5 occurrences
+- `.hStackGap3`: `flex items-center gap-3` - replaces ~5 occurrences
+
+**Page structure classes**
+- `.pageContainerNarrow`: `container mx-auto max-w-2xl px-4 pt-6 pb-24` - replaces ~3 occurrences
+- `.infoSection`: `mb-8` - replaces ~9 occurrences
+- `.infoSectionTitle`: `text-base font-semibold mb-3 text-default-700` - replaces ~9 occurrences
+- `.floatingBackButton`: `fixed bottom-6 right-6 z-50 h-14 min-w-0` - replaces ~3 occurrences
+
+**Rename existing classes**
+- [ ] Rename `.MainListContainer` to `.mainListContainer`
+- [ ] Rename `.ChipLabel` to `.chipLabel`
+
+---
+
+### Task 32b: Refactor info pages (Help, Privacy, Terms)
+
+- [ ] Replace outer `<div className="container ...">` with `.pageContainerNarrow`
+- [ ] Replace local `Section` component's `<section className="mb-8">` with `.infoSection`
+- [ ] Replace local `Section` component's `<h2 className="text-base ...">` with `.infoSectionTitle`
+- [ ] Replace all `text-sm text-default-500` with `.bodyText`
+- [ ] Replace `text-sm text-default-500 mb-3` with `.bodyTextBlock`
+- [ ] Replace `font-mono text-xs` with `.monoText`
+- [ ] Replace `pre` styling with `.codeBlock`
+- [ ] Replace floating back button with `.floatingBackButton`
+- [ ] Remove the local `Section` components if they become trivial wrappers
+
+---
+
+### Task 32c: Refactor `SettingsClient.tsx`
+
+- [ ] Replace all section `<h3>` headings with `.sectionHeading`
+- [ ] Replace all helper/description `<p>` tags with `.caption`
+- [ ] Replace `flex flex-col gap-3` / `gap-4` with `.vStackGap3` / `.vStackGap4`
+- [ ] Replace `flex items-center gap-3` toolbars with `.hStackGap3`
+
+---
+
+### Task 32d: Refactor `LogClient.tsx`
+
+- [ ] Replace toolbar `flex items-center` patterns with `.hStack` variants
+- [ ] Replace `font-mono text-sm` amount displays with `.monoTextSm`
+- [ ] Replace repeated layout containers with `.vStack` variants where appropriate
+
+---
+
+### Task 32e: Refactor `SummaryClient.tsx`
+
+- [ ] Replace `font-semibold text-default-500` labels with `.label`
+- [ ] Replace `font-mono text-sm` amount displays with `.monoTextSm`
+
+---
+
+### Task 32f: Rename existing classes and update all call sites
+
+- [ ] Rename `.MainListContainer` to `.mainListContainer` in `globals.css`
+- [ ] Rename `.ChipLabel` to `.chipLabel` in `globals.css`
+- [ ] Update all TSX files that reference the old names
+
+---
+
+### Task 32g: Final lint and verification
+
+- [ ] Run `yarn efix` on all modified files
+- [ ] Verify no visual regressions by checking key pages in dev
+- [ ] Ensure TypeScript compiles cleanly
+
