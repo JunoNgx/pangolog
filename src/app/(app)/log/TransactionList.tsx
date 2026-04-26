@@ -191,11 +191,11 @@ function TransactionItem({
                         <p className="text-default-400">(no category)</p>
                     )}
                     {hasDescription ? (
-                        <p className="font-mono text-sm text-default-400 truncate">
+                        <p className="MonoTextSm text-default-400 truncate">
                             {transaction.description}
                         </p>
                     ) : (
-                        <p className="font-mono text-sm text-default-400">
+                        <p className="MonoTextSm text-default-400">
                             (no description)
                         </p>
                     )}

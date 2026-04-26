@@ -204,8 +204,8 @@ export default function LogClient() {
     );
 
     const totalAndFilterRow = (
-        <div className="flex items-center justify-between">
-            <span className="flex gap-2">
+        <div className="HStack justify-between">
+            <span className="HStackGap2">
                 <span className="text-default-500">Total expense:</span>
                 <span
                     className="font-mono font-medium"
@@ -232,7 +232,7 @@ export default function LogClient() {
     );
 
     const viewingControls = !isSearchMode && (
-        <div className="flex flex-col gap-3 mb-4">
+        <div className="VStackGap3 mb-4">
             {pickerAndCheckboxRow}
             {totalAndFilterRow}
         </div>
@@ -240,8 +240,8 @@ export default function LogClient() {
 
     return (
         <div>
-            <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-2">
+            <div className="HStack justify-between mb-4">
+                <div className="HStackGap2">
                     <h2 className="text-xl font-bold">Transactions</h2>
                     <SyncButton />
                     <OfflineIndicator
