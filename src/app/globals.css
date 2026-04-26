@@ -42,6 +42,8 @@
 }
 
 @layer utilities {
+    /* TEXT CLASSES */
+
     .BodyText {
         @apply text-sm text-default-500;
     }
@@ -66,6 +68,12 @@
         @apply font-semibold text-default-500;
     }
 
+    .DangerText {
+        @apply text-sm text-danger-500;
+    }
+
+    /* MONO / CODE CLASSES */
+
     .MonoText {
         @apply font-mono text-xs;
     }
@@ -77,6 +85,8 @@
     .CodeBlock {
         @apply font-mono text-xs bg-default-100 rounded p-3 overflow-x-auto text-default-600 leading-relaxed mb-4;
     }
+
+    /* LAYOUT CLASSES */
 
     .VStack {
         @apply flex flex-col;
@@ -110,6 +120,8 @@
         @apply flex items-center gap-3;
     }
 
+    /* PAGE STRUCTURE CLASSES */
+
     .PageContainerNarrow {
         @apply container mx-auto max-w-2xl px-4 pt-6 pb-24;
     }
@@ -136,10 +148,6 @@
         @apply absolute right-4 bottom-0 pointer-events-auto
             h-14 min-w-0 rounded-full
             md:right-6 md:rounded-lg;
-    }
-
-    .DangerText {
-        @apply text-sm text-danger-500;
     }
 }
 
