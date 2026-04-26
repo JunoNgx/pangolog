@@ -6,10 +6,10 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { DemoDataBanner } from "@/components/DemoDataBanner";
 import { FloatingActionButton } from "@/components/FloatingActionButton";
 import { commandPaletteCreateActions } from "@/lib/commandPaletteActionRegistry";
+import { SELECT_CLASSES } from "@/lib/constants";
 import { useCategories } from "@/lib/hooks/useCategories";
 import { useHotkey } from "@/lib/hooks/useHotkey";
 import { useRecurringRules } from "@/lib/hooks/useRecurringRules";
-import { SELECT_CLASSES } from "@/lib/utils";
 import { RecurringList } from "./RecurringList";
 import { RecurringRuleDialog } from "./RecurringRuleDialog";
 

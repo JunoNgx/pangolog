@@ -3,8 +3,8 @@
 import { Button } from "@heroui/react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { MonthYearPicker } from "@/components/MonthYearPicker";
+import { SELECT_CLASSES, YEAR_OPTIONS } from "@/lib/constants";
 import { useHotkey } from "@/lib/hooks/useHotkey";
-import { SELECT_CLASSES, YEAR_OPTIONS } from "@/lib/utils";
 
 interface PeriodPickerProps {
     isYearly: boolean;

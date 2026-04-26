@@ -2,33 +2,6 @@ import { DateTime } from "luxon";
 import { toast } from "sonner";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
 
-export const MONTH_NAMES = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-];
-
-export const YEAR_OPTIONS = Array.from(
-    { length: 21 },
-    (_, i) => DateTime.now().year - 10 + i,
-);
-
-export const SELECT_CLASSES = `
-    rounded-lg px-3 py-2
-    text-sm text-foreground
-    bg-default-100 border border-default-200
-    cursor-pointer
-`;
-
 export function getLocaleDateFormat(): string {
     if (typeof window === "undefined") return "";
     return new Intl.DateTimeFormat(navigator.language, {
