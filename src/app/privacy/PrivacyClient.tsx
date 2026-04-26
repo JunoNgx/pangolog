@@ -1,10 +1,6 @@
 "use client";
 
-import { Button, Tooltip } from "@heroui/react";
-import { ArrowLeft } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useCallback } from "react";
-import { useHotkey } from "@/lib/hooks/useHotkey";
+import { FloatingBackButton } from "@/components/FloatingBackButton";
 
 function Section({
     title,
@@ -24,10 +20,6 @@ function Section({
 }
 
 export default function PrivacyClient() {
-    const router = useRouter();
-    const goBack = useCallback(() => router.back(), [router]);
-    useHotkey("Escape", goBack);
-
     return (
         <div className="container mx-auto max-w-2xl px-4 pt-6 pb-24">
             <h1 className="text-xl font-bold mb-2">Privacy Policy</h1>
@@ -112,16 +104,7 @@ export default function PrivacyClient() {
                 </p>
             </Section>
 
-            <Tooltip content="Esc" placement="left">
-                <Button
-                    color="default"
-                    className="fixed bottom-6 right-6 z-50 h-14 min-w-0"
-                    onPress={() => router.back()}
-                >
-                    <ArrowLeft />
-                    <span className="hidden md:inline">Go back</span>
-                </Button>
-            </Tooltip>
+            <FloatingBackButton />
         </div>
     );
 }
