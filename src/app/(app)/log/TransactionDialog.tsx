@@ -17,6 +17,7 @@ import {
     useState,
 } from "react";
 import { toast } from "sonner";
+import { AmountInput } from "@/components/AmountInput";
 import { CategoryDialog } from "@/components/CategoryDialog";
 import { CategoryPicker } from "@/components/CategoryPicker";
 import { DialogFooter } from "@/components/DialogFooter";
@@ -117,13 +118,6 @@ export function TransactionDialog({
         setCategoryId(null);
         setDescription("");
         onClose();
-    }
-
-    function handleAmountChange(value: string) {
-        const match = value.match(/^\d*\.?\d{0,2}$/);
-        if (match) {
-            setAmount(value);
-        }
     }
 
     function resolveTransactedAt(): string {
@@ -249,22 +243,10 @@ export function TransactionDialog({
                                 />
                             </div>
 
-                            <Input
-                                variant="underlined"
+                            <AmountInput
                                 value={amount}
-                                onValueChange={handleAmountChange}
-                                isRequired
-                                autoFocus
-                                inputMode="decimal"
-                                placeholder="0.00"
-                                onFocus={(e) => e.target.select()}
-                                classNames={{
-                                    base: "my-2",
-                                    input: `
-                                        text-4xl text-center font-mono
-                                        ${isIncome ? "!text-success" : "!text-foreground"}
-                                    `,
-                                }}
+                                onChange={setAmount}
+                                isIncome={isIncome}
                             />
 
                             <Input
