@@ -26,6 +26,10 @@
 }
 
 @layer components {
+    /* Due to the extremely high amount of fighting against HeroUI in this
+    layer, it is advised that this layer is duly ignored and no new classes
+    are to be added here */
+
     .MainListContainer {
         @apply flex flex-col max-w-lg mx-auto;
     }
@@ -35,7 +39,9 @@
             self-center
             font-mono text-center text-xs;
     }
+}
 
+@layer utilities {
     .BodyText {
         @apply text-sm text-default-500;
     }
@@ -119,10 +125,7 @@
     .FloatingBackButton {
         @apply fixed bottom-6 right-6 z-50 h-14 min-w-0;
     }
-}
 
-@layer utilities {
-    /* Set in `@layer utilities` to override HeroUI's classes */
     .FloatingActionButtonContainer {
         @apply fixed inset-x-0 bottom-4 z-50 pointer-events-none
             max-w-5xl mx-auto
