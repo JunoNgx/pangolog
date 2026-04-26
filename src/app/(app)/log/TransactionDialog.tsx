@@ -1,14 +1,11 @@
 "use client";
 
 import {
-    Button,
     Input,
     Modal,
     ModalBody,
     ModalContent,
-    ModalFooter,
     ModalHeader,
-    Tooltip,
 } from "@heroui/react";
 import { DateTime } from "luxon";
 import type React from "react";
@@ -19,10 +16,12 @@ import {
     useRef,
     useState,
 } from "react";
-import { toast } from "sonner";
+import { AmountInput } from "@/components/AmountInput";
 import { CategoryDialog } from "@/components/CategoryDialog";
 import { CategoryPicker } from "@/components/CategoryPicker";
+import { DialogFooter } from "@/components/DialogFooter";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
+import { FORM_MODAL_CLASS_NAMES } from "@/lib/constants";
 import type { Transaction } from "@/lib/db/types";
 import { useCategories } from "@/lib/hooks/useCategories";
 import {
@@ -35,6 +34,7 @@ import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
 import {
     fromDateInputValue,
     getLocaleDateFormat,
+    showDeleteToast,
     toDateInputValue,
     todayDateString,
 } from "@/lib/utils";
@@ -120,13 +120,6 @@ export function TransactionDialog({
         onClose();
     }
 
-    function handleAmountChange(value: string) {
-        const match = value.match(/^\d*\.?\d{0,2}$/);
-        if (match) {
-            setAmount(value);
-        }
-    }
-
     function resolveTransactedAt(): string {
         if (isEditing && transaction) {
             if (transactedAt === toDateInputValue(transaction.transactedAt))
@@ -187,13 +180,9 @@ export function TransactionDialog({
         deleteTransaction.mutate(id, {
             onSuccess: () => {
                 handleClose();
-                toast("Transaction deleted", {
-                    duration: 5000,
-                    action: {
-                        label: "Undo",
-                        onClick: () => restoreTransaction.mutate(id),
-                    },
-                });
+                showDeleteToast("Transaction", () =>
+                    restoreTransaction.mutate(id),
+                );
             },
         });
     }
@@ -208,10 +197,7 @@ export function TransactionDialog({
                 isOpen={isOpen}
                 onClose={handleClose}
                 onTouchStart={handleBackdropTouchStart}
-                classNames={{
-                    closeButton: "cursor-pointer",
-                    body: "overflow-y-auto max-h-[calc(var(--visual-viewport-height,100svh)-10rem)]",
-                }}
+                classNames={FORM_MODAL_CLASS_NAMES}
             >
                 <ModalContent>
                     <form ref={formRef} onSubmit={handleSubmit}>
@@ -253,22 +239,10 @@ export function TransactionDialog({
                                 />
                             </div>
 
-                            <Input
-                                variant="underlined"
+                            <AmountInput
                                 value={amount}
-                                onValueChange={handleAmountChange}
-                                isRequired
-                                autoFocus
-                                inputMode="decimal"
-                                placeholder="0.00"
-                                onFocus={(e) => e.target.select()}
-                                classNames={{
-                                    base: "my-2",
-                                    input: `
-                                        text-4xl text-center font-mono
-                                        ${isIncome ? "!text-success" : "!text-foreground"}
-                                    `,
-                                }}
+                                onChange={setAmount}
+                                isIncome={isIncome}
                             />
 
                             <Input
@@ -289,39 +263,14 @@ export function TransactionDialog({
                                 onAdd={() => setIsCategoryDialogOpen(true)}
                             />
                         </ModalBody>
-                        <ModalFooter
-                            className={
-                                isEditing ? "justify-between" : undefined
-                            }
-                        >
-                            {isEditing && (
-                                <Button
-                                    color="danger"
-                                    variant="light"
-                                    isLoading={isDeleting}
-                                    onPress={handleDelete}
-                                >
-                                    Delete
-                                </Button>
-                            )}
-                            <div className="flex gap-2">
-                                <Tooltip
-                                    content="Ctrl/Cmd + Enter"
-                                    placement="left"
-                                >
-                                    <Button
-                                        type="submit"
-                                        color="primary"
-                                        isLoading={isPending}
-                                    >
-                                        {isEditing ? "Save" : "Create"}
-                                    </Button>
-                                </Tooltip>
-                                <Button variant="light" onPress={handleClose}>
-                                    Cancel
-                                </Button>
-                            </div>
-                        </ModalFooter>
+                        <DialogFooter
+                            isEditing={isEditing}
+                            onCancel={handleClose}
+                            onDelete={isEditing ? handleDelete : undefined}
+                            isSubmitting={isPending}
+                            isDeleting={isDeleting}
+                            showSubmitTooltip
+                        />
                     </form>
                 </ModalContent>
             </Modal>

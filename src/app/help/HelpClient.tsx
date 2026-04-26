@@ -1,27 +1,8 @@
 "use client";
 
-import { Button, Tooltip } from "@heroui/react";
-import { ArrowLeft } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useCallback } from "react";
-import { useHotkey } from "@/lib/hooks/useHotkey";
-
-function Section({
-    title,
-    children,
-}: {
-    title: string;
-    children: React.ReactNode;
-}) {
-    return (
-        <section className="mb-8">
-            <h2 className="text-base font-semibold mb-3 text-default-700">
-                {title}
-            </h2>
-            {children}
-        </section>
-    );
-}
+import { FloatingBackButton } from "@/components/FloatingBackButton";
+import { Kbd } from "@/components/Kbd";
+import { Section } from "@/components/Section";
 
 function Term({
     name,
@@ -46,10 +27,6 @@ function Term({
 }
 
 export default function HelpClient() {
-    const router = useRouter();
-    const goBack = useCallback(() => router.back(), [router]);
-    useHotkey("Escape", goBack);
-
     return (
         <div className="container mx-auto max-w-2xl px-4 pt-6 pb-24">
             <h1 className="text-xl font-bold mb-2">Manual</h1>
@@ -153,12 +130,8 @@ export default function HelpClient() {
 
             <Section title="Keyboard shortcuts">
                 <p className="text-sm text-default-500">
-                    Press{" "}
-                    <kbd className="font-mono text-xs bg-default-100 border border-default-200 rounded px-1.5 py-0.5">
-                        Ctrl/Cmd + /
-                    </kbd>{" "}
-                    anywhere in the app to view the full list of keyboard
-                    shortcuts.
+                    Press <Kbd>Ctrl/Cmd + /</Kbd> anywhere in the app to view
+                    the full list of keyboard shortcuts.
                 </p>
             </Section>
 
@@ -338,16 +311,7 @@ monthOfYear:      number(1-12) | null //   yearly rules only`}</pre>
                 </ul>
             </Section>
 
-            <Tooltip content="Esc" placement="left">
-                <Button
-                    color="default"
-                    className="fixed bottom-6 right-6 z-50 h-14 min-w-0"
-                    onPress={() => router.back()}
-                >
-                    <ArrowLeft />
-                    <span className="hidden md:inline">Go back</span>
-                </Button>
-            </Tooltip>
+            <FloatingBackButton />
         </div>
     );
 }

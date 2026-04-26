@@ -3,6 +3,8 @@
 import { Skeleton } from "@heroui/react";
 import { DateTime } from "luxon";
 import { useState } from "react";
+import { ChipLabel } from "@/components/ChipLabel";
+import { MainListContainer } from "@/components/MainListContainer";
 import type { Category, Transaction } from "@/lib/db/types";
 import { formatAmount } from "@/lib/utils";
 import { TransactionDialog } from "./TransactionDialog";
@@ -41,14 +43,14 @@ export function TransactionList({
 
     if (isLoading) {
         return (
-            <ul className="MainListContainer gap-2">
+            <MainListContainer className="gap-2">
                 {["s1", "s2", "s3", "s4", "s5", "s6", "s7"].map((key) => (
                     <Skeleton
                         key={key}
                         className="h-12 w-full rounded-lg my-1"
                     />
                 ))}
-            </ul>
+            </MainListContainer>
         );
     }
 
@@ -94,7 +96,7 @@ export function TransactionList({
 
     return (
         <>
-            <ul className="MainListContainer">
+            <MainListContainer>
                 {groupedByDateItems.map(({ dateKey, dateText, items }) => (
                     <li key={dateKey}>
                         <h3 className="mt-6 mb-0 text-sm text-default-400">
@@ -117,7 +119,7 @@ export function TransactionList({
                         </ul>
                     </li>
                 ))}
-            </ul>
+            </MainListContainer>
             <TransactionDialog
                 isOpen={isDialogOpen}
                 onClose={handleCloseDialog}
@@ -202,7 +204,7 @@ function TransactionItem({
                 </div>
 
                 {isBigBuck && (
-                    <span className={`ChipLabel text-amber-500`}>BIG BUCK</span>
+                    <ChipLabel className="text-amber-500">BIG BUCK</ChipLabel>
                 )}
 
                 <span

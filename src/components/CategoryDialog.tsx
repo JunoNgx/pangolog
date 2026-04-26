@@ -1,13 +1,11 @@
 "use client";
 
 import {
-    Button,
     Checkbox,
     Input,
     Modal,
     ModalBody,
     ModalContent,
-    ModalFooter,
     ModalHeader,
     Popover,
     PopoverContent,
@@ -17,7 +15,7 @@ import { EmojiPicker, type EmojiPickerListComponents } from "frimousse";
 import { Shuffle } from "lucide-react";
 import { type SubmitEventHandler, useEffect, useState } from "react";
 import { HexColorPicker } from "react-colorful";
-import { toast } from "sonner";
+import { DialogFooter } from "@/components/DialogFooter";
 import type { Category } from "@/lib/db/types";
 import {
     useCreateCategory,
@@ -26,6 +24,7 @@ import {
     useUpdateCategory,
 } from "@/lib/hooks/useCategories";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
+import { showDeleteToast } from "@/lib/utils";
 
 // biome-ignore-start format: Formatting is intentional
 const EMOJI_DEFAULTS = [
@@ -47,10 +46,7 @@ function randomHexColor() {
         .padStart(6, "0")}`;
 }
 
-const modalClassNames = {
-    closeButton: "cursor-pointer",
-    body: "overflow-y-auto max-h-[calc(var(--visual-viewport-height,100svh)-10rem)]",
-};
+import { FORM_MODAL_CLASS_NAMES } from "@/lib/constants";
 
 const iconTriggerClasses = `
     rounded-lg
@@ -214,13 +210,7 @@ export function CategoryDialog({
         deleteCategory.mutate(id, {
             onSuccess: () => {
                 handleClose();
-                toast("Category deleted", {
-                    duration: 5000,
-                    action: {
-                        label: "Undo",
-                        onClick: () => restoreCategory.mutate(id),
-                    },
-                });
+                showDeleteToast("Category", () => restoreCategory.mutate(id));
             },
         });
     }
@@ -325,7 +315,11 @@ export function CategoryDialog({
     );
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose} classNames={modalClassNames}>
+        <Modal
+            isOpen={isOpen}
+            onClose={onClose}
+            classNames={FORM_MODAL_CLASS_NAMES}
+        >
             <ModalContent>
                 <form onSubmit={handleSubmit}>
                     <ModalHeader>
@@ -358,29 +352,13 @@ export function CategoryDialog({
                             </Checkbox>
                         )}
                     </ModalBody>
-                    <ModalFooter>
-                        {isEditing && (
-                            <Button
-                                variant="light"
-                                color="danger"
-                                isLoading={deleteCategory.isPending}
-                                onPress={handleDelete}
-                                className="mr-auto"
-                            >
-                                Delete
-                            </Button>
-                        )}
-                        <Button
-                            type="submit"
-                            color="primary"
-                            isLoading={isPending}
-                        >
-                            {isEditing ? "Save" : "Create"}
-                        </Button>
-                        <Button variant="light" onPress={onClose}>
-                            Cancel
-                        </Button>
-                    </ModalFooter>
+                    <DialogFooter
+                        isEditing={isEditing}
+                        onCancel={onClose}
+                        onDelete={isEditing ? handleDelete : undefined}
+                        isSubmitting={isPending}
+                        isDeleting={deleteCategory.isPending}
+                    />
                 </form>
             </ModalContent>
         </Modal>
