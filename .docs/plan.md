@@ -615,9 +615,9 @@ Post-architecture-review cleanup. No new features; only fixes and small refactor
 - The auth callback route checks `CLIENT_SECRET` inline but `IRON_SESSION_SECRET` had no validation, causing a cryptic crash from deep inside iron-session
 
 ### Task 28b: Add React Error Boundaries
-- [ ] Create `src/components/ErrorBoundary.tsx` (client component using `componentDidCatch`)
-- [ ] Wrap the app tree in `src/app/layout.tsx`
-- [ ] Wrap the navbar + main content in `src/app/(app)/layout.tsx`
+- [x] Create `src/components/ErrorBoundary.tsx` (client component using `componentDidCatch`)
+- [x] Wrap the app tree in `src/app/layout.tsx`
+- [x] Wrap the navbar + main content in `src/app/(app)/layout.tsx`
 - Prevents a crash in any dialog or list from unmounting the entire application and losing unsaved form state
 
 ### Task 28c: Unify `handleAuthExpired` presets
