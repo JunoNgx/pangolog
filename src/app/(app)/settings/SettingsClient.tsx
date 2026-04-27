@@ -255,13 +255,7 @@ export default function SettingsClient() {
 
     return (
         <div>
-            <h2
-                className="text-xl font-bold mb-6"
-                onClick={handleHeadingTap}
-                onKeyDown={handleHeadingTap}
-            >
-                Settings
-            </h2>
+            <h2 className="text-xl font-bold mb-6">Settings</h2>
 
             <MainListContainer as="div" className="gap-8">
                 <section>
@@ -576,7 +570,11 @@ export default function SettingsClient() {
                 </section>
 
                 <section>
-                    <h3 className="text-lg font-semibold mb-1">
+                    <h3
+                        className="text-lg font-semibold mb-1"
+                        onClick={handleHeadingTap}
+                        onKeyDown={handleHeadingTap}
+                    >
                         Help &amp; Info
                     </h3>
                     <p className="text-xs text-default-400 mb-4">
