@@ -10,9 +10,7 @@
         "includes": ["**", "!node_modules", "!.next", "!dist", "!build"]
     },
     "formatter": {
-        "enabled": true,
-        "indentStyle": "space",
-        "indentWidth": 4
+        "enabled": false
     },
     "linter": {
         "enabled": true,

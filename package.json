@@ -7,8 +7,8 @@
         "build": "next build",
         "start": "next start",
         "lint": "biome check",
-        "format": "biome format --write",
-        "efix": "yarn biome check --write --unsafe",
+        "format": "prettier --write .",
+        "efix": "yarn biome check --write --unsafe && prettier --write .",
         "typecheck": "yarn tsc --noEmit"
     },
     "dependencies": {
@@ -39,6 +39,8 @@
         "@types/react-dom": "^19",
         "@types/uuid": "^11.0.0",
         "babel-plugin-react-compiler": "1.0.0",
+        "prettier": "^3.8.3",
+        "prettier-plugin-tailwindcss": "^0.8.0",
         "tailwindcss": "^4",
         "typescript": "^5"
     }
