@@ -1,7 +1,12 @@
-const DRIVE_API = "https://www.googleapis.com/drive/v3";
-const DRIVE_UPLOAD_API = "https://www.googleapis.com/upload/drive/v3";
-const FOLDER_NAME = "Pangolog";
-const FOLDER_MIME = "application/vnd.google-apps.folder";
+import {
+    CATEGORIES_FILE,
+    DRIVE_API,
+    DRIVE_UPLOAD_API,
+    FOLDER_MIME,
+    FOLDER_NAME,
+    RECURRING_RULES_FILE,
+    SETTINGS_FILE,
+} from "@/lib/constants";
 
 // --- File name helpers ---
 
@@ -13,10 +18,6 @@ export function backupFileName(year: number, month: number): string {
     const mm = String(month).padStart(2, "0");
     return `backup-${year}-${mm}.json`;
 }
-
-export const CATEGORIES_FILE = "categories.json";
-export const RECURRING_RULES_FILE = "recurring-rules.json";
-export const SETTINGS_FILE = "settings.json";
 
 // --- Types ---
 

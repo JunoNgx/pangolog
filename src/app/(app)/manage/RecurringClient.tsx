@@ -6,7 +6,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { DemoDataBanner } from "@/components/DemoDataBanner";
 import { FloatingActionButton } from "@/components/FloatingActionButton";
 import { commandPaletteCreateActions } from "@/lib/commandPaletteActionRegistry";
-import { SELECT_CLASSES } from "@/lib/constants";
+import { FREQUENCY_ORDER, SELECT_CLASSES } from "@/lib/constants";
 import { useCategories } from "@/lib/hooks/useCategories";
 import { useHotkey } from "@/lib/hooks/useHotkey";
 import { useRecurringRules } from "@/lib/hooks/useRecurringRules";
@@ -27,8 +27,6 @@ const SORT_OPTIONS: { value: SortBy; label: string }[] = [
     { value: "frequency", label: "Frequency" },
     { value: "description", label: "Description" },
 ];
-
-const FREQUENCY_ORDER = { daily: 0, weekly: 1, monthly: 2, yearly: 3 };
 
 export default function RecurringClient() {
     const [isCreateOpen, setIsCreateOpen] = useState(false);

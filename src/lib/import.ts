@@ -1,3 +1,4 @@
+import { VALID_FREQUENCIES } from "@/lib/constants";
 import {
     bulkPutCategories,
     bulkPutRecurringRules,
@@ -46,8 +47,6 @@ function hasRequiredFields(
     if (!isRecord(item)) return false;
     return typeof item.id === "string" && typeof item.updatedAt === "string";
 }
-
-const VALID_FREQUENCIES = new Set(["daily", "weekly", "monthly", "yearly"]);
 
 function isValidTransaction(item: unknown): item is Transaction {
     if (!isRecord(item)) return false;

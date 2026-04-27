@@ -5,12 +5,10 @@ import { DateTime } from "luxon";
 import { useState } from "react";
 import { ChipLabel } from "@/components/ChipLabel";
 import { MainListContainer } from "@/components/MainListContainer";
-import { MONTH_NAMES } from "@/lib/constants";
+import { DAY_NAMES_ABB, MONTH_NAMES } from "@/lib/constants";
 import type { Category, RecurringRule } from "@/lib/db/types";
 import { formatAmount } from "@/lib/utils";
 import { RecurringRuleDialog } from "./RecurringRuleDialog";
-
-const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 function formatFrequency(rule: RecurringRule): string {
     switch (rule.frequency) {
@@ -18,7 +16,7 @@ function formatFrequency(rule: RecurringRule): string {
             return "Daily";
         case "weekly":
             return rule.dayOfWeek !== null
-                ? `Weekly (${DAY_NAMES[rule.dayOfWeek]})`
+                ? `Weekly (${DAY_NAMES_ABB[rule.dayOfWeek]})`
                 : "Weekly";
         case "monthly":
             return rule.dayOfMonth !== null

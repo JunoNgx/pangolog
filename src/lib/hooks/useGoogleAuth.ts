@@ -3,9 +3,9 @@
 import { useCallback, useState } from "react";
 import { toast } from "sonner";
 import type { AuthToken, TokenResult } from "@/lib/auth/types";
+import { GOOGLE_CLIENT_ID } from "@/lib/constants";
 import { useLocalSyncDataStore } from "@/lib/store/useLocalSyncDataStore";
 
-const CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ?? "";
 const SCOPE = "https://www.googleapis.com/auth/drive.file email";
 const TOKEN_EXPIRY_BUFFER_MS = 10 * 60 * 1000;
 
@@ -33,7 +33,7 @@ export function useGoogleAuth() {
     const isConnected = authToken !== null;
 
     const connect = useCallback(async () => {
-        if (!CLIENT_ID) {
+        if (!GOOGLE_CLIENT_ID) {
             setError("Google Client ID is not configured.");
             return;
         }
@@ -50,7 +50,7 @@ export function useGoogleAuth() {
         }
 
         const client = window.google?.accounts.oauth2.initCodeClient({
-            client_id: CLIENT_ID,
+            client_id: GOOGLE_CLIENT_ID,
             scope: SCOPE,
             ux_mode: "popup",
             prompt: "consent",

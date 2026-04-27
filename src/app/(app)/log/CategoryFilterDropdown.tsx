@@ -6,9 +6,8 @@ import {
     PopoverTrigger,
 } from "@heroui/react";
 import { ChevronDown } from "lucide-react";
+import { UNCATEGORISED_ID } from "@/lib/constants";
 import type { Category } from "@/lib/db/types";
-
-export const UNCATEGORISED_ID = "__uncategorised__";
 
 interface CategoryFilterDropdownProps {
     categories: Category[];

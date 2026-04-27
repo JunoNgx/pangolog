@@ -4,14 +4,12 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef } from "react";
 import { toast } from "sonner";
 import type { TokenResult } from "@/lib/auth/types";
+import { DEBOUNCE_MS, RESTORE_SYNC_THRESHOLD_MS } from "@/lib/constants";
 import { getOrCreatePangoFolder } from "@/lib/drive/client";
 import { runFullDriveSync } from "@/lib/drive/sync";
 import { useLocalSyncDataStore } from "@/lib/store/useLocalSyncDataStore";
 import { useGoogleAuth } from "./useGoogleAuth";
 import { useLogger } from "./useLogger";
-
-const DEBOUNCE_MS = 30_000;
-const RESTORE_SYNC_THRESHOLD_MS = 24 * 60 * 60 * 1000;
 
 // Module-level flag prevents concurrent syncs across hook instances.
 let isSyncing = false;
