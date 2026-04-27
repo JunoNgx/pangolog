@@ -5,16 +5,16 @@ import { MainListContainer } from "@/components/MainListContainer";
 import { PeriodPicker } from "@/components/PeriodPicker";
 import { RouteHeader } from "@/components/RouteHeader";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
-import { TransactionTypeCheckboxes } from "@/components/TransactionTypeCheckboxes";
+import { TransactionTypeDropdown } from "@/components/TransactionTypeDropdown";
 import type { Category, Transaction } from "@/lib/db/types";
 import { useCategories } from "@/lib/hooks/useCategories";
 import { useHotkey } from "@/lib/hooks/useHotkey";
-import { useSummaryViewSettings } from "@/lib/hooks/useSummaryViewSettings";
 import {
     useTransactionsByMonth,
     useTransactionsByYear,
 } from "@/lib/hooks/useTransactions";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
+import { useSummaryViewSettingsStore } from "@/lib/store/useSummaryViewSettingsStore";
 import { formatAmount } from "@/lib/utils";
 import ExpensesByMonthChart from "./ExpensesByMonthChart";
 
@@ -143,33 +143,32 @@ export default function SummaryClient() {
     const {
         isYearly,
         setIsYearly,
-        shouldShowSmallDimes,
-        setShouldShowSmallDimes,
-        shouldShowBigBucks,
-        setShouldShowBigBucks,
         selectedYear,
         setSelectedYear,
         selectedMonth,
         setSelectedMonth,
-    } = useSummaryViewSettings();
+        summaryViewDisplayMode,
+        setSummaryViewDisplayMode,
+    } = useSummaryViewSettingsStore();
 
-    const toggleShouldShowSmallDimes = useCallback(
-        () => setShouldShowSmallDimes(!shouldShowSmallDimes),
-        [shouldShowSmallDimes, setShouldShowSmallDimes],
-    );
-    const toggleShouldShowBigBucks = useCallback(
-        () => setShouldShowBigBucks(!shouldShowBigBucks),
-        [shouldShowBigBucks, setShouldShowBigBucks],
-    );
+    const shouldShowSmallDimes = summaryViewDisplayMode !== "bucks";
+    const shouldShowBigBucks = summaryViewDisplayMode !== "dimes";
+
+    function handleCycleDisplayMode() {
+        if (summaryViewDisplayMode === "dimes") {
+            setSummaryViewDisplayMode("bucks");
+        } else if (summaryViewDisplayMode === "bucks") {
+            setSummaryViewDisplayMode("both");
+        } else {
+            setSummaryViewDisplayMode("dimes");
+        }
+    }
+
     const toggleIsYearly = useCallback(
         () => setIsYearly(!isYearly),
         [isYearly, setIsYearly],
     );
-    useHotkey("U", toggleShouldShowSmallDimes, {
-        ctrlOrMeta: true,
-        shift: true,
-    });
-    useHotkey("I", toggleShouldShowBigBucks, { ctrlOrMeta: true, shift: true });
+    useHotkey("U", handleCycleDisplayMode, { ctrlOrMeta: true, shift: true });
     useHotkey("Y", toggleIsYearly, { ctrlOrMeta: true, shift: true });
 
     const { data: categories } = useCategories();
@@ -239,11 +238,9 @@ export default function SummaryClient() {
                         onYearChange={setSelectedYear}
                         onMonthChange={setSelectedMonth}
                     />
-                    <TransactionTypeCheckboxes
-                        shouldShowSmallDimes={shouldShowSmallDimes}
-                        onSmallDimesChange={setShouldShowSmallDimes}
-                        shouldShowBigBucks={shouldShowBigBucks}
-                        onBigBucksChange={setShouldShowBigBucks}
+                    <TransactionTypeDropdown
+                        displayMode={summaryViewDisplayMode}
+                        setDisplayMode={setSummaryViewDisplayMode}
                     />
                 </div>
             </div>
