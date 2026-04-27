@@ -15,7 +15,7 @@ import { commandPaletteCreateActions } from "@/lib/commandPaletteActionRegistry"
 import { useCategories } from "@/lib/hooks/useCategories";
 import { useHotkey } from "@/lib/hooks/useHotkey";
 import { useSyncFn } from "@/lib/hooks/useSync";
-import { useLocalAppDataStore } from "@/lib/store/useLocalAppDataStore";
+import { useLogViewSettingsStore } from "@/lib/store/useLogViewSettingsStore";
 
 const OfflineIndicator = dynamic(
     () =>
@@ -43,10 +43,10 @@ export default function LogClient() {
         return () => commandPaletteCreateActions.unregister();
     }, [openCreateDialog]);
 
-    const logViewDisplayMode = useLocalAppDataStore(
+    const logViewDisplayMode = useLogViewSettingsStore(
         (s) => s.logViewDisplayMode,
     );
-    const setLogViewDisplayMode = useLocalAppDataStore(
+    const setLogViewDisplayMode = useLogViewSettingsStore(
         (s) => s.setLogViewDisplayMode,
     );
 

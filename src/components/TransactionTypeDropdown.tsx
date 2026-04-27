@@ -7,7 +7,7 @@ import {
     DropdownMenu,
     DropdownTrigger,
 } from "@heroui/react";
-import type { LogViewDisplayMode } from "@/lib/store/useLocalAppDataStore";
+import type { LogViewDisplayMode } from "@/lib/store/useLogViewSettingsStore";
 
 interface TransactionTypeDropdownProps {
     logViewDisplayMode: LogViewDisplayMode;
