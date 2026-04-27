@@ -167,21 +167,15 @@ function TransactionItem({
                 onClick={() => openEditDialog(transaction)}
                 className="
                     w-full text-left
-                    flex gap-2 relative
-                    pt-1 pr-2 pl-6 pb-1 mt-2
-                    border-b-1 border-default-200 bg-background
+                    flex gap-2
+                    pt-1 pr-2 pl-1 pb-1 mt-2
+                    border-l-4 border-b-1 border-default-200 bg-background
                     cursor-pointer hover:border-default-400 transition
                     focus:outline-none focus-visible:ring-2 focus-visible:ring-primary
                 "
+                style={{ borderLeftColor: category?.colour }}
             >
-                <div
-                    className="absolute left-1 bottom-0 top-0 w-1 h-full"
-                    style={{
-                        backgroundColor: category?.colour,
-                    }}
-                />
-
-                <div className="grow-4 min-w-0">
+                <div className="grow-4 min-w-0 ml-2">
                     {hasCategory ? (
                         <p>
                             <span className="mr-1">{category.icon || "·"}</span>
