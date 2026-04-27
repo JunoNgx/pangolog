@@ -16,7 +16,7 @@ export function useLogger() {
         return [...currentEntries];
     }
 
-    function addLoggerEntry(message: string, logcode?: string, data?: any) {
+    function addLoggerEntry(message: string, logcode?: string, data?: unknown) {
         const now = DateTime.now();
         const newEntry = {
             timestamp: now.toISO()!,
