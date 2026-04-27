@@ -244,6 +244,7 @@ export default function SummaryClient() {
                         displayMode={summaryViewDisplayMode}
                         setDisplayMode={setSummaryViewDisplayMode}
                         triggerSize="md"
+                        shouldShowLabel
                     />
                 </div>
             </div>
