@@ -86,11 +86,15 @@ export default function ExpensesByMonthChart({
 
     const averageMarker = (
         <div
-            className="pointer-events-none absolute right-0 left-0"
+            className="pointer-events-none absolute right-0 left-0 z-10"
             style={{ bottom: `${averagePct}%` }}
         >
             <div className="border-primary-400 border-t border-dashed" />
-            <span className="text-primary-400 absolute -top-5 right-0 font-mono text-xs whitespace-nowrap">
+            <span
+                className={`text-primary-400 absolute -top-5 ${
+                    tallestIndex > 9 ? "left-0" : "right-0"
+                } font-mono text-xs whitespace-nowrap`}
+            >
                 avg {formatAmount(average)}
             </span>
         </div>
