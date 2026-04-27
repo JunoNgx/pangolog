@@ -17,6 +17,7 @@ import { useTheme } from "next-themes";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 import { DriveSyncSection } from "@/components/DriveSyncSection";
+import { ImportDataSection } from "@/components/ImportDataSection";
 import { MainListContainer } from "@/components/MainListContainer";
 import { RouteHeader } from "@/components/RouteHeader";
 import { DEFAULT_MODAL_CLASS_NAMES } from "@/lib/constants";
@@ -24,13 +25,6 @@ import { clearAllData, forceDeleteDb } from "@/lib/db";
 import { exportJson } from "@/lib/export";
 import { useGoogleAuth } from "@/lib/hooks/useGoogleAuth";
 import { useLogger } from "@/lib/hooks/useLogger";
-import {
-    executeImport,
-    type ImportData,
-    type ImportPreview,
-    previewImport,
-    validateImportData,
-} from "@/lib/import";
 import { clearSwCaches } from "@/lib/serviceWorker";
 import { useLocalAppDataStore } from "@/lib/store/useLocalAppDataStore";
 import { useLocalSyncDataStore } from "@/lib/store/useLocalSyncDataStore";
@@ -62,16 +56,6 @@ export default function SettingsClient() {
 
     const [isPrettyPrint, setIsPrettyPrint] = useState(true);
     const [isExportingJson, setIsExportingJson] = useState(false);
-    const fileInputRef = useRef<HTMLInputElement>(null);
-    const [importData, setImportData] = useState<ImportData | null>(null);
-    const [importPreview, setImportPreview] = useState<ImportPreview | null>(
-        null,
-    );
-    const [importError, setImportError] = useState<string | null>(null);
-    const [importResult, setImportResult] = useState<ImportPreview | null>(
-        null,
-    );
-    const [isImporting, setIsImporting] = useState(false);
 
     const [isClearRecordsDialogOpen, setIsResetDialogOpen] = useState(false);
     const [isClearingRecords, setIsResetting] = useState(false);
@@ -140,57 +124,6 @@ export default function SettingsClient() {
         setIsExportingJson(true);
         await exportJson(isPrettyPrint);
         setIsExportingJson(false);
-    }
-
-    async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
-        const file = e.target.files?.[0];
-        if (!fileInputRef.current) return;
-        fileInputRef.current.value = "";
-        setImportError(null);
-        setImportPreview(null);
-        setImportData(null);
-        setImportResult(null);
-        if (!file) return;
-
-        try {
-            const text = await file.text();
-            const parsed: unknown = JSON.parse(text);
-            const validationError = validateImportData(parsed);
-            if (validationError !== null) {
-                setImportError(validationError);
-                return;
-            }
-            const validData = parsed as ImportData;
-            const preview = await previewImport(validData);
-            setImportData(validData);
-            setImportPreview(preview);
-        } catch {
-            setImportError(
-                "Failed to read file. Make sure it is a valid JSON file.",
-            );
-        }
-    }
-
-    async function handleConfirmImport() {
-        if (!importData) return;
-        setIsImporting(true);
-        try {
-            const result = await executeImport(importData);
-            setImportResult(result);
-            setImportData(null);
-            setImportPreview(null);
-        } catch (err) {
-            setImportError(`Import failed: ${err}`);
-        } finally {
-            setIsImporting(false);
-        }
-    }
-
-    function handleCancelImport() {
-        setImportData(null);
-        setImportPreview(null);
-        setImportError(null);
-        setImportResult(null);
     }
 
     const previewAmount = "12.50";
@@ -367,106 +300,7 @@ export default function SettingsClient() {
                     </div>
                 </section>
 
-                <section>
-                    <h3 className="text-lg font-semibold mb-4">Import Data</h3>
-                    <div className="flex flex-col gap-3">
-                        <input
-                            ref={fileInputRef}
-                            type="file"
-                            accept=".json"
-                            className="hidden"
-                            onChange={handleFileChange}
-                        />
-                        <Button
-                            color="primary"
-                            variant="flat"
-                            className="self-start"
-                            onPress={() => fileInputRef.current?.click()}
-                        >
-                            Import JSON
-                        </Button>
-                        {importError && (
-                            <p className="text-xs text-danger-500">
-                                {importError}
-                            </p>
-                        )}
-                        {importPreview && (
-                            <div className="flex flex-col gap-2 p-3 rounded-lg bg-default-100 text-sm">
-                                <p className="font-semibold text-default-700">
-                                    Preview:
-                                </p>
-                                <p className="text-default-600">
-                                    Transactions: +
-                                    {importPreview.transactionsAdded} new,{" "}
-                                    {importPreview.transactionsUpdated} updated
-                                </p>
-                                <p className="text-default-600">
-                                    Categories: +{importPreview.categoriesAdded}{" "}
-                                    new, {importPreview.categoriesUpdated}{" "}
-                                    updated
-                                </p>
-                                <p className="text-default-600">
-                                    Recurring rules: +{importPreview.rulesAdded}{" "}
-                                    new, {importPreview.rulesUpdated} updated
-                                </p>
-                                {importPreview.errors.length > 0 && (
-                                    <ul className="text-xs text-warning-600 dark:text-warning-400 list-disc list-inside">
-                                        {importPreview.errors.map((err, i) => (
-                                            // biome-ignore lint/suspicious/noArrayIndexKey: static list
-                                            <li key={i}>{err}</li>
-                                        ))}
-                                    </ul>
-                                )}
-                                <div className="flex gap-2 mt-1">
-                                    <Button
-                                        size="sm"
-                                        color="primary"
-                                        isLoading={isImporting}
-                                        onPress={handleConfirmImport}
-                                    >
-                                        Confirm
-                                    </Button>
-                                    <Button
-                                        size="sm"
-                                        variant="light"
-                                        onPress={handleCancelImport}
-                                    >
-                                        Cancel
-                                    </Button>
-                                </div>
-                            </div>
-                        )}
-                        {importResult && (
-                            <div className="flex flex-col gap-1 p-3 rounded-lg bg-success-50 text-sm">
-                                <p className="font-semibold text-success-700">
-                                    Import complete.
-                                </p>
-                                <p className="text-success-600">
-                                    Transactions: +
-                                    {importResult.transactionsAdded} new,{" "}
-                                    {importResult.transactionsUpdated} updated
-                                </p>
-                                <p className="text-success-600">
-                                    Categories: +{importResult.categoriesAdded}{" "}
-                                    new, {importResult.categoriesUpdated}{" "}
-                                    updated
-                                </p>
-                                <p className="text-success-600">
-                                    Recurring rules: +{importResult.rulesAdded}{" "}
-                                    new, {importResult.rulesUpdated} updated
-                                </p>
-                                {importResult.errors.length > 0 && (
-                                    <ul className="text-xs text-warning-600 dark:text-warning-400 list-disc list-inside mt-1">
-                                        {importResult.errors.map((err, i) => (
-                                            // biome-ignore lint/suspicious/noArrayIndexKey: static list
-                                            <li key={i}>{err}</li>
-                                        ))}
-                                    </ul>
-                                )}
-                            </div>
-                        )}
-                    </div>
-                </section>
+                <ImportDataSection />
 
                 <section>
                     <h3
