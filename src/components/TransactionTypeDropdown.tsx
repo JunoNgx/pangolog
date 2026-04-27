@@ -23,7 +23,7 @@ const MODE_OPTIONS: {
 }[] = [
     { key: "dimes", label: "Small Dimes", icon: Coins },
     { key: "bucks", label: "Big Bucks", icon: Banknote },
-    { key: "both", label: "Both", icon: HandCoins },
+    { key: "both", label: "All", icon: HandCoins },
 ];
 
 export function TransactionTypeDropdown({
@@ -47,7 +47,7 @@ export function TransactionTypeDropdown({
             }}
         >
             <DropdownTrigger>
-                <Button variant="ghost" size="sm" aria-label={modeLabel}>
+                <Button variant="ghost" size="md" aria-label={modeLabel}>
                     <CurrentIcon size={16} />
                     {modeLabel}
                 </Button>
