@@ -10,7 +10,7 @@ import { FloatingActionButton } from "@/components/FloatingActionButton";
 import { PeriodPicker } from "@/components/PeriodPicker";
 import { RouteHeader } from "@/components/RouteHeader";
 import { SyncButton } from "@/components/SyncButton";
-import { TransactionTypeCheckboxes } from "@/components/TransactionTypeCheckboxes";
+import { TransactionTypeDropdown } from "@/components/TransactionTypeDropdown";
 import { commandPaletteCreateActions } from "@/lib/commandPaletteActionRegistry";
 import { useCategories } from "@/lib/hooks/useCategories";
 import { useHotkey } from "@/lib/hooks/useHotkey";
@@ -52,22 +52,6 @@ export default function LogClient() {
 
     const isOnlyBigBucks = !shouldShowSmallDimes && shouldShowBigBucks;
 
-    const toggleShouldShowSmallDimes = useCallback(
-        () => setShouldShowSmallDimes(!shouldShowSmallDimes),
-        [shouldShowSmallDimes, setShouldShowSmallDimes],
-    );
-    const toggleShouldShowBigBucks = useCallback(
-        () => setShouldShowBigBucks(!shouldShowBigBucks),
-        [shouldShowBigBucks, setShouldShowBigBucks],
-    );
-    useHotkey("U", toggleShouldShowSmallDimes, {
-        ctrlOrMeta: true,
-        shift: true,
-    });
-    useHotkey("I", toggleShouldShowBigBucks, {
-        ctrlOrMeta: true,
-        shift: true,
-    });
     useHotkey("f", handleSearchHotkey, { ctrlOrMeta: true });
 
     const { sync } = useSyncFn();
@@ -194,12 +178,6 @@ export default function LogClient() {
                 onYearChange={setSelectedYear}
                 onMonthChange={setSelectedMonth}
             />
-            <TransactionTypeCheckboxes
-                shouldShowSmallDimes={shouldShowSmallDimes}
-                onSmallDimesChange={setShouldShowSmallDimes}
-                shouldShowBigBucks={shouldShowBigBucks}
-                onBigBucksChange={setShouldShowBigBucks}
-            />
         </div>
     );
 
@@ -253,6 +231,16 @@ export default function LogClient() {
                         >
                             <Search size={16} />
                         </Button>
+                    )
+                }
+                rightContent={
+                    !isSearchMode && (
+                        <TransactionTypeDropdown
+                            shouldShowSmallDimes={shouldShowSmallDimes}
+                            onSmallDimesChange={setShouldShowSmallDimes}
+                            shouldShowBigBucks={shouldShowBigBucks}
+                            onBigBucksChange={setShouldShowBigBucks}
+                        />
                     )
                 }
             />
