@@ -14,6 +14,7 @@ import type { ViewDisplayMode } from "@/lib/store/useLogViewSettingsStore";
 interface TransactionTypeDropdownProps {
     displayMode: ViewDisplayMode;
     setDisplayMode: (mode: ViewDisplayMode) => void;
+    triggerSize?: "sm" | "md";
 }
 
 const MODE_OPTIONS: {
@@ -29,6 +30,7 @@ const MODE_OPTIONS: {
 export function TransactionTypeDropdown({
     displayMode,
     setDisplayMode,
+    triggerSize = "sm",
 }: TransactionTypeDropdownProps) {
     const currentOption = MODE_OPTIONS.find((opt) => opt.key === displayMode);
     const CurrentIcon = currentOption?.icon ?? Coins;
@@ -47,7 +49,11 @@ export function TransactionTypeDropdown({
             }}
         >
             <DropdownTrigger>
-                <Button variant="ghost" size="md" aria-label={modeLabel}>
+                <Button
+                    variant="ghost"
+                    size={triggerSize}
+                    aria-label={modeLabel}
+                >
                     <CurrentIcon size={16} />
                     {modeLabel}
                 </Button>
