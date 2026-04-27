@@ -1,4 +1,5 @@
 import { DateTime } from "luxon";
+import { utcNowString } from "../utils";
 import { getDb } from "./connection";
 import type { Transaction, TransactionInput, TransactionUpdate } from "./types";
 import { generateId } from "./uuid";
@@ -7,7 +8,7 @@ export async function createTransaction(
     input: TransactionInput,
 ): Promise<Transaction> {
     const db = await getDb();
-    const now = DateTime.now().toUTC().toISO()!;
+    const now = utcNowString();
     const dt = DateTime.fromISO(input.transactedAt);
 
     const transaction: Transaction = {
@@ -58,7 +59,7 @@ export async function updateTransaction(
                 deletedAt: storedTransaction.deletedAt,
                 year: dt.year,
                 month: dt.month,
-                updatedAt: DateTime.now().toUTC().toISO()!,
+                updatedAt: utcNowString(),
             };
 
             const putReq = store.put(updatedTransaction);
@@ -84,7 +85,7 @@ export async function deleteTransaction(id: string): Promise<void> {
                 return;
             }
 
-            const now = DateTime.now().toUTC().toISO()!;
+            const now = utcNowString();
             const updatedTransaction: Transaction = {
                 ...storedTransaction,
                 deletedAt: now,
@@ -117,7 +118,7 @@ export async function restoreTransaction(id: string): Promise<void> {
             const putReq = store.put({
                 ...storedTransaction,
                 deletedAt: null,
-                updatedAt: DateTime.now().toUTC().toISO()!,
+                updatedAt: utcNowString(),
             });
             putReq.onsuccess = () => resolve();
             putReq.onerror = () => reject(putReq.error);

@@ -19,10 +19,6 @@ export function getLocaleDateFormat(): string {
         .join("");
 }
 
-export function todayDateString(): string {
-    return DateTime.now().toISODate()!;
-}
-
 export function utcNowString(): string {
     const result = DateTime.now().toUTC().toISO();
     if (!result) {
@@ -31,14 +27,39 @@ export function utcNowString(): string {
     return result;
 }
 
+export function toIsoString(dt: DateTime): string {
+    const result = dt.toISO();
+    if (!result) {
+        throw new Error("Failed to generate ISO timestamp");
+    }
+    return result;
+}
+
+export function toIsoDateString(dt: DateTime): string {
+    const result = dt.toISODate();
+    if (!result) {
+        throw new Error("Failed to generate ISO date string");
+    }
+    return result;
+}
+
+export function todayDateString(): string {
+    return toIsoDateString(DateTime.now());
+}
+
 export function toDateInputValue(isoString: string): string {
-    return DateTime.fromISO(isoString).toLocal().toISODate()!;
+    return toIsoDateString(DateTime.fromISO(isoString).toLocal());
 }
 
 export function fromDateInputValue(dateStr: string): string {
-    return DateTime.fromISO(dateStr, { zone: "local" })
-        .set({ hour: 12, minute: 0, second: 0, millisecond: 0 })
-        .toISO()!;
+    return toIsoString(
+        DateTime.fromISO(dateStr, { zone: "local" }).set({
+            hour: 12,
+            minute: 0,
+            second: 0,
+            millisecond: 0,
+        }),
+    );
 }
 
 export function detectSystemTimeFormat(): "12h" | "24h" {

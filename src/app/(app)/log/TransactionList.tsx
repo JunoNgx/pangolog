@@ -6,7 +6,7 @@ import { useState } from "react";
 import { ChipLabel } from "@/components/ChipLabel";
 import { MainListContainer } from "@/components/MainListContainer";
 import type { Category, Transaction } from "@/lib/db/types";
-import { formatAmount } from "@/lib/utils";
+import { formatAmount, toIsoDateString } from "@/lib/utils";
 import { TransactionDialog } from "./TransactionDialog";
 
 interface TransactionListProps {
@@ -82,7 +82,7 @@ export function TransactionList({
             day: "numeric",
             month: "short",
         });
-        const dateKey = dt.toISODate()!;
+        const dateKey = toIsoDateString(dt);
 
         const lastGroup = acc[acc.length - 1];
         if (lastGroup?.dateKey === dateKey) {

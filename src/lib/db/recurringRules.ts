@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import { todayDateString } from "../utils";
+import { todayDateString, toIsoDateString, utcNowString } from "../utils";
 import { getDb } from "./connection";
 import type {
     RecurringRule,
@@ -12,7 +12,7 @@ export async function createRecurringRule(
     input: RecurringRuleInput,
 ): Promise<RecurringRule> {
     const db = await getDb();
-    const now = DateTime.now().toUTC().toISO()!;
+    const now = utcNowString();
 
     const rule: RecurringRule = {
         id: generateId(),
@@ -57,7 +57,7 @@ export async function updateRecurringRule(
                 id: storedRule.id,
                 createdAt: storedRule.createdAt,
                 deletedAt: storedRule.deletedAt,
-                updatedAt: DateTime.now().toUTC().toISO()!,
+                updatedAt: utcNowString(),
             };
 
             const putReq = store.put(updatedRule);
@@ -83,7 +83,7 @@ export async function deleteRecurringRule(id: string): Promise<void> {
                 return;
             }
 
-            const now = DateTime.now().toUTC().toISO()!;
+            const now = utcNowString();
             const putReq = store.put({
                 ...storedRule,
                 deletedAt: now,
@@ -114,7 +114,7 @@ export async function restoreRecurringRule(id: string): Promise<void> {
             const putReq = store.put({
                 ...storedRule,
                 deletedAt: null,
-                updatedAt: DateTime.now().toUTC().toISO()!,
+                updatedAt: utcNowString(),
             });
             putReq.onsuccess = () => resolve();
             putReq.onerror = () => reject(putReq.error);
@@ -189,7 +189,8 @@ export async function getDueRecurringRules(): Promise<RecurringRule[]> {
                 (r: RecurringRule) =>
                     r.deletedAt === null &&
                     r.isActive &&
-                    DateTime.fromISO(r.nextGenerationAt).toISODate()! <= today,
+                    toIsoDateString(DateTime.fromISO(r.nextGenerationAt)) <=
+                        today,
             );
             resolve(results);
         };

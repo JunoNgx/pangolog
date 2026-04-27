@@ -1,4 +1,5 @@
 import { DateTime } from "luxon";
+import { toIsoString } from "../utils";
 import { getDb } from "./connection";
 import { generateId } from "./uuid";
 
@@ -8,8 +9,8 @@ export async function seedDemoData(): Promise<void> {
     const threeDaysAgo = now.minus({ days: 3 });
     const yesterday = now.minus({ days: 1 });
 
-    const auditNow = now.toUTC().toISO()!;
-    const catCreatedAt = threeDaysAgo.toUTC().toISO()!;
+    const auditNow = toIsoString(now.toUTC());
+    const catCreatedAt = toIsoString(threeDaysAgo.toUTC());
 
     const catFood = generateId();
     const catVideogame = generateId();
@@ -100,8 +101,8 @@ export async function seedDemoData(): Promise<void> {
             deletedAt: null,
         });
 
-        const yesterdayISO = yesterday.toISO()!;
-        const todayISO = now.toISO()!;
+        const yesterdayIso = toIsoString(yesterday);
+        const todayIso = toIsoString(now);
 
         const txStore = tx.objectStore("transactions");
         txStore.put({
@@ -111,7 +112,7 @@ export async function seedDemoData(): Promise<void> {
             categoryId: catGrocery,
             isIncome: false,
             isBigBuck: false,
-            transactedAt: yesterdayISO,
+            transactedAt: yesterdayIso,
             year: yesterday.year,
             month: yesterday.month,
             updatedAt: auditNow,
@@ -124,7 +125,7 @@ export async function seedDemoData(): Promise<void> {
             categoryId: catFood,
             isIncome: false,
             isBigBuck: false,
-            transactedAt: yesterdayISO,
+            transactedAt: yesterdayIso,
             year: yesterday.year,
             month: yesterday.month,
             updatedAt: auditNow,
@@ -137,7 +138,7 @@ export async function seedDemoData(): Promise<void> {
             categoryId: catFood,
             isIncome: false,
             isBigBuck: false,
-            transactedAt: todayISO,
+            transactedAt: todayIso,
             year: now.year,
             month: now.month,
             updatedAt: auditNow,
@@ -150,7 +151,7 @@ export async function seedDemoData(): Promise<void> {
             categoryId: catWage,
             isIncome: true,
             isBigBuck: false,
-            transactedAt: todayISO,
+            transactedAt: todayIso,
             year: now.year,
             month: now.month,
             updatedAt: auditNow,
@@ -163,7 +164,7 @@ export async function seedDemoData(): Promise<void> {
             categoryId: catVideogame,
             isIncome: false,
             isBigBuck: true,
-            transactedAt: yesterdayISO,
+            transactedAt: yesterdayIso,
             year: yesterday.year,
             month: yesterday.month,
             updatedAt: auditNow,
@@ -176,7 +177,7 @@ export async function seedDemoData(): Promise<void> {
             categoryId: catFreelancing,
             isIncome: true,
             isBigBuck: true,
-            transactedAt: todayISO,
+            transactedAt: todayIso,
             year: now.year,
             month: now.month,
             updatedAt: auditNow,
@@ -189,7 +190,7 @@ export async function seedDemoData(): Promise<void> {
             categoryId: catSubscription,
             isIncome: false,
             isBigBuck: false,
-            transactedAt: todayISO,
+            transactedAt: todayIso,
             year: now.year,
             month: now.month,
             updatedAt: auditNow,
@@ -209,7 +210,7 @@ export async function seedDemoData(): Promise<void> {
             dayOfMonth: now.day,
             monthOfYear: null,
             lastGeneratedAt: auditNow,
-            nextGenerationAt: now.plus({ months: 1 }).toISO()!,
+            nextGenerationAt: toIsoString(now.plus({ months: 1 })),
             isActive: true,
             createdAt: auditNow,
             updatedAt: auditNow,

@@ -1,14 +1,10 @@
-import { DateTime } from "luxon";
 import {
     getAllCategoriesForSync,
     getAllRecurringRulesForSync,
     getAllTransactions,
 } from "./db/bulk";
 import { useProfileSettingsStore } from "./store/useProfileSettingsStore";
-
-function todayString(): string {
-    return DateTime.now().toISODate()!;
-}
+import { todayDateString, utcNowString } from "./utils";
 
 function triggerDownload(
     content: string,
@@ -40,7 +36,7 @@ export async function buildExportData() {
     } = useProfileSettingsStore.getState();
 
     return {
-        exportedAt: DateTime.now().toUTC().toISO()!,
+        exportedAt: utcNowString(),
         settings: {
             customCurrency,
             isPrefixCurrency,
@@ -65,7 +61,7 @@ export async function exportJson(isPrettyPrint: boolean): Promise<void> {
 
     triggerDownload(
         content,
-        `pangolog-${todayString()}.json`,
+        `pangolog-${todayDateString()}.json`,
         "application/json",
     );
 }
