@@ -19,10 +19,8 @@ export function RouteHeader({
     `;
 
     return (
-        <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2 min-w-0 shrink">
-                {leftContent}
-            </div>
+        <div className="flex items-center mb-4">
+            <div className="flex-1 flex items-center gap-2">{leftContent}</div>
             <h2
                 className={`${headerClasses} text-center`}
                 onClick={onHeadingTap}
@@ -41,7 +39,7 @@ export function RouteHeader({
             >
                 {label}
             </h2>
-            <div className="flex items-center gap-2 min-w-0 shrink justify-end">
+            <div className="flex-1 flex items-center gap-2 justify-end">
                 {rightContent}
             </div>
         </div>
