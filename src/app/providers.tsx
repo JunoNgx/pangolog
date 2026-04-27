@@ -9,6 +9,7 @@ import { ServiceWorkerRegistration } from "@/components/ServiceWorkerRegistratio
 import { useLocalAppDataStore } from "@/lib/store/useLocalAppDataStore";
 import { useLocalSyncDataStore } from "@/lib/store/useLocalSyncDataStore";
 import { useLocalUserSettingsStore } from "@/lib/store/useLocalUserSettingsStore";
+import { useLogViewSettingsStore } from "@/lib/store/useLogViewSettingsStore";
 
 function ThemeColorSync() {
     const { resolvedTheme } = useTheme();
@@ -46,6 +47,7 @@ function StoreHydration() {
         useLocalSyncDataStore.persist.rehydrate();
         useLocalAppDataStore.persist.rehydrate();
         useLocalUserSettingsStore.persist.rehydrate();
+        useLogViewSettingsStore.persist.rehydrate();
     }, []);
     return null;
 }
