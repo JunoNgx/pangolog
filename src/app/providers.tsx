@@ -10,6 +10,7 @@ import { useLocalAppDataStore } from "@/lib/store/useLocalAppDataStore";
 import { useLocalSyncDataStore } from "@/lib/store/useLocalSyncDataStore";
 import { useLocalUserSettingsStore } from "@/lib/store/useLocalUserSettingsStore";
 import { useLogViewSettingsStore } from "@/lib/store/useLogViewSettingsStore";
+import { useSummaryViewSettingsStore } from "@/lib/store/useSummaryViewSettingsStore";
 
 function ThemeColorSync() {
     const { resolvedTheme } = useTheme();
@@ -48,6 +49,7 @@ function StoreHydration() {
         useLocalAppDataStore.persist.rehydrate();
         useLocalUserSettingsStore.persist.rehydrate();
         useLogViewSettingsStore.persist.rehydrate();
+        useSummaryViewSettingsStore.persist.rehydrate();
     }, []);
     return null;
 }
