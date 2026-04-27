@@ -74,7 +74,7 @@ function SortableCategoryItem({
                     ref={handleRef}
                     onClick={(e) => e.stopPropagation()}
                     aria-label={`Drag to reorder ${cat.name}`}
-                    className="py-3 pr-4 text-default-400 cursor-grab active:cursor-grabbing select-none bg-transparent border-0"
+                    className="py-3 mr-2 text-default-400 cursor-grab active:cursor-grabbing select-none bg-transparent border-0"
                 >
                     <GripVertical />
                 </button>
@@ -151,14 +151,46 @@ export function CategoryList() {
 
     const alphabeticalList = (
         <MainListContainer className="gap-2">
-            {categories.map((cat, index) => (
-                <SortableCategoryItem
+            {categories.map((cat) => (
+                <li
                     key={cat.id}
-                    cat={cat}
-                    index={index}
-                    onEdit={handleEdit}
-                    isDragEnabled={false}
-                />
+                    className="
+                        rounded-none
+                        flex items-center
+                        bg-background
+                        border-l-4 border-b-1 border-default-200
+                        hover:border-default-400 transition
+                    "
+                    style={{ borderLeftColor: cat.colour }}
+                >
+                    <button
+                        type="button"
+                        onClick={() => handleEdit(cat)}
+                        className="
+                            flex-1 min-w-0 px-4 py-3 text-left
+                            flex items-center gap-3
+                            cursor-pointer
+                            focus:outline-none focus-visible:ring-2 focus-visible:ring-primary
+                        "
+                    >
+                        <span className="flex items-center gap-4 shrink-0">
+                            <span className="text-xl leading-none">
+                                {cat.icon || "·"}
+                            </span>
+                        </span>
+                        <span className="flex-1">{cat.name}</span>
+                        {cat.isIncomeOnly && (
+                            <ChipLabel className="text-green-600">
+                                INCOME
+                            </ChipLabel>
+                        )}
+                        {cat.isBuckOnly && (
+                            <ChipLabel className="text-amber-500">
+                                BIG BUCK
+                            </ChipLabel>
+                        )}
+                    </button>
+                </li>
             ))}
         </MainListContainer>
     );
