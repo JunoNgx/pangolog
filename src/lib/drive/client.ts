@@ -1,11 +1,8 @@
 import {
-    CATEGORIES_FILE,
     DRIVE_API,
     DRIVE_UPLOAD_API,
     FOLDER_MIME,
     FOLDER_NAME,
-    RECURRING_RULES_FILE,
-    SETTINGS_FILE,
 } from "@/lib/constants";
 
 // --- File name helpers ---
