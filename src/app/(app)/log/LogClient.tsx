@@ -59,11 +59,13 @@ export default function LogClient() {
     function handleCycleDisplayMode() {
         if (logViewDisplayMode === "dimes") {
             setLogViewDisplayMode("bucks");
-        } else if (logViewDisplayMode === "bucks") {
-            setLogViewDisplayMode("both");
-        } else {
-            setLogViewDisplayMode("dimes");
+            return;
         }
+        if (logViewDisplayMode === "bucks") {
+            setLogViewDisplayMode("both");
+            return;
+        }
+        setLogViewDisplayMode("dimes");
     }
 
     useHotkey("U", handleCycleDisplayMode, { ctrlOrMeta: true, shift: true });
