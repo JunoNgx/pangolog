@@ -25,11 +25,6 @@
     }
 }
 
-@layer utilities {
-    /* Set in `@layer utilities` to override HeroUI's classes */
-}
-
-/* biome-ignore lint: !important is required to override class-based animation specificity */
 @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
