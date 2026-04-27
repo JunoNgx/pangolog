@@ -19,7 +19,7 @@ export function RouteHeader({
     `;
 
     return (
-        <div className="flex items-center mb-4">
+        <div className="flex items-center mb-4 min-h-8">
             <div className="flex-1 flex items-center gap-2">{leftContent}</div>
             <h2
                 className={`${headerClasses} text-center`}
