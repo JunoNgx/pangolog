@@ -35,11 +35,7 @@ const SHORTCUT_GROUPS: ShortcutGroup[] = [
             { keys: ["]"], description: "Go to next period" },
             {
                 keys: ["Ctrl/Cmd", "Shift", "U"],
-                description: "Toggle Small Dimes / Big Bucks",
-            },
-            {
-                keys: ["Ctrl/Cmd", "Shift", "I"],
-                description: 'Toggle "Include Big Bucks"',
+                description: "Cycle display mode",
             },
             {
                 keys: ["Ctrl/Cmd", "S"],
@@ -67,11 +63,7 @@ const SHORTCUT_GROUPS: ShortcutGroup[] = [
             },
             {
                 keys: ["Ctrl/Cmd", "Shift", "U"],
-                description: "Toggle Small Dimes",
-            },
-            {
-                keys: ["Ctrl/Cmd", "Shift", "I"],
-                description: "Toggle Big Bucks",
+                description: "Cycle display mode",
             },
         ],
     },
