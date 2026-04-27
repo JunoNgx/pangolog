@@ -157,11 +157,13 @@ export default function SummaryClient() {
     function handleCycleDisplayMode() {
         if (summaryViewDisplayMode === "dimes") {
             setSummaryViewDisplayMode("bucks");
-        } else if (summaryViewDisplayMode === "bucks") {
-            setSummaryViewDisplayMode("both");
-        } else {
-            setSummaryViewDisplayMode("dimes");
+            return;
         }
+        if (summaryViewDisplayMode === "bucks") {
+            setSummaryViewDisplayMode("both");
+            return;
+        }
+        setSummaryViewDisplayMode("dimes");
     }
 
     const toggleIsYearly = useCallback(
