@@ -16,6 +16,7 @@ import { DateTime } from "luxon";
 import dynamic from "next/dynamic";
 import { useTheme } from "next-themes";
 import { MainListContainer } from "@/components/MainListContainer";
+import { RouteHeader } from "@/components/RouteHeader";
 import { DEFAULT_MODAL_CLASS_NAMES } from "@/lib/constants";
 
 const OfflineIndicator = dynamic(
@@ -255,7 +256,9 @@ export default function SettingsClient() {
 
     return (
         <div>
-            <h2 className="text-xl font-bold mb-6">Settings</h2>
+            <div className="mb-6">
+                <RouteHeader label="Settings" />
+            </div>
 
             <MainListContainer as="div" className="gap-8">
                 <section>

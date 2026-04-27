@@ -3,6 +3,7 @@
 import { useCallback, useMemo } from "react";
 import { MainListContainer } from "@/components/MainListContainer";
 import { PeriodPicker } from "@/components/PeriodPicker";
+import { RouteHeader } from "@/components/RouteHeader";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
 import { TransactionTypeCheckboxes } from "@/components/TransactionTypeCheckboxes";
 import type { Category, Transaction } from "@/lib/db/types";
@@ -217,7 +218,7 @@ export default function SummaryClient() {
 
     return (
         <div>
-            <h2 className="text-xl font-bold mb-4">Summary</h2>
+            <RouteHeader label="Summary" />
 
             <div className="flex flex-col gap-3 mb-6">
                 <div className="flex items-center gap-3">
