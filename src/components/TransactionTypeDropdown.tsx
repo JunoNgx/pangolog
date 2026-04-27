@@ -7,47 +7,31 @@ import {
     DropdownMenu,
     DropdownTrigger,
 } from "@heroui/react";
+import type { LogViewDisplayMode } from "@/lib/store/useLocalAppDataStore";
 
 interface TransactionTypeDropdownProps {
-    shouldShowSmallDimes: boolean;
-    onSmallDimesChange: (value: boolean) => void;
-    shouldShowBigBucks: boolean;
-    onBigBucksChange: (value: boolean) => void;
+    logViewDisplayMode: LogViewDisplayMode;
+    setLogViewDisplayMode: (mode: LogViewDisplayMode) => void;
 }
 
-export function TransactionTypeDropdown({
-    shouldShowSmallDimes,
-    onSmallDimesChange,
-    shouldShowBigBucks,
-    onBigBucksChange,
-}: TransactionTypeDropdownProps) {
-    const logViewMode =
-        shouldShowSmallDimes && shouldShowBigBucks
-            ? "both"
-            : shouldShowBigBucks
-              ? "bucks"
-              : "dimes";
+const MODE_OPTIONS: { key: LogViewDisplayMode; label: string }[] = [
+    { key: "dimes", label: "Small Dimes" },
+    { key: "bucks", label: "Big Bucks" },
+    { key: "both", label: "Both" },
+];
 
+export function TransactionTypeDropdown({
+    logViewDisplayMode,
+    setLogViewDisplayMode,
+}: TransactionTypeDropdownProps) {
     const modeLabel =
-        logViewMode === "dimes"
-            ? "Small Dimes"
-            : logViewMode === "bucks"
-              ? "Big Bucks"
-              : "Both";
+        MODE_OPTIONS.find((opt) => opt.key === logViewDisplayMode)?.label ??
+        "Small Dimes";
 
     function handleSelectionChange(keys: "all" | Set<React.Key>) {
         if (keys === "all") return;
-        const key = Array.from(keys)[0];
-        if (key === "both") {
-            onSmallDimesChange(true);
-            onBigBucksChange(true);
-        } else if (key === "bucks") {
-            onSmallDimesChange(false);
-            onBigBucksChange(true);
-        } else {
-            onSmallDimesChange(true);
-            onBigBucksChange(false);
-        }
+        const key = Array.from(keys)[0] as LogViewDisplayMode;
+        setLogViewDisplayMode(key);
     }
 
     return (
@@ -64,12 +48,12 @@ export function TransactionTypeDropdown({
             <DropdownMenu
                 aria-label="Transaction type display mode"
                 selectionMode="single"
-                selectedKeys={new Set([logViewMode])}
+                selectedKeys={new Set([logViewDisplayMode])}
                 onSelectionChange={handleSelectionChange}
             >
-                <DropdownItem key="dimes">Small Dimes</DropdownItem>
-                <DropdownItem key="bucks">Big Bucks</DropdownItem>
-                <DropdownItem key="both">Both</DropdownItem>
+                {MODE_OPTIONS.map((opt) => (
+                    <DropdownItem key={opt.key}>{opt.label}</DropdownItem>
+                ))}
             </DropdownMenu>
         </Dropdown>
     );
