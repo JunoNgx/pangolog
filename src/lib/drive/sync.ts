@@ -19,6 +19,7 @@ import { buildExportData } from "@/lib/export";
 import { useLocalSyncDataStore } from "@/lib/store/useLocalSyncDataStore";
 import { useLocalUserSettingsStore } from "@/lib/store/useLocalUserSettingsStore";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
+import { utcNowString } from "@/lib/utils";
 import {
     backupFileName,
     createFile,
@@ -51,7 +52,7 @@ function groupBy<T>(arr: T[], key: (item: T) => string): Map<string, T[]> {
 function deduplicateRecurringTransactions(
     transactions: Transaction[],
 ): Transaction[] {
-    const now = DateTime.now().toUTC().toISO()!;
+    const now = utcNowString();
     const groups = new Map<string, Transaction[]>();
 
     for (const transaction of transactions) {
@@ -108,7 +109,7 @@ export async function runFullDriveSync(
     token: string,
     folderId: string,
 ): Promise<string> {
-    const syncStartTime = DateTime.now().toUTC().toISO()!;
+    const syncStartTime = utcNowString();
 
     await purgeExpiredRecords();
 

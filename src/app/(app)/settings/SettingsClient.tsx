@@ -30,6 +30,7 @@ import { useLocalAppDataStore } from "@/lib/store/useLocalAppDataStore";
 import { useLocalSyncDataStore } from "@/lib/store/useLocalSyncDataStore";
 import { useLocalUserSettingsStore } from "@/lib/store/useLocalUserSettingsStore";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
+import { toIsoDateString } from "@/lib/utils";
 
 export default function SettingsClient() {
     const {
@@ -46,10 +47,7 @@ export default function SettingsClient() {
     const { theme, setTheme } = useTheme();
     const { setLastSyncTime } = useLocalSyncDataStore();
     const { setShouldShowDemoDataBanner } = useLocalAppDataStore();
-    const {
-        timeFormat,
-        setTimeFormat,
-    } = useLocalUserSettingsStore();
+    const { timeFormat, setTimeFormat } = useLocalUserSettingsStore();
     const { getLoggerEntries, clearLoggerEntries } = useLogger();
 
     const [isPrettyPrint, setIsPrettyPrint] = useState(true);
@@ -164,7 +162,7 @@ export default function SettingsClient() {
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
 
-        const todayDateStr = DateTime.now().toISODate()!;
+        const todayDateStr = toIsoDateString(DateTime.now());
         link.href = url;
         link.download = `pangolog-logdump-${todayDateStr}.json`;
         document.body.appendChild(link);

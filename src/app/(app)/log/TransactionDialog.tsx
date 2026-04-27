@@ -37,6 +37,7 @@ import {
     showDeleteToast,
     toDateInputValue,
     todayDateString,
+    toIsoString,
 } from "@/lib/utils";
 
 interface TransactionDialogProps {
@@ -126,7 +127,8 @@ export function TransactionDialog({
                 return transaction.transactedAt;
             return fromDateInputValue(transactedAt);
         }
-        if (transactedAt === todayDateString()) return DateTime.now().toISO()!;
+        if (transactedAt === todayDateString())
+            return toIsoString(DateTime.now());
         return fromDateInputValue(transactedAt);
     }
 

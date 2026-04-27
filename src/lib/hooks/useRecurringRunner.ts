@@ -9,6 +9,7 @@ import {
 } from "../db/recurringRules";
 import { createTransaction } from "../db/transactions";
 import type { RecurringRule } from "../db/types";
+import { toIsoDateString, toIsoString, utcNowString } from "../utils";
 
 function computeNextDate(from: DateTime, rule: RecurringRule): DateTime {
     switch (rule.frequency) {
@@ -44,7 +45,7 @@ function computeRulePeriod(date: DateTime, rule: RecurringRule): string {
     switch (rule.frequency) {
         case "daily":
         case "weekly":
-            return date.toISODate()!;
+            return toIsoDateString(date);
         case "monthly":
             return date.toFormat("yyyy-MM");
         case "yearly":
@@ -63,14 +64,14 @@ async function processRule(rule: RecurringRule): Promise<void> {
     }
 
     await createTransaction({
-        transactedAt: scheduledDate
-            .set({
+        transactedAt: toIsoString(
+            scheduledDate.set({
                 hour: now.hour,
                 minute: now.minute,
                 second: now.second,
                 millisecond: now.millisecond,
-            })
-            .toISO()!,
+            }),
+        ),
         amount: rule.amount,
         isIncome: rule.isIncome,
         isBigBuck: rule.isBigBuck,
@@ -82,10 +83,15 @@ async function processRule(rule: RecurringRule): Promise<void> {
 
     await advanceRecurringRule(
         rule.id,
-        nextScheduledDate
-            .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
-            .toISO()!,
-        now.toUTC().toISO()!,
+        toIsoString(
+            nextScheduledDate.set({
+                hour: 0,
+                minute: 0,
+                second: 0,
+                millisecond: 0,
+            }),
+        ),
+        utcNowString(),
     );
 }
 

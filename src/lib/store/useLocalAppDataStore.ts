@@ -5,7 +5,7 @@ export type LoggerEntry = {
     timestamp: string;
     message: string;
     logcode?: string;
-    data?: any;
+    data?: unknown;
 };
 
 interface LocalAppDataStore {

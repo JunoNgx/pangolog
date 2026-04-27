@@ -1,7 +1,7 @@
 import { DateTime } from "luxon";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { utcNowString } from "@/lib/utils";
+import { toIsoString, utcNowString } from "@/lib/utils";
 
 interface ProfileSettingsStore {
     customCurrency: string;
@@ -29,7 +29,7 @@ export const useProfileSettingsStore = create<ProfileSettingsStore>()(
             isPrefixCurrency: true,
             isExpenseOnlyMode: false,
             isCategoryAlphabetical: false,
-            settingsUpdatedAt: DateTime.fromMillis(0).toISO()!,
+            settingsUpdatedAt: toIsoString(DateTime.fromMillis(0)),
             setCustomCurrency: (value) =>
                 set({
                     customCurrency: value,

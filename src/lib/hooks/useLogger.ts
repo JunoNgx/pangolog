@@ -2,6 +2,7 @@
 
 import { DateTime } from "luxon";
 import { useLocalAppDataStore } from "@/lib/store/useLocalAppDataStore";
+import { toIsoString } from "@/lib/utils";
 
 const MAX_LOG_ENTRIES = 500;
 const LOG_RETENTION_DAYS = 30;
@@ -19,7 +20,7 @@ export function useLogger() {
     function addLoggerEntry(message: string, logcode?: string, data?: unknown) {
         const now = DateTime.now();
         const newEntry = {
-            timestamp: now.toISO()!,
+            timestamp: toIsoString(now),
             message,
             logcode,
             data,
