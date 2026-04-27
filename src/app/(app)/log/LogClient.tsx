@@ -56,6 +56,18 @@ export default function LogClient() {
 
     useHotkey("f", handleSearchHotkey, { ctrlOrMeta: true });
 
+    function handleCycleDisplayMode() {
+        if (logViewDisplayMode === "dimes") {
+            setLogViewDisplayMode("bucks");
+        } else if (logViewDisplayMode === "bucks") {
+            setLogViewDisplayMode("both");
+        } else {
+            setLogViewDisplayMode("dimes");
+        }
+    }
+
+    useHotkey("U", handleCycleDisplayMode, { ctrlOrMeta: true, shift: true });
+
     const { sync } = useSyncFn();
     const triggerSync = useCallback(() => sync(), [sync]);
     useHotkey("s", triggerSync, { ctrlOrMeta: true });
