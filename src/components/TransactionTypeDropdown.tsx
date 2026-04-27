@@ -15,6 +15,7 @@ interface TransactionTypeDropdownProps {
     displayMode: ViewDisplayMode;
     setDisplayMode: (mode: ViewDisplayMode) => void;
     triggerSize?: "sm" | "md";
+    shouldShowLabel?: boolean;
 }
 
 const MODE_OPTIONS: {
@@ -31,6 +32,7 @@ export function TransactionTypeDropdown({
     displayMode,
     setDisplayMode,
     triggerSize = "sm",
+    shouldShowLabel = false,
 }: TransactionTypeDropdownProps) {
     const currentOption = MODE_OPTIONS.find((opt) => opt.key === displayMode);
     const CurrentIcon = currentOption?.icon ?? Coins;
@@ -52,10 +54,11 @@ export function TransactionTypeDropdown({
                 <Button
                     variant="ghost"
                     size={triggerSize}
+                    isIconOnly={!shouldShowLabel}
                     aria-label={modeLabel}
                 >
                     <CurrentIcon size={16} />
-                    {modeLabel}
+                    {shouldShowLabel && modeLabel}
                 </Button>
             </DropdownTrigger>
             <DropdownMenu
