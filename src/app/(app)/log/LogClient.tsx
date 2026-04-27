@@ -243,46 +243,59 @@ export default function LogClient() {
             <RouteHeader
                 label="Transactions"
                 leftContent={
-                    <>
-                        <SyncButton />
-                        <OfflineIndicator
-                            variant="icon"
-                            isSuppressedWhenDisconnected
-                        />
-                    </>
-                }
-                rightContent={
-                    <Button
-                        isIconOnly
-                        variant={isSearchMode ? "flat" : "light"}
-                        size="sm"
-                        onPress={handleToggleSearchMode}
-                        aria-label="Search transactions"
-                    >
-                        <Search size={16} />
-                    </Button>
+                    !isSearchMode && (
+                        <Button
+                            isIconOnly
+                            variant="ghost"
+                            size="sm"
+                            onPress={handleToggleSearchMode}
+                            aria-label="Search transactions"
+                        >
+                            <Search size={16} />
+                        </Button>
+                    )
                 }
             />
 
+            {!isSearchMode && (
+                <div className="flex items-center gap-2 mb-4 justify-end">
+                    <SyncButton />
+                    <OfflineIndicator
+                        variant="icon"
+                        isSuppressedWhenDisconnected
+                    />
+                </div>
+            )}
+
             {isSearchMode && (
-                <Input
-                    ref={searchInputRef}
-                    placeholder="Search by description"
-                    value={searchQuery}
-                    onValueChange={setSearchQuery}
-                    onClear={() => setSearchQuery("")}
-                    onKeyDown={(e) => e.key === "Escape" && handleClearSearch()}
-                    startContent={
-                        <Search size={16} className="text-default-400" />
-                    }
-                    isClearable
-                    autoFocus
-                    className="mb-4"
-                    classNames={{
-                        inputWrapper:
-                            "data-[focus-visible=true]:ring-0 data-[focus-visible=true]:ring-offset-0 rounded-md",
-                    }}
-                />
+                <div className="flex items-center gap-2 mb-4">
+                    <Input
+                        ref={searchInputRef}
+                        placeholder="Search by description"
+                        value={searchQuery}
+                        onValueChange={setSearchQuery}
+                        onClear={() => setSearchQuery("")}
+                        onKeyDown={(e) =>
+                            e.key === "Escape" && handleClearSearch()
+                        }
+                        startContent={
+                            <Search size={16} className="text-default-400" />
+                        }
+                        isClearable
+                        autoFocus
+                        classNames={{
+                            inputWrapper:
+                                "data-[focus-visible=true]:ring-0 data-[focus-visible=true]:ring-offset-0 rounded-md",
+                        }}
+                    />
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        onPress={handleClearSearch}
+                    >
+                        Cancel
+                    </Button>
+                </div>
             )}
 
             {viewingControls}
