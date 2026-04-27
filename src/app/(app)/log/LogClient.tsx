@@ -8,6 +8,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { DemoDataBanner } from "@/components/DemoDataBanner";
 import { FloatingActionButton } from "@/components/FloatingActionButton";
 import { PeriodPicker } from "@/components/PeriodPicker";
+import { RouteHeader } from "@/components/RouteHeader";
 import { SyncButton } from "@/components/SyncButton";
 import { TransactionTypeCheckboxes } from "@/components/TransactionTypeCheckboxes";
 import { commandPaletteCreateActions } from "@/lib/commandPaletteActionRegistry";
@@ -239,25 +240,29 @@ export default function LogClient() {
 
     return (
         <div>
-            <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-2">
-                    <h2 className="text-xl font-bold">Transactions</h2>
-                    <SyncButton />
-                    <OfflineIndicator
-                        variant="icon"
-                        isSuppressedWhenDisconnected
-                    />
-                </div>
-                <Button
-                    isIconOnly
-                    variant={isSearchMode ? "flat" : "light"}
-                    size="sm"
-                    onPress={handleToggleSearchMode}
-                    aria-label="Search transactions"
-                >
-                    <Search size={16} />
-                </Button>
-            </div>
+            <RouteHeader
+                label="Transactions"
+                leftContent={
+                    <>
+                        <SyncButton />
+                        <OfflineIndicator
+                            variant="icon"
+                            isSuppressedWhenDisconnected
+                        />
+                    </>
+                }
+                rightContent={
+                    <Button
+                        isIconOnly
+                        variant={isSearchMode ? "flat" : "light"}
+                        size="sm"
+                        onPress={handleToggleSearchMode}
+                        aria-label="Search transactions"
+                    >
+                        <Search size={16} />
+                    </Button>
+                }
+            />
 
             {isSearchMode && (
                 <Input
