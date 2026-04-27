@@ -14,8 +14,8 @@ import { TransactionTypeDropdown } from "@/components/TransactionTypeDropdown";
 import { commandPaletteCreateActions } from "@/lib/commandPaletteActionRegistry";
 import { useCategories } from "@/lib/hooks/useCategories";
 import { useHotkey } from "@/lib/hooks/useHotkey";
-import { useLogViewSettings } from "@/lib/hooks/useLogViewSettings";
 import { useSyncFn } from "@/lib/hooks/useSync";
+import { useLocalAppDataStore } from "@/lib/store/useLocalAppDataStore";
 
 const OfflineIndicator = dynamic(
     () =>
@@ -43,14 +43,16 @@ export default function LogClient() {
         return () => commandPaletteCreateActions.unregister();
     }, [openCreateDialog]);
 
-    const {
-        shouldShowSmallDimes,
-        setShouldShowSmallDimes,
-        shouldShowBigBucks,
-        setShouldShowBigBucks,
-    } = useLogViewSettings();
+    const logViewDisplayMode = useLocalAppDataStore(
+        (s) => s.logViewDisplayMode,
+    );
+    const setLogViewDisplayMode = useLocalAppDataStore(
+        (s) => s.setLogViewDisplayMode,
+    );
 
-    const isOnlyBigBucks = !shouldShowSmallDimes && shouldShowBigBucks;
+    const shouldShowSmallDimes = logViewDisplayMode !== "bucks";
+    const shouldShowBigBucks = logViewDisplayMode !== "dimes";
+    const isOnlyBigBucks = logViewDisplayMode === "bucks";
 
     useHotkey("f", handleSearchHotkey, { ctrlOrMeta: true });
 
@@ -236,10 +238,8 @@ export default function LogClient() {
                 rightContent={
                     !isSearchMode && (
                         <TransactionTypeDropdown
-                            shouldShowSmallDimes={shouldShowSmallDimes}
-                            onSmallDimesChange={setShouldShowSmallDimes}
-                            shouldShowBigBucks={shouldShowBigBucks}
-                            onBigBucksChange={setShouldShowBigBucks}
+                            logViewDisplayMode={logViewDisplayMode}
+                            setLogViewDisplayMode={setLogViewDisplayMode}
                         />
                     )
                 }

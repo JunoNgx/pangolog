@@ -1,6 +1,8 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
+export type LogViewDisplayMode = "dimes" | "bucks" | "both";
+
 export type LoggerEntry = {
     timestamp: string;
     message: string;
@@ -14,6 +16,8 @@ interface LocalAppDataStore {
     hasHydrated: boolean;
     loggerEntries: LoggerEntry[];
     setLoggerEntries: (entries: LoggerEntry[]) => void;
+    logViewDisplayMode: LogViewDisplayMode;
+    setLogViewDisplayMode: (mode: LogViewDisplayMode) => void;
 }
 
 export const useLocalAppDataStore = create<LocalAppDataStore>()(
@@ -25,11 +29,14 @@ export const useLocalAppDataStore = create<LocalAppDataStore>()(
             hasHydrated: false,
             loggerEntries: [],
             setLoggerEntries: (entries) => set({ loggerEntries: entries }),
+            logViewDisplayMode: "dimes" as LogViewDisplayMode,
+            setLogViewDisplayMode: (mode) => set({ logViewDisplayMode: mode }),
         }),
         {
             name: "pangolog-local-app-data",
             partialize: (state) => ({
                 shouldShowDemoDataBanner: state.shouldShowDemoDataBanner,
+                logViewDisplayMode: state.logViewDisplayMode,
             }),
             onRehydrateStorage: () => () => {
                 useLocalAppDataStore.setState({ hasHydrated: true });
