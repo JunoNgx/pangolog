@@ -6,7 +6,6 @@ import {
     DropdownItem,
     DropdownMenu,
     DropdownTrigger,
-    Tooltip,
 } from "@heroui/react";
 import type { LucideIcon } from "lucide-react";
 import { Banknote, Coins, HandCoins } from "lucide-react";
@@ -52,17 +51,16 @@ export function TransactionTypeDropdown({
             }}
         >
             <DropdownTrigger>
-                <Tooltip content="Ctrl/Cmd+Shift+U" placement="left">
-                    <Button
-                        variant="ghost"
-                        size={triggerSize}
-                        isIconOnly={!shouldShowLabel}
-                        aria-label={modeLabel}
-                    >
-                        <CurrentIcon size={16} />
-                        {shouldShowLabel && modeLabel}
-                    </Button>
-                </Tooltip>
+                <Button
+                    variant="ghost"
+                    size={triggerSize}
+                    isIconOnly={!shouldShowLabel}
+                    aria-label={modeLabel}
+                    title="Ctrl/Cmd+Shift+U"
+                >
+                    <CurrentIcon size={16} />
+                    {shouldShowLabel && modeLabel}
+                </Button>
             </DropdownTrigger>
             <DropdownMenu
                 aria-label="Transaction type display mode"
