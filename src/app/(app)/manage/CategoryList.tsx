@@ -35,12 +35,13 @@ function SortableCategoryItem({
     return (
         <li
             ref={ref}
+            style={{ borderLeftColor: cat.colour }}
             className={`
                 rounded-none
                 flex items-center
                 bg-background
-                border border-default-200
-                hover:bg-default-50
+                border-l-4 border-b-1 border-default-200
+                hover:border-default-400 transition
                 ${isDragging ? "opacity-50" : ""}
             `}
         >
@@ -55,10 +56,6 @@ function SortableCategoryItem({
                 "
             >
                 <span className="flex items-center gap-4 shrink-0">
-                    <span
-                        className="h-4 w-4 rounded-full shrink-0"
-                        style={{ backgroundColor: cat.colour }}
-                    />
                     <span className="text-xl leading-none">
                         {cat.icon || "·"}
                     </span>
