@@ -95,7 +95,7 @@ export const RECURRING_RULES_FILE = "recurring-rules.json";
 export const SETTINGS_FILE = "settings.json";
 
 /* SYNC */
-export const DEBOUNCE_MS = 30_000;
+export const DEBOUNCE_MS = 10 * 1000;
 export const RESTORE_SYNC_THRESHOLD_MS = 24 * 60 * 60 * 1000;
 
 /* MISC */
