@@ -49,8 +49,6 @@ export default function SettingsClient() {
     const {
         timeFormat,
         setTimeFormat,
-        isAutobackupEnabled,
-        setIsAutobackupEnabled,
     } = useLocalUserSettingsStore();
     const { getLoggerEntries, clearLoggerEntries } = useLogger();
 
