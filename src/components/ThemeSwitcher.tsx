@@ -35,7 +35,11 @@ export function ThemeSwitcher() {
     }
 
     return (
-        <Dropdown>
+        <Dropdown
+            classNames={{
+                content: "min-w-0 w-fit",
+            }}
+        >
             <DropdownTrigger>
                 <Button isIconOnly variant="light" size="sm" aria-label="Theme">
                     <CurrentIcon size={18} />
