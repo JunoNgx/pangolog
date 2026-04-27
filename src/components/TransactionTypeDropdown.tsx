@@ -7,31 +7,31 @@ import {
     DropdownMenu,
     DropdownTrigger,
 } from "@heroui/react";
-import type { LogViewDisplayMode } from "@/lib/store/useLogViewSettingsStore";
+import type { ViewDisplayMode } from "@/lib/store/useLogViewSettingsStore";
 
 interface TransactionTypeDropdownProps {
-    logViewDisplayMode: LogViewDisplayMode;
-    setLogViewDisplayMode: (mode: LogViewDisplayMode) => void;
+    displayMode: ViewDisplayMode;
+    setDisplayMode: (mode: ViewDisplayMode) => void;
 }
 
-const MODE_OPTIONS: { key: LogViewDisplayMode; label: string }[] = [
+const MODE_OPTIONS: { key: ViewDisplayMode; label: string }[] = [
     { key: "dimes", label: "Small Dimes" },
     { key: "bucks", label: "Big Bucks" },
     { key: "both", label: "Both" },
 ];
 
 export function TransactionTypeDropdown({
-    logViewDisplayMode,
-    setLogViewDisplayMode,
+    displayMode,
+    setDisplayMode,
 }: TransactionTypeDropdownProps) {
     const modeLabel =
-        MODE_OPTIONS.find((opt) => opt.key === logViewDisplayMode)?.label ??
+        MODE_OPTIONS.find((opt) => opt.key === displayMode)?.label ??
         "Small Dimes";
 
     function handleSelectionChange(keys: "all" | Set<React.Key>) {
         if (keys === "all") return;
-        const key = Array.from(keys)[0] as LogViewDisplayMode;
-        setLogViewDisplayMode(key);
+        const key = Array.from(keys)[0] as ViewDisplayMode;
+        setDisplayMode(key);
     }
 
     return (
@@ -48,7 +48,7 @@ export function TransactionTypeDropdown({
             <DropdownMenu
                 aria-label="Transaction type display mode"
                 selectionMode="single"
-                selectedKeys={new Set([logViewDisplayMode])}
+                selectedKeys={new Set([displayMode])}
                 onSelectionChange={handleSelectionChange}
             >
                 {MODE_OPTIONS.map((opt) => (

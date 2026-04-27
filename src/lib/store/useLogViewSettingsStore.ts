@@ -1,17 +1,17 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-export type LogViewDisplayMode = "dimes" | "bucks" | "both";
+export type ViewDisplayMode = "dimes" | "bucks" | "both";
 
 interface LogViewSettingsStore {
-    logViewDisplayMode: LogViewDisplayMode;
-    setLogViewDisplayMode: (mode: LogViewDisplayMode) => void;
+    logViewDisplayMode: ViewDisplayMode;
+    setLogViewDisplayMode: (mode: ViewDisplayMode) => void;
 }
 
 export const useLogViewSettingsStore = create<LogViewSettingsStore>()(
     persist(
         (set) => ({
-            logViewDisplayMode: "dimes" as LogViewDisplayMode,
+            logViewDisplayMode: "dimes" as ViewDisplayMode,
             setLogViewDisplayMode: (mode) => set({ logViewDisplayMode: mode }),
         }),
         {

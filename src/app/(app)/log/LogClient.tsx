@@ -250,8 +250,8 @@ export default function LogClient() {
                 rightContent={
                     !isSearchMode && (
                         <TransactionTypeDropdown
-                            logViewDisplayMode={logViewDisplayMode}
-                            setLogViewDisplayMode={setLogViewDisplayMode}
+                            displayMode={logViewDisplayMode}
+                            setDisplayMode={setLogViewDisplayMode}
                         />
                     )
                 }
