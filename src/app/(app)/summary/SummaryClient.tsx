@@ -243,6 +243,7 @@ export default function SummaryClient() {
                     <TransactionTypeDropdown
                         displayMode={summaryViewDisplayMode}
                         setDisplayMode={setSummaryViewDisplayMode}
+                        triggerSize="md"
                     />
                 </div>
             </div>
