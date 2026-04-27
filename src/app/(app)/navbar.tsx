@@ -25,21 +25,16 @@ export function AppNavbar() {
     return (
         <>
             <header
-                className={`
-                    sticky top-0 z-40
-                    hidden md:flex
-                    bg-background/80 backdrop-blur-md
-                    border-b border-default-200
-                `}
+                className={`bg-background/80 border-default-200 sticky top-0 z-40 hidden border-b backdrop-blur-md md:flex`}
             >
-                <div className="flex items-center h-14 px-6 gap-2 w-full max-w-5xl mx-auto">
+                <div className="mx-auto flex h-14 w-full max-w-5xl items-center gap-2 px-6">
                     <NextLink
                         href="/"
-                        className="font-bold text-lg mr-6 shrink-0"
+                        className="mr-6 shrink-0 text-lg font-bold"
                     >
                         Pangolog
                     </NextLink>
-                    <nav className="flex items-center gap-1 ml-auto">
+                    <nav className="ml-auto flex items-center gap-1">
                         {navItems.map((item) => {
                             const isActive = pathname === item.href;
                             const linkClass = `
@@ -61,7 +56,7 @@ export function AppNavbar() {
                             );
                         })}
                     </nav>
-                    <div className="flex items-center gap-1 shrink-0">
+                    <div className="flex shrink-0 items-center gap-1">
                         <ThemeSwitcher />
                     </div>
                 </div>
@@ -73,12 +68,7 @@ export function AppNavbar() {
                 the (pointer: fine) media query. Not applied - the issue is
                 intermittent and unconfirmed on other browsers. */}
             <nav
-                className={`
-                    fixed bottom-0 left-0 right-0 z-40
-                    md:hidden flex h-16 rounded-lg
-                    m-3 mt-0 mr-24
-                    bg-background border border-default-200
-                `}
+                className={`bg-background border-default-200 fixed right-0 bottom-0 left-0 z-40 m-3 mt-0 mr-24 flex h-16 rounded-lg border md:hidden`}
             >
                 {navItems.map((item) => {
                     const isActive = pathname === item.href;

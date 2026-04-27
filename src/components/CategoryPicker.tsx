@@ -19,18 +19,13 @@ export function CategoryPicker({
 }: CategoryPickerProps) {
     return (
         <div>
-            <div className="flex items-center justify-between mb-2">
-                <p className="text-sm text-default-500">Category</p>
+            <div className="mb-2 flex items-center justify-between">
+                <p className="text-default-500 text-sm">Category</p>
                 {onAdd && (
                     <button
                         type="button"
                         onClick={onAdd}
-                        className={`
-                            rounded-sm px-1.5 py-0.5
-                            flex items-center gap-1
-                            text-xs text-default-400
-                            hover:text-default-600 hover:bg-default-100 transition-colors cursor-pointer
-                        `}
+                        className={`text-default-400 hover:text-default-600 hover:bg-default-100 flex cursor-pointer items-center gap-1 rounded-sm px-1.5 py-0.5 text-xs transition-colors`}
                     >
                         <Plus size={12} />
                         Add
@@ -38,7 +33,7 @@ export function CategoryPicker({
                 )}
             </div>
             {categories.length === 0 && (
-                <p className="text-sm text-default-400">
+                <p className="text-default-400 text-sm">
                     {onAdd
                         ? "No categories yet. Press Add to create one."
                         : "No categories available. Add one from the Categories menu."}
@@ -56,7 +51,7 @@ export function CategoryPicker({
                         }
                         endContent={
                             <span
-                                className="h-3 w-3 rounded-full inline-block"
+                                className="inline-block h-3 w-3 rounded-full"
                                 style={{ backgroundColor: cat.colour }}
                             />
                         }

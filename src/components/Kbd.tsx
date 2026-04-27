@@ -5,16 +5,7 @@ interface KbdProps {
 export function Kbd({ children }: KbdProps) {
     return (
         <kbd
-            className={`
-                /* CONTAINER */
-                inline-block
-
-                /* CONTENT STYLES */
-                font-mono text-xs
-
-                /* VISUAL EFFECTS */
-                bg-default-100 border border-default-200 rounded px-1.5 py-0.5
-            `}
+            className={`/* CONTAINER */ /* CONTENT STYLES */ /* VISUAL EFFECTS */ bg-default-100 border-default-200 inline-block rounded border px-1.5 py-0.5 font-mono text-xs`}
         >
             {children}
         </kbd>

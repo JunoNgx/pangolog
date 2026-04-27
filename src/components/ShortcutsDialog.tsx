@@ -105,10 +105,10 @@ export function ShortcutsDialog() {
                 <ModalHeader className="text-base">
                     Keyboard shortcuts
                 </ModalHeader>
-                <ModalBody className="pb-6 gap-6">
+                <ModalBody className="gap-6 pb-6">
                     {SHORTCUT_GROUPS.map((group) => (
                         <div key={group.title}>
-                            <p className="text-xs font-medium text-default-400 uppercase tracking-wide mb-2">
+                            <p className="text-default-400 mb-2 text-xs font-medium tracking-wide uppercase">
                                 {group.title}
                             </p>
                             <ul className="flex flex-col gap-2">
@@ -117,10 +117,10 @@ export function ShortcutsDialog() {
                                         key={shortcut.description}
                                         className="flex items-center justify-between gap-4"
                                     >
-                                        <span className="text-sm text-default-600">
+                                        <span className="text-default-600 text-sm">
                                             {shortcut.description}
                                         </span>
-                                        <span className="flex items-center gap-1 shrink-0">
+                                        <span className="flex shrink-0 items-center gap-1">
                                             {shortcut.keys.map((key) => (
                                                 <Kbd key={key}>{key}</Kbd>
                                             ))}

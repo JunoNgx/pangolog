@@ -72,7 +72,7 @@ export function RecurringList({
     if (!rules.length) {
         return (
             <>
-                <p className="text-center text-default-400 py-12">
+                <p className="text-default-400 py-12 text-center">
                     Nothing to show.
                 </p>
                 <RecurringRuleDialog
@@ -123,19 +123,10 @@ function RecurringItem({ rule, category, onEdit }: RecurringItemProps) {
             <button
                 type="button"
                 onClick={() => onEdit(rule)}
-                className={`
-                    w-full text-left
-                    rounded-none px-4 py-3
-                    flex items-center gap-3
-                    bg-background
-                    border-l-4 border-b-1 border-default-200
-                    cursor-pointer hover:border-default-400 transition
-                    focus:outline-none focus-visible:ring-2 focus-visible:ring-primary
-                    ${!rule.isActive ? "opacity-50" : ""}
-                `}
+                className={`bg-background border-default-200 hover:border-default-400 focus-visible:ring-primary flex w-full cursor-pointer items-center gap-3 rounded-none border-b-1 border-l-4 px-4 py-3 text-left transition focus:outline-none focus-visible:ring-2 ${!rule.isActive ? "opacity-50" : ""} `}
                 style={{ borderLeftColor: category?.colour }}
             >
-                <div className="flex-1 min-w-0">
+                <div className="min-w-0 flex-1">
                     <p>
                         <span className="mr-1">{category?.icon ?? "·"}</span>
                         <span className="text-default-700">
@@ -144,23 +135,20 @@ function RecurringItem({ rule, category, onEdit }: RecurringItemProps) {
                     </p>
                     {rule.description && (
                         <p
-                            className={`
-                                font-mono text-sm text-default-400 truncate
-                                ${!hasIndicator ? "mt-1" : ""}
-                            `}
+                            className={`text-default-400 truncate font-mono text-sm ${!hasIndicator ? "mt-1" : ""} `}
                         >
                             {rule.description}
                         </p>
                     )}
                     {hasIndicator && (
-                        <div className="flex gap-4 mt-1">
+                        <div className="mt-1 flex gap-4">
                             {rule.isBigBuck && (
                                 <ChipLabel className="mx-0 text-amber-500">
                                     BUCK
                                 </ChipLabel>
                             )}
                             {!rule.isActive && (
-                                <ChipLabel className="mx-0 text-default-400">
+                                <ChipLabel className="text-default-400 mx-0">
                                     PAUSED
                                 </ChipLabel>
                             )}
@@ -168,20 +156,17 @@ function RecurringItem({ rule, category, onEdit }: RecurringItemProps) {
                     )}
                 </div>
 
-                <div className="flex flex-col items-end gap-1 shrink-0">
+                <div className="flex shrink-0 flex-col items-end gap-1">
                     <span
-                        className={`
-                            font-mono font-medium text-sm
-                            ${rule.isIncome ? "text-success" : ""}
-                        `}
+                        className={`font-mono text-sm font-medium ${rule.isIncome ? "text-success" : ""} `}
                     >
                         {rule.isIncome ? "+" : ""}
                         {formatAmount(rule.amount)}
                     </span>
-                    <span className="text-xs text-default-400 font-mono">
+                    <span className="text-default-400 font-mono text-xs">
                         {formatFrequency(rule)}
                     </span>
-                    <span className="text-xs text-default-400 font-mono">
+                    <span className="text-default-400 font-mono text-xs">
                         Next:{" "}
                         {DateTime.fromISO(rule.nextGenerationAt).toLocaleString(
                             DateTime.DATE_MED,

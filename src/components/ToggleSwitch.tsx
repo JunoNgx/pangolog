@@ -45,19 +45,12 @@ export function ToggleSwitch({
 
     return (
         <fieldset
-            className={`flex items-center gap-1 min-h-[11] ${className}`}
+            className={`flex min-h-[11] items-center gap-1 ${className}`}
             aria-labelledby={`${leftLabelId} ${rightLabelId}`}
         >
             <span
                 id={leftLabelId}
-                className={`
-                    flex items-center gap-1 px-2 py-1 rounded
-                    text-sm text-right
-                    hover:bg-default-100 transition-all cursor-pointer
-                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-300 focus-visible:ring-offset-2
-                    ${!isSelectingRightActive ? "" : "text-default-400"}
-                    ${isDisabled ? "cursor-not-allowed opacity-50" : ""}
-                `}
+                className={`hover:bg-default-100 focus-visible:ring-primary-300 flex cursor-pointer items-center gap-1 rounded px-2 py-1 text-right text-sm transition-all focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none ${!isSelectingRightActive ? "" : "text-default-400"} ${isDisabled ? "cursor-not-allowed opacity-50" : ""} `}
                 tabIndex={isSelectingRightActive ? 0 : -1}
                 role="switch"
                 aria-checked={!isSelectingRight}
@@ -91,14 +84,7 @@ export function ToggleSwitch({
 
             <span
                 id={rightLabelId}
-                className={`
-                    flex items-center gap-1 px-2 py-1 rounded
-                    text-sm
-                    hover:bg-default-100 transition-all cursor-pointer
-                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-300 focus-visible:ring-offset-2
-                    ${isSelectingRightActive ? "" : "text-default-400"}
-                    ${isDisabled ? "cursor-not-allowed opacity-50" : ""}
-                `}
+                className={`hover:bg-default-100 focus-visible:ring-primary-300 flex cursor-pointer items-center gap-1 rounded px-2 py-1 text-sm transition-all focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none ${isSelectingRightActive ? "" : "text-default-400"} ${isDisabled ? "cursor-not-allowed opacity-50" : ""} `}
                 tabIndex={!isSelectingRightActive ? 0 : -1}
                 role="switch"
                 aria-checked={isSelectingRight}

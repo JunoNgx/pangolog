@@ -48,10 +48,7 @@ export function MonthYearPicker({
                 type="month"
                 value={monthValue}
                 onChange={handleMonthInputChange}
-                className={`
-                    w-42
-                    ${SELECT_CLASSES}
-                `}
+                className={`w-42 ${SELECT_CLASSES} `}
             />
         );
     }

@@ -24,7 +24,7 @@ export function OfflineIndicator({
     }
 
     return (
-        <p className="text-xs text-warning-600 dark:text-warning-400">
+        <p className="text-warning-600 dark:text-warning-400 text-xs">
             You are offline.
         </p>
     );

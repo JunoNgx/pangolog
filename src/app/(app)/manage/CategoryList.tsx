@@ -36,26 +36,14 @@ function SortableCategoryItem({
         <li
             ref={ref}
             style={{ borderLeftColor: cat.colour }}
-            className={`
-                rounded-none
-                flex items-center
-                bg-background
-                border-l-4 border-b-1 border-default-200
-                hover:border-default-400 transition
-                ${isDragging ? "opacity-50" : ""}
-            `}
+            className={`bg-background border-default-200 hover:border-default-400 flex items-center rounded-none border-b-1 border-l-4 transition ${isDragging ? "opacity-50" : ""} `}
         >
             <button
                 type="button"
                 onClick={() => onEdit(cat)}
-                className="
-                    flex-1 min-w-0 px-4 py-3 text-left
-                    flex items-center gap-3
-                    cursor-pointer
-                    focus:outline-none focus-visible:ring-2 focus-visible:ring-primary
-                "
+                className="focus-visible:ring-primary flex min-w-0 flex-1 cursor-pointer items-center gap-3 px-4 py-3 text-left focus:outline-none focus-visible:ring-2"
             >
-                <span className="flex items-center gap-4 shrink-0">
+                <span className="flex shrink-0 items-center gap-4">
                     <span className="text-xl leading-none">
                         {cat.icon || "·"}
                     </span>
@@ -74,7 +62,7 @@ function SortableCategoryItem({
                     ref={handleRef}
                     onClick={(e) => e.stopPropagation()}
                     aria-label={`Drag to reorder ${cat.name}`}
-                    className="py-3 mr-2 text-default-400 cursor-grab active:cursor-grabbing select-none bg-transparent border-0"
+                    className="text-default-400 mr-2 cursor-grab border-0 bg-transparent py-3 select-none active:cursor-grabbing"
                 >
                     <GripVertical />
                 </button>
@@ -127,7 +115,7 @@ export function CategoryList() {
     if (!categories?.length) {
         return (
             <>
-                <p className="text-center text-default-400 py-12">
+                <p className="text-default-400 py-12 text-center">
                     No categories yet. Tap + to create one.
                 </p>
                 <CategoryDialog
@@ -140,7 +128,7 @@ export function CategoryList() {
     }
 
     const notice = (
-        <div className="text-center text-default-400 text-sm py-2">
+        <div className="text-default-400 py-2 text-center text-sm">
             <p>
                 This display order is also used in transaction and recurring
                 rule dialogs.
@@ -154,26 +142,15 @@ export function CategoryList() {
             {categories.map((cat) => (
                 <li
                     key={cat.id}
-                    className="
-                        rounded-none
-                        flex items-center
-                        bg-background
-                        border-l-4 border-b-1 border-default-200
-                        hover:border-default-400 transition
-                    "
+                    className="bg-background border-default-200 hover:border-default-400 flex items-center rounded-none border-b-1 border-l-4 transition"
                     style={{ borderLeftColor: cat.colour }}
                 >
                     <button
                         type="button"
                         onClick={() => handleEdit(cat)}
-                        className="
-                            flex-1 min-w-0 px-4 py-3 text-left
-                            flex items-center gap-3
-                            cursor-pointer
-                            focus:outline-none focus-visible:ring-2 focus-visible:ring-primary
-                        "
+                        className="focus-visible:ring-primary flex min-w-0 flex-1 cursor-pointer items-center gap-3 px-4 py-3 text-left focus:outline-none focus-visible:ring-2"
                     >
-                        <span className="flex items-center gap-4 shrink-0">
+                        <span className="flex shrink-0 items-center gap-4">
                             <span className="text-xl leading-none">
                                 {cat.icon || "·"}
                             </span>

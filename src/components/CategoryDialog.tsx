@@ -28,11 +28,46 @@ import { showDeleteToast } from "@/lib/utils";
 
 // biome-ignore-start format: Formatting is intentional
 const EMOJI_DEFAULTS = [
-    "🍽️","🛒","☕","🍺","🍔","🍜","🍕","🥗",
-    "🎮","🎬","🎵","📖","🎁","🎭","🎨","🎯",
-    "✈️","🚗","🚌","⛽","🧳","🚕","🛵","🚲",
-    "🏠","💡","💊","🏋️","👗","💄","🐾","🌿",
-    "💰","💳","💼","📱","💻","🎓","🏦","📦",
+    "🍽️",
+    "🛒",
+    "☕",
+    "🍺",
+    "🍔",
+    "🍜",
+    "🍕",
+    "🥗",
+    "🎮",
+    "🎬",
+    "🎵",
+    "📖",
+    "🎁",
+    "🎭",
+    "🎨",
+    "🎯",
+    "✈️",
+    "🚗",
+    "🚌",
+    "⛽",
+    "🧳",
+    "🚕",
+    "🛵",
+    "🚲",
+    "🏠",
+    "💡",
+    "💊",
+    "🏋️",
+    "👗",
+    "💄",
+    "🐾",
+    "🌿",
+    "💰",
+    "💳",
+    "💼",
+    "📱",
+    "💻",
+    "🎓",
+    "🏦",
+    "📦",
 ];
 // biome-ignore-end format: Formatting is intentional
 
@@ -92,7 +127,7 @@ const randomColourButtonClasses = `
 const emojiPickerComponents: EmojiPickerListComponents = {
     CategoryHeader: ({ category: cat, ...props }) => (
         <div
-            className="px-3 pt-3 pb-1.5 text-xs font-medium text-foreground-500 bg-content1"
+            className="text-foreground-500 bg-content1 px-3 pt-3 pb-1.5 text-xs font-medium"
             {...props}
         >
             {cat.label}
@@ -217,7 +252,7 @@ export function CategoryDialog({
 
     const emojiPickerSection = (
         <div className="flex flex-col gap-1">
-            <span className="text-xs text-foreground-500">Icon</span>
+            <span className="text-foreground-500 text-xs">Icon</span>
             <Popover
                 placement="bottom-start"
                 isOpen={isEmojiPickerOpen}
@@ -241,14 +276,14 @@ export function CategoryDialog({
                             className={emojiPickerSearchClasses}
                         />
                         <EmojiPicker.Viewport className="relative flex-1 outline-none">
-                            <EmojiPicker.Loading className="absolute inset-0 flex items-center justify-center text-sm text-foreground-400">
+                            <EmojiPicker.Loading className="text-foreground-400 absolute inset-0 flex items-center justify-center text-sm">
                                 Loading...
                             </EmojiPicker.Loading>
-                            <EmojiPicker.Empty className="absolute inset-0 flex items-center justify-center text-sm text-foreground-400">
+                            <EmojiPicker.Empty className="text-foreground-400 absolute inset-0 flex items-center justify-center text-sm">
                                 No emoji found.
                             </EmojiPicker.Empty>
                             <EmojiPicker.List
-                                className="select-none pb-1.5"
+                                className="pb-1.5 select-none"
                                 components={emojiPickerComponents}
                             />
                         </EmojiPicker.Viewport>
@@ -260,7 +295,7 @@ export function CategoryDialog({
 
     const colourPickerSection = (
         <div className="flex w-2/3 flex-col gap-1">
-            <span className="text-xs text-foreground-500">Colour</span>
+            <span className="text-foreground-500 text-xs">Colour</span>
             <div className="flex gap-2">
                 <Popover placement="bottom-end">
                     <PopoverTrigger>
@@ -273,7 +308,7 @@ export function CategoryDialog({
                                 className="size-6 shrink-0 rounded-full"
                                 style={{ backgroundColor: colour }}
                             />
-                            <span className="text-sm text-foreground-500">
+                            <span className="text-foreground-500 text-sm">
                                 {colour}
                             </span>
                         </button>

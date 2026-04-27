@@ -208,7 +208,7 @@ export function TransactionDialog({
                         </ModalHeader>
                         <ModalBody className="gap-4">
                             {!isEditing && !isExpenseOnlyMode && (
-                                <div className="flex justify-center items-center gap-4 mb-4">
+                                <div className="mb-4 flex items-center justify-center gap-4">
                                     <ToggleSwitch
                                         isSelectingRight={isIncome}
                                         onValueChange={setIsIncome}
@@ -224,7 +224,7 @@ export function TransactionDialog({
                                     label={
                                         <span>
                                             Date{" "}
-                                            <span className="font-mono text-default-400 text-xs">
+                                            <span className="text-default-400 font-mono text-xs">
                                                 {localeDateFormat}
                                             </span>
                                         </span>

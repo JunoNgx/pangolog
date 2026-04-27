@@ -27,10 +27,10 @@ export default function ExpensesByMonthChart({
     if (maxTotal === 0) {
         return (
             <div className="mb-6">
-                <p className="font-semibold text-default-500 mb-2">
+                <p className="text-default-500 mb-2 font-semibold">
                     Expenses by month
                 </p>
-                <p className="text-sm text-default-400">No data.</p>
+                <p className="text-default-400 text-sm">No data.</p>
             </div>
         );
     }
@@ -57,10 +57,10 @@ export default function ExpensesByMonthChart({
                             total > 0 ? `${(total / maxTotal) * 100}%` : "0%",
                     }}
                 >
-                    <div className="w-full h-full bg-default-400 rounded-sm" />
+                    <div className="bg-default-400 h-full w-full rounded-sm" />
                     {index === tallestIndex && (
                         <span
-                            className={`absolute -top-5 ${tallestLabelAlign} text-xs font-mono text-default-500 whitespace-nowrap`}
+                            className={`absolute -top-5 ${tallestLabelAlign} text-default-500 font-mono text-xs whitespace-nowrap`}
                         >
                             {formatAmountShort(total)}
                         </span>
@@ -68,7 +68,7 @@ export default function ExpensesByMonthChart({
                 </div>
             </PopoverTrigger>
             <PopoverContent>
-                <span className="text-xs font-mono">
+                <span className="font-mono text-xs">
                     {MONTH_NAMES[index]}: {formatAmount(total)}
                 </span>
             </PopoverContent>
@@ -78,7 +78,7 @@ export default function ExpensesByMonthChart({
     const monthLabels = MONTH_NAMES.map((label) => (
         <span
             key={label}
-            className="flex-1 text-center text-xs text-default-400 font-mono"
+            className="text-default-400 flex-1 text-center font-mono text-xs"
         >
             {label}
         </span>
@@ -86,11 +86,11 @@ export default function ExpensesByMonthChart({
 
     const averageMarker = (
         <div
-            className="absolute left-0 right-0 pointer-events-none"
+            className="pointer-events-none absolute right-0 left-0"
             style={{ bottom: `${averagePct}%` }}
         >
-            <div className="border-t border-dashed border-primary-400" />
-            <span className="absolute right-0 -top-5 text-xs font-mono text-primary-400 whitespace-nowrap">
+            <div className="border-primary-400 border-t border-dashed" />
+            <span className="text-primary-400 absolute -top-5 right-0 font-mono text-xs whitespace-nowrap">
                 avg {formatAmount(average)}
             </span>
         </div>
@@ -98,10 +98,10 @@ export default function ExpensesByMonthChart({
 
     return (
         <div className="mb-6">
-            <p className="font-semibold text-default-500 mb-3">
+            <p className="text-default-500 mb-3 font-semibold">
                 Expenses by month
             </p>
-            <div className="relative flex items-end gap-1 h-24 mb-1 mt-10">
+            <div className="relative mt-10 mb-1 flex h-24 items-end gap-1">
                 {bars}
                 {averageMarker}
             </div>

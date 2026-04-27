@@ -93,12 +93,12 @@ export default function RecurringClient() {
 
     return (
         <div>
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-4">
+            <div className="mb-4 flex flex-wrap items-center gap-x-4 gap-y-2">
                 <Checkbox
                     isSelected={shouldShowDimes}
                     onValueChange={setShouldShowDimes}
                 >
-                    <span className="text-sm text-default-500">
+                    <span className="text-default-500 text-sm">
                         Small dimes
                     </span>
                 </Checkbox>
@@ -106,24 +106,24 @@ export default function RecurringClient() {
                     isSelected={shouldShowBucks}
                     onValueChange={setShouldShowBucks}
                 >
-                    <span className="text-sm text-default-500">Big bucks</span>
+                    <span className="text-default-500 text-sm">Big bucks</span>
                 </Checkbox>
                 <Checkbox
                     isSelected={shouldShowIncome}
                     onValueChange={setShouldShowIncome}
                 >
-                    <span className="text-sm text-default-500">Income</span>
+                    <span className="text-default-500 text-sm">Income</span>
                 </Checkbox>
                 <Checkbox
                     isSelected={shouldHideInactive}
                     onValueChange={setShouldHideInactive}
                 >
-                    <span className="text-sm text-default-500">
+                    <span className="text-default-500 text-sm">
                         Hide inactive
                     </span>
                 </Checkbox>
-                <div className="flex items-center gap-2 ml-auto">
-                    <span className="text-sm text-default-500">Sort by</span>
+                <div className="ml-auto flex items-center gap-2">
+                    <span className="text-default-500 text-sm">Sort by</span>
                     <select
                         value={sortBy}
                         onChange={handleSortChange}
@@ -138,12 +138,7 @@ export default function RecurringClient() {
                     <button
                         type="button"
                         onClick={() => setSortAsc((prev) => !prev)}
-                        className={`
-                            rounded-lg p-2
-                            bg-default-100 border border-default-200
-                            text-foreground
-                            cursor-pointer hover:bg-default-200
-                        `}
+                        className={`bg-default-100 border-default-200 text-foreground hover:bg-default-200 cursor-pointer rounded-lg border p-2`}
                         aria-label={
                             sortAsc ? "Sort descending" : "Sort ascending"
                         }
