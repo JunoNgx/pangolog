@@ -1,8 +1,7 @@
 import { DateTime } from "luxon";
+import { PURGE_DAYS } from "@/lib/constants";
 import { forceDeleteDb, getDb } from "./connection";
 import type { Category, RecurringRule, Transaction } from "./types";
-
-const PURGE_DAYS = 60;
 
 async function purgeStore(
     storeName: "categories" | "recurring-rules" | "transactions",

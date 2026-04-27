@@ -22,16 +22,14 @@ const OfflineIndicator = dynamic(
     { ssr: false },
 );
 
+import { UNCATEGORISED_ID } from "@/lib/constants";
 import {
     useAllTransactions,
     useTransactionsByMonth,
     useTransactionsByYear,
 } from "@/lib/hooks/useTransactions";
 import { formatAmount } from "@/lib/utils";
-import {
-    CategoryFilterDropdown,
-    UNCATEGORISED_ID,
-} from "./CategoryFilterDropdown";
+import { CategoryFilterDropdown } from "./CategoryFilterDropdown";
 import { TransactionDialog } from "./TransactionDialog";
 import { TransactionList } from "./TransactionList";
 

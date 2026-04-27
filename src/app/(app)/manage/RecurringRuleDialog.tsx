@@ -15,7 +15,7 @@ import { CategoryDialog } from "@/components/CategoryDialog";
 import { CategoryPicker } from "@/components/CategoryPicker";
 import { DialogFooter } from "@/components/DialogFooter";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
-import { MONTH_NAMES, SELECT_CLASSES } from "@/lib/constants";
+import { DAY_NAMES_FULL, MONTH_NAMES, SELECT_CLASSES } from "@/lib/constants";
 import type { RecurringRule } from "@/lib/db/types";
 import { useCategories } from "@/lib/hooks/useCategories";
 import {
@@ -35,23 +35,13 @@ import {
 
 type Frequency = "daily" | "weekly" | "monthly" | "yearly";
 
-const DAY_NAMES = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-];
-
 function getRepeatLabel(frequency: Frequency, dateStr: string): string {
     const dt = DateTime.fromISO(`${dateStr}T12:00:00`);
     switch (frequency) {
         case "daily":
             return "Repeats every day";
         case "weekly":
-            return `Repeats every ${DAY_NAMES[dt.weekday % 7]}`;
+            return `Repeats every ${DAY_NAMES_FULL[dt.weekday % 7]}`;
         case "monthly":
             return `Repeats on the ${dt.day} of each month`;
         case "yearly":

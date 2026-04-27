@@ -1,10 +1,8 @@
 import { getIronSession } from "iron-session";
 import { cookies } from "next/headers";
+import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from "@/lib/constants";
 import type { SessionData } from "@/lib/session";
 import { sessionOptions } from "@/lib/session";
-
-const CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ?? "";
-const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET ?? "";
 
 export async function POST(request: Request) {
     const { code } = await request.json();
@@ -13,7 +11,7 @@ export async function POST(request: Request) {
         return Response.json({ error: "Missing code" }, { status: 400 });
     }
 
-    if (!CLIENT_SECRET) {
+    if (!GOOGLE_CLIENT_SECRET) {
         return Response.json(
             { error: "Server not configured" },
             { status: 500 },
@@ -25,8 +23,8 @@ export async function POST(request: Request) {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: new URLSearchParams({
             code,
-            client_id: CLIENT_ID,
-            client_secret: CLIENT_SECRET,
+            client_id: GOOGLE_CLIENT_ID,
+            client_secret: GOOGLE_CLIENT_SECRET,
             redirect_uri: "postmessage",
             grant_type: "authorization_code",
         }),

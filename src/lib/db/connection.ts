@@ -1,9 +1,5 @@
 import { DateTime } from "luxon";
-
-const DB_NAME = "pangolog";
-const DB_VERSION = 4;
-
-const REQUIRED_STORES = ["categories", "recurring-rules", "transactions"];
+import { DB_NAME, DB_VERSION, REQUIRED_STORES } from "@/lib/constants";
 
 let dbPromise: Promise<IDBDatabase> | null = null;
 
