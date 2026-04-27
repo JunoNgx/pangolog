@@ -83,21 +83,21 @@ function SegmentBar({ label, slices, total }: SegmentBarProps) {
     if (slices.length === 0) {
         return (
             <div className="mb-6">
-                <p className="font-semibold text-default-500 mb-2">{label}</p>
-                <p className="text-sm text-default-400">No data.</p>
+                <p className="text-default-500 mb-2 font-semibold">{label}</p>
+                <p className="text-default-400 text-sm">No data.</p>
             </div>
         );
     }
 
     return (
         <div className="mb-6">
-            <div className="flex items-baseline justify-between mb-2">
-                <p className="font-semibold text-default-500">{label}</p>
-                <p className="font-mono text-sm font-semibold text-default-700">
+            <div className="mb-2 flex items-baseline justify-between">
+                <p className="text-default-500 font-semibold">{label}</p>
+                <p className="text-default-700 font-mono text-sm font-semibold">
                     {formatAmount(total)}
                 </p>
             </div>
-            <div className="flex rounded-sm overflow-hidden h-5 mb-3">
+            <div className="mb-3 flex h-5 overflow-hidden rounded-sm">
                 {slices.map((slice) => (
                     <div
                         key={slice.categoryId ?? `__${slice.name}__`}
@@ -113,22 +113,22 @@ function SegmentBar({ label, slices, total }: SegmentBarProps) {
                 {slices.map((slice) => (
                     <li
                         key={slice.categoryId ?? `__${slice.name}__`}
-                        className={`flex items-center gap-2 text-sm py-1 border-b border-dashed border-default-200`}
+                        className={`border-default-200 flex items-center gap-2 border-b border-dashed py-1 text-sm`}
                     >
                         <span
-                            className="shrink-0 w-2.5 h-2.5 rounded-full"
+                            className="h-2.5 w-2.5 shrink-0 rounded-full"
                             style={{ backgroundColor: slice.colour }}
                         />
-                        <span className="flex-1 text-default-700">
+                        <span className="text-default-700 flex-1">
                             <span className="mr-1">
                                 {slice.icon ? `${slice.icon} ` : ""}
                             </span>
                             {slice.name}
                         </span>
-                        <span className="font-mono text-default-500">
+                        <span className="text-default-500 font-mono">
                             {formatAmount(slice.total)}
                         </span>
-                        <span className="font-mono text-default-400 w-14 text-right">
+                        <span className="text-default-400 w-14 text-right font-mono">
                             {slice.pct.toFixed(1)}%
                         </span>
                     </li>
@@ -221,9 +221,9 @@ export default function SummaryClient() {
         <div>
             <RouteHeader label="Summary" />
 
-            <div className="flex flex-col gap-3 mb-6">
+            <div className="mb-6 flex flex-col gap-3">
                 <div className="flex items-center gap-3">
-                    <span className="text-sm text-default-500">Viewing:</span>
+                    <span className="text-default-500 text-sm">Viewing:</span>
                     <ToggleSwitch
                         isSelectingRight={isYearly}
                         onValueChange={setIsYearly}

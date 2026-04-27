@@ -47,7 +47,7 @@ export function TransactionList({
                 {["s1", "s2", "s3", "s4", "s5", "s6", "s7"].map((key) => (
                     <Skeleton
                         key={key}
-                        className="h-12 w-full rounded-lg my-1"
+                        className="my-1 h-12 w-full rounded-lg"
                     />
                 ))}
             </MainListContainer>
@@ -57,7 +57,7 @@ export function TransactionList({
     if (!displayedItems.length) {
         return (
             <>
-                <p className="text-center text-default-400 py-12">
+                <p className="text-default-400 py-12 text-center">
                     Nothing to show.
                 </p>
                 <TransactionDialog
@@ -99,7 +99,7 @@ export function TransactionList({
             <MainListContainer>
                 {groupedByDateItems.map(({ dateKey, dateText, items }) => (
                     <li key={dateKey}>
-                        <h3 className="mt-6 mb-0 text-sm text-default-400">
+                        <h3 className="text-default-400 mt-6 mb-0 text-sm">
                             {dateText}
                         </h3>
                         <ul>
@@ -165,17 +165,10 @@ function TransactionItem({
                 type="button"
                 aria-label={ariaLabel}
                 onClick={() => openEditDialog(transaction)}
-                className="
-                    w-full text-left
-                    flex gap-2
-                    pt-1 pr-2 pl-1 pb-1 mt-2
-                    border-l-4 border-b-1 border-default-200 bg-background
-                    cursor-pointer hover:border-default-400 transition
-                    focus:outline-none focus-visible:ring-2 focus-visible:ring-primary
-                "
+                className="border-default-200 bg-background hover:border-default-400 focus-visible:ring-primary mt-2 flex w-full cursor-pointer gap-2 border-b-1 border-l-4 pt-1 pr-2 pb-1 pl-1 text-left transition focus:outline-none focus-visible:ring-2"
                 style={{ borderLeftColor: category?.colour }}
             >
-                <div className="grow-4 min-w-0 ml-2">
+                <div className="ml-2 min-w-0 grow-4">
                     {hasCategory ? (
                         <p>
                             <span className="mr-1">{category.icon || "·"}</span>
@@ -187,11 +180,11 @@ function TransactionItem({
                         <p className="text-default-400">(no category)</p>
                     )}
                     {hasDescription ? (
-                        <p className="font-mono text-sm text-default-400 truncate">
+                        <p className="text-default-400 truncate font-mono text-sm">
                             {transaction.description}
                         </p>
                     ) : (
-                        <p className="font-mono text-sm text-default-400">
+                        <p className="text-default-400 font-mono text-sm">
                             (no description)
                         </p>
                     )}
@@ -202,11 +195,7 @@ function TransactionItem({
                 )}
 
                 <span
-                    className={`
-                        self-center
-                        font-mono font-medium
-                        ${transaction.isIncome ? "text-success" : ""}
-                    `}
+                    className={`self-center font-mono font-medium ${transaction.isIncome ? "text-success" : ""} `}
                 >
                     {transaction.isIncome ? "+" : ""}
                     {amountDisplay}

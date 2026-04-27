@@ -226,7 +226,7 @@ export default function LogClient() {
     );
 
     const viewingControls = !isSearchMode && (
-        <div className="flex flex-col gap-3 mb-4">
+        <div className="mb-4 flex flex-col gap-3">
             {pickerAndCheckboxRow}
             {totalAndFilterRow}
         </div>
@@ -261,7 +261,7 @@ export default function LogClient() {
             />
 
             {!isSearchMode && (
-                <div className="flex items-center gap-2 mb-4 justify-end">
+                <div className="mb-4 flex items-center justify-end gap-2">
                     <SyncButton />
                     <OfflineIndicator
                         variant="icon"
@@ -271,7 +271,7 @@ export default function LogClient() {
             )}
 
             {isSearchMode && (
-                <div className="flex items-center gap-2 mb-4">
+                <div className="mb-4 flex items-center gap-2">
                     <Input
                         ref={searchInputRef}
                         placeholder="Search by description"

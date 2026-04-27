@@ -286,7 +286,7 @@ export function CommandPalette() {
             classNames={{ base: "max-w-md" }}
         >
             <ModalContent>
-                <ModalBody className="p-0 gap-0">
+                <ModalBody className="gap-0 p-0">
                     <Input
                         autoFocus
                         placeholder="Type a command..."
@@ -301,10 +301,10 @@ export function CommandPalette() {
                     />
                     <div
                         ref={scrollRef}
-                        className="overflow-y-auto max-h-128 pb-2"
+                        className="max-h-128 overflow-y-auto pb-2"
                     >
                         {filteredCommands.length === 0 && (
-                            <p className="text-sm text-default-400 text-center py-6">
+                            <p className="text-default-400 py-6 text-center text-sm">
                                 No commands found
                             </p>
                         )}
@@ -313,7 +313,7 @@ export function CommandPalette() {
                                 return (
                                     <p
                                         key={`header-${item.group}`}
-                                        className="text-xs font-medium text-default-400 px-3 pt-3 pb-1"
+                                        className="text-default-400 px-3 pt-3 pb-1 text-xs font-medium"
                                     >
                                         {item.group}
                                     </p>

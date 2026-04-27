@@ -6,13 +6,13 @@ import { Section } from "@/components/Section";
 export default function PrivacyClient() {
     return (
         <div className="container mx-auto max-w-2xl px-4 pt-6 pb-24">
-            <h1 className="text-xl font-bold mb-2">Privacy Policy</h1>
-            <p className="text-sm text-default-400 mb-8">
+            <h1 className="mb-2 text-xl font-bold">Privacy Policy</h1>
+            <p className="text-default-400 mb-8 text-sm">
                 Last updated: March 2026
             </p>
 
             <Section title="Overview">
-                <p className="text-sm text-default-500">
+                <p className="text-default-500 text-sm">
                     Pangolog is an offline-first, privacy-first expense tracker.
                     Your financial data never leaves your device unless you
                     explicitly enable Google Drive sync, in which case it is
@@ -22,12 +22,12 @@ export default function PrivacyClient() {
             </Section>
 
             <Section title="Your data storage">
-                <p className="text-sm text-default-500 mb-3">
+                <p className="text-default-500 mb-3 text-sm">
                     We collect no personal data. All transaction records,
                     categories, and settings are stored locally in your
                     browser&apos;s IndexedDB storage on your device.
                 </p>
-                <p className="text-sm text-default-500">
+                <p className="text-default-500 text-sm">
                     If you connect to Google Drive, we store a session token in
                     an encrypted HTTP-only cookie (valid for 30 days) solely to
                     facilitate token refresh. Your Google email address is
@@ -37,7 +37,7 @@ export default function PrivacyClient() {
             </Section>
 
             <Section title="Google Drive sync">
-                <p className="text-sm text-default-500 mb-3">
+                <p className="text-default-500 mb-3 text-sm">
                     Google Drive sync is entirely optional. When enabled, your
                     data is synced directly to a{" "}
                     <span className="font-mono text-xs">Pangolog/</span> folder
@@ -45,7 +45,7 @@ export default function PrivacyClient() {
                     minimum necessary OAuth scopes to read and write files
                     created by this app.
                 </p>
-                <p className="text-sm text-default-500">
+                <p className="text-default-500 text-sm">
                     You can disconnect Google Drive at any time from Settings.
                     Disconnecting removes our access to your Drive and deletes
                     the session cookie.
@@ -53,7 +53,7 @@ export default function PrivacyClient() {
             </Section>
 
             <Section title="Third-party services">
-                <p className="text-sm text-default-500">
+                <p className="text-default-500 text-sm">
                     Pangolog uses Google Identity Services for OAuth
                     authentication and the Google Drive API for optional sync.
                     These interactions are governed by{" "}
@@ -61,7 +61,7 @@ export default function PrivacyClient() {
                         href="https://policies.google.com/privacy"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="underline text-default-600"
+                        className="text-default-600 underline"
                     >
                         Google&apos;s Privacy Policy
                     </a>
@@ -71,7 +71,7 @@ export default function PrivacyClient() {
             </Section>
 
             <Section title="Data deletion">
-                <p className="text-sm text-default-500">
+                <p className="text-default-500 text-sm">
                     To delete your local data, use the{" "}
                     <span className="font-mono text-xs">Reset all data</span>{" "}
                     option in Settings, or clear your browser&apos;s site data
@@ -82,7 +82,7 @@ export default function PrivacyClient() {
             </Section>
 
             <Section title="Changes to this policy">
-                <p className="text-sm text-default-500">
+                <p className="text-default-500 text-sm">
                     Any changes to this policy will be reflected on this page
                     with an updated date.
                 </p>

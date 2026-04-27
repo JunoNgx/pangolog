@@ -181,7 +181,7 @@ export default function SettingsClient() {
                 <DriveSyncSection />
 
                 <section>
-                    <h3 className="text-lg font-semibold mb-4">
+                    <h3 className="mb-4 text-lg font-semibold">
                         Display Currency
                     </h3>
                     <div className="flex flex-col gap-4">
@@ -207,14 +207,14 @@ export default function SettingsClient() {
                             <Radio value="prefix">Prefix ($12)</Radio>
                             <Radio value="suffix">Suffix (12 SGD)</Radio>
                         </RadioGroup>
-                        <p className="font-mono text-sm text-default-500">
+                        <p className="text-default-500 font-mono text-sm">
                             Preview: {preview}
                         </p>
                     </div>
                 </section>
 
                 <section>
-                    <h3 className="text-lg font-semibold mb-4">Preferences</h3>
+                    <h3 className="mb-4 text-lg font-semibold">Preferences</h3>
                     <div className="flex flex-col gap-4">
                         <Checkbox
                             isSelected={isExpenseOnlyMode}
@@ -222,7 +222,7 @@ export default function SettingsClient() {
                             size="sm"
                         >
                             <span className="text-sm">Expense only mode</span>
-                            <p className="text-xs text-default-400">
+                            <p className="text-default-400 text-xs">
                                 Hides income-related UI to reduce clutter.
                             </p>
                         </Checkbox>
@@ -265,7 +265,7 @@ export default function SettingsClient() {
                 </section>
 
                 <section>
-                    <h3 className="text-lg font-semibold mb-4">Export Data</h3>
+                    <h3 className="mb-4 text-lg font-semibold">Export Data</h3>
                     <div className="flex flex-col gap-3">
                         <div className="flex items-center gap-3">
                             <Button
@@ -282,12 +282,12 @@ export default function SettingsClient() {
                                 size="sm"
                             >
                                 <span className="text-sm">Pretty print</span>
-                                <p className="text-xs text-default-400">
+                                <p className="text-default-400 text-xs">
                                     Human-readable formatting.
                                 </p>
                             </Checkbox>
                         </div>
-                        <p className="text-xs text-default-400">
+                        <p className="text-default-400 text-xs">
                             Exports all transactions, categories, and display
                             settings into a single file. On import, records are
                             resolved by last-updated timestamp to avoid
@@ -300,13 +300,13 @@ export default function SettingsClient() {
 
                 <section>
                     <h3
-                        className="text-lg font-semibold mb-1"
+                        className="mb-1 text-lg font-semibold"
                         onClick={handleHeadingTap}
                         onKeyDown={handleHeadingTap}
                     >
                         Help &amp; Info
                     </h3>
-                    <p className="text-xs text-default-400 mb-4">
+                    <p className="text-default-400 mb-4 text-xs">
                         Overview of concepts, pages, hotkeys, and sync
                         behaviour.
                     </p>
@@ -324,7 +324,7 @@ export default function SettingsClient() {
                 {/* DEBUG */}
                 {isDebugVisible && (
                     <section className="mt-8">
-                        <h3 className="text-lg font-semibold mb-1">Debug</h3>
+                        <h3 className="mb-1 text-lg font-semibold">Debug</h3>
                         <Button
                             variant="flat"
                             onPress={() =>
@@ -337,7 +337,7 @@ export default function SettingsClient() {
                         </Button>
 
                         <Button
-                            className="block mt-2"
+                            className="mt-2 block"
                             variant="flat"
                             onPress={() => setIsLogDialogOpen(true)}
                         >
@@ -345,7 +345,7 @@ export default function SettingsClient() {
                         </Button>
 
                         <Button
-                            className="block mt-2"
+                            className="mt-2 block"
                             color="danger"
                             variant="flat"
                             onPress={handleClearDebugLoggerEntry}
@@ -353,14 +353,14 @@ export default function SettingsClient() {
                             Clear Logger entries
                         </Button>
 
-                        <p className="text-xs text-default-400 mt-8">
+                        <p className="text-default-400 mt-8 text-xs">
                             Wipes the local database and all local app data.
                             This will make a fresh new user experience. Your
                             data on Google Drive will remain intact. This cannot
                             be undone.
                         </p>
                         <Button
-                            className="block mt-2"
+                            className="mt-2 block"
                             color="danger"
                             variant="flat"
                             onPress={() => setIsResetAppDialogOpen(true)}
@@ -372,10 +372,10 @@ export default function SettingsClient() {
                 {/* END DEBUG */}
 
                 <section>
-                    <h3 className="text-lg font-semibold mb-1">
+                    <h3 className="mb-1 text-lg font-semibold">
                         Troubleshooting
                     </h3>
-                    <p className="text-xs text-default-400 mb-4">
+                    <p className="text-default-400 mb-4 text-xs">
                         If the app appears outdated after an update, clear the
                         offline cache to force a fresh reload. Your data is
                         stored separately and will not be affected.
@@ -386,9 +386,9 @@ export default function SettingsClient() {
                 </section>
 
                 <section>
-                    <h3 className="text-lg font-semibold mb-2">About</h3>
+                    <h3 className="mb-2 text-lg font-semibold">About</h3>
                     <div className="flex flex-col gap-1">
-                        <p className="text-xs text-default-400">
+                        <p className="text-default-400 text-xs">
                             Pangolog is developed by{" "}
                             <a
                                 href="https://junongx.com"
@@ -400,7 +400,7 @@ export default function SettingsClient() {
                             </a>
                             , with playfulness and curiosity.
                         </p>
-                        <p className="text-xs text-default-400">
+                        <p className="text-default-400 text-xs">
                             This project is free and{" "}
                             <a
                                 href="https://github.com/JunoNgx/pangolog"
@@ -412,11 +412,11 @@ export default function SettingsClient() {
                             </a>
                             .
                         </p>
-                        <p className="text-xs text-default-400 font-mono mt-2">
+                        <p className="text-default-400 mt-2 font-mono text-xs">
                             v{process.env.NEXT_PUBLIC_VERSION} (
                             {process.env.NEXT_PUBLIC_COMMIT_HASH})
                         </p>
-                        <div className="flex flex-wrap gap-2 mt-2">
+                        <div className="mt-2 flex flex-wrap gap-2">
                             <Button
                                 as="a"
                                 href="/privacy"
@@ -438,10 +438,10 @@ export default function SettingsClient() {
                 </section>
 
                 <section className="mt-8">
-                    <h3 className="text-lg font-semibold mb-1 text-danger">
+                    <h3 className="text-danger mb-1 text-lg font-semibold">
                         Danger Zone
                     </h3>
-                    <p className="text-xs text-default-400 mb-4">
+                    <p className="text-default-400 mb-4 text-xs">
                         Removes all local transactions, categories, and
                         recurring rules, and disconnects Google Drive. Your data
                         on Google Drive will remain intact.
@@ -464,7 +464,7 @@ export default function SettingsClient() {
                 <ModalContent>
                     <ModalHeader>Clear local records?</ModalHeader>
                     <ModalBody>
-                        <p className="text-sm text-danger-500">
+                        <p className="text-danger-500 text-sm">
                             This cannot be undone.
                         </p>
                     </ModalBody>
@@ -494,7 +494,7 @@ export default function SettingsClient() {
                 <ModalContent>
                     <ModalHeader>Confirm resetting app?</ModalHeader>
                     <ModalBody>
-                        <p className="text-sm text-danger-500">
+                        <p className="text-danger-500 text-sm">
                             This cannot be undone.
                         </p>
                     </ModalBody>
@@ -525,7 +525,7 @@ export default function SettingsClient() {
                 <ModalContent>
                     <ModalHeader>Logs</ModalHeader>
                     <ModalBody className="overflow-y-auto">
-                        <pre className="text-xs font-mono whitespace-pre-wrap break-all">
+                        <pre className="font-mono text-xs break-all whitespace-pre-wrap">
                             {JSON.stringify(getLoggerEntries(), null, 2)}
                         </pre>
                     </ModalBody>

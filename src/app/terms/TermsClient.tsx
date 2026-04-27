@@ -6,20 +6,20 @@ import { Section } from "@/components/Section";
 export default function TermsClient() {
     return (
         <div className="container mx-auto max-w-2xl px-4 pt-6 pb-24">
-            <h1 className="text-xl font-bold mb-2">Terms of Service</h1>
-            <p className="text-sm text-default-400 mb-8">
+            <h1 className="mb-2 text-xl font-bold">Terms of Service</h1>
+            <p className="text-default-400 mb-8 text-sm">
                 Last updated: February 2026
             </p>
 
             <Section title="Acceptance">
-                <p className="text-sm text-default-500">
+                <p className="text-default-500 text-sm">
                     By using Pangolog, you agree to these terms. If you do not
                     agree, please discontinue use.
                 </p>
             </Section>
 
             <Section title="Use of the app">
-                <p className="text-sm text-default-500">
+                <p className="text-default-500 text-sm">
                     Pangolog is a personal expense tracking tool provided for
                     individual, non-commercial use. You are responsible for the
                     accuracy of the data you enter and for maintaining your own
@@ -28,14 +28,14 @@ export default function TermsClient() {
             </Section>
 
             <Section title="Google Drive">
-                <p className="text-sm text-default-500">
+                <p className="text-default-500 text-sm">
                     The optional Google Drive sync feature is subject to
                     Google&apos;s{" "}
                     <a
                         href="https://policies.google.com/terms"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="underline text-default-600"
+                        className="text-default-600 underline"
                     >
                         Terms of Service
                     </a>
@@ -45,7 +45,7 @@ export default function TermsClient() {
             </Section>
 
             <Section title="No warranty">
-                <p className="text-sm text-default-500">
+                <p className="text-default-500 text-sm">
                     Pangolog is provided &ldquo;as is&rdquo; without warranty of
                     any kind. We make no guarantees of uptime, data integrity,
                     or sync reliability. Use the export feature in Settings to
@@ -54,7 +54,7 @@ export default function TermsClient() {
             </Section>
 
             <Section title="Limitation of liability">
-                <p className="text-sm text-default-500">
+                <p className="text-default-500 text-sm">
                     To the fullest extent permitted by law, we are not liable
                     for any loss of data, financial loss, or other damages
                     arising from your use of Pangolog.
@@ -62,7 +62,7 @@ export default function TermsClient() {
             </Section>
 
             <Section title="Changes to these terms">
-                <p className="text-sm text-default-500">
+                <p className="text-default-500 text-sm">
                     We may update these terms at any time. Continued use of the
                     app after changes constitutes acceptance of the updated
                     terms.

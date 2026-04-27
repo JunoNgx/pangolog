@@ -52,7 +52,7 @@ function CategoryFilterItem({
                     </span>
                 )}
                 {isIncomeOnly && (
-                    <span className="ml-2 text-xs font-medium text-success">
+                    <span className="text-success ml-2 text-xs font-medium">
                         INC
                     </span>
                 )}

@@ -21,14 +21,7 @@ export default function AppLayout({
             </Suspense>
             <a
                 href="#main-content"
-                className="
-                        sr-only focus:not-sr-only
-                        focus:fixed focus:top-2 focus:left-2 focus:z-50
-                        focus:px-4 focus:py-2
-                        focus:bg-background focus:text-foreground
-                        focus:rounded focus:border focus:border-default-300
-                        focus:outline-none focus:ring-2 focus:ring-primary
-                    "
+                className="focus:bg-background focus:text-foreground focus:border-default-300 focus:ring-primary sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded focus:border focus:px-4 focus:py-2 focus:ring-2 focus:outline-none"
             >
                 Skip to main content
             </a>

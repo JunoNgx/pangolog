@@ -38,24 +38,12 @@ export function DemoDataBanner() {
 
     return (
         <div
-            className={`
-                /* CONTAINER */
-                w-fit sm:w-full max-w-lg mx-auto rounded-lg
-
-                /* INNER STRUCTURE */
-                flex flex-col sm:flex-row items-center sm:items-center gap-3 px-4 py-3
-
-                /* VISUAL EFFECTS */
-                border border-default-200 bg-default-50
-
-                /* BEHAVIOR */
-                mb-4
-            `}
+            className={`/* CONTAINER */ /* INNER STRUCTURE */ /* VISUAL EFFECTS */ border-default-200 bg-default-50 /* BEHAVIOR */ mx-auto mb-4 flex w-fit max-w-lg flex-col items-center gap-3 rounded-lg border px-4 py-3 sm:w-full sm:flex-row sm:items-center`}
         >
-            <p className="flex-1 text-sm text-default-600 text-center sm:text-left">
+            <p className="text-default-600 flex-1 text-center text-sm sm:text-left">
                 New here? Have a taste and explore.
             </p>
-            <div className="flex gap-2 shrink-0">
+            <div className="flex shrink-0 gap-2">
                 <Button
                     size="sm"
                     variant="flat"

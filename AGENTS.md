@@ -3,6 +3,7 @@
 Personal expense tracker PWA. See `.docs/spec.md` and `.docs/plan.md` for full details.
 
 ## Maintainer's preferences
+
 - Use 4 space indentation
 - Variable names for boolean type must always have the appropriate prefix (e.g. is-, should-, does-, has-). There is no exception.
 - Do not name variables with a bare adjective. `existing`, `filtered`, `updated`, `prev`, `next` are unacceptable. Use a noun-based name that reflects what the variable holds (e.g. `storedCategory`, `filteredTransactions`, `updatedToken`).
@@ -23,6 +24,7 @@ Personal expense tracker PWA. See `.docs/spec.md` and `.docs/plan.md` for full d
 - Avoid regex for implementation and usage when possible. Only use when absolutely necessary or the benefit is significant.
 
 ### Tailwind classes
+
 - Tailwind classes are to be wrapped in literal template, grouping classes into categories:
     - Container (e.g. `w-full`, `max-w-md`)
     - Inner structure (e.g. `flex flex-col`, `p-6 gap-4`)
@@ -33,6 +35,7 @@ Personal expense tracker PWA. See `.docs/spec.md` and `.docs/plan.md` for full d
 - Do not use pixel-unit classes, e.g. `size-[18px]`
 
 Complete example:
+
 ```
 const cardClasses = `
     /* CONTAINER */

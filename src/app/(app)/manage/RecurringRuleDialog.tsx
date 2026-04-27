@@ -205,7 +205,7 @@ export function RecurringRuleDialog({
                     </span>
                 </Switch>
             </div>
-            <div className="flex flex-col items-end gap-1 text-xs font-mono text-default-400">
+            <div className="text-default-400 flex flex-col items-end gap-1 font-mono text-xs">
                 <span>
                     Next:{" "}
                     {DateTime.fromISO(rule.nextGenerationAt).toLocaleString(
@@ -278,13 +278,13 @@ export function RecurringRuleDialog({
                                 description={`${description.length}/60`}
                             />
 
-                            <div className="flex gap-3 items-end justify-between">
+                            <div className="flex items-end justify-between gap-3">
                                 <Input
                                     type="date"
                                     label={
                                         <span>
                                             Start date{" "}
-                                            <span className="font-mono text-default-400 text-xs">
+                                            <span className="text-default-400 font-mono text-xs">
                                                 {localeDateFormat}
                                             </span>
                                         </span>
@@ -294,8 +294,8 @@ export function RecurringRuleDialog({
                                     isRequired
                                     className="w-1/2"
                                 />
-                                <div className="flex flex-col gap-1 shrink-0">
-                                    <span className="text-sm text-default-500">
+                                <div className="flex shrink-0 flex-col gap-1">
+                                    <span className="text-default-500 text-sm">
                                         Frequency
                                     </span>
                                     <select
@@ -311,7 +311,7 @@ export function RecurringRuleDialog({
                                 </div>
                             </div>
 
-                            <p className="text-xs font-mono -mt-2">
+                            <p className="-mt-2 font-mono text-xs">
                                 {repeatLabel}
                             </p>
 

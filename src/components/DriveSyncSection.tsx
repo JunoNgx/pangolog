@@ -24,7 +24,7 @@ export function DriveSyncSection() {
         useLocalUserSettingsStore();
 
     const lastSyncRow = lastSyncTime && (
-        <p className="text-xs text-default-400">
+        <p className="text-default-400 text-xs">
             Last synced:{" "}
             {DateTime.fromISO(lastSyncTime).toLocaleString({
                 ...DateTime.DATETIME_MED,
@@ -34,21 +34,21 @@ export function DriveSyncSection() {
     );
 
     const errorRow = error && (
-        <p className="text-xs text-danger-500">{error}</p>
+        <p className="text-danger-500 text-xs">{error}</p>
     );
 
     const autobackupDisabledInfo = !isConnected && (
-        <p className="text-xs text-default-400">
+        <p className="text-default-400 text-xs">
             Connect Google Drive to enable autobackup.
         </p>
     );
 
     const connectedContent = (
         <>
-            <p className="text-sm text-success-500">
+            <p className="text-success-500 text-sm">
                 Status: Connected as {authToken?.email}
             </p>
-            <p className="text-xs text-default-400">
+            <p className="text-default-400 text-xs">
                 {syncStatus === "syncing" && "Syncing..."}
                 {syncStatus === "error" && `Error: ${syncError}`}
             </p>
@@ -76,7 +76,7 @@ export function DriveSyncSection() {
 
     const disconnectedContent = (
         <>
-            <p className="text-sm text-default-400">Status: Not connected</p>
+            <p className="text-default-400 text-sm">Status: Not connected</p>
             <Button
                 color="primary"
                 variant="flat"
@@ -86,7 +86,7 @@ export function DriveSyncSection() {
             >
                 Connect Google Drive
             </Button>
-            <p className="text-xs text-default-400">
+            <p className="text-default-400 text-xs">
                 Your email address is requested solely to display which account
                 is connected. This is never sent anywhere.
             </p>
@@ -99,7 +99,7 @@ export function DriveSyncSection() {
 
     return (
         <section>
-            <h3 className="text-lg font-semibold mb-4">Google Drive Sync</h3>
+            <h3 className="mb-4 text-lg font-semibold">Google Drive Sync</h3>
             <div className="flex flex-col gap-3">
                 {lastSyncRow}
                 <OfflineIndicator
@@ -117,7 +117,7 @@ export function DriveSyncSection() {
                     <span className="text-sm">Monthly autobackup</span>
                 </Checkbox>
                 {autobackupDisabledInfo}
-                <p className="text-xs text-default-400">
+                <p className="text-default-400 text-xs">
                     A backup is written to your Pangolog Drive folder each month
                     (backup-YYYY-MM.json) in the same format as the JSON export
                     below. Backups accumulate over time - clean up old ones

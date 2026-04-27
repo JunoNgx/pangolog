@@ -31,12 +31,12 @@ export function ImportDataSection() {
     }
 
     const errorRow = importError && (
-        <p className="text-xs text-danger-500">{importError}</p>
+        <p className="text-danger-500 text-xs">{importError}</p>
     );
 
     const importPreviewPanel = importPreview && (
-        <div className="flex flex-col gap-2 p-3 rounded-lg bg-default-100 text-sm">
-            <p className="font-semibold text-default-700">Preview:</p>
+        <div className="bg-default-100 flex flex-col gap-2 rounded-lg p-3 text-sm">
+            <p className="text-default-700 font-semibold">Preview:</p>
             <p className="text-default-600">
                 {renderStats(
                     "Transactions",
@@ -59,14 +59,14 @@ export function ImportDataSection() {
                 )}
             </p>
             {importPreview.errors.length > 0 && (
-                <ul className="text-xs text-warning-600 dark:text-warning-400 list-disc list-inside">
+                <ul className="text-warning-600 dark:text-warning-400 list-inside list-disc text-xs">
                     {importPreview.errors.map((err, i) => (
                         // biome-ignore lint/suspicious/noArrayIndexKey: static list
                         <li key={i}>{err}</li>
                     ))}
                 </ul>
             )}
-            <div className="flex gap-2 mt-1">
+            <div className="mt-1 flex gap-2">
                 <Button
                     size="sm"
                     color="primary"
@@ -83,8 +83,8 @@ export function ImportDataSection() {
     );
 
     const importResultPanel = importResult && (
-        <div className="flex flex-col gap-1 p-3 rounded-lg bg-success-50 text-sm">
-            <p className="font-semibold text-success-700">Import complete.</p>
+        <div className="bg-success-50 flex flex-col gap-1 rounded-lg p-3 text-sm">
+            <p className="text-success-700 font-semibold">Import complete.</p>
             <p className="text-success-600">
                 {renderStats(
                     "Transactions",
@@ -107,7 +107,7 @@ export function ImportDataSection() {
                 )}
             </p>
             {importResult.errors.length > 0 && (
-                <ul className="text-xs text-warning-600 dark:text-warning-400 list-disc list-inside mt-1">
+                <ul className="text-warning-600 dark:text-warning-400 mt-1 list-inside list-disc text-xs">
                     {importResult.errors.map((err, i) => (
                         // biome-ignore lint/suspicious/noArrayIndexKey: static list
                         <li key={i}>{err}</li>
@@ -170,7 +170,7 @@ export function ImportDataSection() {
 
     return (
         <section>
-            <h3 className="text-lg font-semibold mb-4">Import Data</h3>
+            <h3 className="mb-4 text-lg font-semibold">Import Data</h3>
             <div className="flex flex-col gap-3">
                 <input
                     ref={fileInputRef}

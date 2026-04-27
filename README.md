@@ -23,6 +23,7 @@ In the `.docs` directory, `spec.md` and `plan.md` were written before developmen
 The process follows the outlined phases, using the AI as the implementation agent. Generated code is moderately scrutinised, and technical decisions are documented as the project evolves.
 
 A significant degree of human oversight is present in the process, involving:
+
 - Overhauling and regorganizing UI/UX design choices.
 - Review and scrutinising generated code.
 - Refactor of deeply nested code, and un-intuitively organised components.
@@ -45,11 +46,13 @@ Run `yarn && yarn dev` from the root directory.
 ## Environment variable
 
 ### For Google Drive sync
+
 - `NEXT_PUBLIC_GOOGLE_CLIENT_ID`
 - `GOOGLE_CLIENT_SECRET`
 - `IRON_SESSION_SECRET`
 
 You would need
+
 - A Google Clould project with Drive API enabled
 - An OAuth 2.0 client ID, can typically be found in:
     - Google Cloud Console > APIs & Services > Credentials
@@ -62,9 +65,11 @@ You would need
 - Execute in a terminal `openssl rand -base64 32` and use the output for `IRON_SESSION_SECRET`
 
 ### For SEO configuration
+
 - `NEXT_PUBLIC_BASE_URL` (optional - defaults to the value in `src/lib/constants.ts`)
 
 ### Service worker
+
 - `NEXT_PUBLIC_SW_ENABLED`
 
 Only for service worker debugging during development.
