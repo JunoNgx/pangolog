@@ -23,74 +23,91 @@ export function DriveSyncSection() {
     const { timeFormat, isAutobackupEnabled, setIsAutobackupEnabled } =
         useLocalUserSettingsStore();
 
+    const lastSyncRow = lastSyncTime && (
+        <p className="text-xs text-default-400">
+            Last synced:{" "}
+            {DateTime.fromISO(lastSyncTime).toLocaleString({
+                ...DateTime.DATETIME_MED,
+                ...getTimeFormatOptions(timeFormat),
+            })}
+        </p>
+    );
+
+    const errorRow = error && (
+        <p className="text-xs text-danger-500">{error}</p>
+    );
+
+    const autobackupDisabledInfo = !isConnected && (
+        <p className="text-xs text-default-400">
+            Connect Google Drive to enable autobackup.
+        </p>
+    );
+
+    const connectedContent = (
+        <>
+            <p className="text-sm text-success-500">
+                Status: Connected as {authToken?.email}
+            </p>
+            <p className="text-xs text-default-400">
+                {syncStatus === "syncing" && "Syncing..."}
+                {syncStatus === "error" && `Error: ${syncError}`}
+            </p>
+            <div className="flex gap-2">
+                <Button
+                    color="danger"
+                    variant="flat"
+                    className="max-w-xs"
+                    onPress={disconnect}
+                >
+                    Disconnect
+                </Button>
+                <Button
+                    color="primary"
+                    variant="flat"
+                    className="max-w-xs"
+                    isLoading={syncStatus === "syncing"}
+                    onPress={() => sync()}
+                >
+                    Sync now
+                </Button>
+            </div>
+        </>
+    );
+
+    const disconnectedContent = (
+        <>
+            <p className="text-sm text-default-400">Status: Not connected</p>
+            <Button
+                color="primary"
+                variant="flat"
+                className="self-start"
+                isLoading={isConnecting}
+                onPress={connect}
+            >
+                Connect Google Drive
+            </Button>
+            <p className="text-xs text-default-400">
+                Your email address is requested solely to display which account
+                is connected. This is never sent anywhere.
+            </p>
+        </>
+    );
+
+    const syncStatusContent = isConnected
+        ? connectedContent
+        : disconnectedContent;
+
     return (
         <section>
             <h3 className="text-lg font-semibold mb-4">Google Drive Sync</h3>
             <div className="flex flex-col gap-3">
-                {lastSyncTime && (
-                    <p className="text-xs text-default-400">
-                        Last synced:{" "}
-                        {DateTime.fromISO(lastSyncTime).toLocaleString({
-                            ...DateTime.DATETIME_MED,
-                            ...getTimeFormatOptions(timeFormat),
-                        })}
-                    </p>
-                )}
+                {lastSyncRow}
                 <OfflineIndicator
                     variant="banner"
                     isSuppressedWhenDisconnected
                 />
-                {isConnected ? (
-                    <>
-                        <p className="text-sm text-success-500">
-                            Status: Connected as {authToken?.email}
-                        </p>
-                        <p className="text-xs text-default-400">
-                            {syncStatus === "syncing" && "Syncing..."}
-                            {syncStatus === "error" && `Error: ${syncError}`}
-                        </p>
-                        <div className="flex gap-2">
-                            <Button
-                                color="danger"
-                                variant="flat"
-                                className="max-w-xs"
-                                onPress={disconnect}
-                            >
-                                Disconnect
-                            </Button>
-                            <Button
-                                color="primary"
-                                variant="flat"
-                                className="max-w-xs"
-                                isLoading={syncStatus === "syncing"}
-                                onPress={() => sync()}
-                            >
-                                Sync now
-                            </Button>
-                        </div>
-                    </>
-                ) : (
-                    <>
-                        <p className="text-sm text-default-400">
-                            Status: Not connected
-                        </p>
-                        <Button
-                            color="primary"
-                            variant="flat"
-                            className="self-start"
-                            isLoading={isConnecting}
-                            onPress={connect}
-                        >
-                            Connect Google Drive
-                        </Button>
-                        <p className="text-xs text-default-400">
-                            Your email address is requested solely to display
-                            which account is connected. This is never sent
-                            anywhere.
-                        </p>
-                    </>
-                )}
-                {error && <p className="text-xs text-danger-500">{error}</p>}
+                {syncStatusContent}
+                {errorRow}
                 <Checkbox
                     isSelected={isAutobackupEnabled}
                     onValueChange={setIsAutobackupEnabled}
@@ -99,11 +116,7 @@ export function DriveSyncSection() {
                 >
                     <span className="text-sm">Monthly autobackup</span>
                 </Checkbox>
-                {!isConnected && (
-                    <p className="text-xs text-default-400">
-                        Connect Google Drive to enable autobackup.
-                    </p>
-                )}
+                {autobackupDisabledInfo}
                 <p className="text-xs text-default-400">
                     A backup is written to your Pangolog Drive folder each month
                     (backup-YYYY-MM.json) in the same format as the JSON export
