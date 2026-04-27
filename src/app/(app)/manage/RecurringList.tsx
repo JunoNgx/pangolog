@@ -128,17 +128,13 @@ function RecurringItem({ rule, category, onEdit }: RecurringItemProps) {
                     rounded-none px-4 py-3
                     flex items-center gap-3
                     bg-background
-                    border border-default-200
-                    cursor-pointer hover:bg-default-50
+                    border-l-4 border-b-1 border-default-200
+                    cursor-pointer hover:border-default-400 transition
                     focus:outline-none focus-visible:ring-2 focus-visible:ring-primary
                     ${!rule.isActive ? "opacity-50" : ""}
                 `}
+                style={{ borderLeftColor: category?.colour }}
             >
-                <div
-                    className="w-1 self-stretch rounded-full shrink-0"
-                    style={{ backgroundColor: category?.colour }}
-                />
-
                 <div className="flex-1 min-w-0">
                     <p>
                         <span className="mr-1">{category?.icon ?? "·"}</span>
