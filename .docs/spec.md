@@ -49,7 +49,7 @@ Approach:
 
 ### Synchronisation
 - Cloud synchronisation is entirely optional, users can start using immediately without providing Google Drive authorisation.
-- Data is sync'ed after any mutation, debounced to 30s. Pending debounce is cancelled when the app goes hidden.
+- Data is sync'ed after any mutation, debounced to 10s. Pending debounce is cancelled when the app goes hidden.
 - Data is sync'ed when the app becomes visible again, only if the last sync was more than 24 hours ago.
 - Data is resolved on the "Last write wins", using `updatedAt`.
 - After merging remote transactions, a deduplication pass soft-deletes runner-generated duplicates - transactions sharing the same `ruleId` and `rulePeriod`, keeping the one with the earliest `updatedAt`.
