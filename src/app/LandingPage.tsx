@@ -3,7 +3,6 @@
 import { Button } from "@heroui/react";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { StaticPageContainer } from "@/components/StaticPageContainer";
 
 const FEATURES: { headline: string; body: ReactNode }[] = [
     {
@@ -32,7 +31,8 @@ const FEATURES: { headline: string; body: ReactNode }[] = [
 export default function LandingPage() {
     const containerClasses = `
         max-w-lg mx-auto
-        flex flex-col justify-center gap-12 p-8
+        flex flex-col gap-12 p-8
+        max-h-screen
     `;
 
     const hookClasses = `
@@ -53,7 +53,7 @@ export default function LandingPage() {
     `;
 
     return (
-        <StaticPageContainer>
+        <div className="flex min-h-screen max-h-screen flex-col justify-center overflow-y-auto px-4 py-8">
             <div className={containerClasses}>
                 <div className="flex flex-col gap-6">
                     <div className="flex items-center gap-4">
@@ -142,6 +142,6 @@ export default function LandingPage() {
                     </div>
                 </footer>
             </div>
-        </StaticPageContainer>
+        </div>
     );
 }
