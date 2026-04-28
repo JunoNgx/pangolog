@@ -27,7 +27,7 @@ export function AppNavbar() {
             <header
                 className={`bg-background/80 border-default-200 sticky top-0 z-40 hidden border-b backdrop-blur-md md:flex`}
             >
-                <div className="mx-auto flex h-14 w-full max-w-5xl items-center gap-2 px-6">
+                <div className="mx-auto flex h-14 w-full max-w-3xl items-center gap-2 px-4">
                     <NextLink
                         href="/"
                         className="mr-6 shrink-0 text-lg font-bold"
