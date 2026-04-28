@@ -3,6 +3,7 @@
 import { Checkbox } from "@heroui/react";
 import { ArrowDownAZ, ArrowUpAZ } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { ConfigWrapper } from "@/components/ConfigWrapper";
 import { DemoDataBanner } from "@/components/DemoDataBanner";
 import { FloatingActionButton } from "@/components/FloatingActionButton";
 import { commandPaletteCreateActions } from "@/lib/commandPaletteActionRegistry";
@@ -93,36 +94,40 @@ export default function RecurringClient() {
 
     return (
         <div>
-            <div className="mb-4 flex flex-wrap items-center gap-x-4 gap-y-2">
-                <Checkbox
-                    isSelected={shouldShowDimes}
-                    onValueChange={setShouldShowDimes}
-                >
-                    <span className="text-default-500 text-sm">
-                        Small dimes
-                    </span>
-                </Checkbox>
-                <Checkbox
-                    isSelected={shouldShowBucks}
-                    onValueChange={setShouldShowBucks}
-                >
-                    <span className="text-default-500 text-sm">Big bucks</span>
-                </Checkbox>
-                <Checkbox
-                    isSelected={shouldShowIncome}
-                    onValueChange={setShouldShowIncome}
-                >
-                    <span className="text-default-500 text-sm">Income</span>
-                </Checkbox>
-                <Checkbox
-                    isSelected={shouldHideInactive}
-                    onValueChange={setShouldHideInactive}
-                >
-                    <span className="text-default-500 text-sm">
-                        Hide inactive
-                    </span>
-                </Checkbox>
-                <div className="ml-auto flex items-center gap-2">
+            <ConfigWrapper className="flex flex-col gap-4">
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+                    <Checkbox
+                        isSelected={shouldShowDimes}
+                        onValueChange={setShouldShowDimes}
+                    >
+                        <span className="text-default-500 text-sm">
+                            Small dimes
+                        </span>
+                    </Checkbox>
+                    <Checkbox
+                        isSelected={shouldShowBucks}
+                        onValueChange={setShouldShowBucks}
+                    >
+                        <span className="text-default-500 text-sm">
+                            Big bucks
+                        </span>
+                    </Checkbox>
+                    <Checkbox
+                        isSelected={shouldShowIncome}
+                        onValueChange={setShouldShowIncome}
+                    >
+                        <span className="text-default-500 text-sm">Income</span>
+                    </Checkbox>
+                    <Checkbox
+                        isSelected={shouldHideInactive}
+                        onValueChange={setShouldHideInactive}
+                    >
+                        <span className="text-default-500 text-sm">
+                            Hide inactive
+                        </span>
+                    </Checkbox>
+                </div>
+                <div className="flex items-center justify-end gap-2">
                     <span className="text-default-500 text-sm">Sort by</span>
                     <select
                         value={sortBy}
@@ -150,8 +155,8 @@ export default function RecurringClient() {
                         )}
                     </button>
                 </div>
-            </div>
-            <DemoDataBanner />
+                <DemoDataBanner />
+            </ConfigWrapper>
             <RecurringList
                 rules={sortedRules}
                 categories={categories ?? []}
