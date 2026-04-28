@@ -13,8 +13,14 @@
 }
 
 @layer base {
+    html,
+    body {
+        height: 100%;
+    }
+
     body {
         @apply bg-background text-foreground font-sans;
+        overflow: hidden;
     }
 
     input,
