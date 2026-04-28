@@ -222,7 +222,7 @@ export default function SummaryClient() {
         <div>
             <RouteHeader label="Summary" />
 
-            <ConfigWrapper>
+            <ConfigWrapper className="mb-6 flex flex-col gap-4">
                 <div className="flex items-center gap-3">
                     <span className="text-default-500 text-sm">Viewing:</span>
                     <ToggleSwitch
