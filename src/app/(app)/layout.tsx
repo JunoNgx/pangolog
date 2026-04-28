@@ -25,13 +25,15 @@ export default function AppLayout({
             >
                 Skip to main content
             </a>
-            <AppNavbar />
-            <main
-                id="main-content"
-                className="container mx-auto max-w-3xl px-4 pt-6 pb-24 md:pb-6"
-            >
-                {children}
-            </main>
+            <div className="flex h-screen flex-col">
+                <AppNavbar />
+                <main
+                    id="main-content"
+                    className="container mx-auto max-w-3xl flex-1 overflow-y-auto px-4 pt-6 pb-24 md:pb-6"
+                >
+                    {children}
+                </main>
+            </div>
         </ErrorBoundary>
     );
 }
