@@ -25,7 +25,7 @@ export function DialogFooter({
         </Button>
     );
 
-    const containerClasses = `flex gap-2 ${isEditing && onDelete ? "justify-between" : "justify-end"}`;
+    const containerClasses = `flex gap-2 py-2 ${isEditing && onDelete ? "justify-between" : "justify-end"}`;
 
     return (
         <div className={containerClasses}>
