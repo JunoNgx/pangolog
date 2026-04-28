@@ -4,6 +4,7 @@ import { Button, Tooltip } from "@heroui/react";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
+import { FloatingButtonContainer } from "@/components/FloatingButtonContainer";
 import { useHotkey } from "@/lib/hooks/useHotkey";
 
 export function FloatingBackButton() {
@@ -13,16 +14,26 @@ export function FloatingBackButton() {
 
     const buttonClasses = `
         /* CONTAINER */
-        fixed bottom-6 right-6 z-50
-        h-14 min-w-0
+        absolute right-4 bottom-0
+        h-14 min-w-0 rounded-full
+        md:right-6 md:rounded-lg
+
+        /* BEHAVIOUR */
+        pointer-events-auto
     `;
 
     return (
-        <Tooltip content="Esc" placement="left">
-            <Button color="default" className={buttonClasses} onPress={goBack}>
-                <ArrowLeft />
-                <span className="hidden md:inline">Go back</span>
-            </Button>
-        </Tooltip>
+        <FloatingButtonContainer>
+            <Tooltip content="Esc" placement="left">
+                <Button
+                    color="default"
+                    className={buttonClasses}
+                    onPress={goBack}
+                >
+                    <ArrowLeft />
+                    <span className="hidden md:inline">Go back</span>
+                </Button>
+            </Tooltip>
+        </FloatingButtonContainer>
     );
 }
