@@ -2,11 +2,10 @@
 
 import { FloatingBackButton } from "@/components/FloatingBackButton";
 import { Section } from "@/components/Section";
-import { StaticPageContainer } from "@/components/StaticPageContainer";
 
 export default function PrivacyClient() {
     return (
-        <StaticPageContainer>
+        <>
             <h1 className="mb-2 text-xl font-bold">Privacy Policy</h1>
             <p className="text-default-400 mb-8 text-sm">
                 Last updated: March 2026
@@ -90,6 +89,6 @@ export default function PrivacyClient() {
             </Section>
 
             <FloatingBackButton />
-        </StaticPageContainer>
+        </>
     );
 }

@@ -1,12 +1,10 @@
-"use client";
-
 import type { ReactNode } from "react";
 
-interface StaticPageContainerProps {
+export default function StaticPageLayout({
+    children,
+}: {
     children: ReactNode;
-}
-
-export function StaticPageContainer({ children }: StaticPageContainerProps) {
+}) {
     const baseClasses = `
         /* CONTAINER */
         container mx-auto flex-1 max-w-2xl overflow-y-auto px-4 pt-6 pb-24
