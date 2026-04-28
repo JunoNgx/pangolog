@@ -29,6 +29,7 @@ export default function ManageClient() {
             selectedKey={activeTab}
             onSelectionChange={handleTabChange}
             aria-label="Manage sections"
+            className="w-full justify-center"
         >
             <Tab key="categories" title="Categories">
                 <CategoriesClient />
