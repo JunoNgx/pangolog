@@ -3,6 +3,7 @@
 import { FloatingBackButton } from "@/components/FloatingBackButton";
 import { Kbd } from "@/components/Kbd";
 import { Section } from "@/components/Section";
+import { StaticPageContainer } from "@/components/StaticPageContainer";
 import { PURGE_DAYS } from "@/lib/constants";
 
 function Term({
@@ -29,7 +30,7 @@ function Term({
 
 export default function HelpClient() {
     return (
-        <div className="container mx-auto max-w-2xl px-4 pt-6 pb-24">
+        <StaticPageContainer>
             <h1 className="mb-2 text-xl font-bold">Manual</h1>
             <p className="text-default-400 mb-8 text-sm">
                 Pangolog - a minimalist personal expense tracker.
@@ -313,6 +314,6 @@ monthOfYear:      number(1-12) | null //   yearly rules only`}</pre>
             </Section>
 
             <FloatingBackButton />
-        </div>
+        </StaticPageContainer>
     );
 }

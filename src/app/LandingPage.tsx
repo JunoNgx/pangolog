@@ -3,6 +3,7 @@
 import { Button } from "@heroui/react";
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { StaticPageContainer } from "@/components/StaticPageContainer";
 
 const FEATURES: { headline: string; body: ReactNode }[] = [
     {
@@ -30,7 +31,7 @@ const FEATURES: { headline: string; body: ReactNode }[] = [
 
 export default function LandingPage() {
     const containerClasses = `
-        min-h-dvh max-w-lg mx-auto
+        max-w-lg mx-auto
         flex flex-col justify-center gap-12 p-8
     `;
 
@@ -52,93 +53,95 @@ export default function LandingPage() {
     `;
 
     return (
-        <div className={containerClasses}>
-            <div className="flex flex-col gap-6">
-                <div className="flex items-center gap-4">
-                    <h1 className="text-3xl font-bold tracking-tight">
-                        Pangolog
-                    </h1>
-                    <div className={hookClasses}>
-                        <p className="text-default-700 font-mono text-sm">
-                            log
-                        </p>
-                        <p className="text-default-400 font-mono text-sm">
-                            /lɔːɡ/ (verb)
-                        </p>
-                        <p className="text-default-500 font-mono text-sm">
-                            To add an entry in a logbook
-                        </p>
+        <StaticPageContainer>
+            <div className={containerClasses}>
+                <div className="flex flex-col gap-6">
+                    <div className="flex items-center gap-4">
+                        <h1 className="text-3xl font-bold tracking-tight">
+                            Pangolog
+                        </h1>
+                        <div className={hookClasses}>
+                            <p className="text-default-700 font-mono text-sm">
+                                log
+                            </p>
+                            <p className="text-default-400 font-mono text-sm">
+                                /lɔːɡ/ (verb)
+                            </p>
+                            <p className="text-default-500 font-mono text-sm">
+                                To add an entry in a logbook
+                            </p>
+                        </div>
                     </div>
+                    <p className="text-default-500">
+                        A minimalist, offline-first, and privacy-first personal
+                        expense tracker.
+                    </p>
                 </div>
-                <p className="text-default-500">
-                    A minimalist, offline-first, and privacy-first personal
-                    expense tracker.
-                </p>
-            </div>
 
-            <ul className="flex flex-col gap-6">
-                {FEATURES.map((feature) => (
-                    <li key={feature.headline}>
-                        <p className={featureHeadlineClasses}>
-                            {feature.headline}
-                        </p>
-                        <p className={featureBodyClasses}>{feature.body}</p>
-                    </li>
-                ))}
-            </ul>
+                <ul className="flex flex-col gap-6">
+                    {FEATURES.map((feature) => (
+                        <li key={feature.headline}>
+                            <p className={featureHeadlineClasses}>
+                                {feature.headline}
+                            </p>
+                            <p className={featureBodyClasses}>{feature.body}</p>
+                        </li>
+                    ))}
+                </ul>
 
-            <div className="flex flex-col gap-2">
-                <Button
-                    as={Link}
-                    href="/log"
-                    color="primary"
-                    size="lg"
-                    className="self-center"
-                >
-                    Get started
-                </Button>
-                <p className={`${ctaSublineClasses} text-center`}>
-                    (like, now; no account or signup needed)
-                </p>
-            </div>
-
-            <footer className="flex flex-col items-center gap-2">
-                <p className="text-default-400 text-xs">
-                    by{" "}
-                    <Link
-                        href="https://junongx.com"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="hover:text-default-600"
+                <div className="flex flex-col gap-2">
+                    <Button
+                        as={Link}
+                        href="/log"
+                        color="primary"
+                        size="lg"
+                        className="self-center"
                     >
-                        Juno Nguyen
-                    </Link>
-                </p>
-                <div className="flex items-center gap-3">
-                    <Link
-                        href="https://github.com/JunoNgx/pangolog"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-default-400 hover:text-default-600 text-xs"
-                    >
-                        Source
-                    </Link>
-                    <span className="text-default-300 text-xs">|</span>
-                    <Link
-                        href="/privacy"
-                        className="text-default-400 hover:text-default-600 text-xs"
-                    >
-                        Privacy Policy
-                    </Link>
-                    <span className="text-default-300 text-xs">|</span>
-                    <Link
-                        href="/terms"
-                        className="text-default-400 hover:text-default-600 text-xs"
-                    >
-                        Terms of Service
-                    </Link>
+                        Get started
+                    </Button>
+                    <p className={`${ctaSublineClasses} text-center`}>
+                        (like, now; no account or signup needed)
+                    </p>
                 </div>
-            </footer>
-        </div>
+
+                <footer className="flex flex-col items-center gap-2">
+                    <p className="text-default-400 text-xs">
+                        by{" "}
+                        <Link
+                            href="https://junongx.com"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:text-default-600"
+                        >
+                            Juno Nguyen
+                        </Link>
+                    </p>
+                    <div className="flex items-center gap-3">
+                        <Link
+                            href="https://github.com/JunoNgx/pangolog"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-default-400 hover:text-default-600 text-xs"
+                        >
+                            Source
+                        </Link>
+                        <span className="text-default-300 text-xs">|</span>
+                        <Link
+                            href="/privacy"
+                            className="text-default-400 hover:text-default-600 text-xs"
+                        >
+                            Privacy Policy
+                        </Link>
+                        <span className="text-default-300 text-xs">|</span>
+                        <Link
+                            href="/terms"
+                            className="text-default-400 hover:text-default-600 text-xs"
+                        >
+                            Terms of Service
+                        </Link>
+                    </div>
+                </footer>
+            </div>
+        </StaticPageContainer>
     );
 }
