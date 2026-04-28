@@ -15,7 +15,7 @@ export function FloatingActionButton({
     const containerClasses = `
         /* CONTAINER */
         fixed inset-x-0 bottom-4 z-50
-        max-w-5xl mx-auto
+        max-w-3xl mx-auto
         md:bottom-6
 
         /* INNER STRUCTURE */
