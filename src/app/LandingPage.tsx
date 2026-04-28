@@ -29,38 +29,15 @@ const FEATURES: { headline: string; body: ReactNode }[] = [
 ];
 
 export default function LandingPage() {
-    const containerClasses = `
-        max-w-lg mx-auto
-        flex flex-col gap-12 p-8
-        max-h-screen
-    `;
-
-    const hookClasses = `
-        border-l-2 border-default-300
-        pl-4
-    `;
-
-    const featureHeadlineClasses = `
-        font-semibold text-default-700 mb-2
-    `;
-
-    const featureBodyClasses = `
-        text-sm text-default-500
-    `;
-
-    const ctaSublineClasses = `
-        text-xs text-default-400
-    `;
-
     return (
-        <div className="flex min-h-screen max-h-screen flex-col justify-center overflow-y-auto px-4 py-8">
-            <div className={containerClasses}>
+        <div className="flex max-h-screen min-h-screen flex-col justify-center overflow-y-auto px-4 py-8">
+            <div className="mx-auto flex max-h-screen max-w-lg flex-col gap-12 p-8">
                 <div className="flex flex-col gap-6">
                     <div className="flex items-center gap-4">
                         <h1 className="text-3xl font-bold tracking-tight">
                             Pangolog
                         </h1>
-                        <div className={hookClasses}>
+                        <div className="border-default-300 border-l-2 pl-4">
                             <p className="text-default-700 font-mono text-sm">
                                 log
                             </p>
@@ -81,10 +58,12 @@ export default function LandingPage() {
                 <ul className="flex flex-col gap-6">
                     {FEATURES.map((feature) => (
                         <li key={feature.headline}>
-                            <p className={featureHeadlineClasses}>
+                            <p className="text-default-700 mb-2 font-semibold">
                                 {feature.headline}
                             </p>
-                            <p className={featureBodyClasses}>{feature.body}</p>
+                            <p className="text-default-500 text-sm">
+                                {feature.body}
+                            </p>
                         </li>
                     ))}
                 </ul>
@@ -99,7 +78,7 @@ export default function LandingPage() {
                     >
                         Get started
                     </Button>
-                    <p className={`${ctaSublineClasses} text-center`}>
+                    <p className="text-default-400 text-center text-xs">
                         (like, now; no account or signup needed)
                     </p>
                 </div>
