@@ -26,7 +26,7 @@ export default function CategoriesClient() {
     return (
         <div>
             <ConfigWrapper>
-                <div className="mt-2">
+                <div className="my-2">
                     <ToggleSwitch
                         leftLabel="Custom order"
                         rightLabel="Alphabetical"
