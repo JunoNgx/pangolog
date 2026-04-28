@@ -43,15 +43,16 @@ export function CategoryPicker({
                 {categories.map((cat) => (
                     <Button
                         key={cat.id}
+                        className="pl-2"
                         size="sm"
                         variant={selectedId === cat.id ? "solid" : "flat"}
                         color={selectedId === cat.id ? "primary" : "default"}
                         onPress={() =>
                             onChange(selectedId === cat.id ? null : cat.id)
                         }
-                        endContent={
+                        startContent={
                             <span
-                                className="inline-block h-3 w-3 rounded-full"
+                                className="inline-block h-6 w-1"
                                 style={{ backgroundColor: cat.colour }}
                             />
                         }
