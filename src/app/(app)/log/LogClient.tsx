@@ -5,6 +5,7 @@ import { Search } from "lucide-react";
 import { DateTime } from "luxon";
 import dynamic from "next/dynamic";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { ConfigWrapper } from "@/components/ConfigWrapper";
 import { DemoDataBanner } from "@/components/DemoDataBanner";
 import { FloatingActionButton } from "@/components/FloatingActionButton";
 import { PeriodPicker } from "@/components/PeriodPicker";
@@ -261,49 +262,56 @@ export default function LogClient() {
             />
 
             {!isSearchMode && (
-                <div className="mb-4 flex items-center justify-end gap-2">
-                    <SyncButton />
-                    <OfflineIndicator
-                        variant="icon"
-                        isSuppressedWhenDisconnected
-                    />
-                </div>
+                <ConfigWrapper>
+                    <div className="flex items-center justify-end gap-2">
+                        <SyncButton />
+                        <OfflineIndicator
+                            variant="icon"
+                            isSuppressedWhenDisconnected
+                        />
+                    </div>
+
+                    {viewingControls}
+                    <DemoDataBanner />
+                </ConfigWrapper>
             )}
 
             {isSearchMode && (
-                <div className="mb-4 flex items-center gap-2">
-                    <Input
-                        ref={searchInputRef}
-                        placeholder="Search by description"
-                        value={searchQuery}
-                        onValueChange={setSearchQuery}
-                        onClear={() => setSearchQuery("")}
-                        onKeyDown={(e) =>
-                            e.key === "Escape" && handleClearSearch()
-                        }
-                        startContent={
-                            <Search size={16} className="text-default-400" />
-                        }
-                        isClearable
-                        autoFocus
-                        classNames={{
-                            inputWrapper:
-                                "data-[focus-visible=true]:ring-0 data-[focus-visible=true]:ring-offset-0 rounded-md",
-                        }}
-                    />
-                    <Button
-                        variant="ghost"
-                        size="sm"
-                        onPress={handleClearSearch}
-                    >
-                        Cancel
-                    </Button>
-                </div>
+                <ConfigWrapper>
+                    <div className="flex items-center gap-2">
+                        <Input
+                            ref={searchInputRef}
+                            placeholder="Search by description"
+                            value={searchQuery}
+                            onValueChange={setSearchQuery}
+                            onClear={() => setSearchQuery("")}
+                            onKeyDown={(e) =>
+                                e.key === "Escape" && handleClearSearch()
+                            }
+                            startContent={
+                                <Search
+                                    size={16}
+                                    className="text-default-400"
+                                />
+                            }
+                            isClearable
+                            autoFocus
+                            classNames={{
+                                inputWrapper:
+                                    "data-[focus-visible=true]:ring-0 data-[focus-visible=true]:ring-offset-0 rounded-md",
+                            }}
+                        />
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            onPress={handleClearSearch}
+                        >
+                            Cancel
+                        </Button>
+                    </div>
+                    <DemoDataBanner />
+                </ConfigWrapper>
             )}
-
-            {viewingControls}
-
-            <DemoDataBanner />
 
             {isSearchMode ? (
                 <TransactionList

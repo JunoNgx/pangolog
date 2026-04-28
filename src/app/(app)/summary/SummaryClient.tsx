@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useMemo } from "react";
+import { ConfigWrapper } from "@/components/ConfigWrapper";
 import { MainListContainer } from "@/components/MainListContainer";
 import { PeriodPicker } from "@/components/PeriodPicker";
 import { RouteHeader } from "@/components/RouteHeader";
@@ -221,7 +222,7 @@ export default function SummaryClient() {
         <div>
             <RouteHeader label="Summary" />
 
-            <div className="mb-6 flex flex-col gap-3">
+            <ConfigWrapper>
                 <div className="flex items-center gap-3">
                     <span className="text-default-500 text-sm">Viewing:</span>
                     <ToggleSwitch
@@ -247,7 +248,7 @@ export default function SummaryClient() {
                         shouldShowLabel
                     />
                 </div>
-            </div>
+            </ConfigWrapper>
 
             {isYearly && <ExpensesByMonthChart transactions={transactions} />}
 

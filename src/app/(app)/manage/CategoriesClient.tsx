@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { CategoryDialog } from "@/components/CategoryDialog";
+import { ConfigWrapper } from "@/components/ConfigWrapper";
 import { DemoDataBanner } from "@/components/DemoDataBanner";
 import { FloatingActionButton } from "@/components/FloatingActionButton";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
@@ -24,15 +25,17 @@ export default function CategoriesClient() {
 
     return (
         <div>
-            <div className="mt-2 mb-4">
-                <ToggleSwitch
-                    leftLabel="Custom order"
-                    rightLabel="Alphabetical"
-                    isSelectingRight={isCategoryAlphabetical}
-                    onValueChange={setIsCategoryAlphabetical}
-                />
-            </div>
-            <DemoDataBanner />
+            <ConfigWrapper>
+                <div className="mt-2">
+                    <ToggleSwitch
+                        leftLabel="Custom order"
+                        rightLabel="Alphabetical"
+                        isSelectingRight={isCategoryAlphabetical}
+                        onValueChange={setIsCategoryAlphabetical}
+                    />
+                </div>
+                <DemoDataBanner />
+            </ConfigWrapper>
             <CategoryList />
             <FloatingActionButton
                 label="Category"
