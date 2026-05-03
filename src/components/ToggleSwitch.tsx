@@ -21,6 +21,9 @@ export function ToggleSwitch({
     isDisabled = false,
     className = "",
 }: ToggleSwitchProps) {
+    const buttonClasses =
+        "inline-block min-w-16 rounded-sm px-3 py-1 text-center text-sm transition-colors peer-focus-visible:outline-2 peer-focus-visible:outline-offset-3 peer-focus-visible:outline-primary";
+
     return (
         <div
             className={`inline-flex items-center gap-2 rounded-md ${className}`}
@@ -43,7 +46,7 @@ export function ToggleSwitch({
                         className="sr-only peer"
                     />
                     <span
-                        className={`inline-block min-w-16 rounded-sm px-3 py-1 text-center text-sm transition-colors  ${
+                        className={`${buttonClasses} ${
                             !isSelectingRight
                                 ? "bg-primary text-primary-foreground"
                                 : "bg-transparent text-default-700 hover:bg-default-100"
@@ -62,7 +65,7 @@ export function ToggleSwitch({
                         className="sr-only peer"
                     />
                     <span
-                        className={`inline-block min-w-16 rounded-sm px-3 py-1 text-center text-sm transition-colors  ${
+                        className={`${buttonClasses} ${
                             isSelectingRight
                                 ? "bg-primary text-primary-foreground"
                                 : "bg-transparent text-default-700 hover:bg-default-100"
