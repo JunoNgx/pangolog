@@ -210,6 +210,7 @@ export function TransactionDialog({
                             {!isEditing && !isExpenseOnlyMode && (
                                 <div className="mb-4 flex items-center justify-center gap-4">
                                     <ToggleSwitch
+                                        label="Transaction flow type"
                                         isSelectingRight={isIncome}
                                         onValueChange={setIsIncome}
                                         leftLabel="Expense"
@@ -234,6 +235,7 @@ export function TransactionDialog({
                                     isRequired
                                 />
                                 <ToggleSwitch
+                                    label="Transaction type"
                                     isSelectingRight={isBigBuck}
                                     onValueChange={setIsBigBuck}
                                     leftLabel="Small dime"
