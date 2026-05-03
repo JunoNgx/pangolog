@@ -218,7 +218,7 @@ export function TransactionDialog({
                                 </div>
                             )}
 
-                            <div className="flex justify-around gap-8">
+                            <div className="flex justify-around items-center gap-8">
                                 <Input
                                     type="date"
                                     label={
