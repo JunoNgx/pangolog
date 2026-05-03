@@ -228,6 +228,7 @@ export function RecurringRuleDialog({
         <div className={toggleRowClasses}>
             {isTxTypeSwitchVisible && (
                 <ToggleSwitch
+                    label="Transaction flow type"
                     isSelectingRight={isIncome}
                     onValueChange={setIsIncome}
                     leftLabel="Expense"
@@ -236,6 +237,7 @@ export function RecurringRuleDialog({
             )}
             {isExpenseTypeSwitchVisible && (
                 <ToggleSwitch
+                    label="Transaction type"
                     isSelectingRight={isBigBuck}
                     onValueChange={setIsBigBuck}
                     leftLabel="Small dime"
