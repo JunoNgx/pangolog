@@ -118,6 +118,12 @@ export default function LogClient() {
         setSearchQuery("");
     }
 
+    function handleSearchInputKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+        if (e.key === "Escape") {
+            handleClearSearch();
+        }
+    }
+
     const queriedBucks = useMemo(() => {
         if (isOnlyBigBucks) {
             return (yearlyTransactions ?? []).filter((t) => t.isBigBuck);
@@ -234,11 +240,43 @@ export default function LogClient() {
         </div>
     );
 
-    const viewingControls = !isSearchMode && (
+    const viewingControls = (
         <div className="mb-4 flex flex-col gap-3">
             {periodPickerRow}
             {syncButtonRow}
             {totalAndFilterRow}
+        </div>
+    );
+
+    const searchInputRow = (
+        <div className="flex items-center gap-2">
+            <Input
+                ref={searchInputRef}
+                placeholder="Search by description"
+                value={searchQuery}
+                onValueChange={setSearchQuery}
+                onClear={() => setSearchQuery("")}
+                onKeyDown={handleSearchInputKeyDown}
+                startContent={
+                    <Search
+                        size={16}
+                        className="text-default-400"
+                    />
+                }
+                isClearable
+                autoFocus
+                classNames={{
+                    inputWrapper:
+                        "data-[focus-visible=true]:ring-0 data-[focus-visible=true]:ring-offset-0 rounded-md",
+                }}
+            />
+            <Button
+                variant="ghost"
+                size="sm"
+                onPress={handleClearSearch}
+            >
+                Cancel
+            </Button>
         </div>
     );
 
@@ -270,49 +308,15 @@ export default function LogClient() {
                 }
             />
 
-            {!isSearchMode && (
-                <ConfigWrapper>
-                    {viewingControls}
-                    <DemoDataBanner />
-                </ConfigWrapper>
-            )}
-
-            {isSearchMode && (
-                <ConfigWrapper>
-                    <div className="flex items-center gap-2">
-                        <Input
-                            ref={searchInputRef}
-                            placeholder="Search by description"
-                            value={searchQuery}
-                            onValueChange={setSearchQuery}
-                            onClear={() => setSearchQuery("")}
-                            onKeyDown={(e) =>
-                                e.key === "Escape" && handleClearSearch()
-                            }
-                            startContent={
-                                <Search
-                                    size={16}
-                                    className="text-default-400"
-                                />
-                            }
-                            isClearable
-                            autoFocus
-                            classNames={{
-                                inputWrapper:
-                                    "data-[focus-visible=true]:ring-0 data-[focus-visible=true]:ring-offset-0 rounded-md",
-                            }}
-                        />
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            onPress={handleClearSearch}
-                        >
-                            Cancel
-                        </Button>
-                    </div>
-                    <DemoDataBanner />
-                </ConfigWrapper>
-            )}
+            <ConfigWrapper>
+                {isSearchMode
+                    ? searchInputRow
+                    : <>
+                        {viewingControls}
+                        <DemoDataBanner />
+                    </>
+                }
+            </ConfigWrapper>
 
             {isSearchMode ? (
                 <TransactionList
