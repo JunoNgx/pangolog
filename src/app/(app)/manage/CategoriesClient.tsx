@@ -28,6 +28,7 @@ export default function CategoriesClient() {
             <ConfigWrapper>
                 <div className="my-2">
                     <ToggleSwitch
+                        label="Sort by"
                         leftLabel="Custom order"
                         rightLabel="Alphabetical"
                         isSelectingRight={isCategoryAlphabetical}

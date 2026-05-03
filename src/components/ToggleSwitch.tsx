@@ -3,6 +3,7 @@
 import { Button } from "@heroui/react";
 
 interface ToggleSwitchProps {
+    label?: string;
     leftLabel: string;
     rightLabel: string;
     isSelectingRight: boolean;
@@ -12,6 +13,7 @@ interface ToggleSwitchProps {
 }
 
 export function ToggleSwitch({
+    label,
     leftLabel,
     rightLabel,
     isSelectingRight,
@@ -20,30 +22,30 @@ export function ToggleSwitch({
     className = "",
 }: ToggleSwitchProps) {
     return (
-        <fieldset
-            className={`inline-flex gap-1 rounded-md border border-default-200 p-1 ${className}`}
-        >
-            <legend className="sr-only">{`${leftLabel} or ${rightLabel}`}</legend>
-            <Button
-                size="sm"
-                variant={!isSelectingRight ? "solid" : "light"}
-                color={!isSelectingRight ? "primary" : "default"}
-                isDisabled={isDisabled}
-                onPress={() => !isDisabled && onValueChange(false)}
-                className="min-w-16 rounded-sm px-3 py-1"
-            >
-                {leftLabel}
-            </Button>
-            <Button
-                size="sm"
-                variant={isSelectingRight ? "solid" : "light"}
-                color={isSelectingRight ? "primary" : "default"}
-                isDisabled={isDisabled}
-                onPress={() => !isDisabled && onValueChange(true)}
-                className="min-w-16 rounded-sm px-3 py-1"
-            >
-                {rightLabel}
-            </Button>
-        </fieldset>
+        <div className={`inline-flex items-center gap-2 ${className}`}>
+            <div className="inline-flex items-center gap-1 rounded-md border border-default-200 p-1">
+                <legend className="sr-only">{`${label}: ${leftLabel} or ${rightLabel}`}</legend>
+                <Button
+                    size="sm"
+                    variant={!isSelectingRight ? "solid" : "light"}
+                    color={!isSelectingRight ? "primary" : "default"}
+                    isDisabled={isDisabled}
+                    onPress={() => !isDisabled && onValueChange(false)}
+                    className="min-w-16 rounded-sm px-3 py-1"
+                >
+                    {leftLabel}
+                </Button>
+                <Button
+                    size="sm"
+                    variant={isSelectingRight ? "solid" : "light"}
+                    color={isSelectingRight ? "primary" : "default"}
+                    isDisabled={isDisabled}
+                    onPress={() => !isDisabled && onValueChange(true)}
+                    className="min-w-16 rounded-sm px-3 py-1"
+                >
+                    {rightLabel}
+                </Button>
+            </div>
+        </div>
     );
 }
