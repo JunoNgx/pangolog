@@ -215,7 +215,7 @@ export function CategoryDialog({
             name,
             colour,
             icon,
-            priority: category?.priority ?? 0,
+            priority: category?.priority ?? -1,
             isIncomeOnly,
             isBuckOnly,
         };
