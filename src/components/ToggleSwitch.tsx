@@ -25,9 +25,7 @@ export function ToggleSwitch({
         "inline-block min-w-16 rounded-sm px-3 py-1 text-center text-sm transition-colors peer-focus-visible:outline-2 peer-focus-visible:outline-offset-3 peer-focus-visible:outline-primary";
 
     return (
-        <div
-            className={`inline-flex items-center gap-2 ${className}`}
-        >
+        <div className={`inline-flex items-center gap-2 ${className}`}>
             <span
                 className={
                     shouldShowLabel ? "text-default-500 text-sm" : "sr-only"
