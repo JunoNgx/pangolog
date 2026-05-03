@@ -26,7 +26,7 @@ export function ToggleSwitch({
 
     return (
         <div
-            className={`inline-flex items-center gap-2 rounded-md ${className}`}
+            className={`inline-flex items-center gap-2 ${className}`}
         >
             <span
                 className={
@@ -35,7 +35,7 @@ export function ToggleSwitch({
             >
                 {label}
             </span>
-            <div className="inline-flex items-center gap-1 rounded-md border border-default-200 p-1">
+            <div className="inline-flex items-center gap-1 rounded-lg border border-default-200 p-1">
                 <label className="cursor-pointer rounded-sm">
                     <input
                         type="radio"
