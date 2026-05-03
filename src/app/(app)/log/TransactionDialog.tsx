@@ -219,7 +219,7 @@ export function TransactionDialog({
                                 </div>
                             )}
 
-                            <div className="flex justify-around items-center gap-8">
+                            <div className="flex items-center gap-4">
                                 <Input
                                     type="date"
                                     label={
@@ -233,8 +233,10 @@ export function TransactionDialog({
                                     value={transactedAt}
                                     onValueChange={setTransactedAt}
                                     isRequired
+                                    className="flex-1"
                                 />
                                 <ToggleSwitch
+                                    className="flex-1"
                                     label="Transaction type"
                                     isSelectingRight={isBigBuck}
                                     onValueChange={setIsBigBuck}
