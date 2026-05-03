@@ -286,6 +286,15 @@ export default function LogClient() {
                 label="Transactions"
                 leftContent={
                     !isSearchMode && (
+                        <TransactionTypeDropdown
+                            displayMode={logViewDisplayMode}
+                            setDisplayMode={setLogViewDisplayMode}
+                            triggerSize="sm"
+                        />
+                    )
+                }
+                rightContent={
+                    !isSearchMode && (
                         <Button
                             isIconOnly
                             variant="ghost"
@@ -295,15 +304,6 @@ export default function LogClient() {
                         >
                             <Search size={16} />
                         </Button>
-                    )
-                }
-                rightContent={
-                    !isSearchMode && (
-                        <TransactionTypeDropdown
-                            displayMode={logViewDisplayMode}
-                            setDisplayMode={setLogViewDisplayMode}
-                            triggerSize="sm"
-                        />
                     )
                 }
             />
