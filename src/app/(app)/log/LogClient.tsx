@@ -118,7 +118,9 @@ export default function LogClient() {
         setSearchQuery("");
     }
 
-    function handleSearchInputKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    function handleSearchInputKeyDown(
+        e: React.KeyboardEvent<HTMLInputElement>,
+    ) {
         if (e.key === "Escape") {
             handleClearSearch();
         }
@@ -205,10 +207,7 @@ export default function LogClient() {
     const syncButtonRow = (
         <div className="flex items-center justify-end gap-2">
             <SyncButton />
-            <OfflineIndicator
-                variant="icon"
-                isSuppressedWhenDisconnected
-            />
+            <OfflineIndicator variant="icon" isSuppressedWhenDisconnected />
         </div>
     );
 
@@ -257,12 +256,7 @@ export default function LogClient() {
                 onValueChange={setSearchQuery}
                 onClear={() => setSearchQuery("")}
                 onKeyDown={handleSearchInputKeyDown}
-                startContent={
-                    <Search
-                        size={16}
-                        className="text-default-400"
-                    />
-                }
+                startContent={<Search size={16} className="text-default-400" />}
                 isClearable
                 autoFocus
                 classNames={{
@@ -270,11 +264,7 @@ export default function LogClient() {
                         "data-[focus-visible=true]:ring-0 data-[focus-visible=true]:ring-offset-0 rounded-md",
                 }}
             />
-            <Button
-                variant="ghost"
-                size="sm"
-                onPress={handleClearSearch}
-            >
+            <Button variant="ghost" size="sm" onPress={handleClearSearch}>
                 Cancel
             </Button>
         </div>
@@ -309,13 +299,14 @@ export default function LogClient() {
             />
 
             <ConfigWrapper>
-                {isSearchMode
-                    ? searchInputRow
-                    : <>
+                {isSearchMode ? (
+                    searchInputRow
+                ) : (
+                    <>
                         {viewingControls}
                         <DemoDataBanner />
                     </>
-                }
+                )}
             </ConfigWrapper>
 
             {isSearchMode ? (
