@@ -17,7 +17,7 @@ export function ToggleSwitch({
     rightLabel,
     isSelectingRight,
     onValueChange,
-    shouldShowLabel = true,
+    shouldShowLabel = false,
     isDisabled = false,
     className = "",
 }: ToggleSwitchProps) {

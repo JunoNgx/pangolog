@@ -29,6 +29,7 @@ export default function CategoriesClient() {
                 <div className="my-2">
                     <ToggleSwitch
                         label="Sort by"
+                        shouldShowLabel={true}
                         leftLabel="Custom order"
                         rightLabel="Alphabetical"
                         isSelectingRight={isCategoryAlphabetical}
