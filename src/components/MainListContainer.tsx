@@ -18,7 +18,7 @@ export function MainListContainer({
         flex flex-col
 
         /* CONTAINER */
-        max-w-lg mx-auto
+        max-w-lg mx-auto pb-20
     `;
 
     return (
