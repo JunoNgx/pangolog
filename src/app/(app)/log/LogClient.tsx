@@ -279,7 +279,6 @@ export default function LogClient() {
                         <TransactionTypeDropdown
                             displayMode={logViewDisplayMode}
                             setDisplayMode={setLogViewDisplayMode}
-                            triggerSize="sm"
                         />
                     )
                 }
