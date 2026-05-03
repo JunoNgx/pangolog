@@ -186,14 +186,22 @@ export default function LogClient() {
 
     const isLoading = isOnlyBigBucks ? isLoadingYearly : isLoadingMonthly;
 
-    const pickerAndCheckboxRow = (
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-            <PeriodPicker
-                isYearly={isOnlyBigBucks}
-                selectedYear={selectedYear}
-                selectedMonth={selectedMonth}
-                onYearChange={setSelectedYear}
-                onMonthChange={setSelectedMonth}
+    const periodPickerRow = (
+        <PeriodPicker
+            isYearly={isOnlyBigBucks}
+            selectedYear={selectedYear}
+            selectedMonth={selectedMonth}
+            onYearChange={setSelectedYear}
+            onMonthChange={setSelectedMonth}
+        />
+    );
+
+    const syncButtonRow = (
+        <div className="flex items-center justify-end gap-2">
+            <SyncButton />
+            <OfflineIndicator
+                variant="icon"
+                isSuppressedWhenDisconnected
             />
         </div>
     );
@@ -228,7 +236,8 @@ export default function LogClient() {
 
     const viewingControls = !isSearchMode && (
         <div className="mb-4 flex flex-col gap-3">
-            {pickerAndCheckboxRow}
+            {periodPickerRow}
+            {syncButtonRow}
             {totalAndFilterRow}
         </div>
     );
@@ -263,14 +272,6 @@ export default function LogClient() {
 
             {!isSearchMode && (
                 <ConfigWrapper>
-                    <div className="flex items-center justify-end gap-2">
-                        <SyncButton />
-                        <OfflineIndicator
-                            variant="icon"
-                            isSuppressedWhenDisconnected
-                        />
-                    </div>
-
                     {viewingControls}
                     <DemoDataBanner />
                 </ConfigWrapper>
