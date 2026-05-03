@@ -223,24 +223,27 @@ export default function SummaryClient() {
             <RouteHeader label="Summary" />
 
             <ConfigWrapper className="mb-6 flex flex-col gap-4">
-                <div className="flex items-center gap-3">
-                    <span className="text-default-500 text-sm">Viewing:</span>
-                    <ToggleSwitch
-                        isSelectingRight={isYearly}
-                        onValueChange={setIsYearly}
-                        leftLabel="Monthly"
-                        rightLabel="Yearly"
-                    />
-                </div>
+                <PeriodPicker
+                    isYearly={isYearly}
+                    selectedYear={selectedYear}
+                    selectedMonth={selectedMonth}
+                    onYearChange={setSelectedYear}
+                    onMonthChange={setSelectedMonth}
+                />
 
                 <div className="flex items-center justify-between">
-                    <PeriodPicker
-                        isYearly={isYearly}
-                        selectedYear={selectedYear}
-                        selectedMonth={selectedMonth}
-                        onYearChange={setSelectedYear}
-                        onMonthChange={setSelectedMonth}
-                    />
+                    <div className="flex items-center gap-3">
+                        <span className="text-default-500 text-sm">
+                            Viewing:
+                        </span>
+                        <ToggleSwitch
+                            isSelectingRight={isYearly}
+                            onValueChange={setIsYearly}
+                            leftLabel="Monthly"
+                            rightLabel="Yearly"
+                        />
+                    </div>
+
                     <TransactionTypeDropdown
                         displayMode={summaryViewDisplayMode}
                         setDisplayMode={setSummaryViewDisplayMode}
