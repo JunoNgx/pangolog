@@ -9,7 +9,6 @@ Personal expense tracker PWA. See `.docs/spec.md` and `.docs/plan.md` for full d
 - Do not name variables with a bare adjective. `existing`, `filtered`, `updated`, `prev`, `next` are unacceptable. Use a noun-based name that reflects what the variable holds (e.g. `storedCategory`, `filteredTransactions`, `updatedToken`).
 - Prioritise using guard clause and early termination. Avoid `else` and deeply nested codes.
 - Use leading operators style for multi-line logical/binary expressions: place the operator at the start of the continuation line, not the end of the preceding one. (Not yet supported by Biome - it will reformat to trailing operators.)
-- Use only `yarn` to manage packages
 - Use double quotes for strings unless single quotes are required (e.g. a string containing a double quote)
 - Use `camelCase` for hooks, `PascalCase` for components, and `camelCase` for all other filenames (no kebab-case)
 - Constants use `SCREAMING_SNAKE_CASE` for values
