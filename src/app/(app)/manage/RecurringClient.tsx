@@ -92,38 +92,36 @@ export default function RecurringClient() {
         setSortBy(e.target.value as SortBy);
     }
 
+    const sortControls = (
+        <div className="flex items-center gap-2">
+            <span className="text-default-500 text-sm">Sort by</span>
+            <select
+                value={sortBy}
+                onChange={handleSortChange}
+                className={`self-start ${SELECT_CLASSES}`}
+            >
+                {SORT_OPTIONS.map((opt) => (
+                    <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                    </option>
+                ))}
+            </select>
+            <button
+                type="button"
+                onClick={() => setSortAsc((prev) => !prev)}
+                className={`bg-default-100 border-default-200 text-foreground hover:bg-default-200 cursor-pointer rounded-lg border p-2`}
+                aria-label={sortAsc ? "Sort descending" : "Sort ascending"}
+            >
+                {sortAsc ? <ArrowUpAZ size={16} /> : <ArrowDownAZ size={16} />}
+            </button>
+        </div>
+    );
+
     return (
         <div>
             <ConfigWrapper className="flex flex-col gap-4">
                 <div className="flex w-full items-center justify-between gap-2">
-                    <div className="flex items-center gap-2">
-                    <span className="text-default-500 text-sm">Sort by</span>
-                    <select
-                        value={sortBy}
-                        onChange={handleSortChange}
-                        className={`self-start ${SELECT_CLASSES}`}
-                    >
-                        {SORT_OPTIONS.map((opt) => (
-                            <option key={opt.value} value={opt.value}>
-                                {opt.label}
-                            </option>
-                        ))}
-                    </select>
-                    <button
-                        type="button"
-                        onClick={() => setSortAsc((prev) => !prev)}
-                        className={`bg-default-100 border-default-200 text-foreground hover:bg-default-200 cursor-pointer rounded-lg border p-2`}
-                        aria-label={
-                            sortAsc ? "Sort descending" : "Sort ascending"
-                        }
-                    >
-                        {sortAsc ? (
-                            <ArrowUpAZ size={16} />
-                        ) : (
-                            <ArrowDownAZ size={16} />
-                        )}
-                    </button>
-                </div>
+                    {sortControls}
                     <RecurringFilterDropdown
                         shouldShowDimes={shouldShowDimes}
                         shouldShowBucks={shouldShowBucks}
