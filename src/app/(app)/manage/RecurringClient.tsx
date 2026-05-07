@@ -95,17 +95,8 @@ export default function RecurringClient() {
     return (
         <div>
             <ConfigWrapper className="flex flex-col gap-4">
-                <RecurringFilterDropdown
-                    shouldShowDimes={shouldShowDimes}
-                    shouldShowBucks={shouldShowBucks}
-                    shouldShowIncome={shouldShowIncome}
-                    shouldHideInactive={shouldHideInactive}
-                    onShowDimesChange={setShouldShowDimes}
-                    onShowBucksChange={setShouldShowBucks}
-                    onShowIncomeChange={setShouldShowIncome}
-                    onHideInactiveChange={setShouldHideInactive}
-                />
-                <div className="flex items-center justify-end gap-2">
+                <div className="flex w-full items-center justify-between gap-2">
+                    <div className="flex items-center gap-2">
                     <span className="text-default-500 text-sm">Sort by</span>
                     <select
                         value={sortBy}
@@ -132,6 +123,17 @@ export default function RecurringClient() {
                             <ArrowDownAZ size={16} />
                         )}
                     </button>
+                </div>
+                    <RecurringFilterDropdown
+                        shouldShowDimes={shouldShowDimes}
+                        shouldShowBucks={shouldShowBucks}
+                        shouldShowIncome={shouldShowIncome}
+                        shouldHideInactive={shouldHideInactive}
+                        onShowDimesChange={setShouldShowDimes}
+                        onShowBucksChange={setShouldShowBucks}
+                        onShowIncomeChange={setShouldShowIncome}
+                        onHideInactiveChange={setShouldHideInactive}
+                    />
                 </div>
                 <DemoDataBanner />
             </ConfigWrapper>
