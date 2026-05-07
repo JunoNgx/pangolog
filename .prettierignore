@@ -2,6 +2,6 @@
 /.next
 /build
 /out
-/.yarn
+pnpm-lock.yaml
 *.tsbuildinfo
 next-env.d.ts

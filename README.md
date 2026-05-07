@@ -41,7 +41,7 @@ The project is developed with the standard that the codebase is maintainable wit
 
 ## Running
 
-Run `yarn && yarn dev` from the root directory.
+Run `pnpm install && pnpm dev` from the root directory.
 
 ## Environment variable
 
