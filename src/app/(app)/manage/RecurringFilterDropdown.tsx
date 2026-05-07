@@ -48,7 +48,7 @@ export function RecurringFilterDropdown({
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="p-2">
-                <div className="flex flex-col gap-1 pr-4">
+                <div className="flex flex-col gap-1 min-w-48">
                     <Checkbox
                         isSelected={shouldShowDimes}
                         onValueChange={onShowDimesChange}
@@ -79,6 +79,21 @@ export function RecurringFilterDropdown({
                             Hide inactive
                         </span>
                     </Checkbox>
+                    <div className="flex gap-1 pt-2 mt-1 border-t border-default-200">
+                        <Button
+                            size="sm"
+                            variant="light"
+                            className="flex-1 text-xs"
+                            onPress={() => {
+                                onShowDimesChange(true);
+                                onShowBucksChange(true);
+                                onShowIncomeChange(true);
+                                onHideInactiveChange(false);
+                            }}
+                        >
+                            Reset
+                        </Button>
+                    </div>
                 </div>
             </PopoverContent>
         </Popover>
