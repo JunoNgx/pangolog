@@ -317,56 +317,6 @@ export default function SettingsClient() {
                     </Button>
                 </section>
 
-                {/* DEBUG */}
-                {isDebugVisible && (
-                    <section className="mt-8">
-                        <h3 className="mb-1 text-lg font-semibold">Debug</h3>
-                        <Button
-                            variant="flat"
-                            onPress={() =>
-                                toast("Debug toast notification", {
-                                    duration: Infinity,
-                                })
-                            }
-                        >
-                            Trigger toast
-                        </Button>
-
-                        <Button
-                            className="mt-2 block"
-                            variant="flat"
-                            onPress={() => setIsLogDialogOpen(true)}
-                        >
-                            View logs
-                        </Button>
-
-                        <Button
-                            className="mt-2 block"
-                            color="danger"
-                            variant="flat"
-                            onPress={handleClearDebugLoggerEntry}
-                        >
-                            Clear Logger entries
-                        </Button>
-
-                        <p className="text-default-400 mt-8 text-xs">
-                            Wipes the local database and all local app data.
-                            This will make a fresh new user experience. Your
-                            data on Google Drive will remain intact. This cannot
-                            be undone.
-                        </p>
-                        <Button
-                            className="mt-2 block"
-                            color="danger"
-                            variant="flat"
-                            onPress={() => setIsResetAppDialogOpen(true)}
-                        >
-                            Reset app
-                        </Button>
-                    </section>
-                )}
-                {/* END DEBUG */}
-
                 <section>
                     <h3 className="mb-1 text-lg font-semibold">
                         Troubleshooting
@@ -440,6 +390,56 @@ export default function SettingsClient() {
                         </div>
                     </div>
                 </section>
+
+                {/* DEBUG */}
+                {isDebugVisible && (
+                    <section className="mt-8">
+                        <h3 className="mb-1 text-lg font-semibold">Debug</h3>
+                        <Button
+                            variant="flat"
+                            onPress={() =>
+                                toast("Debug toast notification", {
+                                    duration: Infinity,
+                                })
+                            }
+                        >
+                            Trigger toast
+                        </Button>
+
+                        <Button
+                            className="mt-2 block"
+                            variant="flat"
+                            onPress={() => setIsLogDialogOpen(true)}
+                        >
+                            View logs
+                        </Button>
+
+                        <Button
+                            className="mt-2 block"
+                            color="danger"
+                            variant="flat"
+                            onPress={handleClearDebugLoggerEntry}
+                        >
+                            Clear Logger entries
+                        </Button>
+
+                        <p className="text-default-400 mt-8 text-xs">
+                            Wipes the local database and all local app data.
+                            This will make a fresh new user experience. Your
+                            data on Google Drive will remain intact. This cannot
+                            be undone.
+                        </p>
+                        <Button
+                            className="mt-2 block"
+                            color="danger"
+                            variant="flat"
+                            onPress={() => setIsResetAppDialogOpen(true)}
+                        >
+                            Reset app
+                        </Button>
+                    </section>
+                )}
+                {/* END DEBUG */}
 
                 <section className="mt-8">
                     <h3 className="text-danger mb-1 text-lg font-semibold">
