@@ -36,10 +36,6 @@ export function RecurringFilterDropdown({
         (shouldHideInactive ? 1 : 0);
     const hasActiveFilter = activeFilterCount > 0;
 
-    const label = hasActiveFilter
-        ? `Filter (${activeFilterCount}/4)`
-        : "Filter";
-
     return (
         <Popover placement="bottom-end">
             <PopoverTrigger>
@@ -48,7 +44,7 @@ export function RecurringFilterDropdown({
                     color={hasActiveFilter ? "primary" : "default"}
                     className="min-w-min"
                 >
-                    {label}
+                    Filter
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="p-2">
