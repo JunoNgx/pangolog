@@ -1,6 +1,5 @@
 "use client";
 
-import { Checkbox } from "@heroui/react";
 import { ArrowDownAZ, ArrowUpAZ } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { ConfigWrapper } from "@/components/ConfigWrapper";
@@ -11,6 +10,7 @@ import { FREQUENCY_ORDER, SELECT_CLASSES } from "@/lib/constants";
 import { useCategories } from "@/lib/hooks/useCategories";
 import { useHotkey } from "@/lib/hooks/useHotkey";
 import { useRecurringRules } from "@/lib/hooks/useRecurringRules";
+import { RecurringFilterDropdown } from "./RecurringFilterDropdown";
 import { RecurringList } from "./RecurringList";
 import { RecurringRuleDialog } from "./RecurringRuleDialog";
 
@@ -95,38 +95,16 @@ export default function RecurringClient() {
     return (
         <div>
             <ConfigWrapper className="flex flex-col gap-4">
-                <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-                    <Checkbox
-                        isSelected={shouldShowDimes}
-                        onValueChange={setShouldShowDimes}
-                    >
-                        <span className="text-default-500 text-sm">
-                            Small dimes
-                        </span>
-                    </Checkbox>
-                    <Checkbox
-                        isSelected={shouldShowBucks}
-                        onValueChange={setShouldShowBucks}
-                    >
-                        <span className="text-default-500 text-sm">
-                            Big bucks
-                        </span>
-                    </Checkbox>
-                    <Checkbox
-                        isSelected={shouldShowIncome}
-                        onValueChange={setShouldShowIncome}
-                    >
-                        <span className="text-default-500 text-sm">Income</span>
-                    </Checkbox>
-                    <Checkbox
-                        isSelected={shouldHideInactive}
-                        onValueChange={setShouldHideInactive}
-                    >
-                        <span className="text-default-500 text-sm">
-                            Hide inactive
-                        </span>
-                    </Checkbox>
-                </div>
+                <RecurringFilterDropdown
+                    shouldShowDimes={shouldShowDimes}
+                    shouldShowBucks={shouldShowBucks}
+                    shouldShowIncome={shouldShowIncome}
+                    shouldHideInactive={shouldHideInactive}
+                    onShowDimesChange={setShouldShowDimes}
+                    onShowBucksChange={setShouldShowBucks}
+                    onShowIncomeChange={setShouldShowIncome}
+                    onHideInactiveChange={setShouldHideInactive}
+                />
                 <div className="flex items-center justify-end gap-2">
                     <span className="text-default-500 text-sm">Sort by</span>
                     <select
