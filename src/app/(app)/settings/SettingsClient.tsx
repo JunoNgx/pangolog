@@ -299,11 +299,7 @@ export default function SettingsClient() {
                 <ImportDataSection />
 
                 <section>
-                    <h3
-                        className="mb-1 text-lg font-semibold"
-                        onClick={handleDebugRevealTap}
-                        onKeyDown={handleDebugRevealTap}
-                    >
+                    <h3 className="mb-1 text-lg font-semibold">
                         Help &amp; Info
                     </h3>
                     <p className="text-default-400 mb-4 text-xs">
@@ -386,7 +382,15 @@ export default function SettingsClient() {
                 </section>
 
                 <section>
-                    <h3 className="mb-2 text-lg font-semibold">About</h3>
+                    <h3
+                        className="mb-2 text-lg font-semibold"
+                        onClick={handleDebugRevealTap}
+                        onKeyDown={handleDebugRevealTap}
+                        // biome-ignore lint/a11y/noNoninteractiveTabindex: intentional
+                        tabIndex={0}
+                    >
+                        About
+                    </h3>
                     <div className="flex flex-col gap-1">
                         <p className="text-default-400 text-xs">
                             Pangolog is developed by{" "}
