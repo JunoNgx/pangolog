@@ -66,7 +66,7 @@ export default function SettingsClient() {
         null,
     );
 
-    function handleHeadingTap() {
+    function handleDebugRevealTap() {
         headingTapCountRef.current += 1;
         if (headingTapTimeoutRef.current)
             clearTimeout(headingTapTimeoutRef.current);
@@ -301,8 +301,8 @@ export default function SettingsClient() {
                 <section>
                     <h3
                         className="mb-1 text-lg font-semibold"
-                        onClick={handleHeadingTap}
-                        onKeyDown={handleHeadingTap}
+                        onClick={handleDebugRevealTap}
+                        onKeyDown={handleDebugRevealTap}
                     >
                         Help &amp; Info
                     </h3>
