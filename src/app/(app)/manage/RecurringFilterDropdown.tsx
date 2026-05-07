@@ -42,7 +42,7 @@ export function RecurringFilterDropdown({
                 <Button
                     variant={hasActiveFilter ? "solid" : "flat"}
                     color={hasActiveFilter ? "primary" : "default"}
-                    className="min-w-min"
+                    className="w-min"
                 >
                     Filter
                 </Button>
