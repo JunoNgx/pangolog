@@ -7,6 +7,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@heroui/react";
+import { ChevronDown } from "lucide-react";
 
 interface RecurringFilterDropdownProps {
     shouldShowDimes: boolean;
@@ -43,6 +44,7 @@ export function RecurringFilterDropdown({
                     variant={hasActiveFilter ? "solid" : "flat"}
                     color={hasActiveFilter ? "primary" : "default"}
                     className="w-min"
+                    endContent={<ChevronDown className="size-3" />}
                 >
                     Filter
                 </Button>
