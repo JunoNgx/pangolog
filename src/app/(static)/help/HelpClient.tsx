@@ -153,7 +153,7 @@ export default function HelpClient() {
             <Section title="Debug">
                 <p className="text-default-500 mb-3 text-sm">
                     A hidden debug section is available in Settings. Tap the
-                    "Help &amp; Info" heading 5 times to toggle its visibility.
+                    "About" heading 5 times to toggle its visibility.
                 </p>
             </Section>
 
