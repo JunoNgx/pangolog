@@ -4,7 +4,7 @@ import { useCallback, useMemo } from "react";
 import { ConfigWrapper } from "@/components/ConfigWrapper";
 import { MainListContainer } from "@/components/MainListContainer";
 import { PeriodPicker } from "@/components/PeriodPicker";
-import { PeriodViewDropdown } from "@/components/PeriodViewDropdown";
+import { PeriodViewDropdown } from "@/app/(app)/summary/PeriodViewDropdown";
 import { RouteHeader } from "@/components/RouteHeader";
 import { TransactionTypeDropdown } from "@/components/TransactionTypeDropdown";
 import type { Category, Transaction } from "@/lib/db/types";
