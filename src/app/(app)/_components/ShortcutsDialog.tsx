@@ -4,6 +4,7 @@ import { Modal, ModalBody, ModalContent, ModalHeader } from "@heroui/react";
 import { useCallback, useEffect, useState } from "react";
 import { commandPaletteShortcutsActions } from "@/lib/commandPaletteActionRegistry";
 import { useHotkey } from "@/lib/hooks/useHotkey";
+import { Kbd } from "@/components/Kbd";
 
 type Shortcut = {
     keys: string[];
@@ -78,8 +79,6 @@ const SHORTCUT_GROUPS: ShortcutGroup[] = [
         ],
     },
 ];
-
-import { Kbd } from "./Kbd";
 
 export function ShortcutsDialog() {
     const [isOpen, setIsOpen] = useState(false);

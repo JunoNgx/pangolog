@@ -1,9 +1,9 @@
 import { Suspense } from "react";
-import { CommandPalette } from "@/components/CommandPalette";
+import { CommandPalette } from "./_components/CommandPalette";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
-import { RecurringRulesManager } from "@/components/RecurringRulesManager";
-import { ShortcutsDialog } from "@/components/ShortcutsDialog";
-import { SyncManager } from "@/components/SyncManager";
+import { RecurringRulesManager } from "./_components/RecurringRulesManager";
+import { ShortcutsDialog } from "./_components/ShortcutsDialog";
+import { SyncManager } from "./_components/SyncManager";
 import { AppNavbar } from "./navbar";
 
 export default function AppLayout({
