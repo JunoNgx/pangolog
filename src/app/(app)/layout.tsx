@@ -15,9 +15,9 @@ export default function AppLayout({
         <ErrorBoundary>
             <SyncManager />
             <RecurringRulesManager />
+            <ShortcutsDialog />
             <Suspense>
                 <CommandPalette />
-                <ShortcutsDialog />
             </Suspense>
             <a
                 href="#main-content"
