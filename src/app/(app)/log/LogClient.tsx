@@ -10,7 +10,7 @@ import { DemoDataBanner } from "@/components/DemoDataBanner";
 import { FloatingActionButton } from "@/components/FloatingActionButton";
 import { PeriodPicker } from "@/components/PeriodPicker";
 import { RouteHeader } from "@/components/RouteHeader";
-import { SyncButton } from "@/components/SyncButton";
+import { SyncButton } from "@/app/(app)/log/SyncButton";
 import { TransactionTypeDropdown } from "@/components/TransactionTypeDropdown";
 import { commandPaletteCreateActions } from "@/lib/commandPaletteActionRegistry";
 import { useCategories } from "@/lib/hooks/useCategories";
