@@ -105,16 +105,17 @@ export const CATEGORIES_FILE = "categories.json";
 export const RECURRING_RULES_FILE = "recurring-rules.json";
 export const SETTINGS_FILE = "settings.json";
 
+export const MIME_JSON = "application/json";
+
 /* SYNC */
 export const DEBOUNCE_MS = 10 * 1000;
 export const RESTORE_SYNC_THRESHOLD_MS = 24 * 60 * 60 * 1000;
 
-/* MISC */
-export const MIME_JSON = "application/json";
-export const TRANSACTIONS_KEY = ["transactions"];
-export const CATEGORIES_KEY = ["categories"];
-export const RECURRING_RULES_KEY = ["recurring-rules"];
+/* DISPLAY */
 export const VIEW_DISPLAY_MODES = ["dimes", "bucks", "all"] as const;
+export const UNCATEGORISED_ID = "__uncategorised__";
+
+/* PERSIST STORES */
 export const PERSIST_SUMMARY_VIEW = "pangolog-summary-view-settings";
 export const PERSIST_LOG_VIEW = "pangolog-log-view-settings";
 export const PERSIST_PROFILE = "pangolog-profile-settings";
@@ -122,4 +123,8 @@ export const PERSIST_LOCAL_USER = "pangolog-local-user-settings";
 export const PERSIST_LOCAL_APP_DATA = "pangolog-local-app-data";
 export const PERSIST_LOCAL_SYNC = "pangolog-local-settings";
 export const PERSIST_SESSION = "pangolog-session";
-export const UNCATEGORISED_ID = "__uncategorised__";
+
+/* QUERY KEYS */
+export const TRANSACTIONS_KEY = ["transactions"];
+export const CATEGORIES_KEY = ["categories"];
+export const RECURRING_RULES_KEY = ["recurring-rules"];
