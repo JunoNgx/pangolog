@@ -36,9 +36,11 @@ function ThemedToaster() {
     const { resolvedTheme } = useTheme();
     return (
         <Toaster
+            position="bottom-center"
+            swipeDirections={["left"]}
             theme={resolvedTheme as "light" | "dark"}
             toastOptions={{ classNames: { toast: "" } }}
-            mobileOffset={{ bottom: "80px" }}
+            mobileOffset={{ bottom: "90px" }}
         />
     );
 }
