@@ -114,4 +114,5 @@ export const MIME_JSON = "application/json";
 export const TRANSACTIONS_KEY = ["transactions"];
 export const CATEGORIES_KEY = ["categories"];
 export const RECURRING_RULES_KEY = ["recurring-rules"];
+export const VIEW_DISPLAY_MODES = ["dimes", "bucks", "all"] as const;
 export const UNCATEGORISED_ID = "__uncategorised__";
