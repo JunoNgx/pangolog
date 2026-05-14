@@ -3,7 +3,7 @@
 import { useCallback, useState } from "react";
 import { toast } from "sonner";
 import type { AuthToken, TokenResult } from "@/lib/auth/types";
-import { GOOGLE_CLIENT_ID } from "@/lib/constants";
+import { GOOGLE_CLIENT_ID, MIME_JSON } from "@/lib/constants";
 import { useLocalSyncDataStore } from "@/lib/store/useLocalSyncDataStore";
 
 const SCOPE = "https://www.googleapis.com/auth/drive.file email";
@@ -63,7 +63,7 @@ export function useGoogleAuth() {
                 try {
                     const res = await fetch("/api/auth/callback", {
                         method: "POST",
-                        headers: { "Content-Type": "application/json" },
+                        headers: { "Content-Type": MIME_JSON },
                         body: JSON.stringify({ code: response.code }),
                     });
                     if (!res.ok) {
