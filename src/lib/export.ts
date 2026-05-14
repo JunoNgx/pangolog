@@ -32,7 +32,7 @@ export async function buildExportData() {
         isPrefixCurrency,
         isExpenseOnlyMode,
         isCategoryAlphabetical,
-        settingsUpdatedAt,
+        updatedAt,
     } = useProfileSettingsStore.getState();
 
     return {
@@ -42,7 +42,7 @@ export async function buildExportData() {
             isPrefixCurrency,
             isExpenseOnlyMode,
             isCategoryAlphabetical,
-            updatedAt: settingsUpdatedAt,
+            updatedAt,
         },
         transactions: transactions
             .filter((t) => t.deletedAt === null)
