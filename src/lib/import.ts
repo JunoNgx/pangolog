@@ -1,4 +1,4 @@
-import type { Frequency } from "@/lib/types";
+import type { Frequency, ProfileSettings } from "@/lib/types";
 import { VALID_FREQUENCIES } from "@/lib/constants";
 import {
     bulkPutCategories,
@@ -12,17 +12,9 @@ import { getDb } from "./db/connection";
 import type { Category, RecurringRule, Transaction } from "./db/types";
 import { useProfileSettingsStore } from "./store/useProfileSettingsStore";
 
-interface ImportSettings {
-    customCurrency: string;
-    isPrefixCurrency: boolean;
-    isExpenseOnlyMode?: boolean;
-    isCategoryAlphabetical?: boolean;
-    updatedAt: string;
-}
-
 export interface ImportData {
     exportedAt: string;
-    settings?: ImportSettings;
+    settings?: ProfileSettings;
     transactions?: Transaction[];
     categories: Category[];
     recurringRules?: RecurringRule[];

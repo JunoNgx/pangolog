@@ -15,6 +15,7 @@ import {
 } from "@/lib/db/bulk";
 import { getDb } from "@/lib/db/connection";
 import type { Category, RecurringRule, Transaction } from "@/lib/db/types";
+import type { ProfileSettings } from "@/lib/types";
 import { buildExportData } from "@/lib/export";
 import { useLocalSyncDataStore } from "@/lib/store/useLocalSyncDataStore";
 import { useLocalUserSettingsStore } from "@/lib/store/useLocalUserSettingsStore";
@@ -29,14 +30,6 @@ import {
     trashFile,
     upsertFile,
 } from "./client";
-
-interface DriveSettings {
-    customCurrency?: string;
-    isPrefixCurrency?: boolean;
-    isExpenseOnlyMode?: boolean;
-    isCategoryAlphabetical?: boolean;
-    updatedAt: string;
-}
 
 function groupBy<T>(arr: T[], key: (item: T) => string): Map<string, T[]> {
     const map = new Map<string, T[]>();
@@ -186,7 +179,7 @@ export async function runFullDriveSync(
         remoteYearResults,
     ] = await Promise.all([
         settingsEntry
-            ? downloadFile<DriveSettings>(token, settingsEntry.id)
+            ? downloadFile<ProfileSettings>(token, settingsEntry.id)
             : Promise.resolve(null),
         categoriesEntry
             ? downloadFile<Category[]>(token, categoriesEntry.id)
@@ -228,7 +221,7 @@ export async function runFullDriveSync(
         isCategoryAlphabetical,
         settingsUpdatedAt: resolvedSettingsUpdatedAt,
     } = useProfileSettingsStore.getState();
-    const localSettings: DriveSettings = {
+    const localSettings: ProfileSettings = {
         customCurrency,
         isPrefixCurrency,
         isExpenseOnlyMode,
