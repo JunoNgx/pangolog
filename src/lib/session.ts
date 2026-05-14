@@ -1,4 +1,5 @@
 import type { SessionOptions } from "iron-session";
+import { PERSIST_SESSION } from "@/lib/constants";
 
 export interface SessionData {
     refreshToken?: string;
@@ -11,7 +12,7 @@ if (!sessionSecret) {
 
 export const sessionOptions: SessionOptions = {
     password: sessionSecret,
-    cookieName: "pangolog-session",
+    cookieName: PERSIST_SESSION,
     cookieOptions: {
         secure: process.env.NODE_ENV === "production",
         httpOnly: true,

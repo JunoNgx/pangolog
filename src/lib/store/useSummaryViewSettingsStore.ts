@@ -1,6 +1,7 @@
 import { DateTime } from "luxon";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { PERSIST_SUMMARY_VIEW } from "@/lib/constants";
 import type { ViewDisplayMode } from "@/lib/types";
 
 interface SummaryViewSettingsStore {
@@ -28,7 +29,7 @@ export const useSummaryViewSettingsStore = create<SummaryViewSettingsStore>()(
                 set({ summaryViewDisplayMode: mode }),
         }),
         {
-            name: "pangolog-summary-view-settings",
+            name: PERSIST_SUMMARY_VIEW,
         },
     ),
 );

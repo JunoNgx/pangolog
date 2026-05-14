@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { PERSIST_LOG_VIEW } from "@/lib/constants";
 import type { ViewDisplayMode } from "@/lib/types";
 
 interface LogViewSettingsStore {
@@ -14,7 +15,7 @@ export const useLogViewSettingsStore = create<LogViewSettingsStore>()(
             setLogViewDisplayMode: (mode) => set({ logViewDisplayMode: mode }),
         }),
         {
-            name: "pangolog-log-view-settings",
+            name: PERSIST_LOG_VIEW,
         },
     ),
 );
