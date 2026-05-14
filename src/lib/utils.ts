@@ -1,6 +1,7 @@
 import { DateTime } from "luxon";
 import { toast } from "sonner";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
+import type { TimeFormat } from "@/lib/types";
 
 export function getLocaleDateFormat(): string {
     if (typeof window === "undefined") return "";
@@ -62,7 +63,7 @@ export function fromDateInputValue(dateStr: string): string {
     );
 }
 
-export function detectSystemTimeFormat(): "12h" | "24h" {
+export function detectSystemTimeFormat(): TimeFormat {
     try {
         const isSystemUsing12h = new Intl.DateTimeFormat(navigator.language, {
             hour: "numeric",
@@ -76,7 +77,7 @@ export function detectSystemTimeFormat(): "12h" | "24h" {
 }
 
 export function getTimeFormatOptions(
-    format: "12h" | "24h",
+    format: TimeFormat,
 ): Intl.DateTimeFormatOptions {
     return { ...DateTime.TIME_SIMPLE, hour12: format === "12h" };
 }

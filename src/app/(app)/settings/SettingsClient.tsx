@@ -30,6 +30,7 @@ import { useLocalAppDataStore } from "@/lib/store/useLocalAppDataStore";
 import { useLocalSyncDataStore } from "@/lib/store/useLocalSyncDataStore";
 import { useLocalUserSettingsStore } from "@/lib/store/useLocalUserSettingsStore";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
+import type { TimeFormat } from "@/lib/types";
 import { toIsoDateString } from "@/lib/utils";
 
 export default function SettingsClient() {
@@ -243,7 +244,7 @@ export default function SettingsClient() {
                             orientation="horizontal"
                             value={timeFormat}
                             onValueChange={(v) =>
-                                setTimeFormat(v as "12h" | "24h")
+                                setTimeFormat(v as TimeFormat)
                             }
                             classNames={{ wrapper: "gap-6" }}
                         >

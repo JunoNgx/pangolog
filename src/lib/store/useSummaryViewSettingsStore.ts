@@ -1,7 +1,7 @@
 import { DateTime } from "luxon";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { ViewDisplayMode } from "./useLogViewSettingsStore";
+import type { ViewDisplayMode } from "@/lib/types";
 
 interface SummaryViewSettingsStore {
     isYearly: boolean;

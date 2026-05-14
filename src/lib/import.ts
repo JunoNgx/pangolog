@@ -1,3 +1,4 @@
+import type { Frequency } from "@/lib/types";
 import { VALID_FREQUENCIES } from "@/lib/constants";
 import {
     bulkPutCategories,
@@ -66,7 +67,7 @@ function isValidRecurringRule(item: unknown): item is RecurringRule {
     if (!isRecord(item)) return false;
     return (
         typeof item.amount === "number" &&
-        VALID_FREQUENCIES.has(item.frequency as string)
+        VALID_FREQUENCIES.has(item.frequency as Frequency)
     );
 }
 
