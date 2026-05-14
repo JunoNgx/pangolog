@@ -1,6 +1,7 @@
 import { DateTime } from "luxon";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { PERSIST_PROFILE } from "@/lib/constants";
 import { toIsoString, utcNowString } from "@/lib/utils";
 
 interface ProfileSettingsStore {
@@ -66,7 +67,7 @@ export const useProfileSettingsStore = create<ProfileSettingsStore>()(
                 }),
         }),
         {
-            name: "pangolog-profile-settings",
+            name: PERSIST_PROFILE,
             partialize: (state) => ({
                 customCurrency: state.customCurrency,
                 isPrefixCurrency: state.isPrefixCurrency,
