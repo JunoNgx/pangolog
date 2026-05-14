@@ -37,6 +37,7 @@ export function PeriodViewDropdown({
     function handleSelectionChange(keys: "all" | Set<React.Key>) {
         if (keys === "all") return;
         const key = Array.from(keys)[0] as string;
+        if (!key) return;
         onViewChange(key === "yearly");
     }
 

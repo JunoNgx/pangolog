@@ -20,7 +20,7 @@ import { DriveSyncSection } from "@/app/(app)/settings/DriveSyncSection";
 import { ImportDataSection } from "@/app/(app)/settings/ImportDataSection";
 import { MainListContainer } from "@/components/MainListContainer";
 import { RouteHeader } from "@/components/RouteHeader";
-import { DEFAULT_MODAL_CLASS_NAMES } from "@/lib/constants";
+import { DEFAULT_MODAL_CLASS_NAMES, MIME_JSON } from "@/lib/constants";
 import { clearAllData, forceDeleteDb } from "@/lib/db";
 import { exportJson } from "@/lib/export";
 import { useGoogleAuth } from "@/lib/hooks/useGoogleAuth";
@@ -30,6 +30,7 @@ import { useLocalAppDataStore } from "@/lib/store/useLocalAppDataStore";
 import { useLocalSyncDataStore } from "@/lib/store/useLocalSyncDataStore";
 import { useLocalUserSettingsStore } from "@/lib/store/useLocalUserSettingsStore";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
+import type { TimeFormat } from "@/lib/types";
 import { toIsoDateString } from "@/lib/utils";
 
 export default function SettingsClient() {
@@ -158,7 +159,7 @@ export default function SettingsClient() {
         const entries = getLoggerEntries();
         const jsonString = JSON.stringify(entries, null, 2);
 
-        const blob = new Blob([jsonString], { type: "application/json" });
+        const blob = new Blob([jsonString], { type: MIME_JSON });
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
 
@@ -243,7 +244,7 @@ export default function SettingsClient() {
                             orientation="horizontal"
                             value={timeFormat}
                             onValueChange={(v) =>
-                                setTimeFormat(v as "12h" | "24h")
+                                setTimeFormat(v as TimeFormat)
                             }
                             classNames={{ wrapper: "gap-6" }}
                         >

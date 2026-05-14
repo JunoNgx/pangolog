@@ -3,6 +3,10 @@ import {
     CATEGORIES_FILE,
     RECURRING_RULES_FILE,
     SETTINGS_FILE,
+    RW,
+    STORE_CATEGORIES,
+    STORE_RECURRING_RULES,
+    STORE_TRANSACTIONS,
 } from "@/lib/constants";
 import {
     bulkPutCategories,
@@ -15,6 +19,7 @@ import {
 } from "@/lib/db/bulk";
 import { getDb } from "@/lib/db/connection";
 import type { Category, RecurringRule, Transaction } from "@/lib/db/types";
+import type { ProfileSettings } from "@/lib/types";
 import { buildExportData } from "@/lib/export";
 import { useLocalSyncDataStore } from "@/lib/store/useLocalSyncDataStore";
 import { useLocalUserSettingsStore } from "@/lib/store/useLocalUserSettingsStore";
@@ -29,14 +34,6 @@ import {
     trashFile,
     upsertFile,
 } from "./client";
-
-interface DriveSettings {
-    customCurrency?: string;
-    isPrefixCurrency?: boolean;
-    isExpenseOnlyMode?: boolean;
-    isCategoryAlphabetical?: boolean;
-    updatedAt: string;
-}
 
 function groupBy<T>(arr: T[], key: (item: T) => string): Map<string, T[]> {
     const map = new Map<string, T[]>();
@@ -186,7 +183,7 @@ export async function runFullDriveSync(
         remoteYearResults,
     ] = await Promise.all([
         settingsEntry
-            ? downloadFile<DriveSettings>(token, settingsEntry.id)
+            ? downloadFile<ProfileSettings>(token, settingsEntry.id)
             : Promise.resolve(null),
         categoriesEntry
             ? downloadFile<Category[]>(token, categoriesEntry.id)
@@ -205,12 +202,12 @@ export async function runFullDriveSync(
 
     // --- Settings sync ---
 
-    const { settingsUpdatedAt, applyRemoteSettings } =
+    const { updatedAt, applyRemoteSettings } =
         useProfileSettingsStore.getState();
 
     if (
         remoteSettingsResult &&
-        remoteSettingsResult.updatedAt > settingsUpdatedAt
+        remoteSettingsResult.updatedAt > updatedAt
     ) {
         applyRemoteSettings(
             remoteSettingsResult.customCurrency ?? "",
@@ -226,14 +223,14 @@ export async function runFullDriveSync(
         isPrefixCurrency,
         isExpenseOnlyMode,
         isCategoryAlphabetical,
-        settingsUpdatedAt: resolvedSettingsUpdatedAt,
+        updatedAt: storedUpdatedAt,
     } = useProfileSettingsStore.getState();
-    const localSettings: DriveSettings = {
+    const localSettings: ProfileSettings = {
         customCurrency,
         isPrefixCurrency,
         isExpenseOnlyMode,
         isCategoryAlphabetical,
-        updatedAt: resolvedSettingsUpdatedAt,
+        updatedAt: storedUpdatedAt,
     };
     await upsertFile(token, folderId, SETTINGS_FILE, localSettings);
 
@@ -264,8 +261,8 @@ export async function runFullDriveSync(
 
     const db = await getDb();
     const tx = db.transaction(
-        ["categories", "recurring-rules", "transactions"],
-        "readwrite",
+        [STORE_CATEGORIES, STORE_RECURRING_RULES, STORE_TRANSACTIONS],
+        RW,
     );
 
     await Promise.all([

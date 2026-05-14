@@ -13,6 +13,7 @@ import { useLogger } from "./useLogger";
 
 // Module-level flag prevents concurrent syncs across hook instances.
 let isSyncing = false;
+const AUTH_RECONNECT_TOAST = "auth-reconnect";
 
 function isExpiredResult(result: TokenResult): result is { expired: string } {
     return typeof result === "object" && result !== null;
@@ -62,7 +63,7 @@ export function useSyncFn() {
             addLoggerEntry(logMessage, logcode);
             if (navigator.onLine) setAuthToken(null);
             toast.error(toastMessage, {
-                id: "auth-reconnect",
+                id: AUTH_RECONNECT_TOAST,
                 duration: Infinity,
             });
         },
@@ -105,7 +106,7 @@ export function useSyncFn() {
 
                 setSyncStatus("idle");
                 setLastSyncTime(syncStartTime);
-                toast.dismiss("auth-reconnect");
+                toast.dismiss(AUTH_RECONNECT_TOAST);
                 if (!isSilent) {
                     toast.success("Sync complete");
                 }
@@ -114,7 +115,7 @@ export function useSyncFn() {
                     setSyncStatus("idle");
                     toast.error(
                         "Google Drive access was revoked or has insufficient permissions. Please reconnect in Settings.",
-                        { id: "auth-reconnect", duration: Infinity },
+                        { id: AUTH_RECONNECT_TOAST, duration: Infinity },
                     );
                     return;
                 }

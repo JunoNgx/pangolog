@@ -1,3 +1,5 @@
+import type { Frequency } from "@/lib/types";
+
 export interface Transaction {
     id: string;
     transactedAt: string;
@@ -55,7 +57,7 @@ export interface RecurringRule {
     description: string;
     isIncome: boolean;
     isBigBuck: boolean;
-    frequency: "daily" | "weekly" | "monthly" | "yearly";
+    frequency: Frequency;
     dayOfWeek: number | null;
     dayOfMonth: number | null;
     monthOfYear: number | null;

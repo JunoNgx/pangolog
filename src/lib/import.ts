@@ -1,4 +1,11 @@
-import { VALID_FREQUENCIES } from "@/lib/constants";
+import type { Frequency, ProfileSettings } from "@/lib/types";
+import {
+    RW,
+    STORE_CATEGORIES,
+    STORE_RECURRING_RULES,
+    STORE_TRANSACTIONS,
+    VALID_FREQUENCIES,
+} from "@/lib/constants";
 import {
     bulkPutCategories,
     bulkPutRecurringRules,
@@ -11,17 +18,9 @@ import { getDb } from "./db/connection";
 import type { Category, RecurringRule, Transaction } from "./db/types";
 import { useProfileSettingsStore } from "./store/useProfileSettingsStore";
 
-interface ImportSettings {
-    customCurrency: string;
-    isPrefixCurrency: boolean;
-    isExpenseOnlyMode?: boolean;
-    isCategoryAlphabetical?: boolean;
-    updatedAt: string;
-}
-
 export interface ImportData {
     exportedAt: string;
-    settings?: ImportSettings;
+    settings?: ProfileSettings;
     transactions?: Transaction[];
     categories: Category[];
     recurringRules?: RecurringRule[];
@@ -66,7 +65,7 @@ function isValidRecurringRule(item: unknown): item is RecurringRule {
     if (!isRecord(item)) return false;
     return (
         typeof item.amount === "number" &&
-        VALID_FREQUENCIES.has(item.frequency as string)
+        VALID_FREQUENCIES.has(item.frequency as Frequency)
     );
 }
 
@@ -251,8 +250,8 @@ export async function executeImport(data: ImportData): Promise<ImportPreview> {
     try {
         const db = await getDb();
         const tx = db.transaction(
-            ["categories", "recurring-rules", "transactions"],
-            "readwrite",
+            [STORE_CATEGORIES, STORE_RECURRING_RULES, STORE_TRANSACTIONS],
+            RW,
         );
         await Promise.all([
             bulkPutTransactions(transactionsToPut, tx),
@@ -264,9 +263,9 @@ export async function executeImport(data: ImportData): Promise<ImportPreview> {
     }
 
     if (data.settings) {
-        const { settingsUpdatedAt, applyRemoteSettings } =
+        const { updatedAt, applyRemoteSettings } =
             useProfileSettingsStore.getState();
-        if (data.settings.updatedAt > settingsUpdatedAt) {
+        if (data.settings.updatedAt > updatedAt) {
             applyRemoteSettings(
                 data.settings.customCurrency,
                 data.settings.isPrefixCurrency,

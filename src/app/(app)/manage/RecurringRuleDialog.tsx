@@ -33,7 +33,7 @@ import {
     todayDateString,
 } from "@/lib/utils";
 
-type Frequency = "daily" | "weekly" | "monthly" | "yearly";
+import type { Frequency } from "@/lib/types";
 
 function getRepeatLabel(frequency: Frequency, dateStr: string): string {
     const dt = DateTime.fromISO(`${dateStr}T12:00:00`);

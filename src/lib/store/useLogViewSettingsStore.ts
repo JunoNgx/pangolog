@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-
-export type ViewDisplayMode = "dimes" | "bucks" | "both";
+import { PERSIST_LOG_VIEW } from "@/lib/constants";
+import type { ViewDisplayMode } from "@/lib/types";
 
 interface LogViewSettingsStore {
     logViewDisplayMode: ViewDisplayMode;
@@ -11,11 +11,11 @@ interface LogViewSettingsStore {
 export const useLogViewSettingsStore = create<LogViewSettingsStore>()(
     persist(
         (set) => ({
-            logViewDisplayMode: "dimes" as ViewDisplayMode,
+            logViewDisplayMode: "dimes",
             setLogViewDisplayMode: (mode) => set({ logViewDisplayMode: mode }),
         }),
         {
-            name: "pangolog-log-view-settings",
+            name: PERSIST_LOG_VIEW,
         },
     ),
 );

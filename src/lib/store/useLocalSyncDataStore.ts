@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { PERSIST_LOCAL_SYNC } from "@/lib/constants";
 import type { AuthToken } from "@/lib/auth/types";
 
 export type SyncStatus = "idle" | "syncing" | "error";
@@ -32,7 +33,7 @@ export const useLocalSyncDataStore = create<LocalSyncDataStore>()(
             setSyncError: (error) => set({ syncError: error }),
         }),
         {
-            name: "pangolog-local-settings",
+            name: PERSIST_LOCAL_SYNC,
             partialize: (state) => ({
                 authToken: state.authToken,
                 driveFolderId: state.driveFolderId,

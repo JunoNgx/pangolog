@@ -1,16 +1,24 @@
 import { DateTime } from "luxon";
-import { PURGE_DAYS } from "@/lib/constants";
+import {
+    PURGE_DAYS,
+    RW,
+    RO,
+    STORE_CATEGORIES,
+    STORE_RECURRING_RULES,
+    STORE_TRANSACTIONS,
+    type StoreName,
+} from "@/lib/constants";
 import { toIsoString } from "@/lib/utils";
 import { forceDeleteDb, getDb } from "./connection";
 import type { Category, RecurringRule, Transaction } from "./types";
 
 async function purgeStore(
-    storeName: "categories" | "recurring-rules" | "transactions",
+    storeName: StoreName,
     cutoffIso: string,
 ): Promise<void> {
     const db = await getDb();
     return new Promise((resolve, reject) => {
-        const tx = db.transaction(storeName, "readwrite");
+        const tx = db.transaction(storeName, RW);
         const store = tx.objectStore(storeName);
         const request = store.openCursor();
 
@@ -35,17 +43,17 @@ export async function purgeExpiredRecords(): Promise<void> {
     );
 
     await Promise.all([
-        purgeStore("categories", cutoffIso),
-        purgeStore("recurring-rules", cutoffIso),
-        purgeStore("transactions", cutoffIso),
+        purgeStore(STORE_CATEGORIES, cutoffIso),
+        purgeStore(STORE_RECURRING_RULES, cutoffIso),
+        purgeStore(STORE_TRANSACTIONS, cutoffIso),
     ]);
 }
 
 export async function getAllCategoriesForSync(): Promise<Category[]> {
     const db = await getDb();
     return new Promise((resolve, reject) => {
-        const tx = db.transaction("categories", "readonly");
-        const request = tx.objectStore("categories").getAll();
+        const tx = db.transaction(STORE_CATEGORIES, RO);
+        const request = tx.objectStore(STORE_CATEGORIES).getAll();
         request.onsuccess = () => resolve(request.result as Category[]);
         request.onerror = () => reject(request.error);
     });
@@ -54,8 +62,8 @@ export async function getAllCategoriesForSync(): Promise<Category[]> {
 export async function getAllRecurringRulesForSync(): Promise<RecurringRule[]> {
     const db = await getDb();
     return new Promise((resolve, reject) => {
-        const tx = db.transaction("recurring-rules", "readonly");
-        const request = tx.objectStore("recurring-rules").getAll();
+        const tx = db.transaction(STORE_RECURRING_RULES, RO);
+        const request = tx.objectStore(STORE_RECURRING_RULES).getAll();
         request.onsuccess = () => resolve(request.result as RecurringRule[]);
         request.onerror = () => reject(request.error);
     });
@@ -64,8 +72,8 @@ export async function getAllRecurringRulesForSync(): Promise<RecurringRule[]> {
 export async function getAllTransactions(): Promise<Transaction[]> {
     const db = await getDb();
     return new Promise((resolve, reject) => {
-        const tx = db.transaction("transactions", "readonly");
-        const request = tx.objectStore("transactions").getAll();
+        const tx = db.transaction(STORE_TRANSACTIONS, RO);
+        const request = tx.objectStore(STORE_TRANSACTIONS).getAll();
         request.onsuccess = () => resolve(request.result as Transaction[]);
         request.onerror = () => reject(request.error);
     });
@@ -76,15 +84,15 @@ export async function bulkPutTransactions(
     existingTx?: IDBTransaction,
 ): Promise<void> {
     if (existingTx) {
-        const store = existingTx.objectStore("transactions");
+        const store = existingTx.objectStore(STORE_TRANSACTIONS);
         for (const transaction of transactions) store.put(transaction);
         return;
     }
 
     const db = await getDb();
     return new Promise((resolve, reject) => {
-        const tx = db.transaction("transactions", "readwrite");
-        const store = tx.objectStore("transactions");
+        const tx = db.transaction(STORE_TRANSACTIONS, RW);
+        const store = tx.objectStore(STORE_TRANSACTIONS);
         for (const transaction of transactions) store.put(transaction);
         tx.oncomplete = () => resolve();
         tx.onerror = () => reject(tx.error);
@@ -96,15 +104,15 @@ export async function bulkPutCategories(
     existingTx?: IDBTransaction,
 ): Promise<void> {
     if (existingTx) {
-        const store = existingTx.objectStore("categories");
+        const store = existingTx.objectStore(STORE_CATEGORIES);
         for (const category of categories) store.put(category);
         return;
     }
 
     const db = await getDb();
     return new Promise((resolve, reject) => {
-        const tx = db.transaction("categories", "readwrite");
-        const store = tx.objectStore("categories");
+        const tx = db.transaction(STORE_CATEGORIES, RW);
+        const store = tx.objectStore(STORE_CATEGORIES);
         for (const category of categories) store.put(category);
         tx.oncomplete = () => resolve();
         tx.onerror = () => reject(tx.error);
@@ -116,15 +124,15 @@ export async function bulkPutRecurringRules(
     existingTx?: IDBTransaction,
 ): Promise<void> {
     if (existingTx) {
-        const store = existingTx.objectStore("recurring-rules");
+        const store = existingTx.objectStore(STORE_RECURRING_RULES);
         for (const rule of rules) store.put(rule);
         return;
     }
 
     const db = await getDb();
     return new Promise((resolve, reject) => {
-        const tx = db.transaction("recurring-rules", "readwrite");
-        const store = tx.objectStore("recurring-rules");
+        const tx = db.transaction(STORE_RECURRING_RULES, RW);
+        const store = tx.objectStore(STORE_RECURRING_RULES);
         for (const rule of rules) store.put(rule);
         tx.oncomplete = () => resolve();
         tx.onerror = () => reject(tx.error);
@@ -136,12 +144,12 @@ export async function clearAllData(): Promise<void> {
         const db = await getDb();
         await new Promise<void>((resolve, reject) => {
             const tx = db.transaction(
-                ["categories", "recurring-rules", "transactions"],
-                "readwrite",
+                [STORE_CATEGORIES, STORE_RECURRING_RULES, STORE_TRANSACTIONS],
+                RW,
             );
-            tx.objectStore("categories").clear();
-            tx.objectStore("recurring-rules").clear();
-            tx.objectStore("transactions").clear();
+            tx.objectStore(STORE_CATEGORIES).clear();
+            tx.objectStore(STORE_RECURRING_RULES).clear();
+            tx.objectStore(STORE_TRANSACTIONS).clear();
             tx.oncomplete = () => resolve();
             tx.onerror = () => reject(tx.error);
         });

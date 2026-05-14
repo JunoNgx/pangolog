@@ -1,10 +1,12 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { detectSystemTimeFormat } from "@/lib/utils";
+import { PERSIST_LOCAL_USER } from "@/lib/constants";
+import type { TimeFormat } from "@/lib/types";
 
 interface LocalUserSettingsStore {
-    timeFormat: "12h" | "24h";
-    setTimeFormat: (format: "12h" | "24h") => void;
+    timeFormat: TimeFormat;
+    setTimeFormat: (format: TimeFormat) => void;
     isAutobackupEnabled: boolean;
     setIsAutobackupEnabled: (enabled: boolean) => void;
 }
@@ -19,7 +21,7 @@ export const useLocalUserSettingsStore = create<LocalUserSettingsStore>()(
                 set({ isAutobackupEnabled: enabled }),
         }),
         {
-            name: "pangolog-local-user-settings",
+            name: PERSIST_LOCAL_USER,
             partialize: (state) => ({
                 timeFormat: state.timeFormat,
                 isAutobackupEnabled: state.isAutobackupEnabled,

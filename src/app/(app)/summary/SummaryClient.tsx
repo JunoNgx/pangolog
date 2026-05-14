@@ -161,7 +161,7 @@ export default function SummaryClient() {
             return;
         }
         if (summaryViewDisplayMode === "bucks") {
-            setSummaryViewDisplayMode("both");
+            setSummaryViewDisplayMode("all");
             return;
         }
         setSummaryViewDisplayMode("dimes");
