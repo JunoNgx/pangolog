@@ -63,7 +63,7 @@ export default function LogClient() {
             return;
         }
         if (logViewDisplayMode === "bucks") {
-            setLogViewDisplayMode("both");
+            setLogViewDisplayMode("all");
             return;
         }
         setLogViewDisplayMode("dimes");

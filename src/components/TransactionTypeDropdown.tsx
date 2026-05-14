@@ -23,7 +23,7 @@ const MODE_OPTIONS: {
 }[] = [
     { key: "dimes", label: "Small Dimes", icon: Coins },
     { key: "bucks", label: "Big Bucks", icon: Banknote },
-    { key: "both", label: "All", icon: HandCoins },
+    { key: "all", label: "All", icon: HandCoins },
 ];
 
 export function TransactionTypeDropdown({

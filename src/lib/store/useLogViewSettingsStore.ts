@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-export type ViewDisplayMode = "dimes" | "bucks" | "both";
+export type ViewDisplayMode = "dimes" | "bucks" | "all";
 
 interface LogViewSettingsStore {
     logViewDisplayMode: ViewDisplayMode;
