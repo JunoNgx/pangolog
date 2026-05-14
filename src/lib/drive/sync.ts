@@ -3,6 +3,9 @@ import {
     CATEGORIES_FILE,
     RECURRING_RULES_FILE,
     SETTINGS_FILE,
+    STORE_CATEGORIES,
+    STORE_RECURRING_RULES,
+    STORE_TRANSACTIONS,
 } from "@/lib/constants";
 import {
     bulkPutCategories,
@@ -257,7 +260,7 @@ export async function runFullDriveSync(
 
     const db = await getDb();
     const tx = db.transaction(
-        ["categories", "recurring-rules", "transactions"],
+        [STORE_CATEGORIES, STORE_RECURRING_RULES, STORE_TRANSACTIONS],
         "readwrite",
     );
 

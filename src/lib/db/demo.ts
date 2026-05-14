@@ -1,4 +1,9 @@
 import { DateTime } from "luxon";
+import {
+    STORE_CATEGORIES,
+    STORE_RECURRING_RULES,
+    STORE_TRANSACTIONS,
+} from "@/lib/constants";
 import { toIsoString } from "../utils";
 import { getDb } from "./connection";
 import { generateId } from "./uuid";
@@ -21,13 +26,13 @@ export async function seedDemoData(): Promise<void> {
 
     await new Promise<void>((resolve, reject) => {
         const tx = db.transaction(
-            ["categories", "transactions", "recurring-rules"],
+            [STORE_CATEGORIES, STORE_TRANSACTIONS, STORE_RECURRING_RULES],
             "readwrite",
         );
         tx.oncomplete = () => resolve();
         tx.onerror = () => reject(tx.error);
 
-        const catStore = tx.objectStore("categories");
+        const catStore = tx.objectStore(STORE_CATEGORIES);
         catStore.put({
             id: catFood,
             name: "Food",
@@ -104,7 +109,7 @@ export async function seedDemoData(): Promise<void> {
         const yesterdayIso = toIsoString(yesterday);
         const todayIso = toIsoString(now);
 
-        const txStore = tx.objectStore("transactions");
+        const txStore = tx.objectStore(STORE_TRANSACTIONS);
         txStore.put({
             id: generateId(),
             description: "Eggs",
@@ -197,7 +202,7 @@ export async function seedDemoData(): Promise<void> {
             deletedAt: null,
         });
 
-        const rrStore = tx.objectStore("recurring-rules");
+        const rrStore = tx.objectStore(STORE_RECURRING_RULES);
         rrStore.put({
             id: generateId(),
             description: "Streaming service",

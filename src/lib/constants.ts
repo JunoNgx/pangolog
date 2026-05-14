@@ -78,11 +78,18 @@ export const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET ?? "";
 /* INDEXEDDB */
 export const DB_NAME = "pangolog";
 export const DB_VERSION = 4;
+export const STORE_CATEGORIES = "categories";
+export const STORE_RECURRING_RULES = "recurring-rules";
+export const STORE_TRANSACTIONS = "transactions";
 export const REQUIRED_STORES = [
-    "categories",
-    "recurring-rules",
-    "transactions",
+    STORE_CATEGORIES,
+    STORE_RECURRING_RULES,
+    STORE_TRANSACTIONS,
 ];
+export type StoreName =
+    | typeof STORE_CATEGORIES
+    | typeof STORE_RECURRING_RULES
+    | typeof STORE_TRANSACTIONS;
 
 export const PURGE_DAYS = 60;
 
