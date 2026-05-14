@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { RECURRING_RULES_KEY } from "@/lib/constants";
 import {
     createRecurringRule,
     deleteRecurringRule,
@@ -8,8 +9,6 @@ import {
     updateRecurringRule,
 } from "../db/recurringRules";
 import type { RecurringRuleInput, RecurringRuleUpdate } from "../db/types";
-
-const RECURRING_RULES_KEY = ["recurring-rules"];
 
 export function useRecurringRules() {
     return useQuery({
