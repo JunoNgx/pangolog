@@ -8,6 +8,8 @@ import {
 
 // --- File name helpers ---
 
+const BOUNDARY = "pangolog_boundary";
+
 export function transactionFileName(year: number): string {
     return `${year}.json`;
 }
@@ -47,7 +49,7 @@ function buildMultipart(
     metadata: Record<string, unknown>,
     content: string,
 ): { body: string; boundary: string } {
-    const boundary = "pangolog_boundary";
+    const boundary = BOUNDARY;
     const body = [
         `--${boundary}`,
         "Content-Type: application/json; charset=UTF-8",
