@@ -69,7 +69,7 @@ export default function LogClient() {
         setLogViewDisplayMode("dimes");
     }
 
-    useHotkey("U", handleCycleDisplayMode, { ctrlOrMeta: true, shift: true });
+    useHotkey("u", handleCycleDisplayMode, { ctrlOrMeta: true, shift: true });
 
     const { sync } = useSyncFn();
     const triggerSync = useCallback(() => sync(), [sync]);
