@@ -9,7 +9,7 @@ import {
 } from "@heroui/react";
 import type { LucideIcon } from "lucide-react";
 import { Banknote, Coins, HandCoins } from "lucide-react";
-import type { ViewDisplayMode } from "@/lib/store/useLogViewSettingsStore";
+import type { ViewDisplayMode } from "@/lib/types";
 
 interface TransactionTypeDropdownProps {
     displayMode: ViewDisplayMode;

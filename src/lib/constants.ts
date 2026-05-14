@@ -1,3 +1,5 @@
+import type { Frequency } from "@/lib/types";
+
 /* APP CONFIG */
 export const BASE_URL =
     process.env.NEXT_PUBLIC_BASE_URL ?? "https://pangolog.app";
@@ -61,7 +63,7 @@ export const FREQUENCY_ORDER = {
     yearly: 3,
 };
 
-export const VALID_FREQUENCIES = new Set([
+export const VALID_FREQUENCIES: Set<Frequency> = new Set([
     "daily",
     "weekly",
     "monthly",
