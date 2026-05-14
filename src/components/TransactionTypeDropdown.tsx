@@ -37,6 +37,7 @@ export function TransactionTypeDropdown({
     function handleSelectionChange(keys: "all" | Set<React.Key>) {
         if (keys === "all") return;
         const key = Array.from(keys)[0] as ViewDisplayMode;
+        if (!key) return;
         setDisplayMode(key);
     }
 
