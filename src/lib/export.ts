@@ -3,6 +3,7 @@ import {
     getAllRecurringRulesForSync,
     getAllTransactions,
 } from "./db/bulk";
+import { MIME_JSON } from "@/lib/constants";
 import { useProfileSettingsStore } from "./store/useProfileSettingsStore";
 import { todayDateString, utcNowString } from "./utils";
 
@@ -32,7 +33,7 @@ export async function buildExportData() {
         isPrefixCurrency,
         isExpenseOnlyMode,
         isCategoryAlphabetical,
-        settingsUpdatedAt,
+        updatedAt,
     } = useProfileSettingsStore.getState();
 
     return {
@@ -42,7 +43,7 @@ export async function buildExportData() {
             isPrefixCurrency,
             isExpenseOnlyMode,
             isCategoryAlphabetical,
-            updatedAt: settingsUpdatedAt,
+            updatedAt,
         },
         transactions: transactions
             .filter((t) => t.deletedAt === null)
@@ -62,6 +63,6 @@ export async function exportJson(isPrettyPrint: boolean): Promise<void> {
     triggerDownload(
         content,
         `pangolog-${todayDateString()}.json`,
-        "application/json",
+        MIME_JSON,
     );
 }

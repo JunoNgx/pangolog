@@ -1,7 +1,8 @@
 import { DateTime } from "luxon";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { ViewDisplayMode } from "./useLogViewSettingsStore";
+import { PERSIST_SUMMARY_VIEW } from "@/lib/constants";
+import type { ViewDisplayMode } from "@/lib/types";
 
 interface SummaryViewSettingsStore {
     isYearly: boolean;
@@ -23,12 +24,12 @@ export const useSummaryViewSettingsStore = create<SummaryViewSettingsStore>()(
             setSelectedYear: (value) => set({ selectedYear: value }),
             selectedMonth: DateTime.now().month,
             setSelectedMonth: (value) => set({ selectedMonth: value }),
-            summaryViewDisplayMode: "dimes" as ViewDisplayMode,
+            summaryViewDisplayMode: "dimes",
             setSummaryViewDisplayMode: (mode) =>
                 set({ summaryViewDisplayMode: mode }),
         }),
         {
-            name: "pangolog-summary-view-settings",
+            name: PERSIST_SUMMARY_VIEW,
         },
     ),
 );

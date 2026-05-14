@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { TRANSACTIONS_KEY } from "@/lib/constants";
 import { getAllTransactions } from "../db/bulk";
 import {
     createTransaction,
@@ -10,8 +11,6 @@ import {
     updateTransaction,
 } from "../db/transactions";
 import type { TransactionInput, TransactionUpdate } from "../db/types";
-
-const TRANSACTIONS_KEY = ["transactions"];
 
 export function useAllTransactions() {
     return useQuery({

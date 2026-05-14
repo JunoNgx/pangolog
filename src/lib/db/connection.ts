@@ -1,5 +1,12 @@
 import { DateTime } from "luxon";
-import { DB_NAME, DB_VERSION, REQUIRED_STORES } from "@/lib/constants";
+import {
+    DB_NAME,
+    DB_VERSION,
+    REQUIRED_STORES,
+    STORE_CATEGORIES,
+    STORE_RECURRING_RULES,
+    STORE_TRANSACTIONS,
+} from "@/lib/constants";
 
 let dbPromise: Promise<IDBDatabase> | null = null;
 
@@ -23,19 +30,19 @@ function openDbRaw(): Promise<IDBDatabase> {
                 bucks.createIndex("categoryId", "categoryId");
                 bucks.createIndex("transactedAt", "transactedAt");
 
-                const categories = db.createObjectStore("categories", {
+                const categories = db.createObjectStore(STORE_CATEGORIES, {
                     keyPath: "id",
                 });
                 categories.createIndex("createdAt", "createdAt");
 
-                db.createObjectStore("recurring-rules", { keyPath: "id" });
+                db.createObjectStore(STORE_RECURRING_RULES, { keyPath: "id" });
             }
 
             if (event.oldVersion < 2) {
                 const upgradeTx = (event.target as IDBOpenDBRequest)
                     .transaction;
                 if (!upgradeTx) return;
-                const rules = upgradeTx.objectStore("recurring-rules");
+                const rules = upgradeTx.objectStore(STORE_RECURRING_RULES);
                 rules.createIndex("nextGenerationAt", "nextGenerationAt");
                 rules.createIndex("createdAt", "createdAt");
             }
@@ -77,7 +84,7 @@ function openDbRaw(): Promise<IDBDatabase> {
                     .transaction;
                 if (!upgradeTx) return;
 
-                const transactions = db.createObjectStore("transactions", {
+                const transactions = db.createObjectStore(STORE_TRANSACTIONS, {
                     keyPath: "id",
                 });
                 transactions.createIndex("yearMonth", ["year", "month"]);
@@ -85,7 +92,7 @@ function openDbRaw(): Promise<IDBDatabase> {
                 transactions.createIndex("categoryId", "categoryId");
                 transactions.createIndex("transactedAt", "transactedAt");
 
-                const txStore = upgradeTx.objectStore("transactions");
+                const txStore = upgradeTx.objectStore(STORE_TRANSACTIONS);
 
                 const getAllDimes = upgradeTx.objectStore("dimes").getAll();
                 getAllDimes.onsuccess = () => {

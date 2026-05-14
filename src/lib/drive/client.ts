@@ -3,9 +3,12 @@ import {
     DRIVE_UPLOAD_API,
     FOLDER_MIME,
     FOLDER_NAME,
+    MIME_JSON,
 } from "@/lib/constants";
 
 // --- File name helpers ---
+
+const BOUNDARY = "pangolog_boundary";
 
 export function transactionFileName(year: number): string {
     return `${year}.json`;
@@ -46,7 +49,7 @@ function buildMultipart(
     metadata: Record<string, unknown>,
     content: string,
 ): { body: string; boundary: string } {
-    const boundary = "pangolog_boundary";
+    const boundary = BOUNDARY;
     const body = [
         `--${boundary}`,
         "Content-Type: application/json; charset=UTF-8",
@@ -81,7 +84,7 @@ export async function getOrCreatePangoFolder(token: string): Promise<string> {
             method: "POST",
             headers: {
                 ...authHeader(token),
-                "Content-Type": "application/json",
+                "Content-Type": MIME_JSON,
             },
             body: JSON.stringify({ name: FOLDER_NAME, mimeType: FOLDER_MIME }),
         }),
@@ -195,7 +198,7 @@ export async function trashFile(token: string, fileId: string): Promise<void> {
             method: "PATCH",
             headers: {
                 ...authHeader(token),
-                "Content-Type": "application/json",
+                "Content-Type": MIME_JSON,
             },
             body: JSON.stringify({ trashed: true }),
         }),

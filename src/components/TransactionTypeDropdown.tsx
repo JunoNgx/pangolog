@@ -9,7 +9,7 @@ import {
 } from "@heroui/react";
 import type { LucideIcon } from "lucide-react";
 import { Banknote, Coins, HandCoins } from "lucide-react";
-import type { ViewDisplayMode } from "@/lib/store/useLogViewSettingsStore";
+import type { ViewDisplayMode } from "@/lib/types";
 
 interface TransactionTypeDropdownProps {
     displayMode: ViewDisplayMode;
@@ -23,7 +23,7 @@ const MODE_OPTIONS: {
 }[] = [
     { key: "dimes", label: "Small Dimes", icon: Coins },
     { key: "bucks", label: "Big Bucks", icon: Banknote },
-    { key: "both", label: "All", icon: HandCoins },
+    { key: "all", label: "All", icon: HandCoins },
 ];
 
 export function TransactionTypeDropdown({
@@ -37,6 +37,7 @@ export function TransactionTypeDropdown({
     function handleSelectionChange(keys: "all" | Set<React.Key>) {
         if (keys === "all") return;
         const key = Array.from(keys)[0] as ViewDisplayMode;
+        if (!key) return;
         setDisplayMode(key);
     }
 

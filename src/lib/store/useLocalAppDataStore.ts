@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { PERSIST_LOCAL_APP_DATA } from "@/lib/constants";
 
 export type LoggerEntry = {
     timestamp: string;
@@ -27,7 +28,7 @@ export const useLocalAppDataStore = create<LocalAppDataStore>()(
             setLoggerEntries: (entries) => set({ loggerEntries: entries }),
         }),
         {
-            name: "pangolog-local-app-data",
+            name: PERSIST_LOCAL_APP_DATA,
             partialize: (state) => ({
                 shouldShowDemoDataBanner: state.shouldShowDemoDataBanner,
             }),
