@@ -3,6 +3,7 @@ import {
     CATEGORIES_FILE,
     RECURRING_RULES_FILE,
     SETTINGS_FILE,
+    RW,
     STORE_CATEGORIES,
     STORE_RECURRING_RULES,
     STORE_TRANSACTIONS,
@@ -261,7 +262,7 @@ export async function runFullDriveSync(
     const db = await getDb();
     const tx = db.transaction(
         [STORE_CATEGORIES, STORE_RECURRING_RULES, STORE_TRANSACTIONS],
-        "readwrite",
+        RW,
     );
 
     await Promise.all([

@@ -1,4 +1,4 @@
-import { STORE_CATEGORIES } from "@/lib/constants";
+import { RW, RO, STORE_CATEGORIES } from "@/lib/constants";
 import { utcNowString } from "../utils";
 import { getDb } from "./connection";
 import type { Category, CategoryInput, CategoryUpdate } from "./types";
@@ -17,7 +17,7 @@ export async function createCategory(input: CategoryInput): Promise<Category> {
     };
 
     return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE_CATEGORIES, "readwrite");
+        const tx = db.transaction(STORE_CATEGORIES, RW);
         const store = tx.objectStore(STORE_CATEGORIES);
         const request = store.add(category);
         request.onsuccess = () => resolve(category);
@@ -32,7 +32,7 @@ export async function updateCategory(
     const db = await getDb();
 
     return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE_CATEGORIES, "readwrite");
+        const tx = db.transaction(STORE_CATEGORIES, RW);
         const store = tx.objectStore(STORE_CATEGORIES);
         const getReq = store.get(id);
 
@@ -64,7 +64,7 @@ export async function deleteCategory(id: string): Promise<void> {
     const db = await getDb();
 
     return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE_CATEGORIES, "readwrite");
+        const tx = db.transaction(STORE_CATEGORIES, RW);
         const store = tx.objectStore(STORE_CATEGORIES);
         const getReq = store.get(id);
 
@@ -94,7 +94,7 @@ export async function restoreCategory(id: string): Promise<void> {
     const db = await getDb();
 
     return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE_CATEGORIES, "readwrite");
+        const tx = db.transaction(STORE_CATEGORIES, RW);
         const store = tx.objectStore(STORE_CATEGORIES);
         const getReq = store.get(id);
 
@@ -124,7 +124,7 @@ export async function reorderCategories(
     const now = utcNowString();
 
     return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE_CATEGORIES, "readwrite");
+        const tx = db.transaction(STORE_CATEGORIES, RW);
         const store = tx.objectStore(STORE_CATEGORIES);
 
         tx.oncomplete = () => resolve();
@@ -146,7 +146,7 @@ export async function getAllCategories(): Promise<Category[]> {
     const db = await getDb();
 
     return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE_CATEGORIES, "readonly");
+        const tx = db.transaction(STORE_CATEGORIES, RO);
         const store = tx.objectStore(STORE_CATEGORIES);
         const request = store.getAll();
 

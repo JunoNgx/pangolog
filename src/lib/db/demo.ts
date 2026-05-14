@@ -1,5 +1,6 @@
 import { DateTime } from "luxon";
 import {
+    RW,
     STORE_CATEGORIES,
     STORE_RECURRING_RULES,
     STORE_TRANSACTIONS,
@@ -27,7 +28,7 @@ export async function seedDemoData(): Promise<void> {
     await new Promise<void>((resolve, reject) => {
         const tx = db.transaction(
             [STORE_CATEGORIES, STORE_TRANSACTIONS, STORE_RECURRING_RULES],
-            "readwrite",
+            RW,
         );
         tx.oncomplete = () => resolve();
         tx.onerror = () => reject(tx.error);

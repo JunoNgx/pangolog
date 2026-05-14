@@ -1,6 +1,8 @@
 import { DateTime } from "luxon";
 import {
     PURGE_DAYS,
+    RW,
+    RO,
     STORE_CATEGORIES,
     STORE_RECURRING_RULES,
     STORE_TRANSACTIONS,
@@ -16,7 +18,7 @@ async function purgeStore(
 ): Promise<void> {
     const db = await getDb();
     return new Promise((resolve, reject) => {
-        const tx = db.transaction(storeName, "readwrite");
+        const tx = db.transaction(storeName, RW);
         const store = tx.objectStore(storeName);
         const request = store.openCursor();
 
@@ -50,7 +52,7 @@ export async function purgeExpiredRecords(): Promise<void> {
 export async function getAllCategoriesForSync(): Promise<Category[]> {
     const db = await getDb();
     return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE_CATEGORIES, "readonly");
+        const tx = db.transaction(STORE_CATEGORIES, RO);
         const request = tx.objectStore(STORE_CATEGORIES).getAll();
         request.onsuccess = () => resolve(request.result as Category[]);
         request.onerror = () => reject(request.error);
@@ -60,7 +62,7 @@ export async function getAllCategoriesForSync(): Promise<Category[]> {
 export async function getAllRecurringRulesForSync(): Promise<RecurringRule[]> {
     const db = await getDb();
     return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE_RECURRING_RULES, "readonly");
+        const tx = db.transaction(STORE_RECURRING_RULES, RO);
         const request = tx.objectStore(STORE_RECURRING_RULES).getAll();
         request.onsuccess = () => resolve(request.result as RecurringRule[]);
         request.onerror = () => reject(request.error);
@@ -70,7 +72,7 @@ export async function getAllRecurringRulesForSync(): Promise<RecurringRule[]> {
 export async function getAllTransactions(): Promise<Transaction[]> {
     const db = await getDb();
     return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE_TRANSACTIONS, "readonly");
+        const tx = db.transaction(STORE_TRANSACTIONS, RO);
         const request = tx.objectStore(STORE_TRANSACTIONS).getAll();
         request.onsuccess = () => resolve(request.result as Transaction[]);
         request.onerror = () => reject(request.error);
@@ -89,7 +91,7 @@ export async function bulkPutTransactions(
 
     const db = await getDb();
     return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE_TRANSACTIONS, "readwrite");
+        const tx = db.transaction(STORE_TRANSACTIONS, RW);
         const store = tx.objectStore(STORE_TRANSACTIONS);
         for (const transaction of transactions) store.put(transaction);
         tx.oncomplete = () => resolve();
@@ -109,7 +111,7 @@ export async function bulkPutCategories(
 
     const db = await getDb();
     return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE_CATEGORIES, "readwrite");
+        const tx = db.transaction(STORE_CATEGORIES, RW);
         const store = tx.objectStore(STORE_CATEGORIES);
         for (const category of categories) store.put(category);
         tx.oncomplete = () => resolve();
@@ -129,7 +131,7 @@ export async function bulkPutRecurringRules(
 
     const db = await getDb();
     return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE_RECURRING_RULES, "readwrite");
+        const tx = db.transaction(STORE_RECURRING_RULES, RW);
         const store = tx.objectStore(STORE_RECURRING_RULES);
         for (const rule of rules) store.put(rule);
         tx.oncomplete = () => resolve();
@@ -143,7 +145,7 @@ export async function clearAllData(): Promise<void> {
         await new Promise<void>((resolve, reject) => {
             const tx = db.transaction(
                 [STORE_CATEGORIES, STORE_RECURRING_RULES, STORE_TRANSACTIONS],
-                "readwrite",
+                RW,
             );
             tx.objectStore(STORE_CATEGORIES).clear();
             tx.objectStore(STORE_RECURRING_RULES).clear();
