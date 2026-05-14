@@ -36,6 +36,7 @@ function ThemedToaster() {
     const { resolvedTheme } = useTheme();
     return (
         <Toaster
+            className="Sonner"
             position="bottom-center"
             swipeDirections={["left"]}
             theme={resolvedTheme as "light" | "dark"}
