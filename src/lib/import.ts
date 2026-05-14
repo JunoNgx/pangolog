@@ -1,5 +1,10 @@
 import type { Frequency, ProfileSettings } from "@/lib/types";
-import { VALID_FREQUENCIES } from "@/lib/constants";
+import {
+    STORE_CATEGORIES,
+    STORE_RECURRING_RULES,
+    STORE_TRANSACTIONS,
+    VALID_FREQUENCIES,
+} from "@/lib/constants";
 import {
     bulkPutCategories,
     bulkPutRecurringRules,
@@ -244,7 +249,7 @@ export async function executeImport(data: ImportData): Promise<ImportPreview> {
     try {
         const db = await getDb();
         const tx = db.transaction(
-            ["categories", "recurring-rules", "transactions"],
+            [STORE_CATEGORIES, STORE_RECURRING_RULES, STORE_TRANSACTIONS],
             "readwrite",
         );
         await Promise.all([
