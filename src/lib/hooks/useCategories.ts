@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { CATEGORIES_KEY } from "@/lib/constants";
 import {
     createCategory,
     deleteCategory,
@@ -10,8 +11,6 @@ import {
 } from "../db/categories";
 import type { Category, CategoryInput, CategoryUpdate } from "../db/types";
 import { useProfileSettingsStore } from "../store/useProfileSettingsStore";
-
-const CATEGORIES_KEY = ["categories"];
 
 export function useCategories() {
     const { isCategoryAlphabetical } = useProfileSettingsStore();
