@@ -23,7 +23,7 @@ export const useSummaryViewSettingsStore = create<SummaryViewSettingsStore>()(
             setSelectedYear: (value) => set({ selectedYear: value }),
             selectedMonth: DateTime.now().month,
             setSelectedMonth: (value) => set({ selectedMonth: value }),
-            summaryViewDisplayMode: "dimes" as ViewDisplayMode,
+            summaryViewDisplayMode: "dimes",
             setSummaryViewDisplayMode: (mode) =>
                 set({ summaryViewDisplayMode: mode }),
         }),
