@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import { STORE_TRANSACTIONS } from "@/lib/constants";
+import { RW, RO, STORE_TRANSACTIONS } from "@/lib/constants";
 import { utcNowString } from "../utils";
 import { getDb } from "./connection";
 import type { Transaction, TransactionInput, TransactionUpdate } from "./types";
@@ -22,7 +22,7 @@ export async function createTransaction(
     };
 
     return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE_TRANSACTIONS, "readwrite");
+        const tx = db.transaction(STORE_TRANSACTIONS, RW);
         const store = tx.objectStore(STORE_TRANSACTIONS);
         const request = store.add(transaction);
         request.onsuccess = () => resolve(transaction);
@@ -37,7 +37,7 @@ export async function updateTransaction(
     const db = await getDb();
 
     return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE_TRANSACTIONS, "readwrite");
+        const tx = db.transaction(STORE_TRANSACTIONS, RW);
         const store = tx.objectStore(STORE_TRANSACTIONS);
         const getReq = store.get(id);
 
@@ -74,7 +74,7 @@ export async function deleteTransaction(id: string): Promise<void> {
     const db = await getDb();
 
     return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE_TRANSACTIONS, "readwrite");
+        const tx = db.transaction(STORE_TRANSACTIONS, RW);
         const store = tx.objectStore(STORE_TRANSACTIONS);
         const getReq = store.get(id);
 
@@ -104,7 +104,7 @@ export async function restoreTransaction(id: string): Promise<void> {
     const db = await getDb();
 
     return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE_TRANSACTIONS, "readwrite");
+        const tx = db.transaction(STORE_TRANSACTIONS, RW);
         const store = tx.objectStore(STORE_TRANSACTIONS);
         const getReq = store.get(id);
 
@@ -134,7 +134,7 @@ export async function getTransactionsByMonth(
     const db = await getDb();
 
     return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE_TRANSACTIONS, "readonly");
+        const tx = db.transaction(STORE_TRANSACTIONS, RO);
         const store = tx.objectStore(STORE_TRANSACTIONS);
         const index = store.index("yearMonth");
         const request = index.getAll(IDBKeyRange.only([year, month]));
@@ -155,7 +155,7 @@ export async function getTransactionsByYear(
     const db = await getDb();
 
     return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE_TRANSACTIONS, "readonly");
+        const tx = db.transaction(STORE_TRANSACTIONS, RO);
         const store = tx.objectStore(STORE_TRANSACTIONS);
         const index = store.index("yearMonth");
         const range = IDBKeyRange.bound([year, 1], [year, 12]);

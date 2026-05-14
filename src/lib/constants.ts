@@ -90,6 +90,8 @@ export type StoreName =
     | typeof STORE_CATEGORIES
     | typeof STORE_RECURRING_RULES
     | typeof STORE_TRANSACTIONS;
+export const RW: IDBTransactionMode = "readwrite";
+export const RO: IDBTransactionMode = "readonly";
 
 export const PURGE_DAYS = 60;
 
@@ -108,4 +110,8 @@ export const DEBOUNCE_MS = 10 * 1000;
 export const RESTORE_SYNC_THRESHOLD_MS = 24 * 60 * 60 * 1000;
 
 /* MISC */
+export const MIME_JSON = "application/json";
+export const TRANSACTIONS_KEY = ["transactions"];
+export const CATEGORIES_KEY = ["categories"];
+export const RECURRING_RULES_KEY = ["recurring-rules"];
 export const UNCATEGORISED_ID = "__uncategorised__";

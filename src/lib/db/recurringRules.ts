@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import { STORE_RECURRING_RULES } from "@/lib/constants";
+import { RW, RO, STORE_RECURRING_RULES } from "@/lib/constants";
 import { todayDateString, toIsoDateString, utcNowString } from "../utils";
 import { getDb } from "./connection";
 import type {
@@ -25,7 +25,7 @@ export async function createRecurringRule(
     };
 
     return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE_RECURRING_RULES, "readwrite");
+        const tx = db.transaction(STORE_RECURRING_RULES, RW);
         const store = tx.objectStore(STORE_RECURRING_RULES);
         const request = store.add(rule);
         request.onsuccess = () => resolve(rule);
@@ -40,7 +40,7 @@ export async function updateRecurringRule(
     const db = await getDb();
 
     return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE_RECURRING_RULES, "readwrite");
+        const tx = db.transaction(STORE_RECURRING_RULES, RW);
         const store = tx.objectStore(STORE_RECURRING_RULES);
         const getReq = store.get(id);
 
@@ -72,7 +72,7 @@ export async function deleteRecurringRule(id: string): Promise<void> {
     const db = await getDb();
 
     return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE_RECURRING_RULES, "readwrite");
+        const tx = db.transaction(STORE_RECURRING_RULES, RW);
         const store = tx.objectStore(STORE_RECURRING_RULES);
         const getReq = store.get(id);
 
@@ -100,7 +100,7 @@ export async function restoreRecurringRule(id: string): Promise<void> {
     const db = await getDb();
 
     return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE_RECURRING_RULES, "readwrite");
+        const tx = db.transaction(STORE_RECURRING_RULES, RW);
         const store = tx.objectStore(STORE_RECURRING_RULES);
         const getReq = store.get(id);
 
@@ -131,7 +131,7 @@ export async function advanceRecurringRule(
     const db = await getDb();
 
     return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE_RECURRING_RULES, "readwrite");
+        const tx = db.transaction(STORE_RECURRING_RULES, RW);
         const store = tx.objectStore(STORE_RECURRING_RULES);
         const getReq = store.get(id);
 
@@ -161,7 +161,7 @@ export async function getAllRecurringRules(): Promise<RecurringRule[]> {
     const db = await getDb();
 
     return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE_RECURRING_RULES, "readonly");
+        const tx = db.transaction(STORE_RECURRING_RULES, RO);
         const store = tx.objectStore(STORE_RECURRING_RULES);
         const request = store.getAll();
 
@@ -180,7 +180,7 @@ export async function getDueRecurringRules(): Promise<RecurringRule[]> {
     const today = todayDateString();
 
     return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE_RECURRING_RULES, "readonly");
+        const tx = db.transaction(STORE_RECURRING_RULES, RO);
         const store = tx.objectStore(STORE_RECURRING_RULES);
         const request = store.getAll();
 

@@ -1,5 +1,6 @@
 import type { Frequency, ProfileSettings } from "@/lib/types";
 import {
+    RW,
     STORE_CATEGORIES,
     STORE_RECURRING_RULES,
     STORE_TRANSACTIONS,
@@ -250,7 +251,7 @@ export async function executeImport(data: ImportData): Promise<ImportPreview> {
         const db = await getDb();
         const tx = db.transaction(
             [STORE_CATEGORIES, STORE_RECURRING_RULES, STORE_TRANSACTIONS],
-            "readwrite",
+            RW,
         );
         await Promise.all([
             bulkPutTransactions(transactionsToPut, tx),
