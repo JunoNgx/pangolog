@@ -262,9 +262,9 @@ export async function executeImport(data: ImportData): Promise<ImportPreview> {
     }
 
     if (data.settings) {
-        const { settingsUpdatedAt, applyRemoteSettings } =
+        const { updatedAt, applyRemoteSettings } =
             useProfileSettingsStore.getState();
-        if (data.settings.updatedAt > settingsUpdatedAt) {
+        if (data.settings.updatedAt > updatedAt) {
             applyRemoteSettings(
                 data.settings.customCurrency,
                 data.settings.isPrefixCurrency,

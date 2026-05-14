@@ -201,12 +201,12 @@ export async function runFullDriveSync(
 
     // --- Settings sync ---
 
-    const { settingsUpdatedAt, applyRemoteSettings } =
+    const { updatedAt, applyRemoteSettings } =
         useProfileSettingsStore.getState();
 
     if (
         remoteSettingsResult &&
-        remoteSettingsResult.updatedAt > settingsUpdatedAt
+        remoteSettingsResult.updatedAt > updatedAt
     ) {
         applyRemoteSettings(
             remoteSettingsResult.customCurrency ?? "",
@@ -222,14 +222,14 @@ export async function runFullDriveSync(
         isPrefixCurrency,
         isExpenseOnlyMode,
         isCategoryAlphabetical,
-        settingsUpdatedAt: resolvedSettingsUpdatedAt,
+        updatedAt: storedUpdatedAt,
     } = useProfileSettingsStore.getState();
     const localSettings: ProfileSettings = {
         customCurrency,
         isPrefixCurrency,
         isExpenseOnlyMode,
         isCategoryAlphabetical,
-        updatedAt: resolvedSettingsUpdatedAt,
+        updatedAt: storedUpdatedAt,
     };
     await upsertFile(token, folderId, SETTINGS_FILE, localSettings);
 

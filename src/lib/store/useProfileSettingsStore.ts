@@ -8,7 +8,7 @@ interface ProfileSettingsStore {
     isPrefixCurrency: boolean;
     isExpenseOnlyMode: boolean;
     isCategoryAlphabetical: boolean;
-    settingsUpdatedAt: string;
+    updatedAt: string;
     setCustomCurrency: (value: string) => void;
     setIsPrefixCurrency: (value: boolean) => void;
     setIsExpenseOnlyMode: (value: boolean) => void;
@@ -18,7 +18,7 @@ interface ProfileSettingsStore {
         isPrefixCurrency: boolean,
         isExpenseOnlyMode: boolean,
         isCategoryAlphabetical: boolean,
-        settingsUpdatedAt: string,
+        updatedAt: string,
     ) => void;
 }
 
@@ -29,44 +29,51 @@ export const useProfileSettingsStore = create<ProfileSettingsStore>()(
             isPrefixCurrency: true,
             isExpenseOnlyMode: false,
             isCategoryAlphabetical: false,
-            settingsUpdatedAt: toIsoString(DateTime.fromMillis(0)),
+            updatedAt: toIsoString(DateTime.fromMillis(0)),
             setCustomCurrency: (value) =>
                 set({
                     customCurrency: value,
-                    settingsUpdatedAt: utcNowString(),
+                    updatedAt: utcNowString(),
                 }),
             setIsPrefixCurrency: (value) =>
                 set({
                     isPrefixCurrency: value,
-                    settingsUpdatedAt: utcNowString(),
+                    updatedAt: utcNowString(),
                 }),
             setIsExpenseOnlyMode: (value) =>
                 set({
                     isExpenseOnlyMode: value,
-                    settingsUpdatedAt: utcNowString(),
+                    updatedAt: utcNowString(),
                 }),
             setIsCategoryAlphabetical: (value) =>
                 set({
                     isCategoryAlphabetical: value,
-                    settingsUpdatedAt: utcNowString(),
+                    updatedAt: utcNowString(),
                 }),
             applyRemoteSettings: (
                 customCurrency,
                 isPrefixCurrency,
                 isExpenseOnlyMode,
                 isCategoryAlphabetical,
-                settingsUpdatedAt,
+                updatedAt,
             ) =>
                 set({
                     customCurrency,
                     isPrefixCurrency,
                     isExpenseOnlyMode,
                     isCategoryAlphabetical,
-                    settingsUpdatedAt,
+                    updatedAt,
                 }),
         }),
         {
             name: "pangolog-profile-settings",
+            partialize: (state) => ({
+                customCurrency: state.customCurrency,
+                isPrefixCurrency: state.isPrefixCurrency,
+                isExpenseOnlyMode: state.isExpenseOnlyMode,
+                isCategoryAlphabetical: state.isCategoryAlphabetical,
+                updatedAt: state.updatedAt,
+            }),
         },
     ),
 );
