@@ -72,10 +72,10 @@ export function CommandPalette() {
 
     const close = useCallback(() => setIsOpen(false), []);
 
-    useHotkey("k", open, { ctrlOrMeta: true });
+    useHotkey("k", open, { hasMod: true });
 
     const goToSettings = useCallback(() => router.push("/settings"), [router]);
-    useHotkey(".", goToSettings, { ctrlOrMeta: true });
+    useHotkey(".", goToSettings, { hasMod: true });
 
     const NAV_ROUTES = ["/log", "/summary", "/manage", "/settings"];
 
@@ -92,8 +92,8 @@ export function CommandPalette() {
         router.push(NAV_ROUTES[prevIndex]);
     }, [pathname, router]);
 
-    useHotkey("]", goToNextRoute, { ctrlOrMeta: true });
-    useHotkey("[", goToPrevRoute, { ctrlOrMeta: true });
+    useHotkey("]", goToNextRoute, { hasMod: true });
+    useHotkey("[", goToPrevRoute, { hasMod: true });
 
     const createCommand = useMemo((): Command | null => {
         if (pathname === "/log") {

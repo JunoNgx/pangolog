@@ -3,7 +3,7 @@ import { useLayoutEffect, useRef } from "react";
 export function useHotkey(
     key: string,
     callback: () => void,
-    options?: { ctrlOrMeta?: boolean; shift?: boolean },
+    options?: { hasMod?: boolean; hasShift?: boolean },
 ) {
     const callbackRef = useRef(callback);
     const optionsRef = useRef(options);
@@ -21,9 +21,9 @@ export function useHotkey(
                 (activeEl instanceof HTMLElement && activeEl.isContentEditable)
             )
                 return;
-            if (optionsRef.current?.ctrlOrMeta && !(e.metaKey || e.ctrlKey))
+            if (optionsRef.current?.hasMod && !(e.metaKey || e.ctrlKey))
                 return;
-            if (optionsRef.current?.shift && !e.shiftKey) return;
+            if (optionsRef.current?.hasShift && !e.shiftKey) return;
             if (e.key !== key) return;
 
             e.preventDefault();

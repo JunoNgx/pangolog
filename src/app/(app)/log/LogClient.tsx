@@ -38,7 +38,7 @@ import { TransactionList } from "./TransactionList";
 export default function LogClient() {
     const [isCreateOpen, setIsCreateOpen] = useState(false);
     const openCreateDialog = useCallback(() => setIsCreateOpen(true), []);
-    useHotkey("Enter", openCreateDialog, { ctrlOrMeta: true });
+    useHotkey("Enter", openCreateDialog, { hasMod: true });
     useEffect(() => {
         commandPaletteCreateActions.register(openCreateDialog);
         return () => commandPaletteCreateActions.unregister();
@@ -55,7 +55,7 @@ export default function LogClient() {
     const shouldShowBigBucks = logViewDisplayMode !== "dimes";
     const isOnlyBigBucks = logViewDisplayMode === "bucks";
 
-    useHotkey("f", handleSearchHotkey, { ctrlOrMeta: true });
+    useHotkey("f", handleSearchHotkey, { hasMod: true });
 
     function handleCycleDisplayMode() {
         if (logViewDisplayMode === "dimes") {
@@ -69,11 +69,11 @@ export default function LogClient() {
         setLogViewDisplayMode("dimes");
     }
 
-    useHotkey("u", handleCycleDisplayMode, { ctrlOrMeta: true, shift: true });
+    useHotkey("u", handleCycleDisplayMode, { hasMod: true, hasShift: true });
 
     const { sync } = useSyncFn();
     const triggerSync = useCallback(() => sync(), [sync]);
-    useHotkey("s", triggerSync, { ctrlOrMeta: true });
+    useHotkey("s", triggerSync, { hasMod: true });
 
     const [selectedYear, setSelectedYear] = useState(DateTime.now().year);
     const [selectedMonth, setSelectedMonth] = useState<number>(
