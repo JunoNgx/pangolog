@@ -223,15 +223,15 @@ export default function SummaryClient() {
             <RouteHeader
                 label="Summary"
                 leftContent={
-                    <TransactionTypeDropdown
-                        displayMode={summaryViewDisplayMode}
-                        setDisplayMode={setSummaryViewDisplayMode}
-                    />
-                }
-                rightContent={
                     <PeriodViewDropdown
                         isYearly={isYearly}
                         onViewChange={setIsYearly}
+                    />
+                }
+                rightContent={
+                    <TransactionTypeDropdown
+                        displayMode={summaryViewDisplayMode}
+                        setDisplayMode={setSummaryViewDisplayMode}
                     />
                 }
             />
