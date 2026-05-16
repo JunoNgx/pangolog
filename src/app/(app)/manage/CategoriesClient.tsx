@@ -14,7 +14,7 @@ import { CategoryList } from "./CategoryList";
 export default function CategoriesClient() {
     const [isCreateOpen, setIsCreateOpen] = useState(false);
     const openCreateDialog = useCallback(() => setIsCreateOpen(true), []);
-    useHotkey("Enter", openCreateDialog, { ctrlOrMeta: true });
+    useHotkey("Enter", openCreateDialog, { hasMod: true });
     useEffect(() => {
         commandPaletteCreateActions.register(openCreateDialog);
         return () => commandPaletteCreateActions.unregister();

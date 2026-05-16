@@ -91,7 +91,7 @@ export function ShortcutsDialog() {
         commandPaletteShortcutsActions.register(open);
         return () => commandPaletteShortcutsActions.unregister();
     }, [open]);
-    useHotkey("/", toggle, { ctrlOrMeta: true });
+    useHotkey("/", toggle, { hasMod: true });
 
     return (
         <Modal

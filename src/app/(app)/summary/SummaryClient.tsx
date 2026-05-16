@@ -171,8 +171,8 @@ export default function SummaryClient() {
         () => setIsYearly(!isYearly),
         [isYearly, setIsYearly],
     );
-    useHotkey("u", handleCycleDisplayMode, { ctrlOrMeta: true, shift: true });
-    useHotkey("y", toggleIsYearly, { ctrlOrMeta: true, shift: true });
+    useHotkey("u", handleCycleDisplayMode, { hasMod: true, hasShift: true });
+    useHotkey("y", toggleIsYearly, { hasMod: true, hasShift: true });
 
     const { data: categories } = useCategories();
     const { data: monthlyTransactions } = useTransactionsByMonth(

@@ -39,7 +39,7 @@ export default function RecurringClient() {
     const [shouldShowIncome, setShouldShowIncome] = useState(true);
 
     const openCreateDialog = useCallback(() => setIsCreateOpen(true), []);
-    useHotkey("Enter", openCreateDialog, { ctrlOrMeta: true });
+    useHotkey("Enter", openCreateDialog, { hasMod: true });
     useEffect(() => {
         commandPaletteCreateActions.register(openCreateDialog);
         return () => commandPaletteCreateActions.unregister();
