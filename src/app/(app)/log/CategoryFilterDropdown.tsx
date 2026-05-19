@@ -74,7 +74,7 @@ const footerClasses = `
 `;
 
 const actionButtonClasses = `
-    flex-1 text-xs
+    flex-1 text-sm
 `;
 
 export function CategoryFilterDropdown({
