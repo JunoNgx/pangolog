@@ -3,10 +3,10 @@
 import { Button, Checkbox } from "@heroui/react";
 import { DateTime } from "luxon";
 import dynamic from "next/dynamic";
-import { useGoogleAuth } from "@/lib/hooks/useGoogleAuth";
 import { useSync } from "@/lib/hooks/useSync";
 import { useLocalSyncDataStore } from "@/lib/store/useLocalSyncDataStore";
 import { useLocalUserSettingsStore } from "@/lib/store/useLocalUserSettingsStore";
+import { useSyncProvider } from "@/lib/sync/useSyncProvider";
 import { getTimeFormatOptions } from "@/lib/utils";
 
 const OfflineIndicator = dynamic(
@@ -17,7 +17,7 @@ const OfflineIndicator = dynamic(
 
 export function DriveSyncSection() {
     const { authToken, isConnected, isConnecting, error, connect, disconnect } =
-        useGoogleAuth();
+        useSyncProvider();
     const { sync } = useSync();
     const { syncStatus, lastSyncTime, syncError } = useLocalSyncDataStore();
     const { timeFormat, isAutobackupEnabled, setIsAutobackupEnabled } =

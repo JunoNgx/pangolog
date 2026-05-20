@@ -72,7 +72,6 @@ export const VALID_FREQUENCIES: Set<Frequency> = new Set([
 
 /* GOOGLE AUTH */
 export const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ?? "";
-
 export const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET ?? "";
 
 /* INDEXEDDB */
@@ -95,12 +94,7 @@ export const RO: IDBTransactionMode = "readonly";
 
 export const PURGE_DAYS = 60;
 
-/* GOOGLE DRIVE */
-export const DRIVE_API = "https://www.googleapis.com/drive/v3";
-export const DRIVE_UPLOAD_API = "https://www.googleapis.com/upload/drive/v3";
-export const FOLDER_NAME = "Pangolog";
-export const FOLDER_MIME = "application/vnd.google-apps.folder";
-
+/* SYNC FILES */
 export const CATEGORIES_FILE = "categories.json";
 export const RECURRING_RULES_FILE = "recurring-rules.json";
 export const SETTINGS_FILE = "settings.json";

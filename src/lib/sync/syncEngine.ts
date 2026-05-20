@@ -2,8 +2,8 @@ import { DateTime } from "luxon";
 import {
     CATEGORIES_FILE,
     RECURRING_RULES_FILE,
-    SETTINGS_FILE,
     RW,
+    SETTINGS_FILE,
     STORE_CATEGORIES,
     STORE_RECURRING_RULES,
     STORE_TRANSACTIONS,
@@ -19,21 +19,24 @@ import {
 } from "@/lib/db/bulk";
 import { getDb } from "@/lib/db/connection";
 import type { Category, RecurringRule, Transaction } from "@/lib/db/types";
-import type { ProfileSettings } from "@/lib/types";
 import { buildExportData } from "@/lib/export";
 import { useLocalSyncDataStore } from "@/lib/store/useLocalSyncDataStore";
 import { useLocalUserSettingsStore } from "@/lib/store/useLocalUserSettingsStore";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
+import type { SyncProvider } from "@/lib/sync/syncProviderTypes";
+import type { ProfileSettings } from "@/lib/types";
 import { utcNowString } from "@/lib/utils";
-import {
-    backupFileName,
-    createFile,
-    downloadFile,
-    listFiles,
-    transactionFileName,
-    trashFile,
-    upsertFile,
-} from "./client";
+
+// --- File name helpers (provider-agnostic) ---
+
+export function transactionFileName(year: number): string {
+    return `${year}.json`;
+}
+
+export function backupFileName(year: number, month: number): string {
+    const mm = String(month).padStart(2, "0");
+    return `backup-${year}-${mm}.json`;
+}
 
 function groupBy<T>(arr: T[], key: (item: T) => string): Map<string, T[]> {
     const map = new Map<string, T[]>();
@@ -102,9 +105,10 @@ function mergeRecords<T extends { id: string; updatedAt: string }>(
     return Array.from(map.values());
 }
 
-export async function runFullDriveSync(
+export async function runFullSync(
     token: string,
-    folderId: string,
+    rootId: string,
+    provider: SyncProvider,
 ): Promise<string> {
     const syncStartTime = utcNowString();
 
@@ -118,27 +122,27 @@ export async function runFullDriveSync(
         getAllRecurringRulesForSync(),
     ]);
 
-    const driveFiles = await listFiles(token, folderId);
+    const remoteFiles = await provider.listFiles(token, rootId);
 
-    // Deduplicate Drive files by name - keep first occurrence, trash extras
-    const driveFileMap = new Map<
+    // Deduplicate remote files by name - keep first occurrence, trash extras
+    const remoteFileMap = new Map<
         string,
         { id: string; modifiedTime: string }
     >();
-    const toTrashDriveFileIds: string[] = [];
-    for (const f of driveFiles) {
-        if (driveFileMap.has(f.name)) {
-            toTrashDriveFileIds.push(f.id);
+    const toTrashFileIds: string[] = [];
+    for (const f of remoteFiles) {
+        if (remoteFileMap.has(f.name)) {
+            toTrashFileIds.push(f.id);
         } else {
-            driveFileMap.set(f.name, {
+            remoteFileMap.set(f.name, {
                 id: f.id,
                 modifiedTime: f.modifiedTime,
             });
         }
     }
-    if (toTrashDriveFileIds.length > 0) {
+    if (toTrashFileIds.length > 0) {
         await Promise.all(
-            toTrashDriveFileIds.map((id) => trashFile(token, id)),
+            toTrashFileIds.map((id) => provider.trashFile(token, id)),
         );
     }
 
@@ -148,33 +152,33 @@ export async function runFullDriveSync(
         transactionFileName(t.year),
     );
 
-    const driveYearFileNames = driveFiles
+    const remoteYearFileNames = remoteFiles
         .map((f) => f.name)
         .filter((name) => /^\d{4}\.json$/.test(name));
 
     const allYearFileNames = new Set([
         ...localTransactionsByYear.keys(),
-        ...driveYearFileNames,
+        ...remoteYearFileNames,
     ]);
 
     const relevantYearFiles = [...allYearFileNames]
         .map((yearFile) => {
-            const driveEntry = driveFileMap.get(yearFile);
-            if (!driveEntry) return null;
-            if (lastSyncTime && driveEntry.modifiedTime <= lastSyncTime)
+            const remoteEntry = remoteFileMap.get(yearFile);
+            if (!remoteEntry) return null;
+            if (lastSyncTime && remoteEntry.modifiedTime <= lastSyncTime)
                 return null;
-            return { yearFile, driveId: driveEntry.id };
+            return { yearFile, remoteId: remoteEntry.id };
         })
         .filter(
-            (entry): entry is { yearFile: string; driveId: string } =>
+            (entry): entry is { yearFile: string; remoteId: string } =>
                 entry !== null,
         );
 
     // --- Parallel downloads ---
 
-    const settingsEntry = driveFileMap.get(SETTINGS_FILE);
-    const categoriesEntry = driveFileMap.get(CATEGORIES_FILE);
-    const rulesEntry = driveFileMap.get(RECURRING_RULES_FILE);
+    const settingsEntry = remoteFileMap.get(SETTINGS_FILE);
+    const categoriesEntry = remoteFileMap.get(CATEGORIES_FILE);
+    const rulesEntry = remoteFileMap.get(RECURRING_RULES_FILE);
 
     const [
         remoteSettingsResult,
@@ -183,19 +187,22 @@ export async function runFullDriveSync(
         remoteYearResults,
     ] = await Promise.all([
         settingsEntry
-            ? downloadFile<ProfileSettings>(token, settingsEntry.id)
+            ? provider.downloadFile<ProfileSettings>(token, settingsEntry.id)
             : Promise.resolve(null),
         categoriesEntry
-            ? downloadFile<Category[]>(token, categoriesEntry.id)
+            ? provider.downloadFile<Category[]>(token, categoriesEntry.id)
             : Promise.resolve(null),
         rulesEntry
-            ? downloadFile<RecurringRule[]>(token, rulesEntry.id)
+            ? provider.downloadFile<RecurringRule[]>(token, rulesEntry.id)
             : Promise.resolve(null),
         Promise.all(
-            relevantYearFiles.map(({ yearFile, driveId }) =>
-                downloadFile<Transaction[]>(token, driveId).then(
-                    (remoteTransactions) => ({ yearFile, remoteTransactions }),
-                ),
+            relevantYearFiles.map(({ yearFile, remoteId }) =>
+                provider
+                    .downloadFile<Transaction[]>(token, remoteId)
+                    .then((remoteTransactions) => ({
+                        yearFile,
+                        remoteTransactions,
+                    })),
             ),
         ),
     ]);
@@ -205,10 +212,7 @@ export async function runFullDriveSync(
     const { updatedAt, applyRemoteSettings } =
         useProfileSettingsStore.getState();
 
-    if (
-        remoteSettingsResult &&
-        remoteSettingsResult.updatedAt > updatedAt
-    ) {
+    if (remoteSettingsResult && remoteSettingsResult.updatedAt > updatedAt) {
         applyRemoteSettings(
             remoteSettingsResult.customCurrency ?? "",
             remoteSettingsResult.isPrefixCurrency ?? true,
@@ -232,7 +236,7 @@ export async function runFullDriveSync(
         isCategoryAlphabetical,
         updatedAt: storedUpdatedAt,
     };
-    await upsertFile(token, folderId, SETTINGS_FILE, localSettings);
+    await provider.upsertFile(token, rootId, SETTINGS_FILE, localSettings);
 
     // --- In-memory merges ---
 
@@ -295,10 +299,10 @@ export async function runFullDriveSync(
     const uploads: Promise<void>[] = [];
 
     uploads.push(
-        upsertFile(token, folderId, CATEGORIES_FILE, uploadCategories),
+        provider.upsertFile(token, rootId, CATEGORIES_FILE, uploadCategories),
     );
     uploads.push(
-        upsertFile(token, folderId, RECURRING_RULES_FILE, uploadRules),
+        provider.upsertFile(token, rootId, RECURRING_RULES_FILE, uploadRules),
     );
 
     const uploadTransactionsByYear = groupBy(uploadTransactions, (t) =>
@@ -316,7 +320,9 @@ export async function runFullDriveSync(
         const sortedTransactions = [...transactions].sort((a, b) =>
             a.transactedAt.localeCompare(b.transactedAt),
         );
-        uploads.push(upsertFile(token, folderId, yearFile, sortedTransactions));
+        uploads.push(
+            provider.upsertFile(token, rootId, yearFile, sortedTransactions),
+        );
     }
 
     await Promise.all(uploads);
@@ -328,10 +334,10 @@ export async function runFullDriveSync(
 
     const backupTime = DateTime.fromISO(syncStartTime);
     const fileName = backupFileName(backupTime.year, backupTime.month);
-    if (driveFileMap.has(fileName)) return syncStartTime;
+    if (remoteFileMap.has(fileName)) return syncStartTime;
 
     const backupData = await buildExportData();
-    await createFile(token, folderId, fileName, backupData);
+    await provider.createFile(token, rootId, fileName, backupData);
 
     return syncStartTime;
 }

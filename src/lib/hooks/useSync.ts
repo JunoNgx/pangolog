@@ -3,32 +3,25 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef } from "react";
 import { toast } from "sonner";
-import type { TokenResult } from "@/lib/auth/types";
 import { DEBOUNCE_MS, RESTORE_SYNC_THRESHOLD_MS } from "@/lib/constants";
-import { getOrCreatePangoFolder } from "@/lib/drive/client";
-import { runFullDriveSync } from "@/lib/drive/sync";
 import { useLocalSyncDataStore } from "@/lib/store/useLocalSyncDataStore";
-import { useGoogleAuth } from "./useGoogleAuth";
+import { runFullSync } from "@/lib/sync/syncEngine";
+import type { SyncTokenResult } from "@/lib/sync/syncProviderTypes";
+import { useSyncProvider } from "@/lib/sync/useSyncProvider";
 import { useLogger } from "./useLogger";
 
 // Module-level flag prevents concurrent syncs across hook instances.
 let isSyncing = false;
 const AUTH_RECONNECT_TOAST = "auth-reconnect";
 
-function isExpiredResult(result: TokenResult): result is { expired: string } {
+function isExpiredResult(
+    result: SyncTokenResult,
+): result is { expired: string } {
     return typeof result === "object" && result !== null;
 }
 
 function isAuthError(err: unknown): boolean {
     return err instanceof Error && err.message.includes("401");
-}
-
-function isScopeError(err: unknown): boolean {
-    return (
-        err instanceof Error &&
-        err.message.includes("403") &&
-        err.message.includes("insufficientPermissions")
-    );
 }
 
 export function useSyncFn() {
@@ -41,20 +34,18 @@ export function useSyncFn() {
         setAuthToken,
     } = useLocalSyncDataStore();
 
-    const { getValidToken } = useGoogleAuth();
+    const { provider, getValidToken } = useSyncProvider();
     const { addLoggerEntry } = useLogger();
     const queryClient = useQueryClient();
 
     const AUTH_ERRORS = {
         preSync: {
             code: "SYNC_AUTH_PRE_SYNC",
-            toastMessage:
-                "Google Drive session expired (pre-sync). Please reconnect in Settings.",
+            toastMessage: provider.expiredMessage,
         },
         midSync: {
             code: "SYNC_AUTH_MID_SYNC",
-            toastMessage:
-                "Google Drive session expired (mid-sync). Please reconnect in Settings.",
+            toastMessage: provider.expiredMessage,
         },
     };
 
@@ -97,11 +88,15 @@ export function useSyncFn() {
             try {
                 let folderId = driveFolderId;
                 if (!folderId) {
-                    folderId = await getOrCreatePangoFolder(token);
+                    folderId = await provider.getOrCreateRoot(token);
                     setDriveFolderId(folderId);
                 }
 
-                const syncStartTime = await runFullDriveSync(token, folderId);
+                const syncStartTime = await runFullSync(
+                    token,
+                    folderId,
+                    provider,
+                );
                 await queryClient.invalidateQueries();
 
                 setSyncStatus("idle");
@@ -111,12 +106,12 @@ export function useSyncFn() {
                     toast.success("Sync complete");
                 }
             } catch (err) {
-                if (isScopeError(err)) {
+                if (provider.isScopeError(err)) {
                     setSyncStatus("idle");
-                    toast.error(
-                        "Google Drive access was revoked or has insufficient permissions. Please reconnect in Settings.",
-                        { id: AUTH_RECONNECT_TOAST, duration: Infinity },
-                    );
+                    toast.error(provider.revokedMessage, {
+                        id: AUTH_RECONNECT_TOAST,
+                        duration: Infinity,
+                    });
                     return;
                 }
 
@@ -147,6 +142,7 @@ export function useSyncFn() {
         },
         [
             driveFolderId,
+            provider,
             getValidToken,
             queryClient,
             setDriveFolderId,
@@ -154,6 +150,10 @@ export function useSyncFn() {
             setSyncError,
             setSyncStatus,
             handleAuthExpired,
+            AUTH_ERRORS.midSync.code,
+            AUTH_ERRORS.midSync.toastMessage,
+            AUTH_ERRORS.preSync.code,
+            AUTH_ERRORS.preSync.toastMessage,
         ],
     );
 

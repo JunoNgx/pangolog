@@ -1,13 +1,13 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { PERSIST_LOCAL_SYNC } from "@/lib/constants";
-import type { AuthToken } from "@/lib/auth/types";
+import type { SyncAuthToken } from "@/lib/sync/syncProviderTypes";
 
 export type SyncStatus = "idle" | "syncing" | "error";
 
 interface LocalSyncDataStore {
-    authToken: AuthToken | null;
-    setAuthToken: (token: AuthToken | null) => void;
+    authToken: SyncAuthToken | null;
+    setAuthToken: (token: SyncAuthToken | null) => void;
     driveFolderId: string | null;
     setDriveFolderId: (id: string | null) => void;
     lastSyncTime: string | null;

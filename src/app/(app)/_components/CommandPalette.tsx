@@ -24,9 +24,9 @@ import {
     commandPaletteShortcutsActions,
 } from "@/lib/commandPaletteActionRegistry";
 import { exportJson } from "@/lib/export";
-import { useGoogleAuth } from "@/lib/hooks/useGoogleAuth";
 import { useHotkey } from "@/lib/hooks/useHotkey";
 import { useSyncFn } from "@/lib/hooks/useSync";
+import { useSyncProvider } from "@/lib/sync/useSyncProvider";
 
 type Command = {
     id: string;
@@ -59,7 +59,7 @@ export function CommandPalette() {
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
-    const { isConnected } = useGoogleAuth();
+    const { isConnected } = useSyncProvider();
     const { sync } = useSyncFn();
     const { theme, setTheme } = useTheme();
 

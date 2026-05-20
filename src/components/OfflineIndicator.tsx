@@ -1,8 +1,8 @@
 "use client";
 
 import { WifiOff } from "lucide-react";
-import { useGoogleAuth } from "@/lib/hooks/useGoogleAuth";
 import { useOnlineStatus } from "@/lib/hooks/useOnlineStatus";
+import { useSyncProvider } from "@/lib/sync/useSyncProvider";
 
 type OfflineIndicatorProps = {
     variant: "icon" | "banner";
@@ -14,7 +14,7 @@ export function OfflineIndicator({
     isSuppressedWhenDisconnected = false,
 }: OfflineIndicatorProps) {
     const { isOnline } = useOnlineStatus();
-    const { isConnected } = useGoogleAuth();
+    const { isConnected } = useSyncProvider();
 
     if (isOnline) return null;
     if (isSuppressedWhenDisconnected && !isConnected) return null;
