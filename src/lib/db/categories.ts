@@ -1,4 +1,4 @@
-import { RW, RO, STORE_CATEGORIES } from "@/lib/constants";
+import { RO, RW, STORE_CATEGORIES } from "@/lib/constants";
 import { utcNowString } from "../utils";
 import { getDb } from "./connection";
 import type { Category, CategoryInput, CategoryUpdate } from "./types";

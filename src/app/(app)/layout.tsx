@@ -1,6 +1,6 @@
 import { Suspense } from "react";
-import { CommandPalette } from "./_components/CommandPalette";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { CommandPalette } from "./_components/CommandPalette";
 import { RecurringRulesManager } from "./_components/RecurringRulesManager";
 import { ShortcutsDialog } from "./_components/ShortcutsDialog";
 import { SyncManager } from "./_components/SyncManager";

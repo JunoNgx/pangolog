@@ -1,8 +1,8 @@
 import { DateTime } from "luxon";
 import {
     PURGE_DAYS,
-    RW,
     RO,
+    RW,
     STORE_CATEGORIES,
     STORE_RECURRING_RULES,
     STORE_TRANSACTIONS,

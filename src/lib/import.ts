@@ -1,4 +1,3 @@
-import type { Frequency, ProfileSettings } from "@/lib/types";
 import {
     RW,
     STORE_CATEGORIES,
@@ -6,6 +5,7 @@ import {
     STORE_TRANSACTIONS,
     VALID_FREQUENCIES,
 } from "@/lib/constants";
+import type { Frequency, ProfileSettings } from "@/lib/types";
 import {
     bulkPutCategories,
     bulkPutRecurringRules,

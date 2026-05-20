@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import { RW, RO, STORE_RECURRING_RULES } from "@/lib/constants";
+import { RO, RW, STORE_RECURRING_RULES } from "@/lib/constants";
 import { todayDateString, toIsoDateString, utcNowString } from "../utils";
 import { getDb } from "./connection";
 import type {

@@ -21,8 +21,7 @@ export function useHotkey(
                 (activeEl instanceof HTMLElement && activeEl.isContentEditable)
             )
                 return;
-            if (optionsRef.current?.hasMod && !(e.metaKey || e.ctrlKey))
-                return;
+            if (optionsRef.current?.hasMod && !(e.metaKey || e.ctrlKey)) return;
             if (optionsRef.current?.hasShift && !e.shiftKey) return;
             if (e.key !== key) return;
 
