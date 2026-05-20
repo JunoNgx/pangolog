@@ -23,13 +23,13 @@ import { RouteHeader } from "@/components/RouteHeader";
 import { DEFAULT_MODAL_CLASS_NAMES, MIME_JSON } from "@/lib/constants";
 import { clearAllData, forceDeleteDb } from "@/lib/db";
 import { exportJson } from "@/lib/export";
-import { useGoogleAuth } from "@/lib/hooks/useGoogleAuth";
 import { useLogger } from "@/lib/hooks/useLogger";
 import { clearSwCaches } from "@/lib/serviceWorker";
 import { useLocalAppDataStore } from "@/lib/store/useLocalAppDataStore";
 import { useLocalSyncDataStore } from "@/lib/store/useLocalSyncDataStore";
 import { useLocalUserSettingsStore } from "@/lib/store/useLocalUserSettingsStore";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
+import { useSyncProvider } from "@/lib/sync/useSyncProvider";
 import type { TimeFormat } from "@/lib/types";
 import { toIsoDateString } from "@/lib/utils";
 
@@ -44,7 +44,7 @@ export default function SettingsClient() {
         setIsExpenseOnlyMode,
         setIsCategoryAlphabetical,
     } = useProfileSettingsStore();
-    const { isConnected, disconnect } = useGoogleAuth();
+    const { isConnected, disconnect } = useSyncProvider();
     const { theme, setTheme } = useTheme();
     const { setLastSyncTime } = useLocalSyncDataStore();
     const { setShouldShowDemoDataBanner } = useLocalAppDataStore();

@@ -4,15 +4,15 @@ import { Button, Tooltip } from "@heroui/react";
 import { RefreshCw } from "lucide-react";
 import { DateTime } from "luxon";
 import { toast } from "sonner";
-import { useGoogleAuth } from "@/lib/hooks/useGoogleAuth";
 import { useOnlineStatus } from "@/lib/hooks/useOnlineStatus";
 import { useSyncFn } from "@/lib/hooks/useSync";
 import { useLocalSyncDataStore } from "@/lib/store/useLocalSyncDataStore";
 import { useLocalUserSettingsStore } from "@/lib/store/useLocalUserSettingsStore";
+import { useSyncProvider } from "@/lib/sync/useSyncProvider";
 import { getTimeFormatOptions } from "@/lib/utils";
 
 export function SyncButton() {
-    const { isConnected } = useGoogleAuth();
+    const { isConnected } = useSyncProvider();
     const { syncStatus, syncError, lastSyncTime } = useLocalSyncDataStore();
     const { timeFormat } = useLocalUserSettingsStore();
     const { sync } = useSyncFn();
