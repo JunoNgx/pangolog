@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import { RW, RO, STORE_TRANSACTIONS } from "@/lib/constants";
+import { RO, RW, STORE_TRANSACTIONS } from "@/lib/constants";
 import { utcNowString } from "../utils";
 import { getDb } from "./connection";
 import type { Transaction, TransactionInput, TransactionUpdate } from "./types";

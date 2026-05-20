@@ -25,6 +25,7 @@ import {
     useUpdateRecurringRule,
 } from "@/lib/hooks/useRecurringRules";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
+import type { Frequency } from "@/lib/types";
 import {
     fromDateInputValue,
     getLocaleDateFormat,
@@ -32,8 +33,6 @@ import {
     toDateInputValue,
     todayDateString,
 } from "@/lib/utils";
-
-import type { Frequency } from "@/lib/types";
 
 function getRepeatLabel(frequency: Frequency, dateStr: string): string {
     const dt = DateTime.fromISO(`${dateStr}T12:00:00`);

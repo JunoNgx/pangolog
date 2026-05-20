@@ -2,9 +2,9 @@
 
 import { Modal, ModalBody, ModalContent, ModalHeader } from "@heroui/react";
 import { useCallback, useEffect, useState } from "react";
+import { Kbd } from "@/components/Kbd";
 import { commandPaletteShortcutsActions } from "@/lib/commandPaletteActionRegistry";
 import { useHotkey } from "@/lib/hooks/useHotkey";
-import { Kbd } from "@/components/Kbd";
 
 type Shortcut = {
     keys: string[];

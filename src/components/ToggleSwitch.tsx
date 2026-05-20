@@ -33,7 +33,7 @@ export function ToggleSwitch({
             >
                 {label}
             </span>
-            <div className="inline-flex items-center gap-1 rounded-lg border border-default-200 p-1">
+            <div className="border-default-200 inline-flex items-center gap-1 rounded-lg border p-1">
                 <label className="cursor-pointer rounded-sm">
                     <input
                         type="radio"
@@ -41,14 +41,14 @@ export function ToggleSwitch({
                         checked={!isSelectingRight}
                         onChange={() => !isDisabled && onValueChange(false)}
                         disabled={isDisabled}
-                        className="sr-only peer"
+                        className="peer sr-only"
                     />
                     <span
                         className={`${buttonClasses} ${
                             !isSelectingRight
                                 ? "bg-primary text-primary-foreground"
-                                : "bg-transparent text-default-700 hover:bg-default-100"
-                        } ${isDisabled ? "opacity-50 cursor-not-allowed" : ""}`}
+                                : "text-default-700 hover:bg-default-100 bg-transparent"
+                        } ${isDisabled ? "cursor-not-allowed opacity-50" : ""}`}
                     >
                         {leftLabel}
                     </span>
@@ -60,14 +60,14 @@ export function ToggleSwitch({
                         checked={isSelectingRight}
                         onChange={() => !isDisabled && onValueChange(true)}
                         disabled={isDisabled}
-                        className="sr-only peer"
+                        className="peer sr-only"
                     />
                     <span
                         className={`${buttonClasses} ${
                             isSelectingRight
                                 ? "bg-primary text-primary-foreground"
-                                : "bg-transparent text-default-700 hover:bg-default-100"
-                        } ${isDisabled ? "opacity-50 cursor-not-allowed" : ""}`}
+                                : "text-default-700 hover:bg-default-100 bg-transparent"
+                        } ${isDisabled ? "cursor-not-allowed opacity-50" : ""}`}
                     >
                         {rightLabel}
                     </span>

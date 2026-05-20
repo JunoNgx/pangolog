@@ -1,8 +1,8 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { detectSystemTimeFormat } from "@/lib/utils";
 import { PERSIST_LOCAL_USER } from "@/lib/constants";
 import type { TimeFormat } from "@/lib/types";
+import { detectSystemTimeFormat } from "@/lib/utils";
 
 interface LocalUserSettingsStore {
     timeFormat: TimeFormat;
