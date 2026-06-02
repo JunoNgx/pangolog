@@ -40,8 +40,9 @@ export function DialogFooter({
             )}
             <div className="flex gap-2">
                 {showSubmitTooltip ? (
-                    <Tooltip content="Ctrl/Cmd + Enter" placement="left">
+                    <Tooltip delay={0}>
                         {submitButton}
+                        <Tooltip.Content placement="left">Ctrl/Cmd + Enter</Tooltip.Content>
                     </Tooltip>
                 ) : (
                     submitButton
