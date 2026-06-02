@@ -1,9 +1,13 @@
 "use client";
 
+import type { LucideIcon } from "lucide-react";
+
 interface ToggleSwitchProps {
     label: string;
     leftLabel: string;
     rightLabel: string;
+    leftIcon?: LucideIcon;
+    rightIcon?: LucideIcon;
     isSelectingRight: boolean;
     onValueChange: (value: boolean) => void;
     shouldShowLabel?: boolean;
@@ -15,6 +19,8 @@ export function ToggleSwitch({
     label,
     leftLabel,
     rightLabel,
+    leftIcon: LeftIcon,
+    rightIcon: RightIcon,
     isSelectingRight,
     onValueChange,
     shouldShowLabel = false,
@@ -22,7 +28,7 @@ export function ToggleSwitch({
     className = "",
 }: ToggleSwitchProps) {
     const buttonClasses =
-        "inline-block min-w-16 rounded-sm px-3 py-1 text-center text-sm transition-colors peer-focus-visible:outline-2 peer-focus-visible:outline-offset-3 peer-focus-visible:outline-primary";
+        "inline-flex items-center justify-center gap-1.5 min-w-16 rounded-sm px-3 py-1 text-sm transition-colors peer-focus-visible:outline-2 peer-focus-visible:outline-offset-3 peer-focus-visible:outline-primary";
 
     return (
         <div className={`inline-flex items-center gap-2 ${className}`}>
@@ -50,6 +56,7 @@ export function ToggleSwitch({
                                 : "text-default-700 hover:bg-default-100 bg-transparent"
                         } ${isDisabled ? "cursor-not-allowed opacity-50" : ""}`}
                     >
+                        {LeftIcon && <LeftIcon size={16} />}
                         {leftLabel}
                     </span>
                 </label>
@@ -69,6 +76,7 @@ export function ToggleSwitch({
                                 : "text-default-700 hover:bg-default-100 bg-transparent"
                         } ${isDisabled ? "cursor-not-allowed opacity-50" : ""}`}
                     >
+                        {RightIcon && <RightIcon size={16} />}
                         {rightLabel}
                     </span>
                 </label>
