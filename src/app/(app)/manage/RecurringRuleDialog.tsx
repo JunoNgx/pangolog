@@ -2,6 +2,7 @@
 
 import {
     Input,
+    Label,
     Modal,
     Switch,
 } from "@heroui/react";
@@ -191,12 +192,14 @@ export function RecurringRuleDialog({
             <div className="flex flex-col gap-1">
                 <Switch
                     isSelected={isActive}
-                    onValueChange={setIsActive}
-                    color="success"
+                    onChange={setIsActive}
                 >
-                    <span className="text-sm font-medium">
-                        {isActive ? "Active" : "Paused"}
-                    </span>
+                    <Switch.Control>
+                        <Switch.Thumb />
+                    </Switch.Control>
+                    <Switch.Content>
+                        <Label>{isActive ? "Active" : "Paused"}</Label>
+                    </Switch.Content>
                 </Switch>
             </div>
             <div className="text-default-400 flex flex-col items-end gap-1 font-mono text-xs">

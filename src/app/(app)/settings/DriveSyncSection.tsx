@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Checkbox } from "@heroui/react";
+import { Button, Checkbox, Label } from "@heroui/react";
 import { DateTime } from "luxon";
 import dynamic from "next/dynamic";
 import { useSync } from "@/lib/hooks/useSync";
@@ -107,11 +107,15 @@ export function DriveSyncSection() {
                 {errorRow}
                 <Checkbox
                     isSelected={isAutobackupEnabled}
-                    onValueChange={setIsAutobackupEnabled}
+                    onChange={setIsAutobackupEnabled}
                     isDisabled={!isConnected}
-                    size="sm"
                 >
-                    <span className="text-sm">Monthly autobackup</span>
+                    <Checkbox.Control>
+                        <Checkbox.Indicator />
+                    </Checkbox.Control>
+                    <Checkbox.Content>
+                        <Label>Monthly autobackup</Label>
+                    </Checkbox.Content>
                 </Checkbox>
                 {autobackupDisabledInfo}
                 <p className="text-default-400 text-xs">

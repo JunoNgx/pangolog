@@ -1,6 +1,7 @@
 import {
     Button,
     Checkbox,
+    Label,
     Popover,
 } from "@heroui/react";
 import { ChevronDown } from "lucide-react";
@@ -15,8 +16,6 @@ interface CategoryFilterDropdownProps {
     hasUncategorised: boolean;
     buckCategoryIds: Set<string>;
 }
-
-const checkboxClassNames = { base: "max-w-full", label: "truncate" };
 
 interface CategoryFilterItemProps {
     name: string;
@@ -37,23 +36,25 @@ function CategoryFilterItem({
 }: CategoryFilterItemProps) {
     return (
         <li className="py-1">
-            <Checkbox
-                isSelected={isSelected}
-                onValueChange={onToggle}
-                size="md"
-                classNames={checkboxClassNames}
-            >
-                {icon && <span className="text-base">{icon}</span>} {name}
-                {isBuck && (
-                    <span className="ml-2 text-xs font-medium text-amber-500">
-                        BUCK
-                    </span>
-                )}
-                {isIncomeOnly && (
-                    <span className="text-success ml-2 text-xs font-medium">
-                        INC
-                    </span>
-                )}
+            <Checkbox isSelected={isSelected} onChange={onToggle}>
+                <Checkbox.Control>
+                    <Checkbox.Indicator />
+                </Checkbox.Control>
+                <Checkbox.Content>
+                    <Label>
+                        {icon && <span className="text-base">{icon}</span>} {name}
+                        {isBuck && (
+                            <span className="ml-2 text-xs font-medium text-amber-500">
+                                BUCK
+                            </span>
+                        )}
+                        {isIncomeOnly && (
+                            <span className="text-success ml-2 text-xs font-medium">
+                                INC
+                            </span>
+                        )}
+                    </Label>
+                </Checkbox.Content>
             </Checkbox>
         </li>
     );
@@ -121,11 +122,14 @@ export function CategoryFilterDropdown({
         <li className="py-1">
             <Checkbox
                 isSelected={isChecked(UNCATEGORISED_ID)}
-                onValueChange={() => handleToggle(UNCATEGORISED_ID)}
-                size="md"
-                classNames={checkboxClassNames}
+                onChange={() => handleToggle(UNCATEGORISED_ID)}
             >
-                Uncategorised
+                <Checkbox.Control>
+                    <Checkbox.Indicator />
+                </Checkbox.Control>
+                <Checkbox.Content>
+                    <Label>Uncategorised</Label>
+                </Checkbox.Content>
             </Checkbox>
         </li>
     );
