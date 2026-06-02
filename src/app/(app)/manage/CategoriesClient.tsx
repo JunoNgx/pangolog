@@ -26,17 +26,15 @@ export default function CategoriesClient() {
 
     return (
         <div>
-            <ConfigWrapper>
-                <div className="my-2">
-                    <ToggleSwitch
-                        label="Sort by"
-                        shouldShowLabel={true}
-                        leftLabel="Custom order"
-                        rightLabel="Alphabetical"
-                        isSelectingRight={isCategoryAlphabetical}
-                        onValueChange={setIsCategoryAlphabetical}
-                    />
-                </div>
+            <ConfigWrapper className="mt-4 mb-4">
+                <ToggleSwitch
+                    label="Sort by"
+                    shouldShowLabel={true}
+                    leftLabel="Custom order"
+                    rightLabel="Alphabetical"
+                    isSelectingRight={isCategoryAlphabetical}
+                    onValueChange={setIsCategoryAlphabetical}
+                />
                 <DemoDataBanner />
             </ConfigWrapper>
             <ConfigWrapper className="flex justify-end mb-4">

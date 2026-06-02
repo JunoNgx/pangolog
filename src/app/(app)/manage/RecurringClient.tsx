@@ -119,7 +119,7 @@ export default function RecurringClient() {
 
     return (
         <div>
-            <ConfigWrapper className="flex flex-col gap-4">
+            <ConfigWrapper className="mt-4 mb-4">
                 <div className="flex w-full items-center justify-between gap-2">
                     {sortControls}
                     <RecurringFilterDropdown
@@ -135,7 +135,7 @@ export default function RecurringClient() {
                 </div>
                 <DemoDataBanner />
             </ConfigWrapper>
-            <ConfigWrapper className="flex justify-end mt-4 mb-6">
+            <ConfigWrapper className="flex justify-end mb-4">
                 <Button color="default" onPress={() => setIsCreateOpen(true)}>
                     <Plus />
                     <span>Rule</span>
