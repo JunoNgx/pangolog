@@ -1,4 +1,4 @@
-import { Popover } from "@heroui/react";
+import { Tooltip } from "@heroui/react";
 import { DateTime } from "luxon";
 import { MONTH_NAMES } from "@/lib/constants";
 import type { Transaction } from "@/lib/db/types";
@@ -48,15 +48,12 @@ export default function ExpensesByMonthChart({
     const averagePct = (average / maxTotal) * 100;
 
     const bars = monthlyTotals.map((total, index) => (
-        <Popover key={MONTH_NAMES[index]}>
-            <Popover.Trigger
-                className="relative flex-1 flex flex-col justify-end"
-                style={{
-                    height:
-                        total > 0 ? `${(total / maxTotal) * 100}%` : "0%",
-                }}
-            >
-                <div className="bg-foreground h-full w-full rounded-sm cursor-pointer" />
+        <Tooltip key={MONTH_NAMES[index]} delay={0}>
+            <Tooltip.Trigger className="relative flex-1 flex flex-col justify-end cursor-pointer" style={{
+                height:
+                    total > 0 ? `${(total / maxTotal) * 100}%` : "0%",
+            }}>
+                <div className="bg-foreground h-full w-full rounded-sm" />
                 {index === tallestIndex && (
                     <span
                         className={`absolute -top-5 ${tallestLabelAlign} text-muted font-mono text-xs whitespace-nowrap`}
@@ -64,15 +61,13 @@ export default function ExpensesByMonthChart({
                         {formatAmountShort(total)}
                     </span>
                 )}
-            </Popover.Trigger>
-            <Popover.Content placement="top">
-                <Popover.Dialog>
-                    <span className="font-mono text-xs">
-                        {MONTH_NAMES[index]}: {formatAmount(total)}
-                    </span>
-                </Popover.Dialog>
-            </Popover.Content>
-        </Popover>
+            </Tooltip.Trigger>
+            <Tooltip.Content placement="top" offset={8}>
+                <span className="font-mono text-xs">
+                    {MONTH_NAMES[index]}: {formatAmount(total)}
+                </span>
+            </Tooltip.Content>
+        </Tooltip>
     ));
 
     const monthLabels = MONTH_NAMES.map((label) => (
