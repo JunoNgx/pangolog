@@ -236,7 +236,7 @@ export default function SummaryClient() {
                 }
             />
 
-            <ConfigWrapper className="mb-6 flex flex-col gap-4">
+            <ConfigWrapper className="mt-4 mb-4">
                 <PeriodPicker
                     isYearly={isYearly}
                     selectedYear={selectedYear}

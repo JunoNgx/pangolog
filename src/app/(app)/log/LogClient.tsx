@@ -297,7 +297,7 @@ export default function LogClient() {
                 }
             />
 
-            <ConfigWrapper>
+            <ConfigWrapper className="mb-6">
                 {isSearchMode ? (
                     searchInputRow
                 ) : (
