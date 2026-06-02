@@ -4,8 +4,9 @@ import { useCallback, useEffect, useState } from "react";
 import { CategoryDialog } from "@/components/CategoryDialog";
 import { ConfigWrapper } from "@/components/ConfigWrapper";
 import { DemoDataBanner } from "@/components/DemoDataBanner";
-import { FloatingActionButton } from "@/components/FloatingActionButton";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
+import { Button } from "@heroui/react";
+import { Plus } from "lucide-react";
 import { commandPaletteCreateActions } from "@/lib/commandPaletteActionRegistry";
 import { useHotkey } from "@/lib/hooks/useHotkey";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
@@ -38,11 +39,13 @@ export default function CategoriesClient() {
                 </div>
                 <DemoDataBanner />
             </ConfigWrapper>
+            <div className="mx-auto w-full max-w-lg flex justify-end mb-4">
+                <Button color="default" onPress={() => setIsCreateOpen(true)}>
+                    <Plus />
+                    <span>Category</span>
+                </Button>
+            </div>
             <CategoryList />
-            <FloatingActionButton
-                label="Category"
-                onPress={() => setIsCreateOpen(true)}
-            />
             <CategoryDialog
                 isOpen={isCreateOpen}
                 onClose={() => setIsCreateOpen(false)}
