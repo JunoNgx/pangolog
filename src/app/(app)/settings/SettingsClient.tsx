@@ -432,13 +432,13 @@ export default function SettingsClient() {
                         <div className="mt-2 flex flex-wrap gap-2">
                             <a
                                 href="/privacy"
-                                className="bg-default-100 text-foreground hover:bg-default-200 inline-flex items-center justify-center gap-2 rounded-lg px-3 py-1.5 text-sm font-medium"
+                                className="bg-surface text-muted hover:text-foreground hover:bg-surface-secondary inline-flex items-center justify-center gap-2 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors"
                             >
                                 Privacy Policy
                             </a>
                             <a
                                 href="/terms"
-                                className="bg-default-100 text-foreground hover:bg-default-200 inline-flex items-center justify-center gap-2 rounded-lg px-3 py-1.5 text-sm font-medium"
+                                className="bg-surface text-muted hover:text-foreground hover:bg-surface-secondary inline-flex items-center justify-center gap-2 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors"
                             >
                                 Terms of Service
                             </a>
