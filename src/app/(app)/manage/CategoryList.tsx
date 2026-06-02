@@ -61,7 +61,7 @@ function SortableCategoryItem({
                     ref={handleRef}
                     onClick={(e) => e.stopPropagation()}
                     aria-label={`Drag to reorder ${cat.name}`}
-                    className="text-default-400 mr-2 cursor-grab border-0 bg-transparent py-3 select-none active:cursor-grabbing"
+                    className="text-muted mr-2 cursor-grab border-0 bg-transparent py-3 select-none active:cursor-grabbing"
                 >
                     <GripVertical />
                 </button>
@@ -104,7 +104,7 @@ export function CategoryList() {
     if (!categories?.length) {
         return (
             <>
-                <p className="text-default-400 py-12 text-center">
+                <p className="text-muted py-12 text-center">
                     No categories yet. Tap + to create one.
                 </p>
                 <CategoryDialog
@@ -117,7 +117,7 @@ export function CategoryList() {
     }
 
     const notice = (
-        <div className="text-default-400 py-2 text-center text-sm">
+        <div className="text-muted py-2 text-center text-sm">
             <p>
                 This display order is also used in transaction and recurring
                 rule dialogs.

@@ -7,7 +7,7 @@ export default function TermsClient() {
     return (
         <>
             <h1 className="mb-2 text-xl font-bold">Terms of Service</h1>
-            <p className="text-default-400 mb-8 text-sm">
+            <p className="text-muted mb-8 text-sm">
                 Last updated: February 2026
             </p>
 

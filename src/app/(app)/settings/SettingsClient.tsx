@@ -190,7 +190,7 @@ export default function SettingsClient() {
                                 value={customCurrency}
                                 onChange={(e) => setCustomCurrency(e.target.value)}
                             />
-                            <span className="text-default-400 text-xs">Cosmetic only, so feel free to use orens, woolong, or bottle caps to your heart's content. Long texts might not look good in this UI, but that's your life decision.</span>
+                            <span className="text-muted text-xs">Cosmetic only, so feel free to use orens, woolong, or bottle caps to your heart's content. Long texts might not look good in this UI, but that's your life decision.</span>
                         </div>
                         <RadioGroup
                             orientation="horizontal"
@@ -235,7 +235,7 @@ export default function SettingsClient() {
                             </Checkbox.Control>
                             <Checkbox.Content>
                                 <Label>Expense only mode</Label>
-                                <span className="text-default-400 text-xs">Hides income-related UI to reduce clutter.</span>
+                                <span className="text-muted text-xs">Hides income-related UI to reduce clutter.</span>
                             </Checkbox.Content>
                         </Checkbox>
                         <RadioGroup
@@ -345,11 +345,11 @@ export default function SettingsClient() {
                                 </Checkbox.Control>
                                 <Checkbox.Content>
                                     <Label>Pretty print</Label>
-                                    <span className="text-default-400 text-xs">Human-readable formatting.</span>
+                                    <span className="text-muted text-xs">Human-readable formatting.</span>
                                 </Checkbox.Content>
                             </Checkbox>
                         </div>
-                        <p className="text-default-400 text-xs">
+                        <p className="text-muted text-xs">
                             Exports all transactions, categories, and display
                             settings into a single file. On import, records are
                             resolved by last-updated timestamp to avoid
@@ -364,7 +364,7 @@ export default function SettingsClient() {
                     <h3 className="mb-1 text-lg font-semibold">
                         Help &amp; Info
                     </h3>
-                    <p className="text-default-400 mb-4 text-xs">
+                    <p className="text-muted mb-4 text-xs">
                         Overview of concepts, pages, hotkeys, and sync
                         behaviour.
                     </p>
@@ -380,7 +380,7 @@ export default function SettingsClient() {
                     <h3 className="mb-1 text-lg font-semibold">
                         Troubleshooting
                     </h3>
-                    <p className="text-default-400 mb-4 text-xs">
+                    <p className="text-muted mb-4 text-xs">
                         If the app appears outdated after an update, clear the
                         offline cache to force a fresh reload. Your data is
                         stored separately and will not be affected.
@@ -401,7 +401,7 @@ export default function SettingsClient() {
                         About
                     </h3>
                     <div className="flex flex-col gap-1">
-                        <p className="text-default-400 text-xs">
+                        <p className="text-muted text-xs">
                             Pangolog is developed by{" "}
                             <a
                                 href="https://junongx.com"
@@ -413,7 +413,7 @@ export default function SettingsClient() {
                             </a>
                             , with playfulness and curiosity.
                         </p>
-                        <p className="text-default-400 text-xs">
+                        <p className="text-muted text-xs">
                             This project is free and{" "}
                             <a
                                 href="https://github.com/JunoNgx/pangolog"
@@ -425,7 +425,7 @@ export default function SettingsClient() {
                             </a>
                             .
                         </p>
-                        <p className="text-default-400 mt-2 font-mono text-xs">
+                        <p className="text-muted mt-2 font-mono text-xs">
                             v{process.env.NEXT_PUBLIC_VERSION} (
                             {process.env.NEXT_PUBLIC_COMMIT_HASH})
                         </p>
@@ -477,7 +477,7 @@ export default function SettingsClient() {
                             Clear Logger entries
                         </Button>
 
-                        <p className="text-default-400 mt-8 text-xs">
+                        <p className="text-muted mt-8 text-xs">
                             Wipes the local database and all local app data.
                             This will make a fresh new user experience. Your
                             data on Google Drive will remain intact. This cannot
@@ -498,7 +498,7 @@ export default function SettingsClient() {
                     <h3 className="text-danger mb-1 text-lg font-semibold">
                         Danger Zone
                     </h3>
-                    <p className="text-default-400 mb-4 text-xs">
+                    <p className="text-muted mb-4 text-xs">
                         Removes all local transactions, categories, and
                         recurring rules, and disconnects Google Drive. Your data
                         on Google Drive will remain intact.

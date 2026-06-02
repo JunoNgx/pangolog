@@ -225,7 +225,7 @@ export function TransactionDialog({
                                                 <div className="flex flex-1 flex-col gap-1">
                                                     <span>
                                                         Date{" "}
-                                                        <span className="text-default-400 font-mono text-xs">
+                                                        <span className="text-muted font-mono text-xs">
                                                             {localeDateFormat}
                                                         </span>
                                                     </span>
@@ -260,7 +260,7 @@ export function TransactionDialog({
                                                     onChange={(e) => setDescription(e.target.value)}
                                                     maxLength={60}
                                                 />
-                                                <span className="text-default-400 text-xs">{description.length}/60</span>
+                                                <span className="text-muted text-xs">{description.length}/60</span>
                                             </div>
 
                                             <CategoryPicker

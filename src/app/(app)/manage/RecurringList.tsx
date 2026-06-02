@@ -61,7 +61,7 @@ export function RecurringList({
     if (!rules || !rules.length) {
         return (
             <>
-                <p className="text-default-400 py-12 text-center">
+                <p className="text-muted py-12 text-center">
                     Nothing to show.
                 </p>
                 <RecurringRuleDialog
@@ -124,7 +124,7 @@ function RecurringItem({ rule, category, onEdit }: RecurringItemProps) {
                     </p>
                     {rule.description && (
                         <p
-                            className={`text-default-400 truncate font-mono text-sm ${!hasIndicator ? "mt-1" : ""} `}
+                            className={`text-muted truncate font-mono text-sm ${!hasIndicator ? "mt-1" : ""} `}
                         >
                             {rule.description}
                         </p>
@@ -137,7 +137,7 @@ function RecurringItem({ rule, category, onEdit }: RecurringItemProps) {
                                 </ChipLabel>
                             )}
                             {!rule.isActive && (
-                                <ChipLabel className="text-default-400 mx-0">
+                                <ChipLabel className="text-muted mx-0">
                                     PAUSED
                                 </ChipLabel>
                             )}
@@ -152,10 +152,10 @@ function RecurringItem({ rule, category, onEdit }: RecurringItemProps) {
                         {rule.isIncome ? "+" : ""}
                         {formatAmount(rule.amount)}
                     </span>
-                    <span className="text-default-400 font-mono text-xs">
+                    <span className="text-muted font-mono text-xs">
                         {formatFrequency(rule)}
                     </span>
-                    <span className="text-default-400 font-mono text-xs">
+                    <span className="text-muted font-mono text-xs">
                         Next:{" "}
                         {DateTime.fromISO(rule.nextGenerationAt).toLocaleString(
                             DateTime.DATE_MED,

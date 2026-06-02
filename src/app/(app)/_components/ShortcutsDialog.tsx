@@ -110,7 +110,7 @@ export function ShortcutsDialog() {
                         <Modal.Body className="gap-6 pb-6">
                             {SHORTCUT_GROUPS.map((group) => (
                                 <div key={group.title}>
-                                    <p className="text-default-400 mb-2 text-xs font-medium tracking-wide uppercase">
+                                    <p className="text-muted mb-2 text-xs font-medium tracking-wide uppercase">
                                         {group.title}
                                     </p>
                                     <ul className="flex flex-col gap-2">

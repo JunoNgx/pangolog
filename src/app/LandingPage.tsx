@@ -40,7 +40,7 @@ export default function LandingPage() {
                             <p className="text-default-700 font-mono text-sm">
                                 log
                             </p>
-                            <p className="text-default-400 font-mono text-sm">
+                            <p className="text-muted font-mono text-sm">
                                 /lɔːɡ/ (verb)
                             </p>
                             <p className="text-default-500 font-mono text-sm">
@@ -74,13 +74,13 @@ export default function LandingPage() {
                     >
                         Get started
                     </Link>
-                    <p className="text-default-400 text-center text-xs">
+                    <p className="text-muted text-center text-xs">
                         (like, now; no account or signup needed)
                     </p>
                 </div>
 
                 <footer className="flex flex-col items-center gap-2">
-                    <p className="text-default-400 text-xs">
+                    <p className="text-muted text-xs">
                         by{" "}
                         <Link
                             href="https://junongx.com"
@@ -96,21 +96,21 @@ export default function LandingPage() {
                             href="https://github.com/JunoNgx/pangolog"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-default-400 hover:text-default-600 text-xs"
+                            className="text-muted hover:text-default-600 text-xs"
                         >
                             Source
                         </Link>
                         <span className="text-default-300 text-xs">|</span>
                         <Link
                             href="/privacy"
-                            className="text-default-400 hover:text-default-600 text-xs"
+                            className="text-muted hover:text-default-600 text-xs"
                         >
                             Privacy Policy
                         </Link>
                         <span className="text-default-300 text-xs">|</span>
                         <Link
                             href="/terms"
-                            className="text-default-400 hover:text-default-600 text-xs"
+                            className="text-muted hover:text-default-600 text-xs"
                         >
                             Terms of Service
                         </Link>
