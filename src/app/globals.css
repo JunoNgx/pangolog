@@ -37,6 +37,12 @@
     }
 }
 
+@layer components {
+    .dropdown__popover {
+        border-radius: 0.5rem;
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
