@@ -290,13 +290,9 @@ export function CommandPalette() {
                                 autoFocus
                                 placeholder="Type a command..."
                                 value={query}
-                                onValueChange={handleQueryChange}
+                                onChange={(e) => handleQueryChange(e.target.value)}
                                 onKeyDown={handleKeyDown}
-                                classNames={{
-                                    inputWrapper:
-                                        "shadow-none border-b border-default-200 rounded-none rounded-t-xl bg-transparent px-4 data-[focus-visible=true]:ring-0 data-[focus-visible=true]:ring-offset-0",
-                                }}
-                                variant="flat"
+                                className="shadow-none border-b border-default-200 rounded-none rounded-t-xl bg-transparent px-4 data-[focus-visible=true]:ring-0 data-[focus-visible=true]:ring-offset-0"
                             />
                             <div
                                 ref={scrollRef}

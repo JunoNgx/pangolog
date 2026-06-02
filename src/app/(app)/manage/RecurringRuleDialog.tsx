@@ -271,31 +271,32 @@ export function RecurringRuleDialog({
                                                 isIncome={isIncome}
                                             />
 
-                                            <Input
-                                                classNames={{ input: "font-mono" }}
-                                                label="Description"
-                                                value={description}
-                                                onValueChange={setDescription}
-                                                maxLength={60}
-                                                description={`${description.length}/60`}
-                                            />
+                                            <div className="flex flex-col gap-1">
+                                                <span>Description</span>
+                                                <Input
+                                                    className="font-mono"
+                                                    value={description}
+                                                    onChange={(e) => setDescription(e.target.value)}
+                                                    maxLength={60}
+                                                />
+                                                <span className="text-default-400 text-xs">{description.length}/60</span>
+                                            </div>
 
                                             <div className="flex items-end justify-between gap-3">
-                                                <Input
-                                                    type="date"
-                                                    label={
-                                                        <span>
-                                                            Start date{" "}
-                                                            <span className="text-default-400 font-mono text-xs">
-                                                                {localeDateFormat}
-                                                            </span>
+                                                <div className="flex w-1/2 flex-col gap-1">
+                                                    <span>
+                                                        Start date{" "}
+                                                        <span className="text-default-400 font-mono text-xs">
+                                                            {localeDateFormat}
                                                         </span>
-                                                    }
-                                                    value={startDate}
-                                                    onValueChange={setStartDate}
-                                                    isRequired
-                                                    className="w-1/2"
-                                                />
+                                                    </span>
+                                                    <Input
+                                                        type="date"
+                                                        value={startDate}
+                                                        onChange={(e) => setStartDate(e.target.value)}
+                                                        required
+                                                    />
+                                                </div>
                                                 <div className="flex shrink-0 flex-col gap-1">
                                                     <span className="text-default-500 text-sm">
                                                         Frequency

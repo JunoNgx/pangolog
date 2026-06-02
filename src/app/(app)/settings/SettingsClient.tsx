@@ -182,17 +182,15 @@ export default function SettingsClient() {
                         Display Currency
                     </h3>
                     <div className="flex flex-col gap-4">
-                        <Input
-                            classNames={{
-                                inputWrapper: "max-w-xs",
-                                description: "",
-                            }}
-                            label="Currency symbol"
-                            placeholder="e.g. €, SGD, Gil"
-                            description="Cosmetic only, so feel free to use orens, woolong, or bottle caps to your heart's content. Long texts might not look good in this UI, but that's your life decision."
-                            value={customCurrency}
-                            onValueChange={setCustomCurrency}
-                        />
+                        <div className="max-w-xs flex flex-col gap-1">
+                            <span>Currency symbol</span>
+                            <Input
+                                placeholder="e.g. €, SGD, Gil"
+                                value={customCurrency}
+                                onChange={(e) => setCustomCurrency(e.target.value)}
+                            />
+                            <span className="text-default-400 text-xs">Cosmetic only, so feel free to use orens, woolong, or bottle caps to your heart's content. Long texts might not look good in this UI, but that's your life decision.</span>
+                        </div>
                         <RadioGroup
                             label="Position"
                             orientation="horizontal"
