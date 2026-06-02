@@ -39,7 +39,7 @@ export function ToggleSwitch({
             >
                 {label}
             </span>
-            <div className="border-default-200 inline-flex items-center gap-1 rounded-lg border p-1">
+            <div className="inline-flex items-center gap-1 rounded-lg border p-1">
                 <label className="cursor-pointer rounded-sm">
                     <input
                         type="radio"
@@ -52,7 +52,7 @@ export function ToggleSwitch({
                     <span
                         className={`${buttonClasses} ${
                             !isSelectingRight
-                                ? "bg-primary text-primary-foreground"
+                                ? "bg-accent text-accent-foreground"
                                 : "text-foreground hover:bg-surface bg-transparent"
                         } ${isDisabled ? "cursor-not-allowed opacity-50" : ""}`}
                     >
@@ -72,7 +72,7 @@ export function ToggleSwitch({
                     <span
                         className={`${buttonClasses} ${
                             isSelectingRight
-                                ? "bg-primary text-primary-foreground"
+                                ? "bg-accent text-accent-foreground"
                                 : "text-foreground hover:bg-surface bg-transparent"
                         } ${isDisabled ? "cursor-not-allowed opacity-50" : ""}`}
                     >

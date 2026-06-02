@@ -292,7 +292,7 @@ export function CommandPalette() {
                                 value={query}
                                 onChange={(e) => handleQueryChange(e.target.value)}
                                 onKeyDown={handleKeyDown}
-                                className="shadow-none border-b border-default-200 rounded-none rounded-t-xl bg-transparent px-4 data-[focus-visible=true]:ring-0 data-[focus-visible=true]:ring-offset-0"
+                                className="shadow-none border-b rounded-none rounded-t-xl bg-transparent px-4 data-[focus-visible=true]:ring-0 data-[focus-visible=true]:ring-offset-0"
                             />
                             <div
                                 ref={scrollRef}
