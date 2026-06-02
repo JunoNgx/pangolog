@@ -5,10 +5,6 @@ import {
     Checkbox,
     Input,
     Modal,
-    ModalBody,
-    ModalContent,
-    ModalFooter,
-    ModalHeader,
     Radio,
     RadioGroup,
 } from "@heroui/react";
@@ -20,7 +16,7 @@ import { DriveSyncSection } from "@/app/(app)/settings/DriveSyncSection";
 import { ImportDataSection } from "@/app/(app)/settings/ImportDataSection";
 import { MainListContainer } from "@/components/MainListContainer";
 import { RouteHeader } from "@/components/RouteHeader";
-import { DEFAULT_MODAL_CLASS_NAMES, MIME_JSON } from "@/lib/constants";
+import { MIME_JSON } from "@/lib/constants";
 import { clearAllData, forceDeleteDb } from "@/lib/db";
 import { exportJson } from "@/lib/export";
 import { useLogger } from "@/lib/hooks/useLogger";
@@ -461,100 +457,129 @@ export default function SettingsClient() {
                 </section>
             </MainListContainer>
 
-            <Modal
-                isOpen={isClearRecordsDialogOpen}
-                onClose={() => setIsResetDialogOpen(false)}
-                classNames={DEFAULT_MODAL_CLASS_NAMES}
-            >
-                <ModalContent>
-                    <ModalHeader>Clear local records?</ModalHeader>
-                    <ModalBody>
-                        <p className="text-danger-500 text-sm">
-                            This cannot be undone.
-                        </p>
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button
-                            variant="light"
-                            onPress={() => setIsResetDialogOpen(false)}
-                        >
-                            Cancel
-                        </Button>
-                        <Button
-                            color="danger"
-                            isLoading={isClearingRecords}
-                            onPress={handleClearLocalRecords}
-                        >
-                            Clear
-                        </Button>
-                    </ModalFooter>
-                </ModalContent>
+            <Modal>
+                <Modal.Backdrop
+                    isOpen={isClearRecordsDialogOpen}
+                    onOpenChange={(open) => { if (!open) setIsResetDialogOpen(false); }}
+                >
+                    <Modal.Container>
+                        <Modal.Dialog>
+                            {({close}) => (
+                                <>
+                                    <Modal.CloseTrigger className="cursor-pointer" />
+                                    <Modal.Header>
+                                        <Modal.Heading>Clear local records?</Modal.Heading>
+                                    </Modal.Header>
+                                    <Modal.Body>
+                                        <p className="text-danger-500 text-sm">
+                                            This cannot be undone.
+                                        </p>
+                                    </Modal.Body>
+                                    <Modal.Footer>
+                                        <Button
+                                            variant="light"
+                                            onPress={() => setIsClearRecordsDialogOpen(false)}
+                                        >
+                                            Cancel
+                                        </Button>
+                                        <Button
+                                            color="danger"
+                                            isLoading={isClearingRecords}
+                                            onPress={handleClearLocalRecords}
+                                        >
+                                            Clear
+                                        </Button>
+                                    </Modal.Footer>
+                                </>
+                            )}
+                        </Modal.Dialog>
+                    </Modal.Container>
+                </Modal.Backdrop>
             </Modal>
 
-            <Modal
-                isOpen={isResetAppDialogOpen}
-                onClose={() => setIsResetAppDialogOpen(false)}
-                classNames={DEFAULT_MODAL_CLASS_NAMES}
-            >
-                <ModalContent>
-                    <ModalHeader>Confirm resetting app?</ModalHeader>
-                    <ModalBody>
-                        <p className="text-danger-500 text-sm">
-                            This cannot be undone.
-                        </p>
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button
-                            variant="light"
-                            onPress={() => setIsResetAppDialogOpen(false)}
-                        >
-                            Cancel
-                        </Button>
-                        <Button
-                            color="danger"
-                            isLoading={isResettingApp}
-                            onPress={handleResetApp}
-                        >
-                            Reset app
-                        </Button>
-                    </ModalFooter>
-                </ModalContent>
+            <Modal>
+                <Modal.Backdrop
+                    isOpen={isResetAppDialogOpen}
+                    onOpenChange={(open) => { if (!open) setIsResetAppDialogOpen(false); }}
+                >
+                    <Modal.Container>
+                        <Modal.Dialog>
+                            {({close}) => (
+                                <>
+                                    <Modal.CloseTrigger className="cursor-pointer" />
+                                    <Modal.Header>
+                                        <Modal.Heading>Confirm resetting app?</Modal.Heading>
+                                    </Modal.Header>
+                                    <Modal.Body>
+                                        <p className="text-danger-500 text-sm">
+                                            This cannot be undone.
+                                        </p>
+                                    </Modal.Body>
+                                    <Modal.Footer>
+                                        <Button
+                                            variant="light"
+                                            onPress={() => setIsResetAppDialogOpen(false)}
+                                        >
+                                            Cancel
+                                        </Button>
+                                        <Button
+                                            color="danger"
+                                            isLoading={isResettingApp}
+                                            onPress={handleResetApp}
+                                        >
+                                            Reset app
+                                        </Button>
+                                    </Modal.Footer>
+                                </>
+                            )}
+                        </Modal.Dialog>
+                    </Modal.Container>
+                </Modal.Backdrop>
             </Modal>
 
-            <Modal
-                isOpen={isLogDialogOpen}
-                onClose={() => setIsLogDialogOpen(false)}
-                size="full"
-                classNames={DEFAULT_MODAL_CLASS_NAMES}
-            >
-                <ModalContent>
-                    <ModalHeader>Logs</ModalHeader>
-                    <ModalBody className="overflow-y-auto">
-                        <pre className="font-mono text-xs break-all whitespace-pre-wrap">
-                            {JSON.stringify(getLoggerEntries(), null, 2)}
-                        </pre>
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button
-                            variant="flat"
-                            onPress={handleDumpDebugLoggerContent}
-                        >
-                            Export logs
-                        </Button>
-                        <Button
-                            variant="flat"
-                            onPress={handleCopyDebugLoggerEntries}
-                        >
-                            Copy content
-                        </Button>
-                        <Button
-                            variant="light"
-                            onPress={() => setIsLogDialogOpen(false)}
-                        >
-                            Close
-                        </Button>
-                    </ModalFooter>
-                </ModalContent>
+            <Modal>
+                <Modal.Backdrop
+                    isOpen={isLogDialogOpen}
+                    onOpenChange={(open) => { if (!open) setIsLogDialogOpen(false); }}
+                >
+                    <Modal.Container size="full">
+                        <Modal.Dialog>
+                            {({close}) => (
+                                <>
+                                    <Modal.CloseTrigger className="cursor-pointer" />
+                                    <Modal.Header>
+                                        <Modal.Heading>Logs</Modal.Heading>
+                                    </Modal.Header>
+                                    <Modal.Body className="overflow-y-auto">
+                                        <pre className="font-mono text-xs break-all whitespace-pre-wrap">
+                                            {JSON.stringify(getLoggerEntries(), null, 2)}
+                                        </pre>
+                                    </Modal.Body>
+                                    <Modal.Footer>
+                                        <Button
+                                            variant="flat"
+                                            onPress={handleDumpDebugLoggerContent}
+                                        >
+                                            Export logs
+                                        </Button>
+                                        <Button
+                                            variant="flat"
+                                            onPress={handleCopyDebugLoggerEntries}
+                                        >
+                                            Copy content
+                                        </Button>
+                                        <Button
+                                            variant="light"
+                                            onPress={() => setIsLogDialogOpen(false)}
+                                        >
+                                            Close
+                                        </Button>
+                                    </Modal.Footer>
+                                </>
+                            )}
+                        </Modal.Dialog>
+                    </Modal.Container>
+                </Modal.Backdrop>
             </Modal>
         </div>
     );

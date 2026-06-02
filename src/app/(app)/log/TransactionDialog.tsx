@@ -3,9 +3,6 @@
 import {
     Input,
     Modal,
-    ModalBody,
-    ModalContent,
-    ModalHeader,
 } from "@heroui/react";
 import { DateTime } from "luxon";
 import type React from "react";
@@ -21,7 +18,6 @@ import { CategoryDialog } from "@/components/CategoryDialog";
 import { CategoryPicker } from "@/components/CategoryPicker";
 import { DialogFooter } from "@/components/DialogFooter";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
-import { FORM_MODAL_CLASS_NAMES } from "@/lib/constants";
 import type { Transaction } from "@/lib/db/types";
 import { useCategories } from "@/lib/hooks/useCategories";
 import {
@@ -195,90 +191,100 @@ export function TransactionDialog({
 
     return (
         <>
-            <Modal
-                isOpen={isOpen}
-                onClose={handleClose}
-                onTouchStart={handleBackdropTouchStart}
-                classNames={FORM_MODAL_CLASS_NAMES}
-            >
-                <ModalContent>
-                    <form ref={formRef} onSubmit={handleSubmit}>
-                        <ModalHeader>
-                            {isEditing ? "Edit Transaction" : "New Transaction"}
-                        </ModalHeader>
-                        <ModalBody className="gap-4">
-                            {!isEditing && !isExpenseOnlyMode && (
-                                <div className="mb-4 flex items-center justify-center gap-4">
-                                    <ToggleSwitch
-                                        label="Transaction flow type"
-                                        isSelectingRight={isIncome}
-                                        onValueChange={setIsIncome}
-                                        leftLabel="Expense"
-                                        rightLabel="Income"
-                                    />
-                                </div>
+            <Modal>
+                <Modal.Backdrop
+                    isOpen={isOpen}
+                    onOpenChange={(open) => { if (!open) handleClose(); }}
+                    onTouchStart={handleBackdropTouchStart}
+                >
+                    <Modal.Container>
+                        <Modal.Dialog>
+                            {({close}) => (
+                                <>
+                                    <Modal.CloseTrigger className="cursor-pointer" />
+                                    <form ref={formRef} onSubmit={handleSubmit}>
+                                        <Modal.Header>
+                                            <Modal.Heading>
+                                                {isEditing ? "Edit Transaction" : "New Transaction"}
+                                            </Modal.Heading>
+                                        </Modal.Header>
+                                        <Modal.Body className="gap-4 overflow-y-auto max-h-[calc(var(--visual-viewport-height,100svh)-10rem)]">
+                                            {!isEditing && !isExpenseOnlyMode && (
+                                                <div className="mb-4 flex items-center justify-center gap-4">
+                                                    <ToggleSwitch
+                                                        label="Transaction flow type"
+                                                        isSelectingRight={isIncome}
+                                                        onValueChange={setIsIncome}
+                                                        leftLabel="Expense"
+                                                        rightLabel="Income"
+                                                    />
+                                                </div>
+                                            )}
+
+                                            <div className="flex items-center gap-4">
+                                                <Input
+                                                    type="date"
+                                                    label={
+                                                        <span>
+                                                            Date{" "}
+                                                            <span className="text-default-400 font-mono text-xs">
+                                                                {localeDateFormat}
+                                                            </span>
+                                                        </span>
+                                                    }
+                                                    value={transactedAt}
+                                                    onValueChange={setTransactedAt}
+                                                    isRequired
+                                                    className="flex-1"
+                                                />
+                                                <ToggleSwitch
+                                                    className="flex-1"
+                                                    label="Transaction type"
+                                                    isSelectingRight={isBigBuck}
+                                                    onValueChange={setIsBigBuck}
+                                                    leftLabel="Small dime"
+                                                    rightLabel="Big buck"
+                                                />
+                                            </div>
+
+                                            <AmountInput
+                                                value={amount}
+                                                onChange={setAmount}
+                                                isIncome={isIncome}
+                                            />
+
+                                            <Input
+                                                classNames={{
+                                                    input: "font-mono",
+                                                }}
+                                                label="Description"
+                                                value={description}
+                                                onValueChange={setDescription}
+                                                maxLength={60}
+                                                description={`${description.length}/60`}
+                                            />
+
+                                            <CategoryPicker
+                                                categories={filteredCategories}
+                                                selectedId={categoryId}
+                                                onChange={setCategoryId}
+                                                onAdd={() => setIsCategoryDialogOpen(true)}
+                                            />
+                                        </Modal.Body>
+                                        <DialogFooter
+                                            isEditing={isEditing}
+                                            onCancel={handleClose}
+                                            onDelete={isEditing ? handleDelete : undefined}
+                                            isSubmitting={isPending}
+                                            isDeleting={isDeleting}
+                                            showSubmitTooltip
+                                        />
+                                    </form>
+                                </>
                             )}
-
-                            <div className="flex items-center gap-4">
-                                <Input
-                                    type="date"
-                                    label={
-                                        <span>
-                                            Date{" "}
-                                            <span className="text-default-400 font-mono text-xs">
-                                                {localeDateFormat}
-                                            </span>
-                                        </span>
-                                    }
-                                    value={transactedAt}
-                                    onValueChange={setTransactedAt}
-                                    isRequired
-                                    className="flex-1"
-                                />
-                                <ToggleSwitch
-                                    className="flex-1"
-                                    label="Transaction type"
-                                    isSelectingRight={isBigBuck}
-                                    onValueChange={setIsBigBuck}
-                                    leftLabel="Small dime"
-                                    rightLabel="Big buck"
-                                />
-                            </div>
-
-                            <AmountInput
-                                value={amount}
-                                onChange={setAmount}
-                                isIncome={isIncome}
-                            />
-
-                            <Input
-                                classNames={{
-                                    input: "font-mono",
-                                }}
-                                label="Description"
-                                value={description}
-                                onValueChange={setDescription}
-                                maxLength={60}
-                                description={`${description.length}/60`}
-                            />
-
-                            <CategoryPicker
-                                categories={filteredCategories}
-                                selectedId={categoryId}
-                                onChange={setCategoryId}
-                                onAdd={() => setIsCategoryDialogOpen(true)}
-                            />
-                        </ModalBody>
-                        <DialogFooter
-                            isEditing={isEditing}
-                            onCancel={handleClose}
-                            onDelete={isEditing ? handleDelete : undefined}
-                            isSubmitting={isPending}
-                            isDeleting={isDeleting}
-                            showSubmitTooltip
-                        />
-                    </form>
-                </ModalContent>
+                        </Modal.Dialog>
+                    </Modal.Container>
+                </Modal.Backdrop>
             </Modal>
             <CategoryDialog
                 isOpen={isCategoryDialogOpen}

@@ -1,6 +1,6 @@
 "use client";
 
-import { Input, Modal, ModalBody, ModalContent } from "@heroui/react";
+import { Input, Modal } from "@heroui/react";
 import {
     BookOpen,
     Download,
@@ -278,78 +278,79 @@ export function CommandPalette() {
     }
 
     return (
-        <Modal
-            isOpen={isOpen}
-            onClose={close}
-            hideCloseButton
-            size="sm"
-            classNames={{ base: "max-w-md" }}
-        >
-            <ModalContent>
-                <ModalBody className="gap-0 p-0">
-                    <Input
-                        autoFocus
-                        placeholder="Type a command..."
-                        value={query}
-                        onValueChange={handleQueryChange}
-                        onKeyDown={handleKeyDown}
-                        classNames={{
-                            inputWrapper:
-                                "shadow-none border-b border-default-200 rounded-none rounded-t-xl bg-transparent px-4 data-[focus-visible=true]:ring-0 data-[focus-visible=true]:ring-offset-0",
-                        }}
-                        variant="flat"
-                    />
-                    <div
-                        ref={scrollRef}
-                        className="max-h-128 overflow-y-auto pb-2"
-                    >
-                        {filteredCommands.length === 0 && (
-                            <p className="text-default-400 py-6 text-center text-sm">
-                                No commands found
-                            </p>
-                        )}
-                        {groupedItems.map((item) => {
-                            if (item.type === "header") {
-                                return (
-                                    <p
-                                        key={`header-${item.group}`}
-                                        className="text-default-400 px-3 pt-3 pb-1 text-xs font-medium"
-                                    >
-                                        {item.group}
+        <Modal>
+            <Modal.Backdrop
+                isOpen={isOpen}
+                onOpenChange={(open) => { if (!open) close(); }}
+            >
+                <Modal.Container size="sm">
+                    <Modal.Dialog className="max-w-md">
+                        <Modal.Body className="gap-0 p-0">
+                            <Input
+                                autoFocus
+                                placeholder="Type a command..."
+                                value={query}
+                                onValueChange={handleQueryChange}
+                                onKeyDown={handleKeyDown}
+                                classNames={{
+                                    inputWrapper:
+                                        "shadow-none border-b border-default-200 rounded-none rounded-t-xl bg-transparent px-4 data-[focus-visible=true]:ring-0 data-[focus-visible=true]:ring-offset-0",
+                                }}
+                                variant="flat"
+                            />
+                            <div
+                                ref={scrollRef}
+                                className="max-h-128 overflow-y-auto pb-2"
+                            >
+                                {filteredCommands.length === 0 && (
+                                    <p className="text-default-400 py-6 text-center text-sm">
+                                        No commands found
                                     </p>
-                                );
-                            }
+                                )}
+                                {groupedItems.map((item) => {
+                                    if (item.type === "header") {
+                                        return (
+                                            <p
+                                                key={`header-${item.group}`}
+                                                className="text-default-400 px-3 pt-3 pb-1 text-xs font-medium"
+                                            >
+                                                {item.group}
+                                            </p>
+                                        );
+                                    }
 
-                            const { cmd, idx } = item;
-                            const isSelected = selectedIndex === idx;
-                            const itemClasses = `
-                                w-full
-                                flex items-center gap-3 px-3 py-2
-                                text-sm text-left
-                                rounded-lg
-                                cursor-pointer
-                                ${isSelected ? "bg-default-100" : "hover:bg-default-50"}
-                            `;
+                                    const { cmd, idx } = item;
+                                    const isSelected = selectedIndex === idx;
+                                    const itemClasses = `
+                                        w-full
+                                        flex items-center gap-3 px-3 py-2
+                                        text-sm text-left
+                                        rounded-lg
+                                        cursor-pointer
+                                        ${isSelected ? "bg-default-100" : "hover:bg-default-50"}
+                                    `;
 
-                            return (
-                                <button
-                                    key={cmd.id}
-                                    type="button"
-                                    data-index={idx}
-                                    className={itemClasses}
-                                    onClick={() => execute(cmd)}
-                                    onMouseEnter={() => setSelectedIndex(idx)}
-                                >
-                                    <span className="text-default-500 shrink-0">
-                                        {cmd.icon}
-                                    </span>
-                                    {cmd.label}
-                                </button>
-                            );
-                        })}
-                    </div>
-                </ModalBody>
-            </ModalContent>
+                                    return (
+                                        <button
+                                            key={cmd.id}
+                                            type="button"
+                                            data-index={idx}
+                                            className={itemClasses}
+                                            onClick={() => execute(cmd)}
+                                            onMouseEnter={() => setSelectedIndex(idx)}
+                                        >
+                                            <span className="text-default-500 shrink-0">
+                                                {cmd.icon}
+                                            </span>
+                                            {cmd.label}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        </Modal.Body>
+                    </Modal.Dialog>
+                </Modal.Container>
+            </Modal.Backdrop>
         </Modal>
     );
 }

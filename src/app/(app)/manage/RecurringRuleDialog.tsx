@@ -3,9 +3,6 @@
 import {
     Input,
     Modal,
-    ModalBody,
-    ModalContent,
-    ModalHeader,
     Switch,
 } from "@heroui/react";
 import { DateTime } from "luxon";
@@ -47,8 +44,6 @@ function getRepeatLabel(frequency: Frequency, dateStr: string): string {
             return `Repeats every ${MONTH_NAMES[dt.month - 1]} ${dt.day}`;
     }
 }
-
-import { FORM_MODAL_CLASS_NAMES } from "@/lib/constants";
 
 const statusPanelClasses = `
     p-3 rounded-lg border
@@ -248,90 +243,100 @@ export function RecurringRuleDialog({
 
     return (
         <>
-            <Modal
-                isOpen={isOpen}
-                onClose={handleClose}
-                classNames={FORM_MODAL_CLASS_NAMES}
-            >
-                <ModalContent>
-                    <form onSubmit={handleSubmit}>
-                        <ModalHeader>
-                            {isEditing
-                                ? "Edit Recurring Rule"
-                                : "New Recurring Rule"}
-                        </ModalHeader>
-                        <ModalBody className="gap-4">
-                            {ruleStatusPanel}
-                            {typeToggleRow}
+            <Modal>
+                <Modal.Backdrop
+                    isOpen={isOpen}
+                    onOpenChange={(open) => { if (!open) handleClose(); }}
+                >
+                    <Modal.Container>
+                        <Modal.Dialog>
+                            {({close}) => (
+                                <>
+                                    <Modal.CloseTrigger className="cursor-pointer" />
+                                    <form onSubmit={handleSubmit}>
+                                        <Modal.Header>
+                                            <Modal.Heading>
+                                                {isEditing
+                                                    ? "Edit Recurring Rule"
+                                                    : "New Recurring Rule"}
+                                            </Modal.Heading>
+                                        </Modal.Header>
+                                        <Modal.Body className="gap-4 overflow-y-auto max-h-[calc(var(--visual-viewport-height,100svh)-10rem)]">
+                                            {ruleStatusPanel}
+                                            {typeToggleRow}
 
-                            <AmountInput
-                                value={amount}
-                                onChange={setAmount}
-                                isIncome={isIncome}
-                            />
+                                            <AmountInput
+                                                value={amount}
+                                                onChange={setAmount}
+                                                isIncome={isIncome}
+                                            />
 
-                            <Input
-                                classNames={{ input: "font-mono" }}
-                                label="Description"
-                                value={description}
-                                onValueChange={setDescription}
-                                maxLength={60}
-                                description={`${description.length}/60`}
-                            />
+                                            <Input
+                                                classNames={{ input: "font-mono" }}
+                                                label="Description"
+                                                value={description}
+                                                onValueChange={setDescription}
+                                                maxLength={60}
+                                                description={`${description.length}/60`}
+                                            />
 
-                            <div className="flex items-end justify-between gap-3">
-                                <Input
-                                    type="date"
-                                    label={
-                                        <span>
-                                            Start date{" "}
-                                            <span className="text-default-400 font-mono text-xs">
-                                                {localeDateFormat}
-                                            </span>
-                                        </span>
-                                    }
-                                    value={startDate}
-                                    onValueChange={setStartDate}
-                                    isRequired
-                                    className="w-1/2"
-                                />
-                                <div className="flex shrink-0 flex-col gap-1">
-                                    <span className="text-default-500 text-sm">
-                                        Frequency
-                                    </span>
-                                    <select
-                                        value={frequency}
-                                        onChange={handleFrequencyChange}
-                                        className={SELECT_CLASSES}
-                                    >
-                                        <option value="daily">Daily</option>
-                                        <option value="weekly">Weekly</option>
-                                        <option value="monthly">Monthly</option>
-                                        <option value="yearly">Yearly</option>
-                                    </select>
-                                </div>
-                            </div>
+                                            <div className="flex items-end justify-between gap-3">
+                                                <Input
+                                                    type="date"
+                                                    label={
+                                                        <span>
+                                                            Start date{" "}
+                                                            <span className="text-default-400 font-mono text-xs">
+                                                                {localeDateFormat}
+                                                            </span>
+                                                        </span>
+                                                    }
+                                                    value={startDate}
+                                                    onValueChange={setStartDate}
+                                                    isRequired
+                                                    className="w-1/2"
+                                                />
+                                                <div className="flex shrink-0 flex-col gap-1">
+                                                    <span className="text-default-500 text-sm">
+                                                        Frequency
+                                                    </span>
+                                                    <select
+                                                        value={frequency}
+                                                        onChange={handleFrequencyChange}
+                                                        className={SELECT_CLASSES}
+                                                    >
+                                                        <option value="daily">Daily</option>
+                                                        <option value="weekly">Weekly</option>
+                                                        <option value="monthly">Monthly</option>
+                                                        <option value="yearly">Yearly</option>
+                                                    </select>
+                                                </div>
+                                            </div>
 
-                            <p className="-mt-2 font-mono text-xs">
-                                {repeatLabel}
-                            </p>
+                                            <p className="-mt-2 font-mono text-xs">
+                                                {repeatLabel}
+                                            </p>
 
-                            <CategoryPicker
-                                categories={filteredCategories}
-                                selectedId={categoryId}
-                                onChange={setCategoryId}
-                                onAdd={() => setIsCategoryDialogOpen(true)}
-                            />
-                        </ModalBody>
-                        <DialogFooter
-                            isEditing={isEditing}
-                            onCancel={handleClose}
-                            onDelete={isEditing ? handleDelete : undefined}
-                            isSubmitting={isPending}
-                            isDeleting={isDeleting}
-                        />
-                    </form>
-                </ModalContent>
+                                            <CategoryPicker
+                                                categories={filteredCategories}
+                                                selectedId={categoryId}
+                                                onChange={setCategoryId}
+                                                onAdd={() => setIsCategoryDialogOpen(true)}
+                                            />
+                                        </Modal.Body>
+                                        <DialogFooter
+                                            isEditing={isEditing}
+                                            onCancel={handleClose}
+                                            onDelete={isEditing ? handleDelete : undefined}
+                                            isSubmitting={isPending}
+                                            isDeleting={isDeleting}
+                                        />
+                                    </form>
+                                </>
+                            )}
+                        </Modal.Dialog>
+                    </Modal.Container>
+                </Modal.Backdrop>
             </Modal>
             <CategoryDialog
                 isOpen={isCategoryDialogOpen}

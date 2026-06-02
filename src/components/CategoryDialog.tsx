@@ -4,9 +4,6 @@ import {
     Checkbox,
     Input,
     Modal,
-    ModalBody,
-    ModalContent,
-    ModalHeader,
     Popover,
     PopoverContent,
     PopoverTrigger,
@@ -80,8 +77,6 @@ function randomHexColor() {
         .toString(16)
         .padStart(6, "0")}`;
 }
-
-import { FORM_MODAL_CLASS_NAMES } from "@/lib/constants";
 
 const iconTriggerClasses = `
     rounded-lg
@@ -350,52 +345,62 @@ export function CategoryDialog({
     );
 
     return (
-        <Modal
-            isOpen={isOpen}
-            onClose={onClose}
-            classNames={FORM_MODAL_CLASS_NAMES}
-        >
-            <ModalContent>
-                <form onSubmit={handleSubmit}>
-                    <ModalHeader>
-                        {isEditing ? "Edit Category" : "New Category"}
-                    </ModalHeader>
-                    <ModalBody className="gap-4">
-                        <Input
-                            label="Name"
-                            value={name}
-                            onValueChange={setName}
-                            isRequired
-                            autoFocus
-                        />
-                        <div className="flex justify-between">
-                            {emojiPickerSection}
-                            {colourPickerSection}
-                        </div>
-                        <Checkbox
-                            isSelected={isBuckOnly}
-                            onValueChange={setIsBuckOnly}
-                        >
-                            Big-buck only
-                        </Checkbox>
-                        {!isExpenseOnlyMode && (
-                            <Checkbox
-                                isSelected={isIncomeOnly}
-                                onValueChange={setIsIncomeOnly}
-                            >
-                                Income only
-                            </Checkbox>
+        <Modal>
+            <Modal.Backdrop
+                isOpen={isOpen}
+                onOpenChange={(open) => { if (!open) onClose(); }}
+            >
+                <Modal.Container>
+                    <Modal.Dialog>
+                        {({close}) => (
+                            <>
+                                <Modal.CloseTrigger className="cursor-pointer" />
+                                <form onSubmit={handleSubmit}>
+                                    <Modal.Header>
+                                        <Modal.Heading>
+                                            {isEditing ? "Edit Category" : "New Category"}
+                                        </Modal.Heading>
+                                    </Modal.Header>
+                                    <Modal.Body className="gap-4 overflow-y-auto max-h-[calc(var(--visual-viewport-height,100svh)-10rem)]">
+                                        <Input
+                                            label="Name"
+                                            value={name}
+                                            onValueChange={setName}
+                                            isRequired
+                                            autoFocus
+                                        />
+                                        <div className="flex justify-between">
+                                            {emojiPickerSection}
+                                            {colourPickerSection}
+                                        </div>
+                                        <Checkbox
+                                            isSelected={isBuckOnly}
+                                            onValueChange={setIsBuckOnly}
+                                        >
+                                            Big-buck only
+                                        </Checkbox>
+                                        {!isExpenseOnlyMode && (
+                                            <Checkbox
+                                                isSelected={isIncomeOnly}
+                                                onValueChange={setIsIncomeOnly}
+                                            >
+                                                Income only
+                                            </Checkbox>
+                                        )}
+                                    </Modal.Body>
+                                    <DialogFooter
+                                        isEditing={isEditing}
+                                        onCancel={onClose}
+                                        onDelete={isEditing ? handleDelete : undefined}
+                                        isSubmitting={isPending}
+                                        isDeleting={deleteCategory.isPending}
+                                    />
+                                </form>
+                            </>
                         )}
-                    </ModalBody>
-                    <DialogFooter
-                        isEditing={isEditing}
-                        onCancel={onClose}
-                        onDelete={isEditing ? handleDelete : undefined}
-                        isSubmitting={isPending}
-                        isDeleting={deleteCategory.isPending}
-                    />
-                </form>
-            </ModalContent>
+                    </Modal.Dialog>
+                </Modal.Container>
+            </Modal.Backdrop>
         </Modal>
     );
 }
