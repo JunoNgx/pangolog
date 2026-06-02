@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Input } from "@heroui/react";
+import { Button, SearchField } from "@heroui/react";
 import { Search } from "lucide-react";
 import { DateTime } from "luxon";
 import dynamic from "next/dynamic";
@@ -249,21 +249,23 @@ export default function LogClient() {
 
     const searchInputRow = (
         <div className="flex items-center gap-2">
-            <Input
-                ref={searchInputRef}
-                placeholder="Search by description"
+            <SearchField
                 value={searchQuery}
-                onValueChange={setSearchQuery}
+                onChange={setSearchQuery}
                 onClear={() => setSearchQuery("")}
-                onKeyDown={handleSearchInputKeyDown}
-                startContent={<Search size={16} className="text-default-400" />}
-                isClearable
                 autoFocus
-                classNames={{
-                    inputWrapper:
-                        "data-[focus-visible=true]:ring-0 data-[focus-visible=true]:ring-offset-0 rounded-md",
-                }}
-            />
+                fullWidth
+            >
+                <SearchField.Group className="data-[focus-visible=true]:ring-0 data-[focus-visible=true]:ring-offset-0 rounded-md">
+                    <SearchField.SearchIcon />
+                    <SearchField.Input
+                        ref={searchInputRef}
+                        placeholder="Search by description"
+                        onKeyDown={handleSearchInputKeyDown}
+                    />
+                    <SearchField.ClearButton />
+                </SearchField.Group>
+            </SearchField>
             <Button variant="ghost" size="sm" onPress={handleClearSearch}>
                 Cancel
             </Button>

@@ -22,25 +22,21 @@ export function AmountInput({
         }
     }
 
-    const classNames = {
-        base: "my-2",
-        input: `
-            text-4xl text-center font-mono
-            ${isIncome ? "!text-success" : "!text-foreground"}
-        `,
-    };
-
     return (
-        <Input
-            variant="underlined"
-            value={value}
-            onValueChange={handleAmountChange}
-            isRequired={isRequired}
-            autoFocus
-            inputMode="decimal"
-            placeholder="0.00"
-            onFocus={(e) => e.target.select()}
-            classNames={classNames}
-        />
+        <div className="my-2">
+            <Input
+                value={value}
+                onChange={(e) => handleAmountChange(e.target.value)}
+                required={isRequired}
+                autoFocus
+                inputMode="decimal"
+                placeholder="0.00"
+                onFocus={(e) => e.target.select()}
+                className={`
+                    text-4xl text-center font-mono border-b-2 border-default-200 rounded-none
+                    ${isIncome ? "!text-success" : "!text-foreground"}
+                `}
+            />
+        </div>
     );
 }

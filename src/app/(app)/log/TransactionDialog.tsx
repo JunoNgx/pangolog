@@ -221,22 +221,21 @@ export function TransactionDialog({
                                                 </div>
                                             )}
 
-                                            <div className="flex items-center gap-4">
-                                                <Input
-                                                    type="date"
-                                                    label={
-                                                        <span>
-                                                            Date{" "}
-                                                            <span className="text-default-400 font-mono text-xs">
-                                                                {localeDateFormat}
-                                                            </span>
+                                            <div className="flex items-end gap-4">
+                                                <div className="flex flex-1 flex-col gap-1">
+                                                    <span>
+                                                        Date{" "}
+                                                        <span className="text-default-400 font-mono text-xs">
+                                                            {localeDateFormat}
                                                         </span>
-                                                    }
-                                                    value={transactedAt}
-                                                    onValueChange={setTransactedAt}
-                                                    isRequired
-                                                    className="flex-1"
-                                                />
+                                                    </span>
+                                                    <Input
+                                                        type="date"
+                                                        value={transactedAt}
+                                                        onChange={(e) => setTransactedAt(e.target.value)}
+                                                        required
+                                                    />
+                                                </div>
                                                 <ToggleSwitch
                                                     className="flex-1"
                                                     label="Transaction type"
@@ -253,16 +252,16 @@ export function TransactionDialog({
                                                 isIncome={isIncome}
                                             />
 
-                                            <Input
-                                                classNames={{
-                                                    input: "font-mono",
-                                                }}
-                                                label="Description"
-                                                value={description}
-                                                onValueChange={setDescription}
-                                                maxLength={60}
-                                                description={`${description.length}/60`}
-                                            />
+                                            <div className="flex flex-col gap-1">
+                                                <span>Description</span>
+                                                <Input
+                                                    className="font-mono"
+                                                    value={description}
+                                                    onChange={(e) => setDescription(e.target.value)}
+                                                    maxLength={60}
+                                                />
+                                                <span className="text-default-400 text-xs">{description.length}/60</span>
+                                            </div>
 
                                             <CategoryPicker
                                                 categories={filteredCategories}

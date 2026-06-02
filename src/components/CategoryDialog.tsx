@@ -362,13 +362,15 @@ export function CategoryDialog({
                                         </Modal.Heading>
                                     </Modal.Header>
                                     <Modal.Body className="gap-4 overflow-y-auto max-h-[calc(var(--visual-viewport-height,100svh)-10rem)]">
-                                        <Input
-                                            label="Name"
-                                            value={name}
-                                            onValueChange={setName}
-                                            isRequired
-                                            autoFocus
-                                        />
+                                        <div className="flex flex-col gap-1">
+                                            <span>Name</span>
+                                            <Input
+                                                value={name}
+                                                onChange={(e) => setName(e.target.value)}
+                                                required
+                                                autoFocus
+                                            />
+                                        </div>
                                         <div className="flex justify-between">
                                             {emojiPickerSection}
                                             {colourPickerSection}
