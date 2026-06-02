@@ -49,23 +49,21 @@ export default function ExpensesByMonthChart({
 
     const bars = monthlyTotals.map((total, index) => (
         <Popover key={MONTH_NAMES[index]}>
-            <Popover.Trigger className="flex-1 h-full flex flex-col justify-end">
-                <div
-                    className="relative cursor-pointer"
-                    style={{
-                        height:
-                            total > 0 ? `${(total / maxTotal) * 100}%` : "0%",
-                    }}
-                >
-                    <div className="bg-foreground h-full w-full rounded-sm" />
-                    {index === tallestIndex && (
-                        <span
-                            className={`absolute -top-5 ${tallestLabelAlign} text-muted font-mono text-xs whitespace-nowrap`}
-                        >
-                            {formatAmountShort(total)}
-                        </span>
-                    )}
-                </div>
+            <Popover.Trigger
+                className="relative flex-1 flex flex-col justify-end"
+                style={{
+                    height:
+                        total > 0 ? `${(total / maxTotal) * 100}%` : "0%",
+                }}
+            >
+                <div className="bg-foreground h-full w-full rounded-sm cursor-pointer" />
+                {index === tallestIndex && (
+                    <span
+                        className={`absolute -top-5 ${tallestLabelAlign} text-muted font-mono text-xs whitespace-nowrap`}
+                    >
+                        {formatAmountShort(total)}
+                    </span>
+                )}
             </Popover.Trigger>
             <Popover.Content placement="top">
                 <Popover.Dialog>
