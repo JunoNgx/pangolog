@@ -40,6 +40,9 @@ export function DialogFooter({
                 </Button>
             )}
             <div className="flex gap-2">
+                <Button variant="light" onPress={onCancel}>
+                    Cancel
+                </Button>
                 {showSubmitTooltip ? (
                     <Tooltip content="Ctrl/Cmd + Enter" placement="left">
                         {submitButton}
@@ -47,9 +50,6 @@ export function DialogFooter({
                 ) : (
                     submitButton
                 )}
-                <Button variant="light" onPress={onCancel}>
-                    Cancel
-                </Button>
             </div>
         </div>
     );
