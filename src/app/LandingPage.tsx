@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@heroui/react";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
@@ -69,15 +68,12 @@ export default function LandingPage() {
                 </ul>
 
                 <div className="flex flex-col gap-2">
-                    <Button
-                        as={Link}
+                    <Link
                         href="/log"
-                        color="primary"
-                        size="lg"
-                        className="self-center"
+                        className="bg-accent text-accent-foreground hover:opacity-90 inline-flex items-center justify-center gap-2 rounded-lg px-6 py-3 text-base font-medium self-center"
                     >
                         Get started
-                    </Button>
+                    </Link>
                     <p className="text-default-400 text-center text-xs">
                         (like, now; no account or signup needed)
                     </p>

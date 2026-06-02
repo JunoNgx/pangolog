@@ -53,7 +53,6 @@ export function TransactionTypeDropdown({
                     size="sm"
                     isIconOnly
                     aria-label={modeLabel}
-                    title="Ctrl/Cmd+Shift+U"
                 >
                     <CurrentIcon size={16} />
                 </Button>

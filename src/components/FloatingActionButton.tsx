@@ -30,7 +30,7 @@ export function FloatingActionButton({
                 placement="left"
             >
                 <Button
-                    color="primary"
+                    variant="primary"
                     className={buttonClasses}
                     onPress={onPress}
                 >

@@ -69,13 +69,13 @@ export function ImportDataSection() {
             <div className="mt-1 flex gap-2">
                 <Button
                     size="sm"
-                    color="primary"
-                    isLoading={isImporting}
+                    variant="primary"
+                    isPending={isImporting}
                     onPress={handleConfirmImport}
                 >
                     Confirm
                 </Button>
-                <Button size="sm" variant="light" onPress={handleCancelImport}>
+                <Button size="sm" variant="tertiary" onPress={handleCancelImport}>
                     Cancel
                 </Button>
             </div>
@@ -180,8 +180,7 @@ export function ImportDataSection() {
                     onChange={handleFileChange}
                 />
                 <Button
-                    color="primary"
-                    variant="flat"
+                    variant="primary"
                     className="self-start"
                     onPress={() => fileInputRef.current?.click()}
                 >

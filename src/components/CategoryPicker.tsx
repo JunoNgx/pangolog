@@ -45,18 +45,15 @@ export function CategoryPicker({
                         key={cat.id}
                         className="pl-2"
                         size="sm"
-                        variant={selectedId === cat.id ? "solid" : "flat"}
-                        color={selectedId === cat.id ? "primary" : "default"}
+                        variant={selectedId === cat.id ? "primary" : "tertiary"}
                         onPress={() =>
                             onChange(selectedId === cat.id ? null : cat.id)
                         }
-                        startContent={
-                            <span
-                                className="inline-block h-6 w-1"
-                                style={{ backgroundColor: cat.colour }}
-                            />
-                        }
                     >
+                        <span
+                            className="inline-block h-6 w-1"
+                            style={{ backgroundColor: cat.colour }}
+                        />
                         <span>{cat.icon}</span>
                         <span>{cat.name}</span>
                     </Button>

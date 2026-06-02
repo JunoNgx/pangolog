@@ -56,7 +56,7 @@ export function SyncButton() {
         <Tooltip content="Ctrl/Cmd + S" placement="bottom">
             <Button
                 size="sm"
-                variant="flat"
+                variant="secondary"
                 isDisabled={syncStatus === "syncing"}
                 onPress={handleSync}
                 aria-label="Sync with Google Drive"

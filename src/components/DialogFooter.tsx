@@ -20,7 +20,7 @@ export function DialogFooter({
     showSubmitTooltip,
 }: DialogFooterProps) {
     const submitButton = (
-        <Button type="submit" color="primary" isLoading={isSubmitting}>
+        <Button type="submit" variant="primary" isPending={isSubmitting}>
             {isEditing ? "Save" : "Create"}
         </Button>
     );
@@ -31,9 +31,8 @@ export function DialogFooter({
         <div className={containerClasses}>
             {isEditing && onDelete && (
                 <Button
-                    color="danger"
-                    variant="light"
-                    isLoading={isDeleting}
+                    variant="danger-soft"
+                    isPending={isDeleting}
                     onPress={onDelete}
                 >
                     Delete
@@ -47,7 +46,7 @@ export function DialogFooter({
                 ) : (
                     submitButton
                 )}
-                <Button variant="light" onPress={onCancel}>
+                <Button variant="tertiary" onPress={onCancel}>
                     Cancel
                 </Button>
             </div>
