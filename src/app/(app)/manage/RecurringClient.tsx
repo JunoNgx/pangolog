@@ -1,10 +1,10 @@
 "use client";
 
-import { ArrowDownAZ, ArrowUpAZ } from "lucide-react";
+import { ArrowDownAZ, ArrowUpAZ, Plus } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { ConfigWrapper } from "@/components/ConfigWrapper";
 import { DemoDataBanner } from "@/components/DemoDataBanner";
-import { FloatingActionButton } from "@/components/FloatingActionButton";
+import { Button } from "@heroui/react";
 import { commandPaletteCreateActions } from "@/lib/commandPaletteActionRegistry";
 import { FREQUENCY_ORDER, SELECT_CLASSES } from "@/lib/constants";
 import { useCategories } from "@/lib/hooks/useCategories";
@@ -135,15 +135,16 @@ export default function RecurringClient() {
                 </div>
                 <DemoDataBanner />
             </ConfigWrapper>
+            <div className="mx-auto w-full max-w-lg flex justify-end mt-4 mb-6">
+                <Button color="default" onPress={() => setIsCreateOpen(true)}>
+                    <Plus />
+                    <span>Rule</span>
+                </Button>
+            </div>
             <RecurringList
                 rules={sortedRules}
                 categories={categories ?? []}
                 isLoading={isLoading}
-            />
-
-            <FloatingActionButton
-                label="Rule"
-                onPress={() => setIsCreateOpen(true)}
             />
 
             <RecurringRuleDialog
