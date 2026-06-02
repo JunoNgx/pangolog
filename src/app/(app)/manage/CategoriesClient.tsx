@@ -39,12 +39,12 @@ export default function CategoriesClient() {
                 </div>
                 <DemoDataBanner />
             </ConfigWrapper>
-            <div className="mx-auto w-full max-w-lg flex justify-end mb-4">
+            <ConfigWrapper className="flex justify-end mb-4">
                 <Button color="default" onPress={() => setIsCreateOpen(true)}>
                     <Plus />
                     <span>Category</span>
                 </Button>
-            </div>
+            </ConfigWrapper>
             <CategoryList />
             <CategoryDialog
                 isOpen={isCreateOpen}
