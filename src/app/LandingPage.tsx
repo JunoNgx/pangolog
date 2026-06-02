@@ -37,7 +37,7 @@ export default function LandingPage() {
                             Pangolog
                         </h1>
                         <div className="border-default-300 border-l-2 pl-4">
-                            <p className="text-default-700 font-mono text-sm">
+                            <p className="text-foreground font-mono text-sm">
                                 log
                             </p>
                             <p className="text-muted font-mono text-sm">
@@ -57,7 +57,7 @@ export default function LandingPage() {
                 <ul className="flex flex-col gap-6">
                     {FEATURES.map((feature) => (
                         <li key={feature.headline}>
-                            <p className="text-default-700 mb-2 font-semibold">
+                            <p className="text-foreground mb-2 font-semibold">
                                 {feature.headline}
                             </p>
                             <p className="text-muted text-sm">
@@ -100,14 +100,14 @@ export default function LandingPage() {
                         >
                             Source
                         </Link>
-                        <span className="text-default-300 text-xs">|</span>
+                        <span className="text-muted text-xs">|</span>
                         <Link
                             href="/privacy"
                             className="text-muted hover:text-foreground text-xs"
                         >
                             Privacy Policy
                         </Link>
-                        <span className="text-default-300 text-xs">|</span>
+                        <span className="text-muted text-xs">|</span>
                         <Link
                             href="/terms"
                             className="text-muted hover:text-foreground text-xs"

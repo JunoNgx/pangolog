@@ -94,7 +94,7 @@ function SegmentBar({ label, slices, total }: SegmentBarProps) {
         <div className="mb-6">
             <div className="mb-2 flex items-baseline justify-between">
                 <p className="text-muted font-semibold">{label}</p>
-                <p className="text-default-700 font-mono text-sm font-semibold">
+                <p className="text-foreground font-mono text-sm font-semibold">
                     {formatAmount(total)}
                 </p>
             </div>
@@ -120,7 +120,7 @@ function SegmentBar({ label, slices, total }: SegmentBarProps) {
                             className="h-2.5 w-2.5 shrink-0 rounded-full"
                             style={{ backgroundColor: slice.colour }}
                         />
-                        <span className="text-default-700 flex-1">
+                        <span className="text-foreground flex-1">
                             <span className="mr-1">
                                 {slice.icon ? `${slice.icon} ` : ""}
                             </span>

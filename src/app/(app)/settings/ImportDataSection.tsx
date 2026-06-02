@@ -36,7 +36,7 @@ export function ImportDataSection() {
 
     const importPreviewPanel = importPreview && (
         <div className="bg-default-100 flex flex-col gap-2 rounded-lg p-3 text-sm">
-            <p className="text-default-700 font-semibold">Preview:</p>
+            <p className="text-foreground font-semibold">Preview:</p>
             <p className="text-foreground">
                 {renderStats(
                     "Transactions",
