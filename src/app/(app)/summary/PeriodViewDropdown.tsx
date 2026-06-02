@@ -64,6 +64,7 @@ export function PeriodViewDropdown({
                         >
                             <opt.icon size={16} />
                             <Label>{opt.label}</Label>
+                            <Dropdown.ItemIndicator />
                         </Dropdown.Item>
                     ))}
                 </Dropdown.Menu>
