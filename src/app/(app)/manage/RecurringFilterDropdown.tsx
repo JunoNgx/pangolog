@@ -4,8 +4,6 @@ import {
     Button,
     Checkbox,
     Popover,
-    PopoverContent,
-    PopoverTrigger,
 } from "@heroui/react";
 import { ChevronDown } from "lucide-react";
 
@@ -38,8 +36,8 @@ export function RecurringFilterDropdown({
     const hasActiveFilter = activeFilterCount > 0;
 
     return (
-        <Popover placement="bottom-end">
-            <PopoverTrigger>
+        <Popover>
+            <Popover.Trigger>
                 <Button
                     variant={hasActiveFilter ? "primary" : "tertiary"}
                     className="w-min"
@@ -47,56 +45,58 @@ export function RecurringFilterDropdown({
                     Filter
                     <ChevronDown className="size-3" />
                 </Button>
-            </PopoverTrigger>
-            <PopoverContent className="p-2">
-                <div className="flex min-w-32 flex-col gap-1">
-                    <Checkbox
-                        isSelected={shouldShowDimes}
-                        onValueChange={onShowDimesChange}
-                    >
-                        <span className="text-default-500 text-sm">
-                            Small dimes
-                        </span>
-                    </Checkbox>
-                    <Checkbox
-                        isSelected={shouldShowBucks}
-                        onValueChange={onShowBucksChange}
-                    >
-                        <span className="text-default-500 text-sm">
-                            Big bucks
-                        </span>
-                    </Checkbox>
-                    <Checkbox
-                        isSelected={shouldShowIncome}
-                        onValueChange={onShowIncomeChange}
-                    >
-                        <span className="text-default-500 text-sm">Income</span>
-                    </Checkbox>
-                    <Checkbox
-                        isSelected={shouldHideInactive}
-                        onValueChange={onHideInactiveChange}
-                    >
-                        <span className="text-default-500 text-sm">
-                            Hide inactive
-                        </span>
-                    </Checkbox>
-                    <div className="border-default-200 mt-1 flex gap-1 border-t pt-2">
-                        <Button
-                            size="sm"
-                            variant="tertiary"
-                            className="flex-1 text-xs"
-                            onPress={() => {
-                                onShowDimesChange(true);
-                                onShowBucksChange(true);
-                                onShowIncomeChange(true);
-                                onHideInactiveChange(false);
-                            }}
+            </Popover.Trigger>
+            <Popover.Content placement="bottom end" className="p-2">
+                <Popover.Dialog>
+                    <div className="flex min-w-32 flex-col gap-1">
+                        <Checkbox
+                            isSelected={shouldShowDimes}
+                            onValueChange={onShowDimesChange}
                         >
-                            Reset
-                        </Button>
+                            <span className="text-default-500 text-sm">
+                                Small dimes
+                            </span>
+                        </Checkbox>
+                        <Checkbox
+                            isSelected={shouldShowBucks}
+                            onValueChange={onShowBucksChange}
+                        >
+                            <span className="text-default-500 text-sm">
+                                Big bucks
+                            </span>
+                        </Checkbox>
+                        <Checkbox
+                            isSelected={shouldShowIncome}
+                            onValueChange={onShowIncomeChange}
+                        >
+                            <span className="text-default-500 text-sm">Income</span>
+                        </Checkbox>
+                        <Checkbox
+                            isSelected={shouldHideInactive}
+                            onValueChange={onHideInactiveChange}
+                        >
+                            <span className="text-default-500 text-sm">
+                                Hide inactive
+                            </span>
+                        </Checkbox>
+                        <div className="border-default-200 mt-1 flex gap-1 border-t pt-2">
+                            <Button
+                                size="sm"
+                                variant="tertiary"
+                                className="flex-1 text-xs"
+                                onPress={() => {
+                                    onShowDimesChange(true);
+                                    onShowBucksChange(true);
+                                    onShowIncomeChange(true);
+                                    onHideInactiveChange(false);
+                                }}
+                            >
+                                Reset
+                            </Button>
+                        </div>
                     </div>
-                </div>
-            </PopoverContent>
+                </Popover.Dialog>
+            </Popover.Content>
         </Popover>
     );
 }

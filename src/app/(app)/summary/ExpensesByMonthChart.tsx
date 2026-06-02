@@ -1,4 +1,4 @@
-import { Popover, PopoverContent, PopoverTrigger } from "@heroui/react";
+import { Popover } from "@heroui/react";
 import { DateTime } from "luxon";
 import { MONTH_NAMES } from "@/lib/constants";
 import type { Transaction } from "@/lib/db/types";
@@ -48,8 +48,8 @@ export default function ExpensesByMonthChart({
     const averagePct = (average / maxTotal) * 100;
 
     const bars = monthlyTotals.map((total, index) => (
-        <Popover key={MONTH_NAMES[index]} placement="top">
-            <PopoverTrigger>
+        <Popover key={MONTH_NAMES[index]}>
+            <Popover.Trigger>
                 <div
                     className="relative flex-1 cursor-pointer"
                     style={{
@@ -66,12 +66,14 @@ export default function ExpensesByMonthChart({
                         </span>
                     )}
                 </div>
-            </PopoverTrigger>
-            <PopoverContent>
-                <span className="font-mono text-xs">
-                    {MONTH_NAMES[index]}: {formatAmount(total)}
-                </span>
-            </PopoverContent>
+            </Popover.Trigger>
+            <Popover.Content placement="top">
+                <Popover.Dialog>
+                    <span className="font-mono text-xs">
+                        {MONTH_NAMES[index]}: {formatAmount(total)}
+                    </span>
+                </Popover.Dialog>
+            </Popover.Content>
         </Popover>
     ));
 

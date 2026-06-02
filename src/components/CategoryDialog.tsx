@@ -5,8 +5,6 @@ import {
     Input,
     Modal,
     Popover,
-    PopoverContent,
-    PopoverTrigger,
 } from "@heroui/react";
 import { EmojiPicker, type EmojiPickerListComponents } from "frimousse";
 import { Shuffle } from "lucide-react";
@@ -249,11 +247,10 @@ export function CategoryDialog({
         <div className="flex flex-col gap-1">
             <span className="text-foreground-500 text-xs">Icon</span>
             <Popover
-                placement="bottom-start"
                 isOpen={isEmojiPickerOpen}
                 onOpenChange={setIsEmojiPickerOpen}
             >
-                <PopoverTrigger>
+                <Popover.Trigger>
                     <button
                         type="button"
                         className={iconTriggerClasses}
@@ -261,29 +258,31 @@ export function CategoryDialog({
                     >
                         <span className="text-xl">{icon}</span>
                     </button>
-                </PopoverTrigger>
-                <PopoverContent className="p-0">
-                    <EmojiPicker.Root
-                        onEmojiSelect={handleEmojiSelect}
-                        className={emojiPickerRootClasses}
-                    >
-                        <EmojiPicker.Search
-                            className={emojiPickerSearchClasses}
-                        />
-                        <EmojiPicker.Viewport className="relative flex-1 outline-none">
-                            <EmojiPicker.Loading className="text-foreground-400 absolute inset-0 flex items-center justify-center text-sm">
-                                Loading...
-                            </EmojiPicker.Loading>
-                            <EmojiPicker.Empty className="text-foreground-400 absolute inset-0 flex items-center justify-center text-sm">
-                                No emoji found.
-                            </EmojiPicker.Empty>
-                            <EmojiPicker.List
-                                className="pb-1.5 select-none"
-                                components={emojiPickerComponents}
+                </Popover.Trigger>
+                <Popover.Content placement="bottom start" className="p-0">
+                    <Popover.Dialog>
+                        <EmojiPicker.Root
+                            onEmojiSelect={handleEmojiSelect}
+                            className={emojiPickerRootClasses}
+                        >
+                            <EmojiPicker.Search
+                                className={emojiPickerSearchClasses}
                             />
-                        </EmojiPicker.Viewport>
-                    </EmojiPicker.Root>
-                </PopoverContent>
+                            <EmojiPicker.Viewport className="relative flex-1 outline-none">
+                                <EmojiPicker.Loading className="text-foreground-400 absolute inset-0 flex items-center justify-center text-sm">
+                                    Loading...
+                                </EmojiPicker.Loading>
+                                <EmojiPicker.Empty className="text-foreground-400 absolute inset-0 flex items-center justify-center text-sm">
+                                    No emoji found.
+                                </EmojiPicker.Empty>
+                                <EmojiPicker.List
+                                    className="pb-1.5 select-none"
+                                    components={emojiPickerComponents}
+                                />
+                            </EmojiPicker.Viewport>
+                        </EmojiPicker.Root>
+                    </Popover.Dialog>
+                </Popover.Content>
             </Popover>
         </div>
     );
@@ -292,8 +291,8 @@ export function CategoryDialog({
         <div className="flex w-2/3 flex-col gap-1">
             <span className="text-foreground-500 text-xs">Colour</span>
             <div className="flex gap-2">
-                <Popover placement="bottom-end">
-                    <PopoverTrigger>
+                <Popover>
+                    <Popover.Trigger>
                         <button
                             type="button"
                             className={colourTriggerClasses}
@@ -307,30 +306,33 @@ export function CategoryDialog({
                                 {colour}
                             </span>
                         </button>
-                    </PopoverTrigger>
-                    <PopoverContent>
-                        <div className="flex flex-col gap-2 p-2">
-                            <HexColorPicker
-                                color={colour}
-                                onChange={setColour}
-                                style={{ width: "100%" }}
-                            />
-                            <div className="flex gap-2">
-                                <Input
-                                    label="Hex"
-                                    size="sm"
-                                    value={colour}
-                                    onValueChange={handleColourHexChange}
-                                    maxLength={7}
-                                    className="flex-1"
+                    </Popover.Trigger>
+                    <Popover.Content placement="bottom end">
+                        <Popover.Dialog>
+                            <div className="flex flex-col gap-2 p-2">
+                                <HexColorPicker
+                                    color={colour}
+                                    onChange={setColour}
+                                    style={{ width: "100%" }}
                                 />
-                                <div
-                                    className="flex-1 rounded"
-                                    style={{ backgroundColor: colour }}
-                                />
+                                <div className="flex gap-2">
+                                    <div className="flex flex-1 flex-col gap-1">
+                                        <span>Hex</span>
+                                        <Input
+                                            value={colour}
+                                            onChange={(e) => handleColourHexChange(e.target.value)}
+                                            maxLength={7}
+                                            className="flex-1"
+                                        />
+                                    </div>
+                                    <div
+                                        className="flex-1 rounded"
+                                        style={{ backgroundColor: colour }}
+                                    />
+                                </div>
                             </div>
-                        </div>
-                    </PopoverContent>
+                        </Popover.Dialog>
+                    </Popover.Content>
                 </Popover>
                 <button
                     type="button"

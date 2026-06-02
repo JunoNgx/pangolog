@@ -3,9 +3,7 @@
 import {
     Button,
     Dropdown,
-    DropdownItem,
-    DropdownMenu,
-    DropdownTrigger,
+    Label,
 } from "@heroui/react";
 import { Monitor, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
@@ -35,34 +33,34 @@ export function ThemeSwitcher() {
     }
 
     return (
-        <Dropdown
-            classNames={{
-                content: "min-w-0 w-fit",
-            }}
-        >
-            <DropdownTrigger>
+        <Dropdown>
+            <Dropdown.Trigger>
                 <Button isIconOnly variant="tertiary" size="sm" aria-label="Theme">
                     <CurrentIcon size={18} />
                 </Button>
-            </DropdownTrigger>
-            <DropdownMenu
-                aria-label="Theme selection"
-                selectionMode="single"
-                selectedKeys={new Set([theme ?? "system"])}
-                onSelectionChange={(keys) => {
-                    const selectedKey = [...keys][0] as string;
-                    setTheme(selectedKey);
-                }}
-            >
-                {themes.map((t) => (
-                    <DropdownItem
-                        key={t.key}
-                        startContent={<t.icon size={16} />}
-                    >
-                        {t.label}
-                    </DropdownItem>
-                ))}
-            </DropdownMenu>
+            </Dropdown.Trigger>
+            <Dropdown.Popover className="min-w-0 w-fit">
+                <Dropdown.Menu
+                    aria-label="Theme selection"
+                    selectionMode="single"
+                    selectedKeys={new Set([theme ?? "system"])}
+                    onSelectionChange={(keys) => {
+                        const selectedKey = [...keys][0] as string;
+                        setTheme(selectedKey);
+                    }}
+                >
+                    {themes.map((t) => (
+                        <Dropdown.Item
+                            id={t.key}
+                            key={t.key}
+                            textValue={t.label}
+                        >
+                            <t.icon size={16} />
+                            <Label>{t.label}</Label>
+                        </Dropdown.Item>
+                    ))}
+                </Dropdown.Menu>
+            </Dropdown.Popover>
         </Dropdown>
     );
 }

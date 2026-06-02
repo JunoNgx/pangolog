@@ -2,8 +2,6 @@ import {
     Button,
     Checkbox,
     Popover,
-    PopoverContent,
-    PopoverTrigger,
 } from "@heroui/react";
 import { ChevronDown } from "lucide-react";
 import { UNCATEGORISED_ID } from "@/lib/constants";
@@ -133,51 +131,53 @@ export function CategoryFilterDropdown({
     );
 
     return (
-        <Popover placement="bottom-end">
-            <PopoverTrigger>
+        <Popover>
+            <Popover.Trigger>
                 <Button
                     variant={isFiltered ? "primary" : "tertiary"}
                 >
                     {label}
                     <ChevronDown className="size-3" />
                 </Button>
-            </PopoverTrigger>
-            <PopoverContent className="p-0">
-                <div className={popoverClasses}>
-                    <ul className={listClasses}>
-                        {uncategorisedItem}
-                        {activeCategories.map((cat) => (
-                            <CategoryFilterItem
-                                key={cat.id}
-                                name={cat.name}
-                                icon={cat.icon}
-                                isIncomeOnly={cat.isIncomeOnly}
-                                isBuck={buckCategoryIds.has(cat.id)}
-                                isSelected={isChecked(cat.id)}
-                                onToggle={() => handleToggle(cat.id)}
-                            />
-                        ))}
-                    </ul>
-                    <div className={footerClasses}>
-                        <Button
-                            size="sm"
-                            variant="tertiary"
-                            className={actionButtonClasses}
-                            onPress={() => onChange(null)}
-                        >
-                            Check all
-                        </Button>
-                        <Button
-                            size="sm"
-                            variant="tertiary"
-                            className={actionButtonClasses}
-                            onPress={() => onChange([])}
-                        >
-                            Uncheck all
-                        </Button>
+            </Popover.Trigger>
+            <Popover.Content placement="bottom end" className="p-0">
+                <Popover.Dialog>
+                    <div className={popoverClasses}>
+                        <ul className={listClasses}>
+                            {uncategorisedItem}
+                            {activeCategories.map((cat) => (
+                                <CategoryFilterItem
+                                    key={cat.id}
+                                    name={cat.name}
+                                    icon={cat.icon}
+                                    isIncomeOnly={cat.isIncomeOnly}
+                                    isBuck={buckCategoryIds.has(cat.id)}
+                                    isSelected={isChecked(cat.id)}
+                                    onToggle={() => handleToggle(cat.id)}
+                                />
+                            ))}
+                        </ul>
+                        <div className={footerClasses}>
+                            <Button
+                                size="sm"
+                                variant="tertiary"
+                                className={actionButtonClasses}
+                                onPress={() => onChange(null)}
+                            >
+                                Check all
+                            </Button>
+                            <Button
+                                size="sm"
+                                variant="tertiary"
+                                className={actionButtonClasses}
+                                onPress={() => onChange([])}
+                            >
+                                Uncheck all
+                            </Button>
+                        </div>
                     </div>
-                </div>
-            </PopoverContent>
+                </Popover.Dialog>
+            </Popover.Content>
         </Popover>
     );
 }
