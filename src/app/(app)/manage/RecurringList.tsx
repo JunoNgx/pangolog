@@ -1,6 +1,5 @@
 "use client";
 
-import { Skeleton } from "@heroui/react";
 import { DateTime } from "luxon";
 import { useState } from "react";
 import { ChipLabel } from "@/components/ChipLabel";
@@ -59,17 +58,7 @@ export function RecurringList({
         setEditingRule(undefined);
     }
 
-    if (isLoading) {
-        return (
-            <MainListContainer className="gap-2">
-                {["s1", "s2", "s3"].map((key) => (
-                    <Skeleton key={key} className="h-16 w-full rounded-none" />
-                ))}
-            </MainListContainer>
-        );
-    }
-
-    if (!rules.length) {
+    if (!rules || !rules.length) {
         return (
             <>
                 <p className="text-default-400 py-12 text-center">

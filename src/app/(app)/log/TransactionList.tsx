@@ -1,6 +1,5 @@
 "use client";
 
-import { Skeleton } from "@heroui/react";
 import { DateTime } from "luxon";
 import { useState } from "react";
 import { ChipLabel } from "@/components/ChipLabel";
@@ -40,19 +39,6 @@ export function TransactionList({
             DateTime.fromISO(b.transactedAt).toMillis() -
             DateTime.fromISO(a.transactedAt).toMillis(),
     );
-
-    if (isLoading) {
-        return (
-            <MainListContainer className="gap-2">
-                {["s1", "s2", "s3", "s4", "s5", "s6", "s7"].map((key) => (
-                    <Skeleton
-                        key={key}
-                        className="my-1 h-12 w-full rounded-lg"
-                    />
-                ))}
-            </MainListContainer>
-        );
-    }
 
     if (!displayedItems.length) {
         return (

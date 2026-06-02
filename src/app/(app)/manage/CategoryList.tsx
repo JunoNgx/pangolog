@@ -3,7 +3,6 @@
 import { move } from "@dnd-kit/helpers";
 import { DragDropProvider } from "@dnd-kit/react";
 import { useSortable } from "@dnd-kit/react/sortable";
-import { Skeleton } from "@heroui/react";
 import { GripVertical } from "lucide-react";
 import { useState } from "react";
 import { CategoryDialog } from "@/components/CategoryDialog";
@@ -100,16 +99,6 @@ export function CategoryList() {
             priority: i,
         }));
         reorderCategories.mutate(updates);
-    }
-
-    if (isLoading) {
-        return (
-            <MainListContainer className="gap-2">
-                {["s1", "s2", "s3", "s4", "s5", "s6", "s7"].map((key) => (
-                    <Skeleton key={key} className="h-12 w-full rounded-none" />
-                ))}
-            </MainListContainer>
-        );
     }
 
     if (!categories?.length) {
