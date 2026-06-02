@@ -158,7 +158,7 @@ function TransactionItem({
                     {hasCategory ? (
                         <p>
                             <span className="mr-1">{category.icon || "·"}</span>
-                            <span className="text-default-700">
+                            <span className="text-foreground">
                                 {category.name}
                             </span>
                         </p>

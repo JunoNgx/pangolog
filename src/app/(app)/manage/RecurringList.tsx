@@ -118,7 +118,7 @@ function RecurringItem({ rule, category, onEdit }: RecurringItemProps) {
                 <div className="min-w-0 flex-1">
                     <p>
                         <span className="mr-1">{category?.icon ?? "·"}</span>
-                        <span className="text-default-700">
+                        <span className="text-foreground">
                             {category?.name ?? "(no category)"}
                         </span>
                     </p>
