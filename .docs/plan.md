@@ -800,7 +800,9 @@ GitHub: pangolog#34
 - [x] Flat API -> `Tabs.ListContainer > Tabs.List > Tabs.Tab + Tabs.Indicator` and `Tabs.Panel`
 
 ### 34i: Checkbox + Switch + Radio (4 files)
-- [ ] Verify `isSelected`/`onValueChange` vs `checked`/`onChange`
+- [x] `onValueChange` -> `onChange`
+- [x] Restructure to compound components (Control/Indicator/Content/Label)
+- [x] `color`/`size`/`classNames` removed, use `className` instead
 
 ### 34j: Skeleton (3 files)
 - [x] Removed (local app, no skeleton needed)
