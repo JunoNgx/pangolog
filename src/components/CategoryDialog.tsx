@@ -3,6 +3,7 @@
 import {
     Checkbox,
     Input,
+    Label,
     Modal,
     Popover,
 } from "@heroui/react";
@@ -379,16 +380,26 @@ export function CategoryDialog({
                                         </div>
                                         <Checkbox
                                             isSelected={isBuckOnly}
-                                            onValueChange={setIsBuckOnly}
+                                            onChange={setIsBuckOnly}
                                         >
-                                            Big-buck only
+                                            <Checkbox.Control>
+                                                <Checkbox.Indicator />
+                                            </Checkbox.Control>
+                                            <Checkbox.Content>
+                                                <Label>Big-buck only</Label>
+                                            </Checkbox.Content>
                                         </Checkbox>
                                         {!isExpenseOnlyMode && (
                                             <Checkbox
                                                 isSelected={isIncomeOnly}
-                                                onValueChange={setIsIncomeOnly}
+                                                onChange={setIsIncomeOnly}
                                             >
-                                                Income only
+                                                <Checkbox.Control>
+                                                    <Checkbox.Indicator />
+                                                </Checkbox.Control>
+                                                <Checkbox.Content>
+                                                    <Label>Income only</Label>
+                                                </Checkbox.Content>
                                             </Checkbox>
                                         )}
                                     </Modal.Body>

@@ -3,6 +3,7 @@
 import {
     Button,
     Checkbox,
+    Label,
     Popover,
 } from "@heroui/react";
 import { ChevronDown } from "lucide-react";
@@ -49,36 +50,50 @@ export function RecurringFilterDropdown({
             <Popover.Content placement="bottom end" className="p-2">
                 <Popover.Dialog>
                     <div className="flex min-w-32 flex-col gap-1">
-                        <Checkbox
-                            isSelected={shouldShowDimes}
-                            onValueChange={onShowDimesChange}
-                        >
-                            <span className="text-default-500 text-sm">
-                                Small dimes
-                            </span>
-                        </Checkbox>
-                        <Checkbox
-                            isSelected={shouldShowBucks}
-                            onValueChange={onShowBucksChange}
-                        >
-                            <span className="text-default-500 text-sm">
-                                Big bucks
-                            </span>
-                        </Checkbox>
-                        <Checkbox
-                            isSelected={shouldShowIncome}
-                            onValueChange={onShowIncomeChange}
-                        >
-                            <span className="text-default-500 text-sm">Income</span>
-                        </Checkbox>
-                        <Checkbox
-                            isSelected={shouldHideInactive}
-                            onValueChange={onHideInactiveChange}
-                        >
-                            <span className="text-default-500 text-sm">
-                                Hide inactive
-                            </span>
-                        </Checkbox>
+                    <Checkbox
+                        isSelected={shouldShowDimes}
+                        onChange={onShowDimesChange}
+                    >
+                        <Checkbox.Control>
+                            <Checkbox.Indicator />
+                        </Checkbox.Control>
+                        <Checkbox.Content>
+                            <Label>Small dimes</Label>
+                        </Checkbox.Content>
+                    </Checkbox>
+                    <Checkbox
+                        isSelected={shouldShowBucks}
+                        onChange={onShowBucksChange}
+                    >
+                        <Checkbox.Control>
+                            <Checkbox.Indicator />
+                        </Checkbox.Control>
+                        <Checkbox.Content>
+                            <Label>Big bucks</Label>
+                        </Checkbox.Content>
+                    </Checkbox>
+                    <Checkbox
+                        isSelected={shouldShowIncome}
+                        onChange={onShowIncomeChange}
+                    >
+                        <Checkbox.Control>
+                            <Checkbox.Indicator />
+                        </Checkbox.Control>
+                        <Checkbox.Content>
+                            <Label>Income</Label>
+                        </Checkbox.Content>
+                    </Checkbox>
+                    <Checkbox
+                        isSelected={shouldHideInactive}
+                        onChange={onHideInactiveChange}
+                    >
+                        <Checkbox.Control>
+                            <Checkbox.Indicator />
+                        </Checkbox.Control>
+                        <Checkbox.Content>
+                            <Label>Hide inactive</Label>
+                        </Checkbox.Content>
+                    </Checkbox>
                         <div className="border-default-200 mt-1 flex gap-1 border-t pt-2">
                             <Button
                                 size="sm"

@@ -4,6 +4,7 @@ import {
     Button,
     Checkbox,
     Input,
+    Label,
     Modal,
     Radio,
     RadioGroup,
@@ -192,15 +193,29 @@ export default function SettingsClient() {
                             <span className="text-default-400 text-xs">Cosmetic only, so feel free to use orens, woolong, or bottle caps to your heart's content. Long texts might not look good in this UI, but that's your life decision.</span>
                         </div>
                         <RadioGroup
-                            label="Position"
                             orientation="horizontal"
                             value={isPrefixCurrency ? "prefix" : "suffix"}
-                            onValueChange={(v) =>
+                            onChange={(v) =>
                                 setIsPrefixCurrency(v === "prefix")
                             }
                         >
-                            <Radio value="prefix">Prefix ($12)</Radio>
-                            <Radio value="suffix">Suffix (12 SGD)</Radio>
+                            <Label>Position</Label>
+                            <Radio value="prefix">
+                                <Radio.Control>
+                                    <Radio.Indicator />
+                                </Radio.Control>
+                                <Radio.Content>
+                                    <Label>Prefix ($12)</Label>
+                                </Radio.Content>
+                            </Radio>
+                            <Radio value="suffix">
+                                <Radio.Control>
+                                    <Radio.Indicator />
+                                </Radio.Control>
+                                <Radio.Content>
+                                    <Label>Suffix (12 SGD)</Label>
+                                </Radio.Content>
+                            </Radio>
                         </RadioGroup>
                         <p className="text-default-500 font-mono text-sm">
                             Preview: {preview}
@@ -213,48 +228,99 @@ export default function SettingsClient() {
                     <div className="flex flex-col gap-4">
                         <Checkbox
                             isSelected={isExpenseOnlyMode}
-                            onValueChange={setIsExpenseOnlyMode}
-                            size="sm"
+                            onChange={setIsExpenseOnlyMode}
                         >
-                            <span className="text-sm">Expense only mode</span>
-                            <p className="text-default-400 text-xs">
-                                Hides income-related UI to reduce clutter.
-                            </p>
+                            <Checkbox.Control>
+                                <Checkbox.Indicator />
+                            </Checkbox.Control>
+                            <Checkbox.Content>
+                                <Label>Expense only mode</Label>
+                                <span className="text-default-400 text-xs">Hides income-related UI to reduce clutter.</span>
+                            </Checkbox.Content>
                         </Checkbox>
                         <RadioGroup
-                            label="Category order"
                             orientation="horizontal"
                             value={isCategoryAlphabetical ? "alpha" : "custom"}
-                            onValueChange={(v) =>
+                            onChange={(v) =>
                                 setIsCategoryAlphabetical(v === "alpha")
                             }
-                            classNames={{ wrapper: "gap-6" }}
+                            className="gap-6"
                         >
-                            <Radio value="custom">Custom order</Radio>
-                            <Radio value="alpha">Alphabetical</Radio>
+                            <Label>Category order</Label>
+                            <Radio value="custom">
+                                <Radio.Control>
+                                    <Radio.Indicator />
+                                </Radio.Control>
+                                <Radio.Content>
+                                    <Label>Custom order</Label>
+                                </Radio.Content>
+                            </Radio>
+                            <Radio value="alpha">
+                                <Radio.Control>
+                                    <Radio.Indicator />
+                                </Radio.Control>
+                                <Radio.Content>
+                                    <Label>Alphabetical</Label>
+                                </Radio.Content>
+                            </Radio>
                         </RadioGroup>
                         <RadioGroup
-                            label="Time format"
                             orientation="horizontal"
                             value={timeFormat}
-                            onValueChange={(v) =>
+                            onChange={(v) =>
                                 setTimeFormat(v as TimeFormat)
                             }
-                            classNames={{ wrapper: "gap-6" }}
+                            className="gap-6"
                         >
-                            <Radio value="12h">12-hour</Radio>
-                            <Radio value="24h">24-hour</Radio>
+                            <Label>Time format</Label>
+                            <Radio value="12h">
+                                <Radio.Control>
+                                    <Radio.Indicator />
+                                </Radio.Control>
+                                <Radio.Content>
+                                    <Label>12-hour</Label>
+                                </Radio.Content>
+                            </Radio>
+                            <Radio value="24h">
+                                <Radio.Control>
+                                    <Radio.Indicator />
+                                </Radio.Control>
+                                <Radio.Content>
+                                    <Label>24-hour</Label>
+                                </Radio.Content>
+                            </Radio>
                         </RadioGroup>
                         <RadioGroup
-                            label="Theme"
                             orientation="horizontal"
                             value={theme ?? "system"}
-                            onValueChange={setTheme}
-                            classNames={{ wrapper: "gap-6" }}
+                            onChange={setTheme}
+                            className="gap-6"
                         >
-                            <Radio value="light">Light</Radio>
-                            <Radio value="dark">Dark</Radio>
-                            <Radio value="system">System</Radio>
+                            <Label>Theme</Label>
+                            <Radio value="light">
+                                <Radio.Control>
+                                    <Radio.Indicator />
+                                </Radio.Control>
+                                <Radio.Content>
+                                    <Label>Light</Label>
+                                </Radio.Content>
+                            </Radio>
+                            <Radio value="dark">
+                                <Radio.Control>
+                                    <Radio.Indicator />
+                                </Radio.Control>
+                                <Radio.Content>
+                                    <Label>Dark</Label>
+                                </Radio.Content>
+                            </Radio>
+                            <Radio value="system">
+                                <Radio.Control>
+                                    <Radio.Indicator />
+                                </Radio.Control>
+                                <Radio.Content>
+                                    <Label>System</Label>
+                                </Radio.Content>
+                            </Radio>
                         </RadioGroup>
                     </div>
                 </section>
@@ -272,13 +338,15 @@ export default function SettingsClient() {
                             </Button>
                             <Checkbox
                                 isSelected={isPrettyPrint}
-                                onValueChange={setIsPrettyPrint}
-                                size="sm"
+                                onChange={setIsPrettyPrint}
                             >
-                                <span className="text-sm">Pretty print</span>
-                                <p className="text-default-400 text-xs">
-                                    Human-readable formatting.
-                                </p>
+                                <Checkbox.Control>
+                                    <Checkbox.Indicator />
+                                </Checkbox.Control>
+                                <Checkbox.Content>
+                                    <Label>Pretty print</Label>
+                                    <span className="text-default-400 text-xs">Human-readable formatting.</span>
+                                </Checkbox.Content>
                             </Checkbox>
                         </div>
                         <p className="text-default-400 text-xs">
@@ -465,7 +533,7 @@ export default function SettingsClient() {
                                     <Modal.Footer>
                                         <Button
                                             variant="tertiary"
-                                            onPress={() => setIsClearRecordsDialogOpen(false)}
+                                            onPress={() => setIsResetDialogOpen(false)}
                                         >
                                             Cancel
                                         </Button>
