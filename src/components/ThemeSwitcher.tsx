@@ -34,7 +34,7 @@ export function ThemeSwitcher() {
 
     return (
         <Dropdown>
-            <Button isIconOnly variant="tertiary" size="sm" aria-label="Theme">
+            <Button isIconOnly variant="ghost" size="sm" aria-label="Theme">
                 <CurrentIcon size={18} />
             </Button>
             <Dropdown.Popover className="min-w-0 w-fit" placement="bottom end">
