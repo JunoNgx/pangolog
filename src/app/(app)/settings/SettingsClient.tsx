@@ -407,7 +407,7 @@ export default function SettingsClient() {
                                 href="https://junongx.com"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-accent hover:underline"
+                                className="text-blue-500 hover:underline"
                             >
                                 Juno Nguyen
                             </a>
@@ -419,7 +419,7 @@ export default function SettingsClient() {
                                 href="https://github.com/JunoNgx/pangolog"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-accent hover:underline"
+                                className="text-blue-500 hover:underline"
                             >
                                 open source software
                             </a>
