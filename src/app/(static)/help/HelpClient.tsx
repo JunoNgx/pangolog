@@ -72,7 +72,7 @@ export default function HelpClient() {
                         href="https://addons.mozilla.org/en-US/firefox/addon/pwas-for-firefox/"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-accent underline"
+                        className="text-blue-500 underline"
                     >
                         PWAs for Firefox
                     </a>

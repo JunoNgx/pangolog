@@ -91,9 +91,9 @@ export default function ExpensesByMonthChart({
             className="pointer-events-none absolute right-0 left-0 z-10"
             style={{ bottom: `${averagePct}%` }}
         >
-            <div className="border-accent border-t border-dashed" />
+            <div className="border-blue-500 border-t border-dashed" />
             <span
-                className={`text-accent absolute -top-5 ${
+                className={`text-blue-500 absolute -top-5 ${
                     tallestIndex > 9 ? "left-0" : "right-0"
                 } font-mono text-xs whitespace-nowrap`}
             >

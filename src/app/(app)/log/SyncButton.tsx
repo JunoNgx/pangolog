@@ -31,7 +31,7 @@ export function SyncButton() {
     const iconClass = `
         shrink-0
         ${syncStatus === "idle" ? "text-success" : ""}
-        ${syncStatus === "syncing" ? "text-accent animate-spin" : ""}
+        ${syncStatus === "syncing" ? "text-blue-500 animate-spin" : ""}
         ${syncStatus === "error" ? "text-danger" : ""}
     `;
 
