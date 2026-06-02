@@ -770,14 +770,19 @@ GitHub: pangolog#34
 ### 34b: HeroUIProvider in providers.tsx
 - [x] Remove `HeroUIProvider` (v3 does not require it)
 
-### 34c: Button (21 files)
-- [ ] `color` -> `variant`: `default`->`primary`, `secondary`->`secondary`, `ghost`->`ghost`, `danger`->`danger`, `light`->`tertiary`, `flat`->`secondary`
-- [ ] `isLoading` -> `isPending`
+### 34c: Button (19 files)
+- [x] `color` -> `variant`: `default`->`tertiary`, `primary`->`primary`, `danger`->`danger`/`danger-soft`, `ghost`->`ghost`, `light`->`tertiary`, `flat`->`secondary`
+- [x] `isLoading` -> `isPending`
+- [x] `startContent`/`endContent` -> direct children
+- [x] `as` prop replaced with `render` prop or styled `<a>`/`<Link>`
 
 ### 34d: Input (7 files)
-- [ ] `onValueChange` -> `onChange(e.target.value)`
-- [ ] `isRequired` -> `required`, `isDisabled` -> `disabled`
-- [ ] Remove `classNames` prop if broken
+- [x] `onValueChange` -> `onChange(e.target.value)`
+- [x] `isRequired` -> `required`, `isDisabled` -> `disabled`, `isClearable` removed
+- [x] `classNames` -> `className`
+- [x] `label`/`description` -> separate `<span>` elements
+- [x] `variant="underlined"` replaced with Tailwind classes
+- [x] LogClient search: `Input` -> `SearchField`
 
 ### 34e: Modal (6 files)
 - [x] Restructure to nested dot notation: `Modal > Backdrop > Container > Dialog > Header/Heading/Body/Footer/CloseTrigger`
