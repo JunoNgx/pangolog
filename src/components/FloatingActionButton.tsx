@@ -25,10 +25,7 @@ export function FloatingActionButton({
 
     return (
         <FloatingButtonContainer>
-            <Tooltip
-                content={<span className="text-center">Ctrl/Cmd + Enter</span>}
-                placement="left"
-            >
+            <Tooltip delay={0}>
                 <Button
                     variant="primary"
                     className={buttonClasses}
@@ -37,6 +34,9 @@ export function FloatingActionButton({
                     <Plus />
                     <span className="hidden md:inline">{label}</span>
                 </Button>
+                <Tooltip.Content placement="left">
+                    <span className="text-center">Ctrl/Cmd + Enter</span>
+                </Tooltip.Content>
             </Tooltip>
         </FloatingButtonContainer>
     );

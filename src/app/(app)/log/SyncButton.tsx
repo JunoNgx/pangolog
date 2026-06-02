@@ -53,7 +53,7 @@ export function SyncButton() {
               : `Synced ${lastSyncLabel}`;
 
     return (
-        <Tooltip content="Ctrl/Cmd + S" placement="bottom">
+        <Tooltip delay={0}>
             <Button
                 size="sm"
                 variant="secondary"
@@ -71,6 +71,7 @@ export function SyncButton() {
                     {statusLabel}
                 </span>
             </Button>
+            <Tooltip.Content placement="bottom">Ctrl/Cmd + S</Tooltip.Content>
         </Tooltip>
     );
 }

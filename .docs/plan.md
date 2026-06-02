@@ -790,22 +790,22 @@ GitHub: pangolog#34
 - [x] `isOpen`/`onClose` -> `Backdrop`'s `isOpen`/`onOpenChange`
 
 ### 34f: Popover (4 files)
-- [ ] `PopoverTrigger` -> `Popover.Trigger`, `PopoverContent` -> `Popover.Content > Popover.Dialog`
+- [x] `PopoverTrigger` -> `Popover.Trigger`, `PopoverContent` -> `Popover.Content > Popover.Dialog`
 
 ### 34g: Dropdown (3 files)
-- [ ] `DropdownTrigger` -> `Dropdown.Trigger`, `DropdownMenu` -> `Dropdown.Popover > Dropdown.Menu`
-- [ ] Icon directly as child, not `startContent`
+- [x] `DropdownTrigger` -> `Dropdown.Trigger`, `DropdownMenu` -> `Dropdown.Popover > Dropdown.Menu`
+- [x] Icon directly as child, not `startContent`
 
 ### 34h: Tabs (1 file, ManageClient.tsx)
-- [ ] Flat API -> `Tabs.ListContainer > Tabs.List > Tabs.Tab + Tabs.Indicator` and `Tabs.Panel`
+- [x] Flat API -> `Tabs.ListContainer > Tabs.List > Tabs.Tab + Tabs.Indicator` and `Tabs.Panel`
 
 ### 34i: Checkbox + Switch + Radio (4 files)
 - [ ] Verify `isSelected`/`onValueChange` vs `checked`/`onChange`
 
 ### 34j: Skeleton (3 files)
-- [ ] Verify on build
+- [x] Removed (local app, no skeleton needed)
 
 ### 34k: Tooltip (4 files)
-- [ ] `content` prop -> `Tooltip.Content` child
-- [ ] `Tooltip.Trigger` for non-button triggers
+- [x] `content` prop -> `Tooltip.Content` child
+- [x] `Tooltip.Trigger` for non-button triggers
 

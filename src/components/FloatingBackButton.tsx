@@ -24,7 +24,7 @@ export function FloatingBackButton() {
 
     return (
         <FloatingButtonContainer>
-            <Tooltip content="Esc" placement="left">
+            <Tooltip delay={0}>
                 <Button
                     variant="tertiary"
                     className={buttonClasses}
@@ -33,6 +33,7 @@ export function FloatingBackButton() {
                     <ArrowLeft />
                     <span className="hidden md:inline">Go back</span>
                 </Button>
+                <Tooltip.Content placement="left">Esc</Tooltip.Content>
             </Tooltip>
         </FloatingButtonContainer>
     );
