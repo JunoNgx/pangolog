@@ -49,15 +49,15 @@ export default function ExpensesByMonthChart({
 
     const bars = monthlyTotals.map((total, index) => (
         <Popover key={MONTH_NAMES[index]}>
-            <Popover.Trigger>
+            <Popover.Trigger className="flex-1 h-full flex flex-col justify-end">
                 <div
-                    className="relative flex-1 cursor-pointer"
+                    className="relative cursor-pointer"
                     style={{
                         height:
                             total > 0 ? `${(total / maxTotal) * 100}%` : "0%",
                     }}
                 >
-                    <div className="bg-muted h-full w-full rounded-sm" />
+                    <div className="bg-foreground h-full w-full rounded-sm" />
                     {index === tallestIndex && (
                         <span
                             className={`absolute -top-5 ${tallestLabelAlign} text-muted font-mono text-xs whitespace-nowrap`}
