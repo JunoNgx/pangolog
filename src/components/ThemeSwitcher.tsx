@@ -34,11 +34,9 @@ export function ThemeSwitcher() {
 
     return (
         <Dropdown>
-            <Dropdown.Trigger>
-                <Button isIconOnly variant="tertiary" size="sm" aria-label="Theme">
-                    <CurrentIcon size={18} />
-                </Button>
-            </Dropdown.Trigger>
+            <Button isIconOnly variant="tertiary" size="sm" aria-label="Theme">
+                <CurrentIcon size={18} />
+            </Button>
             <Dropdown.Popover className="min-w-0 w-fit">
                 <Dropdown.Menu
                     aria-label="Theme selection"

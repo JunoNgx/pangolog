@@ -41,16 +41,14 @@ export function PeriodViewDropdown({
 
     return (
         <Dropdown>
-            <Dropdown.Trigger>
-                <Button
-                    variant="ghost"
-                    size="sm"
-                    isIconOnly
-                    aria-label={viewLabel}
-                >
-                    <CurrentIcon size={16} />
-                </Button>
-            </Dropdown.Trigger>
+            <Button
+                variant="ghost"
+                size="sm"
+                isIconOnly
+                aria-label={viewLabel}
+            >
+                <CurrentIcon size={16} />
+            </Button>
             <Dropdown.Popover className="min-w-0 w-fit">
                 <Dropdown.Menu
                     aria-label="Period view mode"
