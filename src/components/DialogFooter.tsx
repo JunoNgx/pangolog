@@ -39,6 +39,9 @@ export function DialogFooter({
                 </Button>
             )}
             <div className="flex gap-2">
+                <Button variant="tertiary" onPress={onCancel}>
+                    Cancel
+                </Button>
                 {showSubmitTooltip ? (
                     <Tooltip delay={0}>
                         {submitButton}
@@ -47,9 +50,6 @@ export function DialogFooter({
                 ) : (
                     submitButton
                 )}
-                <Button variant="tertiary" onPress={onCancel}>
-                    Cancel
-                </Button>
             </div>
         </div>
     );
