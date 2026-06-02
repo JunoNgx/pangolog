@@ -41,16 +41,14 @@ export function TransactionTypeDropdown({
 
     return (
         <Dropdown>
-            <Dropdown.Trigger>
-                <Button
-                    variant="ghost"
-                    size="sm"
-                    isIconOnly
-                    aria-label={modeLabel}
-                >
-                    <CurrentIcon size={16} />
-                </Button>
-            </Dropdown.Trigger>
+            <Button
+                variant="ghost"
+                size="sm"
+                isIconOnly
+                aria-label={modeLabel}
+            >
+                <CurrentIcon size={16} />
+            </Button>
             <Dropdown.Popover className="min-w-0 w-fit">
                 <Dropdown.Menu
                     aria-label="Transaction type display mode"
