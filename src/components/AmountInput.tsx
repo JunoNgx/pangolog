@@ -25,6 +25,7 @@ export function AmountInput({
     return (
         <div className="my-2">
             <Input
+                fullWidth
                 value={value}
                 onChange={(e) => handleAmountChange(e.target.value)}
                 required={isRequired}
