@@ -39,7 +39,7 @@ export function DemoDataBanner() {
 
     return (
         <div
-            className={`/* CONTAINER */ /* INNER STRUCTURE */ /* VISUAL EFFECTS */ bg-surface-tertiary /* BEHAVIOR */ mx-auto mb-4 flex w-fit max-w-lg flex-col items-center gap-3 rounded-lg border px-4 py-3 sm:w-full sm:flex-row sm:items-center`}
+            className={`bg-surface-tertiary mx-auto mb-4 flex w-fit max-w-lg flex-col items-center gap-3 rounded-lg border px-4 py-3 sm:w-full sm:flex-row sm:items-center`}
         >
             <p className="text-foreground flex-1 text-center text-sm sm:text-left">
                 New here? Have a taste and explore.
