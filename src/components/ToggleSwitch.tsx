@@ -28,7 +28,7 @@ export function ToggleSwitch({
     className = "",
 }: ToggleSwitchProps) {
     const buttonClasses =
-        "inline-flex items-center justify-center gap-1.5 min-w-16 rounded-sm px-3 py-1 text-sm transition-colors peer-focus-visible:outline-2 peer-focus-visible:outline-offset-3 peer-focus-visible:outline-primary";
+        "flex items-center justify-center gap-1.5 w-full rounded-sm px-3 py-1 text-sm transition-colors peer-focus-visible:outline-2 peer-focus-visible:outline-offset-3 peer-focus-visible:outline-primary";
 
     return (
         <div className={`inline-flex items-center gap-2 ${className}`}>
@@ -39,8 +39,8 @@ export function ToggleSwitch({
             >
                 {label}
             </span>
-            <div className="inline-flex items-center gap-1 rounded-lg border p-1">
-                <label className="cursor-pointer rounded-sm">
+            <div className="flex flex-1 items-center gap-1 rounded-lg border p-1">
+                <label className="cursor-pointer rounded-sm flex-1">
                     <input
                         type="radio"
                         name={`toggle-${leftLabel}-${rightLabel}`}
