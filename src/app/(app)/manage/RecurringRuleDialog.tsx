@@ -202,7 +202,7 @@ export function RecurringRuleDialog({
                     </Switch.Content>
                 </Switch>
             </div>
-            <div className="text-default-400 flex flex-col items-end gap-1 font-mono text-xs">
+            <div className="text-muted flex flex-col items-end gap-1 font-mono text-xs">
                 <span>
                     Next:{" "}
                     {DateTime.fromISO(rule.nextGenerationAt).toLocaleString(
@@ -282,14 +282,14 @@ export function RecurringRuleDialog({
                                                     onChange={(e) => setDescription(e.target.value)}
                                                     maxLength={60}
                                                 />
-                                                <span className="text-default-400 text-xs">{description.length}/60</span>
+                                                <span className="text-muted text-xs">{description.length}/60</span>
                                             </div>
 
                                             <div className="flex items-end justify-between gap-3">
                                                 <div className="flex w-1/2 flex-col gap-1">
                                                     <span>
                                                         Start date{" "}
-                                                        <span className="text-default-400 font-mono text-xs">
+                                                        <span className="text-muted font-mono text-xs">
                                                             {localeDateFormat}
                                                         </span>
                                                     </span>

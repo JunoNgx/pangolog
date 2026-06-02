@@ -43,7 +43,7 @@ export function TransactionList({
     if (!displayedItems.length) {
         return (
             <>
-                <p className="text-default-400 py-12 text-center">
+                <p className="text-muted py-12 text-center">
                     Nothing to show.
                 </p>
                 <TransactionDialog
@@ -85,7 +85,7 @@ export function TransactionList({
             <MainListContainer>
                 {groupedByDateItems.map(({ dateKey, dateText, items }) => (
                     <li key={dateKey}>
-                        <h3 className="text-default-400 mt-6 mb-0 text-sm">
+                        <h3 className="text-muted mt-6 mb-0 text-sm">
                             {dateText}
                         </h3>
                         <ul>
@@ -163,14 +163,14 @@ function TransactionItem({
                             </span>
                         </p>
                     ) : (
-                        <p className="text-default-400">(no category)</p>
+                        <p className="text-muted">(no category)</p>
                     )}
                     {hasDescription ? (
-                        <p className="text-default-400 truncate font-mono text-sm">
+                        <p className="text-muted truncate font-mono text-sm">
                             {transaction.description}
                         </p>
                     ) : (
-                        <p className="text-default-400 font-mono text-sm">
+                        <p className="text-muted font-mono text-sm">
                             (no description)
                         </p>
                     )}

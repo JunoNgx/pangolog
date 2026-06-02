@@ -24,7 +24,7 @@ export function DriveSyncSection() {
         useLocalUserSettingsStore();
 
     const lastSyncRow = lastSyncTime && (
-        <p className="text-default-400 text-xs">
+        <p className="text-muted text-xs">
             Last synced:{" "}
             {DateTime.fromISO(lastSyncTime).toLocaleString({
                 ...DateTime.DATETIME_MED,
@@ -38,7 +38,7 @@ export function DriveSyncSection() {
     );
 
     const autobackupDisabledInfo = !isConnected && (
-        <p className="text-default-400 text-xs">
+        <p className="text-muted text-xs">
             Connect Google Drive to enable autobackup.
         </p>
     );
@@ -48,7 +48,7 @@ export function DriveSyncSection() {
             <p className="text-success-500 text-sm">
                 Status: Connected as {authToken?.email}
             </p>
-            <p className="text-default-400 text-xs">
+            <p className="text-muted text-xs">
                 {syncStatus === "syncing" && "Syncing..."}
                 {syncStatus === "error" && `Error: ${syncError}`}
             </p>
@@ -74,7 +74,7 @@ export function DriveSyncSection() {
 
     const disconnectedContent = (
         <>
-            <p className="text-default-400 text-sm">Status: Not connected</p>
+            <p className="text-muted text-sm">Status: Not connected</p>
             <Button
                 variant="primary"
                 className="self-start"
@@ -83,7 +83,7 @@ export function DriveSyncSection() {
             >
                 Connect Google Drive
             </Button>
-            <p className="text-default-400 text-xs">
+            <p className="text-muted text-xs">
                 Your email address is requested solely to display which account
                 is connected. This is never sent anywhere.
             </p>
@@ -118,7 +118,7 @@ export function DriveSyncSection() {
                     </Checkbox.Content>
                 </Checkbox>
                 {autobackupDisabledInfo}
-                <p className="text-default-400 text-xs">
+                <p className="text-muted text-xs">
                     A backup is written to your Pangolog Drive folder each month
                     (backup-YYYY-MM.json) in the same format as the JSON export
                     below. Backups accumulate over time - clean up old ones

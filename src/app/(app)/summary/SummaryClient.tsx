@@ -85,7 +85,7 @@ function SegmentBar({ label, slices, total }: SegmentBarProps) {
         return (
             <div className="mb-6">
                 <p className="text-default-500 mb-2 font-semibold">{label}</p>
-                <p className="text-default-400 text-sm">No data.</p>
+                <p className="text-muted text-sm">No data.</p>
             </div>
         );
     }
@@ -129,7 +129,7 @@ function SegmentBar({ label, slices, total }: SegmentBarProps) {
                         <span className="text-default-500 font-mono">
                             {formatAmount(slice.total)}
                         </span>
-                        <span className="text-default-400 w-14 text-right font-mono">
+                        <span className="text-muted w-14 text-right font-mono">
                             {slice.pct.toFixed(1)}%
                         </span>
                     </li>

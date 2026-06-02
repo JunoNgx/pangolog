@@ -25,7 +25,7 @@ export function CategoryPicker({
                     <button
                         type="button"
                         onClick={onAdd}
-                        className={`text-default-400 hover:text-default-600 hover:bg-default-100 flex cursor-pointer items-center gap-1 rounded-sm px-1.5 py-0.5 text-xs transition-colors`}
+                        className={`text-muted hover:text-default-600 hover:bg-default-100 flex cursor-pointer items-center gap-1 rounded-sm px-1.5 py-0.5 text-xs transition-colors`}
                     >
                         <Plus size={12} />
                         Add
@@ -33,7 +33,7 @@ export function CategoryPicker({
                 )}
             </div>
             {categories.length === 0 && (
-                <p className="text-default-400 text-sm">
+                <p className="text-muted text-sm">
                     {onAdd
                         ? "No categories yet. Press Add to create one."
                         : "No categories available. Add one from the Categories menu."}

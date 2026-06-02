@@ -30,7 +30,7 @@ export default function ExpensesByMonthChart({
                 <p className="text-default-500 mb-2 font-semibold">
                     Expenses by month
                 </p>
-                <p className="text-default-400 text-sm">No data.</p>
+                <p className="text-muted text-sm">No data.</p>
             </div>
         );
     }
@@ -80,7 +80,7 @@ export default function ExpensesByMonthChart({
     const monthLabels = MONTH_NAMES.map((label) => (
         <span
             key={label}
-            className="text-default-400 flex-1 text-center font-mono text-xs"
+            className="text-muted flex-1 text-center font-mono text-xs"
         >
             {label}
         </span>

@@ -299,7 +299,7 @@ export function CommandPalette() {
                                 className="max-h-128 overflow-y-auto pb-2"
                             >
                                 {filteredCommands.length === 0 && (
-                                    <p className="text-default-400 py-6 text-center text-sm">
+                                    <p className="text-muted py-6 text-center text-sm">
                                         No commands found
                                     </p>
                                 )}
@@ -308,7 +308,7 @@ export function CommandPalette() {
                                         return (
                                             <p
                                                 key={`header-${item.group}`}
-                                                className="text-default-400 px-3 pt-3 pb-1 text-xs font-medium"
+                                                className="text-muted px-3 pt-3 pb-1 text-xs font-medium"
                                             >
                                                 {item.group}
                                             </p>

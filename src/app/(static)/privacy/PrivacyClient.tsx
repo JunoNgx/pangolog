@@ -7,7 +7,7 @@ export default function PrivacyClient() {
     return (
         <>
             <h1 className="mb-2 text-xl font-bold">Privacy Policy</h1>
-            <p className="text-default-400 mb-8 text-sm">
+            <p className="text-muted mb-8 text-sm">
                 Last updated: March 2026
             </p>
 
