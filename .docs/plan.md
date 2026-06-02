@@ -377,7 +377,7 @@ This phase will render existing cloud data and json files obsolete and incompati
 
 ### Task 9a: Drive client
 
-- [x] Add `backupFileName(year, month): string` → `backup-YYYY-MM.json` to drive client
+- [x] Add `backupFileName(year, month): string` -> `backup-YYYY-MM.json` to drive client
 
 ### Task 9b: Backup logic
 
@@ -652,16 +652,16 @@ Reduce Drive sync round trips by collapsing serial downloads into parallel batch
 **Target execution order:**
 
 ```
-→ Promise.all: [purgeExpiredRecords, listFiles]
-→ trash duplicates (parallel, unchanged)
-→ Promise.all: [settings_dl, categories_dl, rules_dl, ...yearFiles_dl]
-→ merge all in memory
-→ Promise.all: [bulkPutCategories, bulkPutRecurringRules, bulkPutTransactions]
-→ deduplicateRecurringTransactions (reads from DB post-write)
-→ bulkPutTransactions soft-deletes (if any)
-→ re-read from DB (authoritative state after dedup soft-deletes)
-→ Promise.all: [settings_ul, categories_ul, rules_ul, ...yearFiles_ul]
-→ autobackup (unchanged)
+-> Promise.all: [purgeExpiredRecords, listFiles]
+-> trash duplicates (parallel, unchanged)
+-> Promise.all: [settings_dl, categories_dl, rules_dl, ...yearFiles_dl]
+-> merge all in memory
+-> Promise.all: [bulkPutCategories, bulkPutRecurringRules, bulkPutTransactions]
+-> deduplicateRecurringTransactions (reads from DB post-write)
+-> bulkPutTransactions soft-deletes (if any)
+-> re-read from DB (authoritative state after dedup soft-deletes)
+-> Promise.all: [settings_ul, categories_ul, rules_ul, ...yearFiles_ul]
+-> autobackup (unchanged)
 ```
 
 **Design note -- DB re-read before upload:**
@@ -685,7 +685,7 @@ After the parallel DB writes, dedup may write additional soft-deletes. Rather th
 
 - [x] **Settings:** apply remote if newer via `applyRemoteSettings`; re-read store state after to build `localSettings` for upload
 - [x] **Categories:** `mergedCategories = remoteCategoriesResult ? mergeRecords(localCategories, remoteCategoriesResult) : localCategories`
-- [x] **Rules:** same pattern → `mergedRules`
+- [x] **Rules:** same pattern -> `mergedRules`
 - [x] **Transactions:** clone `localTransactionsByYear`, overwrite each downloaded year with `mergeRecords` result; flatten to `allMergedTransactions: Transaction[]`
 
 ### Task 27d: Parallel DB writes
@@ -758,3 +758,49 @@ Post-architecture-review cleanup. No new features; only fixes and small refactor
 
 - [won't do] `src/lib/hooks/useRecurringRunner.ts`: decide whether runner-generated transactions should use the current wall-clock time (`now.hour`, `now.minute`, etc.) or a fixed time (e.g. `12:00:00`)
 - The current wall-clock time behavior is functional and no user-reported issues exist. Deferred until a real need arises.
+
+## Task 34: HeroUI v2 -> v3 migration
+
+GitHub: pangolog#34
+
+### 34a: packages + theme
+- [ ] Bump `@heroui/react` and `@heroui/theme` to `^3.1.0`
+- [ ] Remove `heroui.plugin.mjs`, update `globals.css` (v3 uses CSS, not Tailwind plugin)
+
+### 34b: HeroUIProvider in providers.tsx
+- [ ] Verify/update props for v3
+
+### 34c: Button (21 files)
+- [ ] `color` -> `variant`: `default`->`primary`, `secondary`->`secondary`, `ghost`->`ghost`, `danger`->`danger`, `light`->`tertiary`, `flat`->`secondary`
+- [ ] `isLoading` -> `isPending`
+
+### 34d: Input (7 files)
+- [ ] `onValueChange` -> `onChange(e.target.value)`
+- [ ] `isRequired` -> `required`, `isDisabled` -> `disabled`
+- [ ] Remove `classNames` prop if broken
+
+### 34e: Modal (6 files)
+- [ ] Restructure to nested dot notation: `Modal > Backdrop > Container > Dialog > Header/Heading/Body/Footer/CloseTrigger`
+- [ ] `classNames` -> per-element classes
+- [ ] `isOpen`/`onClose` -> `Backdrop`'s `isOpen`/`onOpenChange`
+
+### 34f: Popover (4 files)
+- [ ] `PopoverTrigger` -> `Popover.Trigger`, `PopoverContent` -> `Popover.Content > Popover.Dialog`
+
+### 34g: Dropdown (3 files)
+- [ ] `DropdownTrigger` -> `Dropdown.Trigger`, `DropdownMenu` -> `Dropdown.Popover > Dropdown.Menu`
+- [ ] Icon directly as child, not `startContent`
+
+### 34h: Tabs (1 file, ManageClient.tsx)
+- [ ] Flat API -> `Tabs.ListContainer > Tabs.List > Tabs.Tab + Tabs.Indicator` and `Tabs.Panel`
+
+### 34i: Checkbox + Switch + Radio (4 files)
+- [ ] Verify `isSelected`/`onValueChange` vs `checked`/`onChange`
+
+### 34j: Skeleton (3 files)
+- [ ] Verify on build
+
+### 34k: Tooltip (4 files)
+- [ ] `content` prop -> `Tooltip.Content` child
+- [ ] `Tooltip.Trigger` for non-button triggers
+
