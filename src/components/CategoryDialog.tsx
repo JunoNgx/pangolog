@@ -80,48 +80,48 @@ function randomHexColor() {
 const iconTriggerClasses = `
     rounded-lg
     h-10 flex items-center justify-center px-3
-    bg-default-100
-    hover:bg-default-200 transition-colors cursor-pointer
+    bg-surface
+    hover:bg-surface-secondary transition-colors cursor-pointer
 `;
 
 const emojiPickerRootClasses = `
     w-75 h-90 rounded-lg overflow-hidden
     flex flex-col
-    bg-content1 text-foreground
+    bg-surface text-foreground
 `;
 
 const emojiPickerSearchClasses = `
     mx-2 mt-2
     rounded-md px-2.5 py-2
-    bg-default-100 text-sm text-foreground placeholder:text-foreground-400
-    outline-none focus:bg-default-200
+    bg-surface text-sm text-foreground placeholder:text-muted
+    outline-none focus:bg-surface-secondary
 `;
 
 const emojiButtonClasses = `
     size-9
     flex items-center justify-center
     text-lg rounded-md
-    data-active:bg-default-200 hover:bg-default-100
+    data-active:bg-surface-secondary hover:bg-surface
 `;
 
 const colourTriggerClasses = `
     flex-1 rounded-lg
     flex items-center gap-3 px-3 py-2
-    bg-default-100
-    hover:bg-default-200 transition-colors cursor-pointer
+    bg-surface
+    hover:bg-surface-secondary transition-colors cursor-pointer
 `;
 
 const randomColourButtonClasses = `
     size-10 shrink-0 rounded-lg
     flex items-center justify-center
-    bg-default-100 text-muted
-    hover:bg-default-200 transition-colors cursor-pointer
+    bg-surface text-muted
+    hover:bg-surface-secondary transition-colors cursor-pointer
 `;
 
 const emojiPickerComponents: EmojiPickerListComponents = {
     CategoryHeader: ({ category: cat, ...props }) => (
         <div
-            className="text-foreground-500 bg-content1 px-3 pt-3 pb-1.5 text-xs font-medium"
+            className="text-muted bg-surface px-3 pt-3 pb-1.5 text-xs font-medium"
             {...props}
         >
             {cat.label}
@@ -246,7 +246,7 @@ export function CategoryDialog({
 
     const emojiPickerSection = (
         <div className="flex flex-col gap-1">
-            <span className="text-foreground-500 text-xs">Icon</span>
+            <span className="text-muted text-xs">Icon</span>
             <Popover
                 isOpen={isEmojiPickerOpen}
                 onOpenChange={setIsEmojiPickerOpen}
@@ -270,10 +270,10 @@ export function CategoryDialog({
                                 className={emojiPickerSearchClasses}
                             />
                             <EmojiPicker.Viewport className="relative flex-1 outline-none">
-                                <EmojiPicker.Loading className="text-foreground-400 absolute inset-0 flex items-center justify-center text-sm">
+                                <EmojiPicker.Loading className="text-muted absolute inset-0 flex items-center justify-center text-sm">
                                     Loading...
                                 </EmojiPicker.Loading>
-                                <EmojiPicker.Empty className="text-foreground-400 absolute inset-0 flex items-center justify-center text-sm">
+                                <EmojiPicker.Empty className="text-muted absolute inset-0 flex items-center justify-center text-sm">
                                     No emoji found.
                                 </EmojiPicker.Empty>
                                 <EmojiPicker.List
@@ -290,7 +290,7 @@ export function CategoryDialog({
 
     const colourPickerSection = (
         <div className="flex w-2/3 flex-col gap-1">
-            <span className="text-foreground-500 text-xs">Colour</span>
+            <span className="text-muted text-xs">Colour</span>
             <div className="flex gap-2">
                 <Popover>
                     <Popover.Trigger>
@@ -303,7 +303,7 @@ export function CategoryDialog({
                                 className="size-6 shrink-0 rounded-full"
                                 style={{ backgroundColor: colour }}
                             />
-                            <span className="text-foreground-500 text-sm">
+                            <span className="text-muted text-sm">
                                 {colour}
                             </span>
                         </button>

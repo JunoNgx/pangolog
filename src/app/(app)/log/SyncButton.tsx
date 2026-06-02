@@ -30,9 +30,9 @@ export function SyncButton() {
 
     const iconClass = `
         shrink-0
-        ${syncStatus === "idle" ? "text-success-500" : ""}
-        ${syncStatus === "syncing" ? "text-primary-500 animate-spin" : ""}
-        ${syncStatus === "error" ? "text-danger-500" : ""}
+        ${syncStatus === "idle" ? "text-success" : ""}
+        ${syncStatus === "syncing" ? "text-accent animate-spin" : ""}
+        ${syncStatus === "error" ? "text-danger" : ""}
     `;
 
     const lastSyncDt = lastSyncTime ? DateTime.fromISO(lastSyncTime) : null;

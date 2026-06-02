@@ -8,7 +8,7 @@ export const BASE_URL =
 export const SELECT_CLASSES = `
     rounded-lg px-3 py-2
     text-sm text-foreground
-    bg-default-100 border border-default-200
+    bg-surface border border-default-200
     cursor-pointer
 `;
 

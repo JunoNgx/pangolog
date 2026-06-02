@@ -407,7 +407,7 @@ export default function SettingsClient() {
                                 href="https://junongx.com"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-primary-500 hover:underline"
+                                className="text-accent hover:underline"
                             >
                                 Juno Nguyen
                             </a>
@@ -419,7 +419,7 @@ export default function SettingsClient() {
                                 href="https://github.com/JunoNgx/pangolog"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-primary-500 hover:underline"
+                                className="text-accent hover:underline"
                             >
                                 open source software
                             </a>
@@ -526,7 +526,7 @@ export default function SettingsClient() {
                                         <Modal.Heading>Clear local records?</Modal.Heading>
                                     </Modal.Header>
                                     <Modal.Body>
-                                        <p className="text-danger-500 text-sm">
+                                        <p className="text-danger text-sm">
                                             This cannot be undone.
                                         </p>
                                     </Modal.Body>
@@ -566,7 +566,7 @@ export default function SettingsClient() {
                                         <Modal.Heading>Confirm resetting app?</Modal.Heading>
                                     </Modal.Header>
                                     <Modal.Body>
-                                        <p className="text-danger-500 text-sm">
+                                        <p className="text-danger text-sm">
                                             This cannot be undone.
                                         </p>
                                     </Modal.Body>

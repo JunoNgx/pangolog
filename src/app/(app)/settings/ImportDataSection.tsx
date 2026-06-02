@@ -31,11 +31,11 @@ export function ImportDataSection() {
     }
 
     const errorRow = importError && (
-        <p className="text-danger-500 text-xs">{importError}</p>
+        <p className="text-danger text-xs">{importError}</p>
     );
 
     const importPreviewPanel = importPreview && (
-        <div className="bg-default-100 flex flex-col gap-2 rounded-lg p-3 text-sm">
+        <div className="bg-surface flex flex-col gap-2 rounded-lg p-3 text-sm">
             <p className="text-foreground font-semibold">Preview:</p>
             <p className="text-foreground">
                 {renderStats(
@@ -84,22 +84,22 @@ export function ImportDataSection() {
 
     const importResultPanel = importResult && (
         <div className="bg-success-50 flex flex-col gap-1 rounded-lg p-3 text-sm">
-            <p className="text-success-700 font-semibold">Import complete.</p>
-            <p className="text-success-600">
+            <p className="text-success font-semibold">Import complete.</p>
+            <p className="text-success">
                 {renderStats(
                     "Transactions",
                     importResult.transactionsAdded,
                     importResult.transactionsUpdated,
                 )}
             </p>
-            <p className="text-success-600">
+            <p className="text-success">
                 {renderStats(
                     "Categories",
                     importResult.categoriesAdded,
                     importResult.categoriesUpdated,
                 )}
             </p>
-            <p className="text-success-600">
+            <p className="text-success">
                 {renderStats(
                     "Recurring rules",
                     importResult.rulesAdded,

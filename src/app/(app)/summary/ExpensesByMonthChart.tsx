@@ -57,7 +57,7 @@ export default function ExpensesByMonthChart({
                             total > 0 ? `${(total / maxTotal) * 100}%` : "0%",
                     }}
                 >
-                    <div className="bg-default-400 h-full w-full rounded-sm" />
+                    <div className="bg-muted h-full w-full rounded-sm" />
                     {index === tallestIndex && (
                         <span
                             className={`absolute -top-5 ${tallestLabelAlign} text-muted font-mono text-xs whitespace-nowrap`}
@@ -91,9 +91,9 @@ export default function ExpensesByMonthChart({
             className="pointer-events-none absolute right-0 left-0 z-10"
             style={{ bottom: `${averagePct}%` }}
         >
-            <div className="border-primary-400 border-t border-dashed" />
+            <div className="border-accent border-t border-dashed" />
             <span
-                className={`text-primary-400 absolute -top-5 ${
+                className={`text-accent absolute -top-5 ${
                     tallestIndex > 9 ? "left-0" : "right-0"
                 } font-mono text-xs whitespace-nowrap`}
             >
