@@ -301,7 +301,7 @@ export function RecurringRuleDialog({
                                                     />
                                                 </div>
                                                 <div className="flex shrink-0 flex-col gap-1">
-                                                    <span className="text-default-500 text-sm">
+                                                    <span className="text-muted text-sm">
                                                         Frequency
                                                     </span>
                                                     <select

@@ -22,7 +22,7 @@ function Term({
             ) : (
                 <p className={nameClass}>{name}</p>
             )}
-            <p className="text-default-500 text-sm">{children}</p>
+            <p className="text-muted text-sm">{children}</p>
         </div>
     );
 }
@@ -36,7 +36,7 @@ export default function HelpClient() {
             </p>
 
             <Section title="System requirements">
-                <p className="text-default-500 text-sm">
+                <p className="text-muted text-sm">
                     Any modern browser (Chrome, Firefox, Safari, Edge) with
                     JavaScript enabled. IndexedDB is required for local storage
                     - all major browsers support it. Google Drive sync requires
@@ -45,7 +45,7 @@ export default function HelpClient() {
             </Section>
 
             <Section title="Installing as an app">
-                <p className="text-default-500 mb-3 text-sm">
+                <p className="text-muted mb-3 text-sm">
                     Pangolog can be installed as a standalone app on your device
                     for a better experience - no browser chrome, faster access
                     from your home screen.
@@ -130,19 +130,19 @@ export default function HelpClient() {
             </Section>
 
             <Section title="Keyboard shortcuts">
-                <p className="text-default-500 text-sm">
+                <p className="text-muted text-sm">
                     Press <Kbd>Ctrl/Cmd + /</Kbd> anywhere in the app to view
                     the full list of keyboard shortcuts.
                 </p>
             </Section>
 
             <Section title="Recurring rules">
-                <p className="text-default-500 mb-3 text-sm">
+                <p className="text-muted mb-3 text-sm">
                     Rules are checked and executed on app launch and whenever
                     the app becomes visible again (e.g. switching back from
                     another tab or app).
                 </p>
-                <p className="text-default-500 text-sm">
+                <p className="text-muted text-sm">
                     Each rule generates at most one transaction per execution,
                     regardless of how much time has passed. If you have not
                     opened the app in a long time, only the most recent missed
@@ -151,28 +151,28 @@ export default function HelpClient() {
             </Section>
 
             <Section title="Debug">
-                <p className="text-default-500 mb-3 text-sm">
+                <p className="text-muted mb-3 text-sm">
                     A hidden debug section is available in Settings. Tap the
                     "About" heading 5 times to toggle its visibility.
                 </p>
             </Section>
 
             <Section title="Google Drive sync">
-                <p className="text-default-500 mb-3 text-sm">
+                <p className="text-muted mb-3 text-sm">
                     Sync is optional and can be enabled or disabled from
                     Settings. Once connected, sync happens automatically: 30
                     seconds after any change, and when returning to the app
                     after 24+ hours. You can also sync manually via the button
                     in the transaction view.
                 </p>
-                <p className="text-default-500 mb-3 text-sm">
+                <p className="text-muted mb-3 text-sm">
                     Conflicts are resolved by last-write-wins on{" "}
                     <span className="font-mono text-xs">updatedAt</span>.
                     Soft-deleted records are kept for {PURGE_DAYS} days to
                     ensure correct synchronisation across devices. Sync
                     regularly within this window to prevent stale data.
                 </p>
-                <p className="text-default-500 mb-3 text-sm">
+                <p className="text-muted mb-3 text-sm">
                     Google Drive does not propagate file changes to all servers
                     instantly - this process can take up to an hour. This is an
                     unfortunately known limitation of the Google Drive platform
@@ -180,10 +180,10 @@ export default function HelpClient() {
                     device does not pick up changes from the first, wait a while
                     and sync again.
                 </p>
-                <h3 className="text-default-600 mb-1 text-sm font-medium">
+                <h3 className="text-foreground mb-1 text-sm font-medium">
                     Storage structure
                 </h3>
-                <ul className="text-default-500 space-y-1 font-mono text-sm">
+                <ul className="text-muted space-y-1 font-mono text-sm">
                     <li>Pangolog/</li>
                     <li className="pl-4">YYYY.json</li>
                     <li className="pl-4">categories.json</li>
@@ -194,7 +194,7 @@ export default function HelpClient() {
             </Section>
 
             <Section title="Export / import format">
-                <p className="text-default-500 mb-3 text-sm">
+                <p className="text-muted mb-3 text-sm">
                     The JSON file exported from Settings contains all your data
                     and can be re-imported on any device. You can also
                     hand-craft a file in this format to migrate data from
@@ -202,26 +202,26 @@ export default function HelpClient() {
                     paste-friendly for an LLM - you can share this section with
                     one to help generate a valid import file.
                 </p>
-                <p className="text-default-500 mb-2 text-sm">
+                <p className="text-muted mb-2 text-sm">
                     Top-level structure:
                 </p>
-                <pre className="bg-default-100 text-default-600 mb-3 overflow-x-auto rounded p-3 font-mono text-xs leading-relaxed">{`{
+                <pre className="bg-default-100 text-foreground mb-3 overflow-x-auto rounded p-3 font-mono text-xs leading-relaxed">{`{
   "exportedAt":     "2026-04-10T00:00:00.000Z",
   "categories":     [ ... ],  // required, may be empty
   "transactions":   [ ... ],  // optional
   "recurringRules": [ ... ]   // optional
 }`}</pre>
-                <p className="text-default-500 mb-4 text-sm">
+                <p className="text-muted mb-4 text-sm">
                     Import is additive and non-destructive. Records are merged
                     by <span className="font-mono text-xs">updatedAt</span> -
                     incoming records with a newer timestamp overwrite existing
                     ones; older records are ignored.
                 </p>
 
-                <h3 className="text-default-600 mb-2 text-sm font-medium">
+                <h3 className="text-foreground mb-2 text-sm font-medium">
                     Transaction
                 </h3>
-                <pre className="bg-default-100 text-default-600 mb-4 overflow-x-auto rounded p-3 font-mono text-xs leading-relaxed">{`// * = required for import
+                <pre className="bg-default-100 text-foreground mb-4 overflow-x-auto rounded p-3 font-mono text-xs leading-relaxed">{`// * = required for import
 id:           string        // * unique, UUID v4 recommended
 transactedAt: string        // * local-offset ISO "2026-04-10T14:30:00+07:00"
 updatedAt:    string        // * UTC ISO "2026-04-10T07:30:00.000Z"
@@ -236,10 +236,10 @@ categoryId:   string | null //   references a category id, or null
 ruleId?:      string        //   only present on rule-generated transactions
 rulePeriod?:  string        //   only present on rule-generated transactions`}</pre>
 
-                <h3 className="text-default-600 mb-2 text-sm font-medium">
+                <h3 className="text-foreground mb-2 text-sm font-medium">
                     Category
                 </h3>
-                <pre className="bg-default-100 text-default-600 mb-4 overflow-x-auto rounded p-3 font-mono text-xs leading-relaxed">{`// * = required for import
+                <pre className="bg-default-100 text-foreground mb-4 overflow-x-auto rounded p-3 font-mono text-xs leading-relaxed">{`// * = required for import
 id:           string        // * unique, UUID v4 recommended
 name:         string        // * display name
 updatedAt:    string        // * UTC ISO "2026-04-10T07:30:00.000Z"
@@ -251,10 +251,10 @@ priority:     number        //   integer; lower = appears earlier in picker
 isBuckOnly:   boolean       //   true = hidden from Small Dimes picker
 isIncomeOnly: boolean       //   true = hidden from expense picker`}</pre>
 
-                <h3 className="text-default-600 mb-2 text-sm font-medium">
+                <h3 className="text-foreground mb-2 text-sm font-medium">
                     Recurring rule
                 </h3>
-                <pre className="bg-default-100 text-default-600 mb-4 overflow-x-auto rounded p-3 font-mono text-xs leading-relaxed">{`// * = required for import
+                <pre className="bg-default-100 text-foreground mb-4 overflow-x-auto rounded p-3 font-mono text-xs leading-relaxed">{`// * = required for import
 id:               string              // * unique, UUID v4 recommended
 updatedAt:        string              // * UTC ISO "2026-04-10T07:30:00.000Z"
 amount:           number              // * integer, minor units
@@ -275,10 +275,10 @@ dayOfWeek:        number(1-7) | null  //   Mon=1 Sun=7; weekly rules only
 dayOfMonth:       number(1-31) | null //   monthly/yearly rules; clamped to month end
 monthOfYear:      number(1-12) | null //   yearly rules only`}</pre>
 
-                <h3 className="text-default-600 mb-2 text-sm font-medium">
+                <h3 className="text-foreground mb-2 text-sm font-medium">
                     Timestamp formats
                 </h3>
-                <ul className="text-default-500 list-inside list-disc space-y-1 text-sm">
+                <ul className="text-muted list-inside list-disc space-y-1 text-sm">
                     <li>
                         <span className="font-mono text-xs">transactedAt</span>{" "}
                         and{" "}

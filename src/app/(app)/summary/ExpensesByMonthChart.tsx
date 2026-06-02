@@ -27,7 +27,7 @@ export default function ExpensesByMonthChart({
     if (maxTotal === 0) {
         return (
             <div className="mb-6">
-                <p className="text-default-500 mb-2 font-semibold">
+                <p className="text-muted mb-2 font-semibold">
                     Expenses by month
                 </p>
                 <p className="text-muted text-sm">No data.</p>
@@ -60,7 +60,7 @@ export default function ExpensesByMonthChart({
                     <div className="bg-default-400 h-full w-full rounded-sm" />
                     {index === tallestIndex && (
                         <span
-                            className={`absolute -top-5 ${tallestLabelAlign} text-default-500 font-mono text-xs whitespace-nowrap`}
+                            className={`absolute -top-5 ${tallestLabelAlign} text-muted font-mono text-xs whitespace-nowrap`}
                         >
                             {formatAmountShort(total)}
                         </span>
@@ -104,7 +104,7 @@ export default function ExpensesByMonthChart({
 
     return (
         <div className="mb-6">
-            <p className="text-default-500 mb-3 font-semibold">
+            <p className="text-muted mb-3 font-semibold">
                 Expenses by month
             </p>
             <div className="relative mt-10 mb-1 flex h-24 items-end gap-1">

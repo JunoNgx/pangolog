@@ -60,7 +60,7 @@ export function SyncButton() {
                 isDisabled={syncStatus === "syncing"}
                 onPress={handleSync}
                 aria-label="Sync with Google Drive"
-                className="text-default-500 flex h-7 min-w-0 items-center gap-1.5 px-2"
+                className="text-muted flex h-7 min-w-0 items-center gap-1.5 px-2"
             >
                 <RefreshCw size={12} className={iconClass} aria-hidden="true" />
                 <span

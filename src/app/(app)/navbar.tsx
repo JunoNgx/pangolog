@@ -41,7 +41,7 @@ export function AppNavbar() {
                                 flex items-center gap-2 px-3 py-1.5 rounded-md
                                 text-sm
                                 transition-colors
-                                ${isActive ? "bg-primary/10 text-primary" : "text-default-500 hover:bg-default-100 hover:text-foreground"}
+                                ${isActive ? "bg-primary/10 text-primary" : "text-muted hover:bg-default-100 hover:text-foreground"}
                             `;
                             return (
                                 <NextLink
