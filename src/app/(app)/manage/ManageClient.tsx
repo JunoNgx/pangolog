@@ -30,8 +30,8 @@ export default function ManageClient() {
             onSelectionChange={handleTabChange}
             className="w-full justify-center"
         >
-            <Tabs.ListContainer>
-                <Tabs.List aria-label="Manage sections">
+            <Tabs.ListContainer className="flex justify-center">
+                <Tabs.List aria-label="Manage sections" className="w-fit whitespace-nowrap">
                     <Tabs.Tab id="categories">
                         Categories
                         <Tabs.Indicator />
