@@ -3,9 +3,7 @@
 import {
     Button,
     Dropdown,
-    DropdownItem,
-    DropdownMenu,
-    DropdownTrigger,
+    Label,
 } from "@heroui/react";
 import type { LucideIcon } from "lucide-react";
 import { Banknote, Coins, HandCoins } from "lucide-react";
@@ -42,12 +40,8 @@ export function TransactionTypeDropdown({
     }
 
     return (
-        <Dropdown
-            classNames={{
-                content: "min-w-0 w-fit",
-            }}
-        >
-            <DropdownTrigger>
+        <Dropdown>
+            <Dropdown.Trigger>
                 <Button
                     variant="ghost"
                     size="sm"
@@ -56,22 +50,26 @@ export function TransactionTypeDropdown({
                 >
                     <CurrentIcon size={16} />
                 </Button>
-            </DropdownTrigger>
-            <DropdownMenu
-                aria-label="Transaction type display mode"
-                selectionMode="single"
-                selectedKeys={new Set([displayMode])}
-                onSelectionChange={handleSelectionChange}
-            >
-                {MODE_OPTIONS.map((opt) => (
-                    <DropdownItem
-                        key={opt.key}
-                        startContent={<opt.icon size={16} />}
-                    >
-                        {opt.label}
-                    </DropdownItem>
-                ))}
-            </DropdownMenu>
+            </Dropdown.Trigger>
+            <Dropdown.Popover className="min-w-0 w-fit">
+                <Dropdown.Menu
+                    aria-label="Transaction type display mode"
+                    selectionMode="single"
+                    selectedKeys={new Set([displayMode])}
+                    onSelectionChange={handleSelectionChange}
+                >
+                    {MODE_OPTIONS.map((opt) => (
+                        <Dropdown.Item
+                            id={opt.key}
+                            key={opt.key}
+                            textValue={opt.label}
+                        >
+                            <opt.icon size={16} />
+                            <Label>{opt.label}</Label>
+                        </Dropdown.Item>
+                    ))}
+                </Dropdown.Menu>
+            </Dropdown.Popover>
         </Dropdown>
     );
 }
