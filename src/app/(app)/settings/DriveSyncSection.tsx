@@ -54,18 +54,16 @@ export function DriveSyncSection() {
             </p>
             <div className="flex gap-2">
                 <Button
-                    color="danger"
-                    variant="flat"
+                    variant="danger-soft"
                     className="max-w-xs"
                     onPress={disconnect}
                 >
                     Disconnect
                 </Button>
                 <Button
-                    color="primary"
-                    variant="flat"
+                    variant="primary"
                     className="max-w-xs"
-                    isLoading={syncStatus === "syncing"}
+                    isPending={syncStatus === "syncing"}
                     onPress={() => sync()}
                 >
                     Sync now
@@ -78,10 +76,9 @@ export function DriveSyncSection() {
         <>
             <p className="text-default-400 text-sm">Status: Not connected</p>
             <Button
-                color="primary"
-                variant="flat"
+                variant="primary"
                 className="self-start"
-                isLoading={isConnecting}
+                isPending={isConnecting}
                 onPress={connect}
             >
                 Connect Google Drive

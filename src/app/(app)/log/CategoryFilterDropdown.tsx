@@ -136,11 +136,10 @@ export function CategoryFilterDropdown({
         <Popover placement="bottom-end">
             <PopoverTrigger>
                 <Button
-                    variant={isFiltered ? "solid" : "flat"}
-                    color={isFiltered ? "primary" : "default"}
-                    endContent={<ChevronDown className="size-3" />}
+                    variant={isFiltered ? "primary" : "tertiary"}
                 >
                     {label}
+                    <ChevronDown className="size-3" />
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="p-0">
@@ -162,7 +161,7 @@ export function CategoryFilterDropdown({
                     <div className={footerClasses}>
                         <Button
                             size="sm"
-                            variant="light"
+                            variant="tertiary"
                             className={actionButtonClasses}
                             onPress={() => onChange(null)}
                         >
@@ -170,7 +169,7 @@ export function CategoryFilterDropdown({
                         </Button>
                         <Button
                             size="sm"
-                            variant="light"
+                            variant="tertiary"
                             className={actionButtonClasses}
                             onPress={() => onChange([])}
                         >

@@ -26,7 +26,7 @@ export function FloatingBackButton() {
         <FloatingButtonContainer>
             <Tooltip content="Esc" placement="left">
                 <Button
-                    color="default"
+                    variant="tertiary"
                     className={buttonClasses}
                     onPress={goBack}
                 >

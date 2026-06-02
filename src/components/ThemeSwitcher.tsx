@@ -28,7 +28,7 @@ export function ThemeSwitcher() {
 
     if (!isMounted) {
         return (
-            <Button isIconOnly variant="light" size="sm" aria-label="Theme">
+            <Button isIconOnly variant="tertiary" size="sm" aria-label="Theme">
                 <div className="size-4.5" />
             </Button>
         );
@@ -41,7 +41,7 @@ export function ThemeSwitcher() {
             }}
         >
             <DropdownTrigger>
-                <Button isIconOnly variant="light" size="sm" aria-label="Theme">
+                <Button isIconOnly variant="tertiary" size="sm" aria-label="Theme">
                     <CurrentIcon size={18} />
                 </Button>
             </DropdownTrigger>

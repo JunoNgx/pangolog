@@ -41,12 +41,11 @@ export function RecurringFilterDropdown({
         <Popover placement="bottom-end">
             <PopoverTrigger>
                 <Button
-                    variant={hasActiveFilter ? "solid" : "flat"}
-                    color={hasActiveFilter ? "primary" : "default"}
+                    variant={hasActiveFilter ? "primary" : "tertiary"}
                     className="w-min"
-                    endContent={<ChevronDown className="size-3" />}
                 >
                     Filter
+                    <ChevronDown className="size-3" />
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="p-2">
@@ -84,7 +83,7 @@ export function RecurringFilterDropdown({
                     <div className="border-default-200 mt-1 flex gap-1 border-t pt-2">
                         <Button
                             size="sm"
-                            variant="light"
+                            variant="tertiary"
                             className="flex-1 text-xs"
                             onPress={() => {
                                 onShowDimesChange(true);

@@ -266,9 +266,8 @@ export default function SettingsClient() {
                     <div className="flex flex-col gap-3">
                         <div className="flex items-center gap-3">
                             <Button
-                                color="primary"
-                                variant="flat"
-                                isLoading={isExportingJson}
+                                variant="primary"
+                                isPending={isExportingJson}
                                 onPress={handleExportJson}
                             >
                                 Export JSON
@@ -303,15 +302,12 @@ export default function SettingsClient() {
                         Overview of concepts, pages, hotkeys, and sync
                         behaviour.
                     </p>
-                    <Button
-                        as="a"
+                    <a
                         href="/help"
-                        color="primary"
-                        variant="flat"
-                        className="self-start"
+                        className="bg-accent text-accent-foreground hover:opacity-90 inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium self-start"
                     >
                         View manual
-                    </Button>
+                    </a>
                 </section>
 
                 <section>
@@ -323,7 +319,7 @@ export default function SettingsClient() {
                         offline cache to force a fresh reload. Your data is
                         stored separately and will not be affected.
                     </p>
-                    <Button variant="flat" onPress={handleClearSwCache}>
+                    <Button variant="secondary" onPress={handleClearSwCache}>
                         Clear offline cache
                     </Button>
                 </section>
@@ -368,22 +364,18 @@ export default function SettingsClient() {
                             {process.env.NEXT_PUBLIC_COMMIT_HASH})
                         </p>
                         <div className="mt-2 flex flex-wrap gap-2">
-                            <Button
-                                as="a"
+                            <a
                                 href="/privacy"
-                                variant="flat"
-                                size="sm"
+                                className="bg-default-100 text-foreground hover:bg-default-200 inline-flex items-center justify-center gap-2 rounded-lg px-3 py-1.5 text-sm font-medium"
                             >
                                 Privacy Policy
-                            </Button>
-                            <Button
-                                as="a"
+                            </a>
+                            <a
                                 href="/terms"
-                                variant="flat"
-                                size="sm"
+                                className="bg-default-100 text-foreground hover:bg-default-200 inline-flex items-center justify-center gap-2 rounded-lg px-3 py-1.5 text-sm font-medium"
                             >
                                 Terms of Service
-                            </Button>
+                            </a>
                         </div>
                     </div>
                 </section>
@@ -393,7 +385,7 @@ export default function SettingsClient() {
                     <section className="mt-8">
                         <h3 className="mb-1 text-lg font-semibold">Debug</h3>
                         <Button
-                            variant="flat"
+                            variant="secondary"
                             onPress={() =>
                                 toast("Debug toast notification", {
                                     duration: Infinity,
@@ -405,7 +397,7 @@ export default function SettingsClient() {
 
                         <Button
                             className="mt-2 block"
-                            variant="flat"
+                            variant="secondary"
                             onPress={() => setIsLogDialogOpen(true)}
                         >
                             View logs
@@ -413,8 +405,7 @@ export default function SettingsClient() {
 
                         <Button
                             className="mt-2 block"
-                            color="danger"
-                            variant="flat"
+                            variant="danger-soft"
                             onPress={handleClearDebugLoggerEntry}
                         >
                             Clear Logger entries
@@ -428,8 +419,7 @@ export default function SettingsClient() {
                         </p>
                         <Button
                             className="mt-2 block"
-                            color="danger"
-                            variant="flat"
+                            variant="danger-soft"
                             onPress={() => setIsResetAppDialogOpen(true)}
                         >
                             Reset app
@@ -448,8 +438,7 @@ export default function SettingsClient() {
                         on Google Drive will remain intact.
                     </p>
                     <Button
-                        color="danger"
-                        variant="flat"
+                        variant="danger-soft"
                         onPress={() => setIsResetDialogOpen(true)}
                     >
                         Clear local records
@@ -477,14 +466,14 @@ export default function SettingsClient() {
                                     </Modal.Body>
                                     <Modal.Footer>
                                         <Button
-                                            variant="light"
+                                            variant="tertiary"
                                             onPress={() => setIsClearRecordsDialogOpen(false)}
                                         >
                                             Cancel
                                         </Button>
                                         <Button
-                                            color="danger"
-                                            isLoading={isClearingRecords}
+                                            variant="danger"
+                                            isPending={isClearingRecords}
                                             onPress={handleClearLocalRecords}
                                         >
                                             Clear
@@ -517,14 +506,14 @@ export default function SettingsClient() {
                                     </Modal.Body>
                                     <Modal.Footer>
                                         <Button
-                                            variant="light"
+                                            variant="tertiary"
                                             onPress={() => setIsResetAppDialogOpen(false)}
                                         >
                                             Cancel
                                         </Button>
                                         <Button
-                                            color="danger"
-                                            isLoading={isResettingApp}
+                                            variant="danger"
+                                            isPending={isResettingApp}
                                             onPress={handleResetApp}
                                         >
                                             Reset app
@@ -557,19 +546,19 @@ export default function SettingsClient() {
                                     </Modal.Body>
                                     <Modal.Footer>
                                         <Button
-                                            variant="flat"
+                                            variant="secondary"
                                             onPress={handleDumpDebugLoggerContent}
                                         >
                                             Export logs
                                         </Button>
                                         <Button
-                                            variant="flat"
+                                            variant="secondary"
                                             onPress={handleCopyDebugLoggerEntries}
                                         >
                                             Copy content
                                         </Button>
                                         <Button
-                                            variant="light"
+                                            variant="tertiary"
                                             onPress={() => setIsLogDialogOpen(false)}
                                         >
                                             Close

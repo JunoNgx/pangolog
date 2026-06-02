@@ -136,7 +136,7 @@ export default function RecurringClient() {
                 <DemoDataBanner />
             </ConfigWrapper>
             <ConfigWrapper className="flex justify-end mb-4">
-                <Button color="default" onPress={() => setIsCreateOpen(true)}>
+                <Button variant="tertiary" onPress={() => setIsCreateOpen(true)}>
                     <Plus />
                     <span>Rule</span>
                 </Button>

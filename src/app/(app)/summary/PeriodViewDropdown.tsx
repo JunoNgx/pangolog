@@ -53,7 +53,6 @@ export function PeriodViewDropdown({
                     size="sm"
                     isIconOnly
                     aria-label={viewLabel}
-                    title="Ctrl/Cmd+Shift+Y"
                 >
                     <CurrentIcon size={16} />
                 </Button>

@@ -47,16 +47,15 @@ export function DemoDataBanner() {
             <div className="flex shrink-0 gap-2">
                 <Button
                     size="sm"
-                    variant="flat"
-                    color="primary"
-                    isLoading={isLoading}
+                    variant="primary"
+                    isPending={isLoading}
                     onPress={handleLoadSampleData}
                 >
                     Load sample data
                 </Button>
                 <Button
                     size="sm"
-                    variant="light"
+                    variant="tertiary"
                     onPress={handleDismiss}
                     isDisabled={isLoading}
                 >
