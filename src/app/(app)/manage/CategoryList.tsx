@@ -35,7 +35,7 @@ function SortableCategoryItem({
         <li
             ref={ref}
             style={{ borderLeftColor: cat.colour }}
-            className={`bg-background border-default-200 hover:border-default-400 flex items-center rounded-none border-b-1 border-l-4 transition ${isDragging ? "opacity-50" : ""} `}
+            className={`bg-background hover:border-foreground flex items-center rounded-none border-b-1 border-l-4 transition ${isDragging ? "opacity-50" : ""} `}
         >
             <button
                 type="button"
@@ -131,7 +131,7 @@ export function CategoryList() {
             {categories.map((cat) => (
                 <li
                     key={cat.id}
-                    className="bg-background border-default-200 hover:border-default-400 flex items-center rounded-none border-b-1 border-l-4 transition"
+                    className="bg-background hover:border-foreground flex items-center rounded-none border-b border-l-4 transition"
                     style={{ borderLeftColor: cat.colour }}
                 >
                     <button

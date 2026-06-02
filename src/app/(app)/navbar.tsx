@@ -25,7 +25,7 @@ export function AppNavbar() {
     return (
         <>
             <header
-                className={`bg-background border-default-200 z-40 hidden border-b backdrop-blur-md md:flex`}
+                className={`bg-background z-40 hidden border-b backdrop-blur-md md:flex`}
             >
                 <div className="mx-auto flex h-14 w-full max-w-3xl items-center gap-2 px-4">
                     <NextLink
@@ -68,7 +68,7 @@ export function AppNavbar() {
                 the (pointer: fine) media query. Not applied - the issue is
                 intermittent and unconfirmed on other browsers. */}
             <nav
-                className={`bg-background border-default-200 fixed right-0 bottom-0 left-0 z-40 m-3 mt-0 mr-24 flex h-16 rounded-lg border md:hidden`}
+                className={`bg-background fixed right-0 bottom-0 left-0 z-40 m-3 mt-0 mr-24 flex h-16 rounded-lg border md:hidden`}
             >
                 {navItems.map((item) => {
                     const isActive = pathname === item.href;

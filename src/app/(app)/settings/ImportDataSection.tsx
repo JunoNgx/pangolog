@@ -83,7 +83,7 @@ export function ImportDataSection() {
     );
 
     const importResultPanel = importResult && (
-        <div className="bg-success-50 flex flex-col gap-1 rounded-lg p-3 text-sm">
+        <div className="bg-success-soft flex flex-col gap-1 rounded-lg p-3 text-sm">
             <p className="text-success font-semibold">Import complete.</p>
             <p className="text-success">
                 {renderStats(

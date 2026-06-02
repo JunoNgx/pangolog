@@ -36,7 +36,7 @@ export default function LandingPage() {
                         <h1 className="text-3xl font-bold tracking-tight">
                             Pangolog
                         </h1>
-                        <div className="border-default-300 border-l-2 pl-4">
+                        <div className="border-l-2 pl-4">
                             <p className="text-foreground font-mono text-sm">
                                 log
                             </p>

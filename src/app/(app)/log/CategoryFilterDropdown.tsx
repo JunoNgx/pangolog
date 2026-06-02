@@ -69,7 +69,7 @@ const listClasses = `
 `;
 
 const footerClasses = `
-    flex gap-1 p-2 border-t border-default-200
+    flex gap-1 p-2 border-t
 `;
 
 const actionButtonClasses = `

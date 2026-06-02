@@ -94,7 +94,7 @@ export function RecurringFilterDropdown({
                             <Label>Hide inactive</Label>
                         </Checkbox.Content>
                     </Checkbox>
-                        <div className="border-default-200 mt-1 flex gap-1 border-t pt-2">
+                        <div className="mt-1 flex gap-1 border-t pt-2">
                             <Button
                                 size="sm"
                                 variant="tertiary"
