@@ -214,7 +214,7 @@ export default function LogClient() {
     const totalAndFilterRow = (
         <div className="flex items-center justify-between">
             <span className="flex gap-2">
-                <span className="text-default-500">Total expense:</span>
+                <span className="text-muted">Total expense:</span>
                 <span
                     className="font-mono font-medium"
                     suppressHydrationWarning

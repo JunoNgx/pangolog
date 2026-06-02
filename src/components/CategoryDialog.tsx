@@ -114,7 +114,7 @@ const colourTriggerClasses = `
 const randomColourButtonClasses = `
     size-10 shrink-0 rounded-lg
     flex items-center justify-center
-    bg-default-100 text-default-500
+    bg-default-100 text-muted
     hover:bg-default-200 transition-colors cursor-pointer
 `;
 

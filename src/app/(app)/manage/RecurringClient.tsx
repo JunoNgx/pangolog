@@ -94,7 +94,7 @@ export default function RecurringClient() {
 
     const sortControls = (
         <div className="flex items-center gap-2">
-            <span className="text-default-500 text-sm">Sort by</span>
+            <span className="text-muted text-sm">Sort by</span>
             <select
                 value={sortBy}
                 onChange={handleSortChange}

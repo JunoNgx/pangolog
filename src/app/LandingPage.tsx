@@ -43,12 +43,12 @@ export default function LandingPage() {
                             <p className="text-muted font-mono text-sm">
                                 /lɔːɡ/ (verb)
                             </p>
-                            <p className="text-default-500 font-mono text-sm">
+                            <p className="text-muted font-mono text-sm">
                                 To add an entry in a logbook
                             </p>
                         </div>
                     </div>
-                    <p className="text-default-500">
+                    <p className="text-muted">
                         A minimalist, offline-first, and privacy-first personal
                         expense tracker.
                     </p>
@@ -60,7 +60,7 @@ export default function LandingPage() {
                             <p className="text-default-700 mb-2 font-semibold">
                                 {feature.headline}
                             </p>
-                            <p className="text-default-500 text-sm">
+                            <p className="text-muted text-sm">
                                 {feature.body}
                             </p>
                         </li>
@@ -86,7 +86,7 @@ export default function LandingPage() {
                             href="https://junongx.com"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="hover:text-default-600"
+                            className="hover:text-foreground"
                         >
                             Juno Nguyen
                         </Link>
@@ -96,21 +96,21 @@ export default function LandingPage() {
                             href="https://github.com/JunoNgx/pangolog"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-muted hover:text-default-600 text-xs"
+                            className="text-muted hover:text-foreground text-xs"
                         >
                             Source
                         </Link>
                         <span className="text-default-300 text-xs">|</span>
                         <Link
                             href="/privacy"
-                            className="text-muted hover:text-default-600 text-xs"
+                            className="text-muted hover:text-foreground text-xs"
                         >
                             Privacy Policy
                         </Link>
                         <span className="text-default-300 text-xs">|</span>
                         <Link
                             href="/terms"
-                            className="text-muted hover:text-default-600 text-xs"
+                            className="text-muted hover:text-foreground text-xs"
                         >
                             Terms of Service
                         </Link>

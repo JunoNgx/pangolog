@@ -335,7 +335,7 @@ export function CommandPalette() {
                                             onClick={() => execute(cmd)}
                                             onMouseEnter={() => setSelectedIndex(idx)}
                                         >
-                                            <span className="text-default-500 shrink-0">
+                                            <span className="text-muted shrink-0">
                                                 {cmd.icon}
                                             </span>
                                             {cmd.label}

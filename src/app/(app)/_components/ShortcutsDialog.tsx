@@ -119,7 +119,7 @@ export function ShortcutsDialog() {
                                                 key={shortcut.description}
                                                 className="flex items-center justify-between gap-4"
                                             >
-                                                <span className="text-default-600 text-sm">
+                                                <span className="text-foreground text-sm">
                                                     {shortcut.description}
                                                 </span>
                                                 <span className="flex shrink-0 items-center gap-1">

@@ -34,7 +34,7 @@ export function ToggleSwitch({
         <div className={`inline-flex items-center gap-2 ${className}`}>
             <span
                 className={
-                    shouldShowLabel ? "text-default-500 text-sm" : "sr-only"
+                    shouldShowLabel ? "text-muted text-sm" : "sr-only"
                 }
             >
                 {label}

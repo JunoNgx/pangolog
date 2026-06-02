@@ -20,12 +20,12 @@ export function CategoryPicker({
     return (
         <div>
             <div className="mb-2 flex items-center justify-between">
-                <p className="text-default-500 text-sm">Category</p>
+                <p className="text-muted text-sm">Category</p>
                 {onAdd && (
                     <button
                         type="button"
                         onClick={onAdd}
-                        className={`text-muted hover:text-default-600 hover:bg-default-100 flex cursor-pointer items-center gap-1 rounded-sm px-1.5 py-0.5 text-xs transition-colors`}
+                        className={`text-muted hover:text-foreground hover:bg-default-100 flex cursor-pointer items-center gap-1 rounded-sm px-1.5 py-0.5 text-xs transition-colors`}
                     >
                         <Plus size={12} />
                         Add
