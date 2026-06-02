@@ -1,15 +1,21 @@
 @import "tailwindcss";
-@plugin "./heroui.plugin.mjs";
-@source "../../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}";
-@custom-variant dark (&:is(.dark *));
+@import "@heroui/styles";
 
 @theme inline {
     --font-sans: var(--font-sans-var);
     --font-mono: var(--font-mono-var);
+}
 
-    /* --radius-sm: 0;
-    --radius-md: 0;
-    --radius-lg: 0; */
+/* Originally #f59e0b (amber) */
+:root {
+    --accent: oklch(0.75 0.16 70);
+    --accent-foreground: #000000;
+}
+
+/* Originally #f59e0b (amber) */
+.dark {
+    --accent: oklch(0.75 0.16 70);
+    --accent-foreground: #000000;
 }
 
 @layer base {
