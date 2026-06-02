@@ -55,6 +55,7 @@ export function ThemeSwitcher() {
                         >
                             <t.icon size={16} />
                             <Label>{t.label}</Label>
+                            <Dropdown.ItemIndicator />
                         </Dropdown.Item>
                     ))}
                 </Dropdown.Menu>
