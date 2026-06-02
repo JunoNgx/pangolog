@@ -1,6 +1,6 @@
 "use client";
 
-import { Modal, ModalBody, ModalContent, ModalHeader } from "@heroui/react";
+import { Modal } from "@heroui/react";
 import { useCallback, useEffect, useState } from "react";
 import { Kbd } from "@/components/Kbd";
 import { commandPaletteShortcutsActions } from "@/lib/commandPaletteActionRegistry";
@@ -94,43 +94,48 @@ export function ShortcutsDialog() {
     useHotkey("/", toggle, { hasMod: true });
 
     return (
-        <Modal
-            isOpen={isOpen}
-            onClose={close}
-            size="md"
-            scrollBehavior="inside"
-        >
-            <ModalContent>
-                <ModalHeader className="text-base">
-                    Keyboard shortcuts
-                </ModalHeader>
-                <ModalBody className="gap-6 pb-6">
-                    {SHORTCUT_GROUPS.map((group) => (
-                        <div key={group.title}>
-                            <p className="text-default-400 mb-2 text-xs font-medium tracking-wide uppercase">
-                                {group.title}
-                            </p>
-                            <ul className="flex flex-col gap-2">
-                                {group.shortcuts.map((shortcut) => (
-                                    <li
-                                        key={shortcut.description}
-                                        className="flex items-center justify-between gap-4"
-                                    >
-                                        <span className="text-default-600 text-sm">
-                                            {shortcut.description}
-                                        </span>
-                                        <span className="flex shrink-0 items-center gap-1">
-                                            {shortcut.keys.map((key) => (
-                                                <Kbd key={key}>{key}</Kbd>
-                                            ))}
-                                        </span>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    ))}
-                </ModalBody>
-            </ModalContent>
+        <Modal>
+            <Modal.Backdrop
+                isOpen={isOpen}
+                onOpenChange={(open) => { if (!open) close(); }}
+            >
+                <Modal.Container size="md" scroll="inside">
+                    <Modal.Dialog>
+                        <Modal.CloseTrigger className="cursor-pointer" />
+                        <Modal.Header>
+                            <Modal.Heading className="text-base">
+                                Keyboard shortcuts
+                            </Modal.Heading>
+                        </Modal.Header>
+                        <Modal.Body className="gap-6 pb-6">
+                            {SHORTCUT_GROUPS.map((group) => (
+                                <div key={group.title}>
+                                    <p className="text-default-400 mb-2 text-xs font-medium tracking-wide uppercase">
+                                        {group.title}
+                                    </p>
+                                    <ul className="flex flex-col gap-2">
+                                        {group.shortcuts.map((shortcut) => (
+                                            <li
+                                                key={shortcut.description}
+                                                className="flex items-center justify-between gap-4"
+                                            >
+                                                <span className="text-default-600 text-sm">
+                                                    {shortcut.description}
+                                                </span>
+                                                <span className="flex shrink-0 items-center gap-1">
+                                                    {shortcut.keys.map((key) => (
+                                                        <Kbd key={key}>{key}</Kbd>
+                                                    ))}
+                                                </span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            ))}
+                        </Modal.Body>
+                    </Modal.Dialog>
+                </Modal.Container>
+            </Modal.Backdrop>
         </Modal>
     );
 }
