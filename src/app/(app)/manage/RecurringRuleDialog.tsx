@@ -49,7 +49,7 @@ function getRepeatLabel(frequency: Frequency, dateStr: string): string {
 const statusPanelClasses = `
     p-3 rounded-lg border
     flex items-center justify-between
-    bg-default-50 border-default-200
+    bg-surface-tertiary border-default-200
 `;
 
 interface RecurringRuleDialogProps {

@@ -34,7 +34,7 @@ export function DriveSyncSection() {
     );
 
     const errorRow = error && (
-        <p className="text-danger-500 text-xs">{error}</p>
+        <p className="text-danger text-xs">{error}</p>
     );
 
     const autobackupDisabledInfo = !isConnected && (
@@ -45,7 +45,7 @@ export function DriveSyncSection() {
 
     const connectedContent = (
         <>
-            <p className="text-success-500 text-sm">
+            <p className="text-success text-sm">
                 Status: Connected as {authToken?.email}
             </p>
             <p className="text-muted text-xs">

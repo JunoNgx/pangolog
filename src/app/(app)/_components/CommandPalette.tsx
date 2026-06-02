@@ -323,7 +323,7 @@ export function CommandPalette() {
                                         text-sm text-left
                                         rounded-lg
                                         cursor-pointer
-                                        ${isSelected ? "bg-default-100" : "hover:bg-default-50"}
+                                        ${isSelected ? "bg-surface" : "hover:bg-surface-tertiary"}
                                     `;
 
                                     return (

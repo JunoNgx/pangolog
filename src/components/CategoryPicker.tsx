@@ -25,7 +25,7 @@ export function CategoryPicker({
                     <button
                         type="button"
                         onClick={onAdd}
-                        className={`text-muted hover:text-foreground hover:bg-default-100 flex cursor-pointer items-center gap-1 rounded-sm px-1.5 py-0.5 text-xs transition-colors`}
+                        className={`text-muted hover:text-foreground hover:bg-surface flex cursor-pointer items-center gap-1 rounded-sm px-1.5 py-0.5 text-xs transition-colors`}
                     >
                         <Plus size={12} />
                         Add

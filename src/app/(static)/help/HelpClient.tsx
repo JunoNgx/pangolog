@@ -72,7 +72,7 @@ export default function HelpClient() {
                         href="https://addons.mozilla.org/en-US/firefox/addon/pwas-for-firefox/"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-primary-500 underline"
+                        className="text-accent underline"
                     >
                         PWAs for Firefox
                     </a>
@@ -205,7 +205,7 @@ export default function HelpClient() {
                 <p className="text-muted mb-2 text-sm">
                     Top-level structure:
                 </p>
-                <pre className="bg-default-100 text-foreground mb-3 overflow-x-auto rounded p-3 font-mono text-xs leading-relaxed">{`{
+                <pre className="bg-surface text-foreground mb-3 overflow-x-auto rounded p-3 font-mono text-xs leading-relaxed">{`{
   "exportedAt":     "2026-04-10T00:00:00.000Z",
   "categories":     [ ... ],  // required, may be empty
   "transactions":   [ ... ],  // optional
@@ -221,7 +221,7 @@ export default function HelpClient() {
                 <h3 className="text-foreground mb-2 text-sm font-medium">
                     Transaction
                 </h3>
-                <pre className="bg-default-100 text-foreground mb-4 overflow-x-auto rounded p-3 font-mono text-xs leading-relaxed">{`// * = required for import
+                <pre className="bg-surface text-foreground mb-4 overflow-x-auto rounded p-3 font-mono text-xs leading-relaxed">{`// * = required for import
 id:           string        // * unique, UUID v4 recommended
 transactedAt: string        // * local-offset ISO "2026-04-10T14:30:00+07:00"
 updatedAt:    string        // * UTC ISO "2026-04-10T07:30:00.000Z"
@@ -239,7 +239,7 @@ rulePeriod?:  string        //   only present on rule-generated transactions`}</
                 <h3 className="text-foreground mb-2 text-sm font-medium">
                     Category
                 </h3>
-                <pre className="bg-default-100 text-foreground mb-4 overflow-x-auto rounded p-3 font-mono text-xs leading-relaxed">{`// * = required for import
+                <pre className="bg-surface text-foreground mb-4 overflow-x-auto rounded p-3 font-mono text-xs leading-relaxed">{`// * = required for import
 id:           string        // * unique, UUID v4 recommended
 name:         string        // * display name
 updatedAt:    string        // * UTC ISO "2026-04-10T07:30:00.000Z"
@@ -254,7 +254,7 @@ isIncomeOnly: boolean       //   true = hidden from expense picker`}</pre>
                 <h3 className="text-foreground mb-2 text-sm font-medium">
                     Recurring rule
                 </h3>
-                <pre className="bg-default-100 text-foreground mb-4 overflow-x-auto rounded p-3 font-mono text-xs leading-relaxed">{`// * = required for import
+                <pre className="bg-surface text-foreground mb-4 overflow-x-auto rounded p-3 font-mono text-xs leading-relaxed">{`// * = required for import
 id:               string              // * unique, UUID v4 recommended
 updatedAt:        string              // * UTC ISO "2026-04-10T07:30:00.000Z"
 amount:           number              // * integer, minor units

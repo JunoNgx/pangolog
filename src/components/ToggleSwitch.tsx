@@ -53,7 +53,7 @@ export function ToggleSwitch({
                         className={`${buttonClasses} ${
                             !isSelectingRight
                                 ? "bg-primary text-primary-foreground"
-                                : "text-foreground hover:bg-default-100 bg-transparent"
+                                : "text-foreground hover:bg-surface bg-transparent"
                         } ${isDisabled ? "cursor-not-allowed opacity-50" : ""}`}
                     >
                         {LeftIcon && <LeftIcon size={16} />}
@@ -73,7 +73,7 @@ export function ToggleSwitch({
                         className={`${buttonClasses} ${
                             isSelectingRight
                                 ? "bg-primary text-primary-foreground"
-                                : "text-foreground hover:bg-default-100 bg-transparent"
+                                : "text-foreground hover:bg-surface bg-transparent"
                         } ${isDisabled ? "cursor-not-allowed opacity-50" : ""}`}
                     >
                         {RightIcon && <RightIcon size={16} />}
