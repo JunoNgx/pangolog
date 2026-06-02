@@ -764,11 +764,11 @@ Post-architecture-review cleanup. No new features; only fixes and small refactor
 GitHub: pangolog#34
 
 ### 34a: packages + theme
-- [ ] Bump `@heroui/react` and `@heroui/theme` to `^3.1.0`
-- [ ] Remove `heroui.plugin.mjs`, update `globals.css` (v3 uses CSS, not Tailwind plugin)
+- [x] Bump `@heroui/react` to `^3.1.0`, replace `@heroui/theme` with `@heroui/styles`
+- [x] Remove `heroui.plugin.mjs`, update `globals.css` (v3 uses `@import "@heroui/styles"`)
 
 ### 34b: HeroUIProvider in providers.tsx
-- [ ] Verify/update props for v3
+- [x] Remove `HeroUIProvider` (v3 does not require it)
 
 ### 34c: Button (21 files)
 - [ ] `color` -> `variant`: `default`->`primary`, `secondary`->`secondary`, `ghost`->`ghost`, `danger`->`danger`, `light`->`tertiary`, `flat`->`secondary`
@@ -780,9 +780,9 @@ GitHub: pangolog#34
 - [ ] Remove `classNames` prop if broken
 
 ### 34e: Modal (6 files)
-- [ ] Restructure to nested dot notation: `Modal > Backdrop > Container > Dialog > Header/Heading/Body/Footer/CloseTrigger`
-- [ ] `classNames` -> per-element classes
-- [ ] `isOpen`/`onClose` -> `Backdrop`'s `isOpen`/`onOpenChange`
+- [x] Restructure to nested dot notation: `Modal > Backdrop > Container > Dialog > Header/Heading/Body/Footer/CloseTrigger`
+- [x] `classNames` -> per-element classes
+- [x] `isOpen`/`onClose` -> `Backdrop`'s `isOpen`/`onOpenChange`
 
 ### 34f: Popover (4 files)
 - [ ] `PopoverTrigger` -> `Popover.Trigger`, `PopoverContent` -> `Popover.Content > Popover.Dialog`
