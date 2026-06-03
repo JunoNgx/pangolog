@@ -280,7 +280,7 @@ export default function LogClient() {
                     !isSearchMode && (
                         <Button
                             isIconOnly
-                            variant="ghost"
+                            variant="outline"
                             size="sm"
                             onPress={handleToggleSearchMode}
                             aria-label="Search transactions"
