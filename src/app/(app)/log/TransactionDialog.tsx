@@ -256,7 +256,12 @@ export function TransactionDialog({
                                     />
 
                                     <div className="flex flex-col gap-1">
-                                        <Label htmlFor="description" className="sr-only">Description</Label>
+                                        <Label
+                                            htmlFor="description"
+                                            className="sr-only"
+                                        >
+                                            Description
+                                        </Label>
                                         <Input
                                             id="description"
                                             className="font-mono"
