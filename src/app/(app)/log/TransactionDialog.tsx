@@ -1,6 +1,6 @@
 "use client";
 
-import { Input, Modal } from "@heroui/react";
+import { Input, Label, Modal } from "@heroui/react";
 import { DateTime } from "luxon";
 import type React from "react";
 import {
@@ -256,18 +256,17 @@ export function TransactionDialog({
                                     />
 
                                     <div className="flex flex-col gap-1">
-                                        <span>Description</span>
+                                        <Label htmlFor="description" className="sr-only">Description</Label>
                                         <Input
+                                            id="description"
                                             className="font-mono"
                                             value={description}
                                             onChange={(e) =>
                                                 setDescription(e.target.value)
                                             }
                                             maxLength={60}
+                                            placeholder="Description"
                                         />
-                                        <span className="text-muted text-xs">
-                                            {description.length}/60
-                                        </span>
                                     </div>
 
                                     <CategoryPicker
