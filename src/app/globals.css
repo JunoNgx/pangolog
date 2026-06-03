@@ -42,8 +42,21 @@
         @apply rounded-lg;
     }
 
+    .input {
+        @apply border-foreground rounded-lg border shadow-none;
+    }
+
+    .input:hover:not(:focus):not(:focus-visible) {
+        @apply border-foreground rounded-lg border bg-transparent;
+    }
+
+    .input:focus,
+    .input[data-focused="true"] {
+        @apply border-accent focus-visible:ring-0 focus-visible:outline-none;
+    }
+
     .modal__dialog {
-        @apply p-4 md:p-6 rounded-2xl;
+        @apply rounded-2xl p-4 md:p-6;
     }
 
     .modal__close-trigger {
