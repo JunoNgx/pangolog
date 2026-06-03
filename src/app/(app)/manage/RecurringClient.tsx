@@ -45,7 +45,7 @@ export default function RecurringClient() {
         return () => commandPaletteCreateActions.unregister();
     }, [openCreateDialog]);
 
-    const { data: rules, isLoading } = useRecurringRules();
+    const { data: rules } = useRecurringRules();
     const { data: categories } = useCategories();
 
     const sortedRules = useMemo(() => {
@@ -144,11 +144,7 @@ export default function RecurringClient() {
                     <span>Rule</span>
                 </Button>
             </ConfigWrapper>
-            <RecurringList
-                rules={sortedRules}
-                categories={categories ?? []}
-                isLoading={isLoading}
-            />
+            <RecurringList rules={sortedRules} categories={categories ?? []} />
 
             <RecurringRuleDialog
                 isOpen={isCreateOpen}

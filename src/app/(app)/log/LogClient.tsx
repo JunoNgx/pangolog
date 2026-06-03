@@ -88,12 +88,12 @@ export default function LogClient() {
     const searchInputRef = useRef<HTMLInputElement>(null);
     const isSearching = searchQuery.trim().length > 0;
 
-    const { data: monthlyTransactions, isLoading: isLoadingMonthly } =
-        useTransactionsByMonth(selectedYear, selectedMonth);
-    const { data: yearlyTransactions, isLoading: isLoadingYearly } =
-        useTransactionsByYear(selectedYear);
-    const { data: allTransactions, isLoading: isLoadingAll } =
-        useAllTransactions();
+    const { data: monthlyTransactions } = useTransactionsByMonth(
+        selectedYear,
+        selectedMonth,
+    );
+    const { data: yearlyTransactions } = useTransactionsByYear(selectedYear);
+    const { data: allTransactions } = useAllTransactions();
     const { data: categories } = useCategories();
 
     function handleSearchHotkey() {
@@ -191,8 +191,6 @@ export default function LogClient() {
                 (t) => t.description?.toLowerCase().includes(query) ?? false,
             );
     }, [isSearching, searchQuery, allTransactions]);
-
-    const isLoading = isOnlyBigBucks ? isLoadingYearly : isLoadingMonthly;
 
     const periodPickerRow = (
         <PeriodPicker
@@ -314,13 +312,11 @@ export default function LogClient() {
                 <TransactionList
                     transactions={searchResults}
                     categories={categories ?? []}
-                    isLoading={isLoadingAll}
                 />
             ) : (
                 <TransactionList
                     transactions={filteredTransactions}
                     categories={categories ?? []}
-                    isLoading={isLoading}
                 />
             )}
 
