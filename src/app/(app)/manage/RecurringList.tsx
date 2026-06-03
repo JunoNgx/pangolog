@@ -35,14 +35,9 @@ function formatFrequency(rule: RecurringRule): string {
 interface RecurringListProps {
     rules: RecurringRule[];
     categories: Category[];
-    isLoading: boolean;
 }
 
-export function RecurringList({
-    rules,
-    categories,
-    isLoading,
-}: RecurringListProps) {
+export function RecurringList({ rules, categories }: RecurringListProps) {
     const [editingRule, setEditingRule] = useState<RecurringRule | undefined>();
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 

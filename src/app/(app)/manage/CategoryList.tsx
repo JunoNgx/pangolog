@@ -71,7 +71,7 @@ function SortableCategoryItem({
 }
 
 export function CategoryList() {
-    const { data: categories, isLoading } = useCategories();
+    const { data: categories } = useCategories();
     const reorderCategories = useReorderCategories();
     const { isCategoryAlphabetical } = useProfileSettingsStore();
     const [editingCategory, setEditingCategory] = useState<
