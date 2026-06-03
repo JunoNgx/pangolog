@@ -34,7 +34,7 @@ function NavLink({
         ? "flex items-center gap-2 rounded-md px-3 py-1.5 text-sm"
         : "flex flex-1 flex-col items-center justify-center gap-1";
 
-    const activeClasses = `bg-accent/10 text-accent${isDesktop ? "" : " rounded-lg"}`;
+    const activeClasses = `bg-accent/10 text-accent ${isDesktop ? "" : " rounded-lg"}`;
     const inactiveClasses = isDesktop
         ? "text-muted hover:bg-surface hover:text-foreground"
         : "text-muted";
