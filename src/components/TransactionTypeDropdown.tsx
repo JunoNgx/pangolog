@@ -42,7 +42,7 @@ export function TransactionTypeDropdown({
     return (
         <Dropdown>
             <Button
-                variant="ghost"
+                variant="outline"
                 size="sm"
                 isIconOnly
                 aria-label={modeLabel}
