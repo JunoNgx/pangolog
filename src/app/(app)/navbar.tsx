@@ -65,13 +65,7 @@ export function AppNavbar() {
         <>
             <header className="bg-background z-40 hidden border-b backdrop-blur-md md:flex">
                 <div className="mx-auto flex h-14 w-full max-w-3xl items-center gap-2 px-4">
-                    <NextLink
-                        href="/"
-                        className="mr-6 shrink-0 text-lg font-bold"
-                    >
-                        Pangolog
-                    </NextLink>
-                    <nav className="ml-auto flex items-center gap-1">
+                    <nav className="flex items-center gap-1">
                         {navItems.map((item) => (
                             <NavLink
                                 key={item.href}
@@ -81,8 +75,14 @@ export function AppNavbar() {
                             />
                         ))}
                     </nav>
-                    <div className="flex shrink-0 items-center gap-1">
+                    <div className="ml-auto flex shrink-0 items-center gap-2">
                         <ThemeSwitcher />
+                        <NextLink
+                            href="/"
+                            className="shrink-0 text-lg font-bold"
+                        >
+                            Pangolog
+                        </NextLink>
                     </div>
                 </div>
             </header>
