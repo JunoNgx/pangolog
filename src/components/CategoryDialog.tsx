@@ -77,47 +77,6 @@ function randomHexColor() {
         .padStart(6, "0")}`;
 }
 
-const iconTriggerClasses = `
-    rounded-lg
-    h-10 flex items-center justify-center px-3
-    bg-surface
-    hover:bg-surface-secondary transition-colors cursor-pointer
-`;
-
-const emojiPickerRootClasses = `
-    w-75 h-90 rounded-lg overflow-hidden
-    flex flex-col
-    bg-surface text-foreground
-`;
-
-const emojiPickerSearchClasses = `
-    mx-2 mt-2
-    rounded-md px-2.5 py-2
-    bg-surface text-sm text-foreground placeholder:text-muted
-    outline-none focus:bg-surface-secondary
-`;
-
-const emojiButtonClasses = `
-    size-9
-    flex items-center justify-center
-    text-lg rounded-md
-    data-active:bg-surface-secondary hover:bg-surface
-`;
-
-const colourTriggerClasses = `
-    flex-1 rounded-lg
-    flex items-center gap-3 px-3 py-2
-    bg-surface
-    hover:bg-surface-secondary transition-colors cursor-pointer
-`;
-
-const randomColourButtonClasses = `
-    size-10 shrink-0 rounded-lg
-    flex items-center justify-center
-    bg-surface text-muted
-    hover:bg-surface-secondary transition-colors cursor-pointer
-`;
-
 const emojiPickerComponents: EmojiPickerListComponents = {
     CategoryHeader: ({ category: cat, ...props }) => (
         <div
@@ -133,7 +92,7 @@ const emojiPickerComponents: EmojiPickerListComponents = {
         </div>
     ),
     Emoji: ({ emoji: e, ...props }) => (
-        <button type="button" className={emojiButtonClasses} {...props}>
+        <button type="button" className="size-9 flex items-center justify-center text-lg rounded-md data-active:bg-surface-secondary hover:bg-surface" {...props}>
             {e.emoji}
         </button>
     ),
@@ -254,7 +213,7 @@ export function CategoryDialog({
                 <Popover.Trigger>
                     <button
                         type="button"
-                        className={iconTriggerClasses}
+                        className="rounded-lg h-10 flex items-center justify-center px-3 bg-surface hover:bg-surface-secondary transition-colors cursor-pointer"
                         aria-label="Choose icon"
                     >
                         <span className="text-xl">{icon}</span>
@@ -264,10 +223,10 @@ export function CategoryDialog({
                     <Popover.Dialog>
                         <EmojiPicker.Root
                             onEmojiSelect={handleEmojiSelect}
-                            className={emojiPickerRootClasses}
+                            className="w-75 h-90 rounded-lg overflow-hidden flex flex-col bg-surface text-foreground"
                         >
                             <EmojiPicker.Search
-                                className={emojiPickerSearchClasses}
+                                className="mx-2 mt-2 rounded-md px-2.5 py-2 bg-surface text-sm text-foreground placeholder:text-muted outline-none focus:bg-surface-secondary"
                             />
                             <EmojiPicker.Viewport className="relative flex-1 outline-none">
                                 <EmojiPicker.Loading className="text-muted absolute inset-0 flex items-center justify-center text-sm">
@@ -296,7 +255,7 @@ export function CategoryDialog({
                     <Popover.Trigger>
                         <button
                             type="button"
-                            className={colourTriggerClasses}
+                            className="flex-1 rounded-lg flex items-center gap-3 px-3 py-2 bg-surface hover:bg-surface-secondary transition-colors cursor-pointer"
                             aria-label={`Choose colour, currently ${colour}`}
                         >
                             <div
@@ -338,7 +297,7 @@ export function CategoryDialog({
                 <button
                     type="button"
                     onClick={() => setColour(randomHexColor())}
-                    className={randomColourButtonClasses}
+                    className="size-10 shrink-0 rounded-lg flex items-center justify-center bg-surface text-muted hover:bg-surface-secondary transition-colors cursor-pointer"
                     aria-label="Random colour"
                 >
                     <Shuffle size={16} />
