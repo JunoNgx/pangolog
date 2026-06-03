@@ -382,7 +382,7 @@ export function CategoryDialog({
                                             isSelected={isBuckOnly}
                                             onChange={setIsBuckOnly}
                                         >
-                                            <Checkbox.Control className="bg-surface-secondary">
+                                            <Checkbox.Control>
                                                 <Checkbox.Indicator />
                                             </Checkbox.Control>
                                             <Checkbox.Content>
@@ -394,7 +394,7 @@ export function CategoryDialog({
                                                 isSelected={isIncomeOnly}
                                                 onChange={setIsIncomeOnly}
                                             >
-                                                <Checkbox.Control className="bg-surface-secondary">
+                                                <Checkbox.Control>
                                                     <Checkbox.Indicator />
                                                 </Checkbox.Control>
                                                 <Checkbox.Content>
