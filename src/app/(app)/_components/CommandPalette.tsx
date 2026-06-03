@@ -326,7 +326,7 @@ export function CommandPalette() {
                                             key={cmd.id}
                                             type="button"
                                             data-index={idx}
-                                            className={`flex w-full cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-left text-sm ${isSelected ? "bg-surface" : "hover:bg-surface-tertiary"}`}
+                                            className={`flex w-full cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-left text-sm ${isSelected ? "bg-surface-secondary" : "hover:bg-surface-tertiary"}`}
                                             onClick={() => execute(cmd)}
                                             onMouseEnter={() =>
                                                 setSelectedIndex(idx)
