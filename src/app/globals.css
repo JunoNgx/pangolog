@@ -53,6 +53,11 @@
     .popover__dialog {
         padding: 0.5rem;
     }
+
+    .checkbox__control {
+        border-width: 1px;
+        border-color: var(--border-secondary);
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
