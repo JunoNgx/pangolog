@@ -33,7 +33,7 @@ export function AmountInput({
                 inputMode="decimal"
                 placeholder="0.00"
                 onFocus={(e) => e.target.select()}
-                className={`rounded-none border-b-2 text-center font-mono text-4xl ${isIncome ? "text-success" : "text-foreground"} `}
+                className={`border-foreground rounded-none border-0 text-center font-mono text-4xl focus:border-b ${isIncome ? "text-success" : "text-foreground"} `}
             />
         </div>
     );
