@@ -1,12 +1,12 @@
 "use client";
 
-import { Button } from "@heroui/react";
+import { Button, Dropdown } from "@heroui/react";
 import { ArrowDownAZ, ArrowUpAZ, Plus } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { ConfigWrapper } from "@/components/ConfigWrapper";
 import { DemoDataBanner } from "@/components/DemoDataBanner";
 import { commandPaletteCreateActions } from "@/lib/commandPaletteActionRegistry";
-import { FREQUENCY_ORDER, SELECT_CLASSES } from "@/lib/constants";
+import { FREQUENCY_ORDER } from "@/lib/constants";
 import { useCategories } from "@/lib/hooks/useCategories";
 import { useHotkey } from "@/lib/hooks/useHotkey";
 import { useRecurringRules } from "@/lib/hooks/useRecurringRules";
@@ -88,24 +88,43 @@ export default function RecurringClient() {
         shouldShowIncome,
     ]);
 
-    function handleSortChange(e: React.ChangeEvent<HTMLSelectElement>) {
-        setSortBy(e.target.value as SortBy);
+    function handleSortSelectionChange(keys: "all" | Set<React.Key>) {
+        if (keys === "all") return;
+        const key = Array.from(keys)[0] as SortBy;
+        if (!key) return;
+        setSortBy(key);
     }
 
     const sortControls = (
         <div className="flex items-center gap-2">
             <span className="text-muted text-sm">Sort by</span>
-            <select
-                value={sortBy}
-                onChange={handleSortChange}
-                className={`self-start ${SELECT_CLASSES}`}
-            >
-                {SORT_OPTIONS.map((opt) => (
-                    <option key={opt.value} value={opt.value}>
-                        {opt.label}
-                    </option>
-                ))}
-            </select>
+            <Dropdown>
+                <Button variant="outline" size="sm" aria-label="Sort by">
+                    {SORT_OPTIONS.find((o) => o.value === sortBy)?.label}
+                </Button>
+                <Dropdown.Popover
+                    className="w-fit min-w-0"
+                    placement="bottom end"
+                >
+                    <Dropdown.Menu
+                        aria-label="Sort by"
+                        selectionMode="single"
+                        selectedKeys={new Set([sortBy])}
+                        onSelectionChange={handleSortSelectionChange}
+                    >
+                        {SORT_OPTIONS.map((opt) => (
+                            <Dropdown.Item
+                                id={opt.value}
+                                key={opt.value}
+                                textValue={opt.label}
+                            >
+                                {opt.label}
+                                <Dropdown.ItemIndicator />
+                            </Dropdown.Item>
+                        ))}
+                    </Dropdown.Menu>
+                </Dropdown.Popover>
+            </Dropdown>
             <button
                 type="button"
                 onClick={() => setSortAsc((prev) => !prev)}
