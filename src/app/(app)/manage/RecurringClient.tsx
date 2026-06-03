@@ -1,10 +1,10 @@
 "use client";
 
+import { Button } from "@heroui/react";
 import { ArrowDownAZ, ArrowUpAZ, Plus } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { ConfigWrapper } from "@/components/ConfigWrapper";
 import { DemoDataBanner } from "@/components/DemoDataBanner";
-import { Button } from "@heroui/react";
 import { commandPaletteCreateActions } from "@/lib/commandPaletteActionRegistry";
 import { FREQUENCY_ORDER, SELECT_CLASSES } from "@/lib/constants";
 import { useCategories } from "@/lib/hooks/useCategories";
@@ -136,7 +136,10 @@ export default function RecurringClient() {
                 <DemoDataBanner />
             </ConfigWrapper>
             <ConfigWrapper className="flex justify-end mb-4">
-                <Button variant="tertiary" onPress={() => setIsCreateOpen(true)}>
+                <Button
+                    variant="tertiary"
+                    onPress={() => setIsCreateOpen(true)}
+                >
                     <Plus />
                     <span>Rule</span>
                 </Button>

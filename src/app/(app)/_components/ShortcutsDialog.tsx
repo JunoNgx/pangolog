@@ -97,7 +97,9 @@ export function ShortcutsDialog() {
         <Modal>
             <Modal.Backdrop
                 isOpen={isOpen}
-                onOpenChange={(open) => { if (!open) close(); }}
+                onOpenChange={(open) => {
+                    if (!open) close();
+                }}
             >
                 <Modal.Container size="md" scroll="inside">
                     <Modal.Dialog>
@@ -123,9 +125,13 @@ export function ShortcutsDialog() {
                                                     {shortcut.description}
                                                 </span>
                                                 <span className="flex shrink-0 items-center gap-1">
-                                                    {shortcut.keys.map((key) => (
-                                                        <Kbd key={key}>{key}</Kbd>
-                                                    ))}
+                                                    {shortcut.keys.map(
+                                                        (key) => (
+                                                            <Kbd key={key}>
+                                                                {key}
+                                                            </Kbd>
+                                                        ),
+                                                    )}
                                                 </span>
                                             </li>
                                         ))}

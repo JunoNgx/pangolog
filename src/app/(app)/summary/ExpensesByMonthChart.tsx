@@ -49,10 +49,12 @@ export default function ExpensesByMonthChart({
 
     const bars = monthlyTotals.map((total, index) => (
         <Tooltip key={MONTH_NAMES[index]} delay={0}>
-            <Tooltip.Trigger className="relative flex-1 flex flex-col justify-end cursor-pointer" style={{
-                height:
-                    total > 0 ? `${(total / maxTotal) * 100}%` : "0%",
-            }}>
+            <Tooltip.Trigger
+                className="relative flex-1 flex flex-col justify-end cursor-pointer"
+                style={{
+                    height: total > 0 ? `${(total / maxTotal) * 100}%` : "0%",
+                }}
+            >
                 <div className="bg-foreground h-full w-full rounded-sm" />
                 {index === tallestIndex && (
                     <span
@@ -97,9 +99,7 @@ export default function ExpensesByMonthChart({
 
     return (
         <div className="mb-6">
-            <p className="text-muted mb-3 font-semibold">
-                Expenses by month
-            </p>
+            <p className="text-muted mb-3 font-semibold">Expenses by month</p>
             <div className="relative mt-10 mb-1 flex h-24 items-end gap-1">
                 {bars}
                 {averageMarker}

@@ -281,7 +281,9 @@ export function CommandPalette() {
         <Modal>
             <Modal.Backdrop
                 isOpen={isOpen}
-                onOpenChange={(open) => { if (!open) close(); }}
+                onOpenChange={(open) => {
+                    if (!open) close();
+                }}
             >
                 <Modal.Container size="sm">
                     <Modal.Dialog className="max-w-md">
@@ -290,7 +292,9 @@ export function CommandPalette() {
                                 autoFocus
                                 placeholder="Type a command..."
                                 value={query}
-                                onChange={(e) => handleQueryChange(e.target.value)}
+                                onChange={(e) =>
+                                    handleQueryChange(e.target.value)
+                                }
                                 onKeyDown={handleKeyDown}
                                 className="shadow-none border-b rounded-none rounded-t-xl bg-transparent px-4 data-[focus-visible=true]:ring-0 data-[focus-visible=true]:ring-offset-0"
                             />
@@ -333,7 +337,9 @@ export function CommandPalette() {
                                             data-index={idx}
                                             className={itemClasses}
                                             onClick={() => execute(cmd)}
-                                            onMouseEnter={() => setSelectedIndex(idx)}
+                                            onMouseEnter={() =>
+                                                setSelectedIndex(idx)
+                                            }
                                         >
                                             <span className="text-muted shrink-0">
                                                 {cmd.icon}

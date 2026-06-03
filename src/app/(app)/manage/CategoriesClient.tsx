@@ -1,12 +1,12 @@
 "use client";
 
+import { Button } from "@heroui/react";
+import { Plus } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { CategoryDialog } from "@/components/CategoryDialog";
 import { ConfigWrapper } from "@/components/ConfigWrapper";
 import { DemoDataBanner } from "@/components/DemoDataBanner";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
-import { Button } from "@heroui/react";
-import { Plus } from "lucide-react";
 import { commandPaletteCreateActions } from "@/lib/commandPaletteActionRegistry";
 import { useHotkey } from "@/lib/hooks/useHotkey";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
@@ -38,7 +38,10 @@ export default function CategoriesClient() {
                 <DemoDataBanner />
             </ConfigWrapper>
             <ConfigWrapper className="flex justify-end mb-4">
-                <Button variant="tertiary" onPress={() => setIsCreateOpen(true)}>
+                <Button
+                    variant="tertiary"
+                    onPress={() => setIsCreateOpen(true)}
+                >
                     <Plus />
                     <span>Category</span>
                 </Button>

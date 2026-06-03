@@ -188,9 +188,16 @@ export default function SettingsClient() {
                             <Input
                                 placeholder="e.g. €, SGD, Gil"
                                 value={customCurrency}
-                                onChange={(e) => setCustomCurrency(e.target.value)}
+                                onChange={(e) =>
+                                    setCustomCurrency(e.target.value)
+                                }
                             />
-                            <span className="text-muted text-xs">Cosmetic only, so feel free to use orens, woolong, or bottle caps to your heart's content. Long texts might not look good in this UI, but that's your life decision.</span>
+                            <span className="text-muted text-xs">
+                                Cosmetic only, so feel free to use orens,
+                                woolong, or bottle caps to your heart's content.
+                                Long texts might not look good in this UI, but
+                                that's your life decision.
+                            </span>
                         </div>
                         <RadioGroup
                             orientation="horizontal"
@@ -235,7 +242,9 @@ export default function SettingsClient() {
                             </Checkbox.Control>
                             <Checkbox.Content>
                                 <Label>Expense only mode</Label>
-                                <span className="text-muted text-xs">Hides income-related UI to reduce clutter.</span>
+                                <span className="text-muted text-xs">
+                                    Hides income-related UI to reduce clutter.
+                                </span>
                             </Checkbox.Content>
                         </Checkbox>
                         <RadioGroup
@@ -267,9 +276,7 @@ export default function SettingsClient() {
                         <RadioGroup
                             orientation="horizontal"
                             value={timeFormat}
-                            onChange={(v) =>
-                                setTimeFormat(v as TimeFormat)
-                            }
+                            onChange={(v) => setTimeFormat(v as TimeFormat)}
                             className="gap-6"
                         >
                             <Label>Time format</Label>
@@ -345,7 +352,9 @@ export default function SettingsClient() {
                                 </Checkbox.Control>
                                 <Checkbox.Content>
                                     <Label>Pretty print</Label>
-                                    <span className="text-muted text-xs">Human-readable formatting.</span>
+                                    <span className="text-muted text-xs">
+                                        Human-readable formatting.
+                                    </span>
                                 </Checkbox.Content>
                             </Checkbox>
                         </div>
@@ -515,15 +524,19 @@ export default function SettingsClient() {
             <Modal>
                 <Modal.Backdrop
                     isOpen={isClearRecordsDialogOpen}
-                    onOpenChange={(open) => { if (!open) setIsResetDialogOpen(false); }}
+                    onOpenChange={(open) => {
+                        if (!open) setIsResetDialogOpen(false);
+                    }}
                 >
                     <Modal.Container>
                         <Modal.Dialog>
-                            {({close}) => (
+                            {({ close }) => (
                                 <>
                                     <Modal.CloseTrigger className="cursor-pointer" />
                                     <Modal.Header>
-                                        <Modal.Heading>Clear local records?</Modal.Heading>
+                                        <Modal.Heading>
+                                            Clear local records?
+                                        </Modal.Heading>
                                     </Modal.Header>
                                     <Modal.Body>
                                         <p className="text-danger text-sm">
@@ -533,7 +546,9 @@ export default function SettingsClient() {
                                     <Modal.Footer>
                                         <Button
                                             variant="tertiary"
-                                            onPress={() => setIsResetDialogOpen(false)}
+                                            onPress={() =>
+                                                setIsResetDialogOpen(false)
+                                            }
                                         >
                                             Cancel
                                         </Button>
@@ -555,15 +570,19 @@ export default function SettingsClient() {
             <Modal>
                 <Modal.Backdrop
                     isOpen={isResetAppDialogOpen}
-                    onOpenChange={(open) => { if (!open) setIsResetAppDialogOpen(false); }}
+                    onOpenChange={(open) => {
+                        if (!open) setIsResetAppDialogOpen(false);
+                    }}
                 >
                     <Modal.Container>
                         <Modal.Dialog>
-                            {({close}) => (
+                            {({ close }) => (
                                 <>
                                     <Modal.CloseTrigger className="cursor-pointer" />
                                     <Modal.Header>
-                                        <Modal.Heading>Confirm resetting app?</Modal.Heading>
+                                        <Modal.Heading>
+                                            Confirm resetting app?
+                                        </Modal.Heading>
                                     </Modal.Header>
                                     <Modal.Body>
                                         <p className="text-danger text-sm">
@@ -573,7 +592,9 @@ export default function SettingsClient() {
                                     <Modal.Footer>
                                         <Button
                                             variant="tertiary"
-                                            onPress={() => setIsResetAppDialogOpen(false)}
+                                            onPress={() =>
+                                                setIsResetAppDialogOpen(false)
+                                            }
                                         >
                                             Cancel
                                         </Button>
@@ -595,11 +616,13 @@ export default function SettingsClient() {
             <Modal>
                 <Modal.Backdrop
                     isOpen={isLogDialogOpen}
-                    onOpenChange={(open) => { if (!open) setIsLogDialogOpen(false); }}
+                    onOpenChange={(open) => {
+                        if (!open) setIsLogDialogOpen(false);
+                    }}
                 >
                     <Modal.Container size="full">
                         <Modal.Dialog>
-                            {({close}) => (
+                            {({ close }) => (
                                 <>
                                     <Modal.CloseTrigger className="cursor-pointer" />
                                     <Modal.Header>
@@ -607,25 +630,35 @@ export default function SettingsClient() {
                                     </Modal.Header>
                                     <Modal.Body className="overflow-y-auto">
                                         <pre className="font-mono text-xs break-all whitespace-pre-wrap">
-                                            {JSON.stringify(getLoggerEntries(), null, 2)}
+                                            {JSON.stringify(
+                                                getLoggerEntries(),
+                                                null,
+                                                2,
+                                            )}
                                         </pre>
                                     </Modal.Body>
                                     <Modal.Footer>
                                         <Button
                                             variant="secondary"
-                                            onPress={handleDumpDebugLoggerContent}
+                                            onPress={
+                                                handleDumpDebugLoggerContent
+                                            }
                                         >
                                             Export logs
                                         </Button>
                                         <Button
                                             variant="secondary"
-                                            onPress={handleCopyDebugLoggerEntries}
+                                            onPress={
+                                                handleCopyDebugLoggerEntries
+                                            }
                                         >
                                             Copy content
                                         </Button>
                                         <Button
                                             variant="tertiary"
-                                            onPress={() => setIsLogDialogOpen(false)}
+                                            onPress={() =>
+                                                setIsLogDialogOpen(false)
+                                            }
                                         >
                                             Close
                                         </Button>

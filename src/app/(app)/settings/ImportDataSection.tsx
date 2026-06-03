@@ -75,7 +75,11 @@ export function ImportDataSection() {
                 >
                     Confirm
                 </Button>
-                <Button size="sm" variant="tertiary" onPress={handleCancelImport}>
+                <Button
+                    size="sm"
+                    variant="tertiary"
+                    onPress={handleCancelImport}
+                >
                     Cancel
                 </Button>
             </div>
