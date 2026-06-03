@@ -1,6 +1,6 @@
 "use client";
 
-import { Checkbox, Input, Label, Modal, Popover } from "@heroui/react";
+import { Button, Checkbox, Input, Label, Modal, Popover } from "@heroui/react";
 import { EmojiPicker, type EmojiPickerListComponents } from "frimousse";
 import { Shuffle } from "lucide-react";
 import { type SubmitEventHandler, useEffect, useState } from "react";
@@ -209,13 +209,13 @@ export function CategoryDialog({
                 onOpenChange={setIsEmojiPickerOpen}
             >
                 <Popover.Trigger>
-                    <button
-                        type="button"
-                        className="bg-surface hover:bg-surface-secondary flex h-10 cursor-pointer items-center justify-center rounded-lg px-3 transition-colors"
+                    <Button
+                        variant="tertiary"
                         aria-label="Choose icon"
+                        className="h-10"
                     >
                         <span className="text-xl">{icon}</span>
-                    </button>
+                    </Button>
                 </Popover.Trigger>
                 <Popover.Content placement="bottom start" className="p-0">
                     <Popover.Dialog>
@@ -248,10 +248,10 @@ export function CategoryDialog({
             <span className="text-muted text-xs">Colour</span>
             <div className="flex gap-2">
                 <Popover>
-                    <Popover.Trigger>
-                        <button
-                            type="button"
-                            className="bg-surface hover:bg-surface-secondary flex flex-1 cursor-pointer items-center gap-3 rounded-lg px-3 py-2 transition-colors"
+                    <Popover.Trigger className="flex-1">
+                        <Button
+                            variant="tertiary"
+                            className="flex w-full justify-start gap-3 px-3 py-2"
                             aria-label={`Choose colour, currently ${colour}`}
                         >
                             <div
@@ -259,7 +259,7 @@ export function CategoryDialog({
                                 style={{ backgroundColor: colour }}
                             />
                             <span className="text-muted text-sm">{colour}</span>
-                        </button>
+                        </Button>
                     </Popover.Trigger>
                     <Popover.Content placement="bottom end">
                         <Popover.Dialog>
@@ -292,14 +292,14 @@ export function CategoryDialog({
                         </Popover.Dialog>
                     </Popover.Content>
                 </Popover>
-                <button
-                    type="button"
-                    onClick={() => setColour(randomHexColor())}
-                    className="bg-surface text-muted hover:bg-surface-secondary flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-lg transition-colors"
+                <Button
+                    variant="tertiary"
+                    isIconOnly
+                    onPress={() => setColour(randomHexColor())}
                     aria-label="Random colour"
                 >
                     <Shuffle size={16} />
-                </button>
+                </Button>
             </div>
         </div>
     );
@@ -335,7 +335,7 @@ export function CategoryDialog({
                                         autoFocus
                                     />
                                 </div>
-                                <div className="flex justify-between">
+                                <div className="flex justify-between pb-4">
                                     {emojiPickerSection}
                                     {colourPickerSection}
                                 </div>
