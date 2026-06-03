@@ -39,24 +39,23 @@
 
 @layer components {
     .button {
-        border-radius: 0.5rem;
+        @apply rounded-lg;
     }
 
     .dropdown__popover {
-        border-radius: 0.5rem;
+        @apply rounded-lg;
     }
 
     .popover {
-        border-radius: 0.5rem;
+        @apply rounded-lg;
     }
 
     .popover__dialog {
-        padding: 0.5rem;
+        @apply p-2;
     }
 
     .checkbox__control {
-        border-width: 1px;
-        border-color: var(--border-secondary);
+        @apply border border-border-secondary;
     }
 }
 
