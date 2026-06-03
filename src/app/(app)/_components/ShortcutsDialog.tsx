@@ -109,7 +109,7 @@ export function ShortcutsDialog() {
                                 Keyboard shortcuts
                             </Modal.Heading>
                         </Modal.Header>
-                        <Modal.Body className="gap-6 pb-6">
+                        <Modal.Body className="flex flex-col gap-6 pt-6">
                             {SHORTCUT_GROUPS.map((group) => (
                                 <div key={group.title}>
                                     <p className="text-muted mb-2 text-xs font-medium tracking-wide uppercase">
