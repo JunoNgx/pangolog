@@ -1,0 +1,34 @@
+{
+    "atDirectives": [
+        {
+            "name": "@apply",
+            "description": "Inline Tailwind CSS utilities into custom CSS.",
+            "references": [
+                {
+                    "name": "Tailwind Docs",
+                    "url": "https://tailwindcss.com/docs/functions-and-directives#apply"
+                }
+            ]
+        },
+        {
+            "name": "@theme",
+            "description": "Define theme values in Tailwind CSS v4.",
+            "references": [
+                {
+                    "name": "Tailwind Docs",
+                    "url": "https://tailwindcss.com/docs/theme"
+                }
+            ]
+        },
+        {
+            "name": "@import",
+            "description": "Import other CSS files or Tailwind plugins.",
+            "references": [
+                {
+                    "name": "Tailwind Docs",
+                    "url": "https://tailwindcss.com/docs/functions-and-directives#import"
+                }
+            ]
+        }
+    ]
+}
