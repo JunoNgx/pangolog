@@ -87,11 +87,6 @@ export function AppNavbar() {
                 </div>
             </header>
 
-            {/* On Firefox Android, focusing a dialog input scrolls it out of view
-                above this fixed navbar. A potential fix: conditionally disable
-                autoFocus on touch devices via a useIsPointerFine hook checking
-                the (pointer: fine) media query. Not applied - the issue is
-                intermittent and unconfirmed on other browsers. */}
             <nav className="bg-background fixed right-0 bottom-0 left-0 z-40 m-3 mt-0 mr-24 flex h-16 rounded-lg border md:hidden">
                 {navItems.map((item) => (
                     <NavLink
