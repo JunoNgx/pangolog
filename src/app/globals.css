@@ -42,6 +42,10 @@
         @apply rounded-lg;
     }
 
+    .modal__dialog {
+        @apply rounded-2xl;
+    }
+
     .dropdown__popover {
         @apply rounded-lg;
     }
