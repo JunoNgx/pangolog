@@ -27,23 +27,24 @@ export default function CategoriesClient() {
     return (
         <div>
             <ConfigWrapper className="mt-4 mb-4">
-                <ToggleSwitch
-                    label="Sort by"
-                    shouldShowLabel={true}
-                    leftLabel="Custom order"
-                    rightLabel="Alphabetical"
-                    isSelectingRight={isCategoryAlphabetical}
-                    onValueChange={setIsCategoryAlphabetical}
-                />
-            </ConfigWrapper>
-            <ConfigWrapper className="mb-4 flex justify-end">
-                <Button
-                    variant="tertiary"
-                    onPress={() => setIsCreateOpen(true)}
-                >
-                    <Plus />
-                    <span>Category</span>
-                </Button>
+                <div className="flex w-full flex-wrap items-center gap-2">
+                    <ToggleSwitch
+                        label="Sort by"
+                        shouldShowLabel={true}
+                        leftLabel="Custom order"
+                        rightLabel="Alphabetical"
+                        isSelectingRight={isCategoryAlphabetical}
+                        onValueChange={setIsCategoryAlphabetical}
+                    />
+                    <Button
+                        variant="tertiary"
+                        className="ml-auto"
+                        onPress={() => setIsCreateOpen(true)}
+                    >
+                        <Plus />
+                        <span>Category</span>
+                    </Button>
+                </div>
             </ConfigWrapper>
             <DemoDataBanner />
             <CategoryList />
