@@ -70,7 +70,7 @@
 }
 
 .Sonner[data-sonner-toaster][data-y-position="bottom"] {
-    @media screen and (max-width: theme(--breakpoint-md)) {
+    @media screen and (max-width: var(--breakpoint-md)) {
         bottom: var(--mobile-offset-bottom);
     }
 }
