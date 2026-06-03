@@ -43,7 +43,7 @@
     }
 
     .modal__dialog {
-        @apply rounded-2xl;
+        @apply p-4 md:p-6 rounded-2xl;
     }
 
     .modal__close-trigger {
