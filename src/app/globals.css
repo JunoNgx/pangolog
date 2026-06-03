@@ -46,6 +46,14 @@
         @apply rounded-2xl;
     }
 
+    .modal__close-trigger {
+        @apply bg-transparent;
+    }
+
+    .modal__close-trigger:hover {
+        @apply bg-default;
+    }
+
     .dropdown__popover {
         @apply rounded-lg;
     }
