@@ -1,6 +1,6 @@
 "use client";
 
-import { Input, Label, Modal, Switch } from "@heroui/react";
+import { Button, Dropdown, Input, Label, Modal, Switch } from "@heroui/react";
 import { DateTime } from "luxon";
 import { type SubmitEventHandler, useEffect, useMemo, useState } from "react";
 import { AmountInput } from "@/components/AmountInput";
@@ -8,7 +8,7 @@ import { CategoryDialog } from "@/components/CategoryDialog";
 import { CategoryPicker } from "@/components/CategoryPicker";
 import { DialogFooter } from "@/components/DialogFooter";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
-import { DAY_NAMES_FULL, MONTH_NAMES, SELECT_CLASSES } from "@/lib/constants";
+import { DAY_NAMES_FULL, MONTH_NAMES } from "@/lib/constants";
 import type { RecurringRule } from "@/lib/db/types";
 import { useCategories } from "@/lib/hooks/useCategories";
 import {
@@ -26,6 +26,13 @@ import {
     toDateInputValue,
     todayDateString,
 } from "@/lib/utils";
+
+const FREQUENCY_OPTIONS: { value: Frequency; label: string }[] = [
+    { value: "daily", label: "Daily" },
+    { value: "weekly", label: "Weekly" },
+    { value: "monthly", label: "Monthly" },
+    { value: "yearly", label: "Yearly" },
+];
 
 function getRepeatLabel(frequency: Frequency, dateStr: string): string {
     const dt = DateTime.fromISO(`${dateStr}T12:00:00`);
@@ -114,8 +121,11 @@ export function RecurringRuleDialog({
         onClose();
     }
 
-    function handleFrequencyChange(e: React.ChangeEvent<HTMLSelectElement>) {
-        setFrequency(e.target.value as Frequency);
+    function handleFrequencySelectionChange(keys: "all" | Set<React.Key>) {
+        if (keys === "all") return;
+        const key = Array.from(keys)[0] as Frequency;
+        if (!key) return;
+        setFrequency(key);
     }
 
     const handleSubmit: SubmitEventHandler<HTMLFormElement> = (e) => {
@@ -164,6 +174,40 @@ export function RecurringRuleDialog({
     const isPending = createRule.isPending || updateRule.isPending;
     const isDeleting = deleteRule.isPending;
     const repeatLabel = getRepeatLabel(frequency, startDate);
+
+    const frequencyDropdown = (
+        <div className="flex shrink-0 flex-col gap-1">
+            <span className="text-muted text-sm">Frequency</span>
+            <Dropdown>
+                <Button variant="outline" size="sm">
+                    {FREQUENCY_OPTIONS.find((o) => o.value === frequency)
+                        ?.label ?? frequency}
+                </Button>
+                <Dropdown.Popover
+                    className="w-fit min-w-0"
+                    placement="bottom end"
+                >
+                    <Dropdown.Menu
+                        aria-label="Frequency"
+                        selectionMode="single"
+                        selectedKeys={new Set([frequency])}
+                        onSelectionChange={handleFrequencySelectionChange}
+                    >
+                        {FREQUENCY_OPTIONS.map((opt) => (
+                            <Dropdown.Item
+                                id={opt.value}
+                                key={opt.value}
+                                textValue={opt.label}
+                            >
+                                {opt.label}
+                                <Dropdown.ItemIndicator />
+                            </Dropdown.Item>
+                        ))}
+                    </Dropdown.Menu>
+                </Dropdown.Popover>
+            </Dropdown>
+        </div>
+    );
 
     const isTxTypeSwitchVisible = !isExpenseOnlyMode;
     const isExpenseTypeSwitchVisible = true;
@@ -289,29 +333,7 @@ export function RecurringRuleDialog({
                                                 required
                                             />
                                         </div>
-                                        <div className="flex shrink-0 flex-col gap-1">
-                                            <span className="text-muted text-sm">
-                                                Frequency
-                                            </span>
-                                            <select
-                                                value={frequency}
-                                                onChange={handleFrequencyChange}
-                                                className={SELECT_CLASSES}
-                                            >
-                                                <option value="daily">
-                                                    Daily
-                                                </option>
-                                                <option value="weekly">
-                                                    Weekly
-                                                </option>
-                                                <option value="monthly">
-                                                    Monthly
-                                                </option>
-                                                <option value="yearly">
-                                                    Yearly
-                                                </option>
-                                            </select>
-                                        </div>
+                                        {frequencyDropdown}
                                     </div>
 
                                     <p className="-mt-2 font-mono text-xs">
