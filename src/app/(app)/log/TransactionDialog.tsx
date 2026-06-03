@@ -209,7 +209,7 @@ export function TransactionDialog({
                                 </Modal.Header>
                                 <Modal.Body className="flex max-h-[calc(var(--visual-viewport-height,100svh)-10rem)] flex-col gap-4 overflow-y-auto">
                                     {!isEditing && !isExpenseOnlyMode && (
-                                        <div className="mb-4 flex items-center justify-center gap-4">
+                                        <div className="mb-4 flex items-center justify-center">
                                             <ToggleSwitch
                                                 label="Transaction flow type"
                                                 isSelectingRight={isIncome}
@@ -220,27 +220,8 @@ export function TransactionDialog({
                                         </div>
                                     )}
 
-                                    <div className="flex items-end gap-4">
-                                        <div className="flex flex-1 flex-col gap-1">
-                                            <span>
-                                                Date{" "}
-                                                <span className="text-muted font-mono text-xs">
-                                                    {localeDateFormat}
-                                                </span>
-                                            </span>
-                                            <Input
-                                                type="date"
-                                                value={transactedAt}
-                                                onChange={(e) =>
-                                                    setTransactedAt(
-                                                        e.target.value,
-                                                    )
-                                                }
-                                                required
-                                            />
-                                        </div>
+                                    <div className="flex items-center justify-center">
                                         <ToggleSwitch
-                                            className="flex-1"
                                             label="Transaction type"
                                             isSelectingRight={isBigBuck}
                                             onValueChange={setIsBigBuck}
@@ -271,6 +252,28 @@ export function TransactionDialog({
                                             }
                                             maxLength={60}
                                             placeholder="Description"
+                                        />
+                                    </div>
+
+                                    <div className="flex items-center gap-4">
+                                        <Label
+                                            htmlFor="date"
+                                            className="shrink-0"
+                                        >
+                                            Date
+                                            <span className="text-muted ml-2 font-mono text-xs">
+                                                {localeDateFormat}
+                                            </span>
+                                        </Label>
+                                        <Input
+                                            id="date"
+                                            className="min-w-0 grow"
+                                            type="date"
+                                            value={transactedAt}
+                                            onChange={(e) =>
+                                                setTransactedAt(e.target.value)
+                                            }
+                                            required
                                         />
                                     </div>
 
