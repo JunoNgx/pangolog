@@ -38,6 +38,10 @@
 }
 
 @layer components {
+    .button {
+        border-radius: 0.5rem;
+    }
+
     .dropdown__popover {
         border-radius: 0.5rem;
     }
