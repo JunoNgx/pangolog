@@ -43,7 +43,7 @@
     }
 
     .input {
-        @apply border-foreground rounded-lg border shadow-none;
+        @apply border-foreground rounded-lg border shadow-none transition-colors;
     }
 
     .input:hover:not(:focus):not(:focus-visible) {
