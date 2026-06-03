@@ -530,38 +530,32 @@ export default function SettingsClient() {
                 >
                     <Modal.Container>
                         <Modal.Dialog>
-                            {({ close }) => (
-                                <>
-                                    <Modal.CloseTrigger className="cursor-pointer" />
-                                    <Modal.Header>
-                                        <Modal.Heading>
-                                            Clear local records?
-                                        </Modal.Heading>
-                                    </Modal.Header>
-                                    <Modal.Body>
-                                        <p className="text-danger text-sm">
-                                            This cannot be undone.
-                                        </p>
-                                    </Modal.Body>
-                                    <Modal.Footer>
-                                        <Button
-                                            variant="tertiary"
-                                            onPress={() =>
-                                                setIsResetDialogOpen(false)
-                                            }
-                                        >
-                                            Cancel
-                                        </Button>
-                                        <Button
-                                            variant="danger"
-                                            isPending={isClearingRecords}
-                                            onPress={handleClearLocalRecords}
-                                        >
-                                            Clear
-                                        </Button>
-                                    </Modal.Footer>
-                                </>
-                            )}
+                            <Modal.CloseTrigger className="cursor-pointer" />
+                            <Modal.Header>
+                                <Modal.Heading>
+                                    Clear local records?
+                                </Modal.Heading>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <p className="text-danger text-sm">
+                                    This cannot be undone.
+                                </p>
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button
+                                    variant="tertiary"
+                                    onPress={() => setIsResetDialogOpen(false)}
+                                >
+                                    Cancel
+                                </Button>
+                                <Button
+                                    variant="danger"
+                                    isPending={isClearingRecords}
+                                    onPress={handleClearLocalRecords}
+                                >
+                                    Clear
+                                </Button>
+                            </Modal.Footer>
                         </Modal.Dialog>
                     </Modal.Container>
                 </Modal.Backdrop>
@@ -576,38 +570,34 @@ export default function SettingsClient() {
                 >
                     <Modal.Container>
                         <Modal.Dialog>
-                            {({ close }) => (
-                                <>
-                                    <Modal.CloseTrigger className="cursor-pointer" />
-                                    <Modal.Header>
-                                        <Modal.Heading>
-                                            Confirm resetting app?
-                                        </Modal.Heading>
-                                    </Modal.Header>
-                                    <Modal.Body>
-                                        <p className="text-danger text-sm">
-                                            This cannot be undone.
-                                        </p>
-                                    </Modal.Body>
-                                    <Modal.Footer>
-                                        <Button
-                                            variant="tertiary"
-                                            onPress={() =>
-                                                setIsResetAppDialogOpen(false)
-                                            }
-                                        >
-                                            Cancel
-                                        </Button>
-                                        <Button
-                                            variant="danger"
-                                            isPending={isResettingApp}
-                                            onPress={handleResetApp}
-                                        >
-                                            Reset app
-                                        </Button>
-                                    </Modal.Footer>
-                                </>
-                            )}
+                            <Modal.CloseTrigger className="cursor-pointer" />
+                            <Modal.Header>
+                                <Modal.Heading>
+                                    Confirm resetting app?
+                                </Modal.Heading>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <p className="text-danger text-sm">
+                                    This cannot be undone.
+                                </p>
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button
+                                    variant="tertiary"
+                                    onPress={() =>
+                                        setIsResetAppDialogOpen(false)
+                                    }
+                                >
+                                    Cancel
+                                </Button>
+                                <Button
+                                    variant="danger"
+                                    isPending={isResettingApp}
+                                    onPress={handleResetApp}
+                                >
+                                    Reset app
+                                </Button>
+                            </Modal.Footer>
                         </Modal.Dialog>
                     </Modal.Container>
                 </Modal.Backdrop>
@@ -622,49 +612,39 @@ export default function SettingsClient() {
                 >
                     <Modal.Container size="full">
                         <Modal.Dialog>
-                            {({ close }) => (
-                                <>
-                                    <Modal.CloseTrigger className="cursor-pointer" />
-                                    <Modal.Header>
-                                        <Modal.Heading>Logs</Modal.Heading>
-                                    </Modal.Header>
-                                    <Modal.Body className="overflow-y-auto">
-                                        <pre className="font-mono text-xs break-all whitespace-pre-wrap">
-                                            {JSON.stringify(
-                                                getLoggerEntries(),
-                                                null,
-                                                2,
-                                            )}
-                                        </pre>
-                                    </Modal.Body>
-                                    <Modal.Footer>
-                                        <Button
-                                            variant="secondary"
-                                            onPress={
-                                                handleDumpDebugLoggerContent
-                                            }
-                                        >
-                                            Export logs
-                                        </Button>
-                                        <Button
-                                            variant="secondary"
-                                            onPress={
-                                                handleCopyDebugLoggerEntries
-                                            }
-                                        >
-                                            Copy content
-                                        </Button>
-                                        <Button
-                                            variant="tertiary"
-                                            onPress={() =>
-                                                setIsLogDialogOpen(false)
-                                            }
-                                        >
-                                            Close
-                                        </Button>
-                                    </Modal.Footer>
-                                </>
-                            )}
+                            <Modal.CloseTrigger className="cursor-pointer" />
+                            <Modal.Header>
+                                <Modal.Heading>Logs</Modal.Heading>
+                            </Modal.Header>
+                            <Modal.Body className="overflow-y-auto">
+                                <pre className="font-mono text-xs break-all whitespace-pre-wrap">
+                                    {JSON.stringify(
+                                        getLoggerEntries(),
+                                        null,
+                                        2,
+                                    )}
+                                </pre>
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button
+                                    variant="secondary"
+                                    onPress={handleDumpDebugLoggerContent}
+                                >
+                                    Export logs
+                                </Button>
+                                <Button
+                                    variant="secondary"
+                                    onPress={handleCopyDebugLoggerEntries}
+                                >
+                                    Copy content
+                                </Button>
+                                <Button
+                                    variant="tertiary"
+                                    onPress={() => setIsLogDialogOpen(false)}
+                                >
+                                    Close
+                                </Button>
+                            </Modal.Footer>
                         </Modal.Dialog>
                     </Modal.Container>
                 </Modal.Backdrop>

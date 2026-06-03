@@ -314,70 +314,64 @@ export function CategoryDialog({
             >
                 <Modal.Container>
                     <Modal.Dialog>
-                        {({ close }) => (
-                            <>
-                                <Modal.CloseTrigger className="cursor-pointer" />
-                                <form onSubmit={handleSubmit}>
-                                    <Modal.Header>
-                                        <Modal.Heading>
-                                            {isEditing
-                                                ? "Edit Category"
-                                                : "New Category"}
-                                        </Modal.Heading>
-                                    </Modal.Header>
-                                    <Modal.Body className="gap-4 overflow-y-auto max-h-[calc(var(--visual-viewport-height,100svh)-10rem)]">
-                                        <div className="flex flex-col gap-1">
-                                            <span>Name</span>
-                                            <Input
-                                                value={name}
-                                                onChange={(e) =>
-                                                    setName(e.target.value)
-                                                }
-                                                required
-                                                autoFocus
-                                            />
-                                        </div>
-                                        <div className="flex justify-between">
-                                            {emojiPickerSection}
-                                            {colourPickerSection}
-                                        </div>
-                                        <Checkbox
-                                            isSelected={isBuckOnly}
-                                            onChange={setIsBuckOnly}
-                                        >
-                                            <Checkbox.Control>
-                                                <Checkbox.Indicator />
-                                            </Checkbox.Control>
-                                            <Checkbox.Content>
-                                                <Label>Big-buck only</Label>
-                                            </Checkbox.Content>
-                                        </Checkbox>
-                                        {!isExpenseOnlyMode && (
-                                            <Checkbox
-                                                isSelected={isIncomeOnly}
-                                                onChange={setIsIncomeOnly}
-                                            >
-                                                <Checkbox.Control>
-                                                    <Checkbox.Indicator />
-                                                </Checkbox.Control>
-                                                <Checkbox.Content>
-                                                    <Label>Income only</Label>
-                                                </Checkbox.Content>
-                                            </Checkbox>
-                                        )}
-                                    </Modal.Body>
-                                    <DialogFooter
-                                        isEditing={isEditing}
-                                        onCancel={onClose}
-                                        onDelete={
-                                            isEditing ? handleDelete : undefined
+                        <Modal.CloseTrigger className="cursor-pointer" />
+                        <form onSubmit={handleSubmit}>
+                            <Modal.Header>
+                                <Modal.Heading>
+                                    {isEditing
+                                        ? "Edit Category"
+                                        : "New Category"}
+                                </Modal.Heading>
+                            </Modal.Header>
+                            <Modal.Body className="gap-4 overflow-y-auto max-h-[calc(var(--visual-viewport-height,100svh)-10rem)]">
+                                <div className="flex flex-col gap-1">
+                                    <span>Name</span>
+                                    <Input
+                                        value={name}
+                                        onChange={(e) =>
+                                            setName(e.target.value)
                                         }
-                                        isSubmitting={isPending}
-                                        isDeleting={deleteCategory.isPending}
+                                        required
+                                        autoFocus
                                     />
-                                </form>
-                            </>
-                        )}
+                                </div>
+                                <div className="flex justify-between">
+                                    {emojiPickerSection}
+                                    {colourPickerSection}
+                                </div>
+                                <Checkbox
+                                    isSelected={isBuckOnly}
+                                    onChange={setIsBuckOnly}
+                                >
+                                    <Checkbox.Control>
+                                        <Checkbox.Indicator />
+                                    </Checkbox.Control>
+                                    <Checkbox.Content>
+                                        <Label>Big-buck only</Label>
+                                    </Checkbox.Content>
+                                </Checkbox>
+                                {!isExpenseOnlyMode && (
+                                    <Checkbox
+                                        isSelected={isIncomeOnly}
+                                        onChange={setIsIncomeOnly}
+                                    >
+                                        <Checkbox.Control>
+                                            <Checkbox.Indicator />
+                                        </Checkbox.Control>
+                                        <Checkbox.Content>
+                                            <Label>Income only</Label>
+                                        </Checkbox.Content>
+                                    </Checkbox>
+                                )}
+                            </Modal.Body>
+                            <DialogFooter
+                                isEditing={isEditing}
+                                onCancel={onClose}
+                                onDelete={isEditing ? handleDelete : undefined}
+                                isSubmitting={isPending}
+                                isDeleting={deleteCategory.isPending}
+                            />
+                        </form>
                     </Modal.Dialog>
                 </Modal.Container>
             </Modal.Backdrop>

@@ -198,113 +198,98 @@ export function TransactionDialog({
                 >
                     <Modal.Container>
                         <Modal.Dialog>
-                            {({ close }) => (
-                                <>
-                                    <Modal.CloseTrigger className="cursor-pointer" />
-                                    <form ref={formRef} onSubmit={handleSubmit}>
-                                        <Modal.Header>
-                                            <Modal.Heading>
-                                                {isEditing
-                                                    ? "Edit Transaction"
-                                                    : "New Transaction"}
-                                            </Modal.Heading>
-                                        </Modal.Header>
-                                        <Modal.Body className="gap-4 overflow-y-auto max-h-[calc(var(--visual-viewport-height,100svh)-10rem)]">
-                                            {!isEditing &&
-                                                !isExpenseOnlyMode && (
-                                                    <div className="mb-4 flex items-center justify-center gap-4">
-                                                        <ToggleSwitch
-                                                            label="Transaction flow type"
-                                                            isSelectingRight={
-                                                                isIncome
-                                                            }
-                                                            onValueChange={
-                                                                setIsIncome
-                                                            }
-                                                            leftLabel="Expense"
-                                                            rightLabel="Income"
-                                                        />
-                                                    </div>
-                                                )}
-
-                                            <div className="flex items-end gap-4">
-                                                <div className="flex flex-1 flex-col gap-1">
-                                                    <span>
-                                                        Date{" "}
-                                                        <span className="text-muted font-mono text-xs">
-                                                            {localeDateFormat}
-                                                        </span>
-                                                    </span>
-                                                    <Input
-                                                        type="date"
-                                                        value={transactedAt}
-                                                        onChange={(e) =>
-                                                            setTransactedAt(
-                                                                e.target.value,
-                                                            )
-                                                        }
-                                                        required
-                                                    />
-                                                </div>
-                                                <ToggleSwitch
-                                                    className="flex-1"
-                                                    label="Transaction type"
-                                                    isSelectingRight={isBigBuck}
-                                                    onValueChange={setIsBigBuck}
-                                                    leftLabel="Small dime"
-                                                    rightLabel="Big buck"
-                                                />
-                                            </div>
-
-                                            <AmountInput
-                                                value={amount}
-                                                onChange={setAmount}
-                                                isIncome={isIncome}
+                            <Modal.CloseTrigger className="cursor-pointer" />
+                            <form ref={formRef} onSubmit={handleSubmit}>
+                                <Modal.Header>
+                                    <Modal.Heading>
+                                        {isEditing
+                                            ? "Edit Transaction"
+                                            : "New Transaction"}
+                                    </Modal.Heading>
+                                </Modal.Header>
+                                <Modal.Body className="gap-4 overflow-y-auto max-h-[calc(var(--visual-viewport-height,100svh)-10rem)]">
+                                    {!isEditing && !isExpenseOnlyMode && (
+                                        <div className="mb-4 flex items-center justify-center gap-4">
+                                            <ToggleSwitch
+                                                label="Transaction flow type"
+                                                isSelectingRight={isIncome}
+                                                onValueChange={setIsIncome}
+                                                leftLabel="Expense"
+                                                rightLabel="Income"
                                             />
+                                        </div>
+                                    )}
 
-                                            <div className="flex flex-col gap-1">
-                                                <span>Description</span>
-                                                <Input
-                                                    className="font-mono"
-                                                    value={description}
-                                                    onChange={(e) =>
-                                                        setDescription(
-                                                            e.target.value,
-                                                        )
-                                                    }
-                                                    maxLength={60}
-                                                />
-                                                <span className="text-muted text-xs">
-                                                    {description.length}/60
+                                    <div className="flex items-end gap-4">
+                                        <div className="flex flex-1 flex-col gap-1">
+                                            <span>
+                                                Date{" "}
+                                                <span className="text-muted font-mono text-xs">
+                                                    {localeDateFormat}
                                                 </span>
-                                            </div>
-
-                                            <CategoryPicker
-                                                categories={filteredCategories}
-                                                selectedId={categoryId}
-                                                onChange={setCategoryId}
-                                                onAdd={() =>
-                                                    setIsCategoryDialogOpen(
-                                                        true,
+                                            </span>
+                                            <Input
+                                                type="date"
+                                                value={transactedAt}
+                                                onChange={(e) =>
+                                                    setTransactedAt(
+                                                        e.target.value,
                                                     )
                                                 }
+                                                required
                                             />
-                                        </Modal.Body>
-                                        <DialogFooter
-                                            isEditing={isEditing}
-                                            onCancel={handleClose}
-                                            onDelete={
-                                                isEditing
-                                                    ? handleDelete
-                                                    : undefined
-                                            }
-                                            isSubmitting={isPending}
-                                            isDeleting={isDeleting}
-                                            showSubmitTooltip
+                                        </div>
+                                        <ToggleSwitch
+                                            className="flex-1"
+                                            label="Transaction type"
+                                            isSelectingRight={isBigBuck}
+                                            onValueChange={setIsBigBuck}
+                                            leftLabel="Small dime"
+                                            rightLabel="Big buck"
                                         />
-                                    </form>
-                                </>
-                            )}
+                                    </div>
+
+                                    <AmountInput
+                                        value={amount}
+                                        onChange={setAmount}
+                                        isIncome={isIncome}
+                                    />
+
+                                    <div className="flex flex-col gap-1">
+                                        <span>Description</span>
+                                        <Input
+                                            className="font-mono"
+                                            value={description}
+                                            onChange={(e) =>
+                                                setDescription(e.target.value)
+                                            }
+                                            maxLength={60}
+                                        />
+                                        <span className="text-muted text-xs">
+                                            {description.length}/60
+                                        </span>
+                                    </div>
+
+                                    <CategoryPicker
+                                        categories={filteredCategories}
+                                        selectedId={categoryId}
+                                        onChange={setCategoryId}
+                                        onAdd={() =>
+                                            setIsCategoryDialogOpen(true)
+                                        }
+                                    />
+                                </Modal.Body>
+                                <DialogFooter
+                                    isEditing={isEditing}
+                                    onCancel={handleClose}
+                                    onDelete={
+                                        isEditing ? handleDelete : undefined
+                                    }
+                                    isSubmitting={isPending}
+                                    isDeleting={isDeleting}
+                                    showSubmitTooltip
+                                />
+                            </form>
                         </Modal.Dialog>
                     </Modal.Container>
                 </Modal.Backdrop>
