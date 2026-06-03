@@ -45,7 +45,7 @@ export function TransactionTypeDropdown({
             >
                 <CurrentIcon size={16} />
             </Button>
-            <Dropdown.Popover className="min-w-0 w-fit" placement="bottom end">
+            <Dropdown.Popover className="w-fit min-w-0" placement="bottom end">
                 <Dropdown.Menu
                     aria-label="Transaction type display mode"
                     selectionMode="single"

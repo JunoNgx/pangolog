@@ -68,7 +68,7 @@ export default function LandingPage() {
                 <div className="flex flex-col gap-2">
                     <Link
                         href="/log"
-                        className="bg-accent text-accent-foreground hover:opacity-90 inline-flex items-center justify-center gap-2 rounded-lg px-6 py-3 text-base font-medium self-center"
+                        className="bg-accent text-accent-foreground inline-flex items-center justify-center gap-2 self-center rounded-lg px-6 py-3 text-base font-medium hover:opacity-90"
                     >
                         Get started
                     </Link>

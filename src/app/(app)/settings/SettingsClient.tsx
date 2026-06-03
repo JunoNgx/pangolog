@@ -183,7 +183,7 @@ export default function SettingsClient() {
                         Display Currency
                     </h3>
                     <div className="flex flex-col gap-4">
-                        <div className="max-w-xs flex flex-col gap-1">
+                        <div className="flex max-w-xs flex-col gap-1">
                             <span>Currency symbol</span>
                             <Input
                                 placeholder="e.g. €, SGD, Gil"
@@ -379,7 +379,7 @@ export default function SettingsClient() {
                     </p>
                     <a
                         href="/help"
-                        className="bg-accent text-accent-foreground hover:opacity-90 inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium self-start"
+                        className="bg-accent text-accent-foreground inline-flex items-center justify-center gap-2 self-start rounded-lg px-4 py-2 text-sm font-medium hover:opacity-90"
                     >
                         View manual
                     </a>

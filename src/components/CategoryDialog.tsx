@@ -88,7 +88,7 @@ const emojiPickerComponents: EmojiPickerListComponents = {
     Emoji: ({ emoji: e, ...props }) => (
         <button
             type="button"
-            className="size-9 flex items-center justify-center text-lg rounded-md data-active:bg-surface-secondary hover:bg-surface"
+            className="data-active:bg-surface-secondary hover:bg-surface flex size-9 items-center justify-center rounded-md text-lg"
             {...props}
         >
             {e.emoji}
@@ -211,7 +211,7 @@ export function CategoryDialog({
                 <Popover.Trigger>
                     <button
                         type="button"
-                        className="rounded-lg h-10 flex items-center justify-center px-3 bg-surface hover:bg-surface-secondary transition-colors cursor-pointer"
+                        className="bg-surface hover:bg-surface-secondary flex h-10 cursor-pointer items-center justify-center rounded-lg px-3 transition-colors"
                         aria-label="Choose icon"
                     >
                         <span className="text-xl">{icon}</span>
@@ -221,9 +221,9 @@ export function CategoryDialog({
                     <Popover.Dialog>
                         <EmojiPicker.Root
                             onEmojiSelect={handleEmojiSelect}
-                            className="w-75 h-90 rounded-lg overflow-hidden flex flex-col bg-surface text-foreground"
+                            className="bg-surface text-foreground flex h-90 w-75 flex-col overflow-hidden rounded-lg"
                         >
-                            <EmojiPicker.Search className="mx-2 mt-2 rounded-md px-2.5 py-2 bg-surface text-sm text-foreground placeholder:text-muted outline-none focus:bg-surface-secondary" />
+                            <EmojiPicker.Search className="bg-surface text-foreground placeholder:text-muted focus:bg-surface-secondary mx-2 mt-2 rounded-md px-2.5 py-2 text-sm outline-none" />
                             <EmojiPicker.Viewport className="relative flex-1 outline-none">
                                 <EmojiPicker.Loading className="text-muted absolute inset-0 flex items-center justify-center text-sm">
                                     Loading...
@@ -251,7 +251,7 @@ export function CategoryDialog({
                     <Popover.Trigger>
                         <button
                             type="button"
-                            className="flex-1 rounded-lg flex items-center gap-3 px-3 py-2 bg-surface hover:bg-surface-secondary transition-colors cursor-pointer"
+                            className="bg-surface hover:bg-surface-secondary flex flex-1 cursor-pointer items-center gap-3 rounded-lg px-3 py-2 transition-colors"
                             aria-label={`Choose colour, currently ${colour}`}
                         >
                             <div
@@ -295,7 +295,7 @@ export function CategoryDialog({
                 <button
                     type="button"
                     onClick={() => setColour(randomHexColor())}
-                    className="size-10 shrink-0 rounded-lg flex items-center justify-center bg-surface text-muted hover:bg-surface-secondary transition-colors cursor-pointer"
+                    className="bg-surface text-muted hover:bg-surface-secondary flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-lg transition-colors"
                     aria-label="Random colour"
                 >
                     <Shuffle size={16} />
@@ -323,7 +323,7 @@ export function CategoryDialog({
                                         : "New Category"}
                                 </Modal.Heading>
                             </Modal.Header>
-                            <Modal.Body className="gap-4 overflow-y-auto max-h-[calc(var(--visual-viewport-height,100svh)-10rem)]">
+                            <Modal.Body className="max-h-[calc(var(--visual-viewport-height,100svh)-10rem)] gap-4 overflow-y-auto">
                                 <div className="flex flex-col gap-1">
                                     <span>Name</span>
                                     <Input

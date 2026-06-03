@@ -256,7 +256,7 @@ export function RecurringRuleDialog({
                                             : "New Recurring Rule"}
                                     </Modal.Heading>
                                 </Modal.Header>
-                                <Modal.Body className="gap-4 overflow-y-auto max-h-[calc(var(--visual-viewport-height,100svh)-10rem)]">
+                                <Modal.Body className="max-h-[calc(var(--visual-viewport-height,100svh)-10rem)] gap-4 overflow-y-auto">
                                     {ruleStatusPanel}
                                     {typeToggleRow}
 
