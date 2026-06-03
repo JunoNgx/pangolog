@@ -20,9 +20,9 @@ export function CategoryPicker({
     return (
         <div>
             <div className="mb-2 flex items-center justify-between">
-                <p className="text-muted text-sm">Category</p>
+                <p className="text-foreground text-sm">Category</p>
                 {onAdd && (
-                    <Button variant="ghost" size="sm" onPress={onAdd}>
+                    <Button variant="ghost" size="sm" className="text-muted" onPress={onAdd}>
                         <Plus size={12} />
                         Add
                     </Button>
