@@ -125,14 +125,15 @@ export default function RecurringClient() {
                     </Dropdown.Menu>
                 </Dropdown.Popover>
             </Dropdown>
-            <button
-                type="button"
-                onClick={() => setSortAsc((prev) => !prev)}
-                className={`bg-surface text-foreground hover:bg-surface-secondary cursor-pointer rounded-lg border p-2`}
+            <Button
+                variant="outline"
+                size="sm"
+                isIconOnly
+                onPress={() => setSortAsc((prev) => !prev)}
                 aria-label={sortAsc ? "Sort descending" : "Sort ascending"}
             >
                 {sortAsc ? <ArrowUpAZ size={16} /> : <ArrowDownAZ size={16} />}
-            </button>
+            </Button>
         </div>
     );
 
