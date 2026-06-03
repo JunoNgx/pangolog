@@ -764,19 +764,23 @@ Post-architecture-review cleanup. No new features; only fixes and small refactor
 GitHub: pangolog#34
 
 ### 34a: packages + theme
+
 - [x] Bump `@heroui/react` to `^3.1.0`, replace `@heroui/theme` with `@heroui/styles`
 - [x] Remove `heroui.plugin.mjs`, update `globals.css` (v3 uses `@import "@heroui/styles"`)
 
 ### 34b: HeroUIProvider in providers.tsx
+
 - [x] Remove `HeroUIProvider` (v3 does not require it)
 
 ### 34c: Button (19 files)
+
 - [x] `color` -> `variant`: `default`->`tertiary`, `primary`->`primary`, `danger`->`danger`/`danger-soft`, `ghost`->`ghost`, `light`->`tertiary`, `flat`->`secondary`
 - [x] `isLoading` -> `isPending`
 - [x] `startContent`/`endContent` -> direct children
 - [x] `as` prop replaced with `render` prop or styled `<a>`/`<Link>`
 
 ### 34d: Input (7 files)
+
 - [x] `onValueChange` -> `onChange(e.target.value)`
 - [x] `isRequired` -> `required`, `isDisabled` -> `disabled`, `isClearable` removed
 - [x] `classNames` -> `className`
@@ -785,29 +789,35 @@ GitHub: pangolog#34
 - [x] LogClient search: `Input` -> `SearchField`
 
 ### 34e: Modal (6 files)
+
 - [x] Restructure to nested dot notation: `Modal > Backdrop > Container > Dialog > Header/Heading/Body/Footer/CloseTrigger`
 - [x] `classNames` -> per-element classes
 - [x] `isOpen`/`onClose` -> `Backdrop`'s `isOpen`/`onOpenChange`
 
 ### 34f: Popover (4 files)
+
 - [x] `PopoverTrigger` -> `Popover.Trigger`, `PopoverContent` -> `Popover.Content > Popover.Dialog`
 
 ### 34g: Dropdown (3 files)
+
 - [x] `DropdownTrigger` -> `Dropdown.Trigger`, `DropdownMenu` -> `Dropdown.Popover > Dropdown.Menu`
 - [x] Icon directly as child, not `startContent`
 
 ### 34h: Tabs (1 file, ManageClient.tsx)
+
 - [x] Flat API -> `Tabs.ListContainer > Tabs.List > Tabs.Tab + Tabs.Indicator` and `Tabs.Panel`
 
 ### 34i: Checkbox + Switch + Radio (4 files)
+
 - [x] `onValueChange` -> `onChange`
 - [x] Restructure to compound components (Control/Indicator/Content/Label)
 - [x] `color`/`size`/`classNames` removed, use `className` instead
 
 ### 34j: Skeleton (3 files)
+
 - [x] Removed (local app, no skeleton needed)
 
 ### 34k: Tooltip (4 files)
+
 - [x] `content` prop -> `Tooltip.Content` child
 - [x] `Tooltip.Trigger` for non-button triggers
-

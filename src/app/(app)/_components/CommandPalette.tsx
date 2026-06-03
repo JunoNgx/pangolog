@@ -296,7 +296,7 @@ export function CommandPalette() {
                                     handleQueryChange(e.target.value)
                                 }
                                 onKeyDown={handleKeyDown}
-                                className="shadow-none border-b rounded-none rounded-t-xl bg-transparent px-4 data-[focus-visible=true]:ring-0 data-[focus-visible=true]:ring-offset-0"
+                                className="rounded-none rounded-t-xl border-b bg-transparent px-4 shadow-none data-[focus-visible=true]:ring-0 data-[focus-visible=true]:ring-offset-0"
                             />
                             <div
                                 ref={scrollRef}

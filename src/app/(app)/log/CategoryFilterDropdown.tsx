@@ -124,8 +124,8 @@ export function CategoryFilterDropdown({
             </Popover.Trigger>
             <Popover.Content placement="bottom end" className="p-0">
                 <Popover.Dialog>
-                    <div className="flex flex-col w-64">
-                        <ul className="flex flex-col max-h-64 overflow-y-auto px-2 py-1">
+                    <div className="flex w-64 flex-col">
+                        <ul className="flex max-h-64 flex-col overflow-y-auto px-2 py-1">
                             {uncategorisedItem}
                             {activeCategories.map((cat) => (
                                 <CategoryFilterItem
@@ -139,7 +139,7 @@ export function CategoryFilterDropdown({
                                 />
                             ))}
                         </ul>
-                        <div className="flex gap-1 pt-2 border-t">
+                        <div className="flex gap-1 border-t pt-2">
                             <Button
                                 size="sm"
                                 variant="ghost"

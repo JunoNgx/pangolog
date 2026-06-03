@@ -45,7 +45,7 @@ export function PeriodViewDropdown({
             >
                 <CurrentIcon size={16} />
             </Button>
-            <Dropdown.Popover className="min-w-0 w-fit">
+            <Dropdown.Popover className="w-fit min-w-0">
                 <Dropdown.Menu
                     aria-label="Period view mode"
                     selectionMode="single"

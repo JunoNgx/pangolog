@@ -38,7 +38,7 @@ export function ToggleSwitch({
                 {label}
             </span>
             <div className="flex flex-1 items-center gap-1 rounded-lg border p-1">
-                <label className="cursor-pointer rounded-sm flex-1">
+                <label className="flex-1 cursor-pointer rounded-sm">
                     <input
                         type="radio"
                         name={`toggle-${leftLabel}-${rightLabel}`}

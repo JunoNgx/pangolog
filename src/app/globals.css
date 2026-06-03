@@ -55,7 +55,7 @@
     }
 
     .checkbox__control {
-        @apply border border-border-secondary;
+        @apply border-border-secondary border;
     }
 }
 

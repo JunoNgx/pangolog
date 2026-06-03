@@ -256,7 +256,7 @@ export default function LogClient() {
                 autoFocus
                 fullWidth
             >
-                <SearchField.Group className="data-[focus-visible=true]:ring-0 data-[focus-visible=true]:ring-offset-0 rounded-md">
+                <SearchField.Group className="rounded-md data-[focus-visible=true]:ring-0 data-[focus-visible=true]:ring-offset-0">
                     <SearchField.SearchIcon />
                     <SearchField.Input
                         ref={searchInputRef}
