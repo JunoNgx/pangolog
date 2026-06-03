@@ -153,7 +153,6 @@ export default function RecurringClient() {
                         onHideInactiveChange={setShouldHideInactive}
                     />
                 </div>
-                <DemoDataBanner />
             </ConfigWrapper>
             <ConfigWrapper className="mb-4 flex justify-end">
                 <Button
@@ -164,6 +163,7 @@ export default function RecurringClient() {
                     <span>Rule</span>
                 </Button>
             </ConfigWrapper>
+            <DemoDataBanner />
             <RecurringList rules={sortedRules} categories={categories ?? []} />
 
             <RecurringRuleDialog
