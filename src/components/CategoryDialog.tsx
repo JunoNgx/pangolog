@@ -323,9 +323,11 @@ export function CategoryDialog({
                                         : "New Category"}
                                 </Modal.Heading>
                             </Modal.Header>
-                            <Modal.Body className="flex flex-col max-h-[calc(var(--visual-viewport-height,100svh)-10rem)] gap-4 overflow-y-auto">
+                            <Modal.Body className="flex max-h-[calc(var(--visual-viewport-height,100svh)-10rem)] flex-col gap-4 overflow-y-auto">
                                 <div className="flex flex-col gap-1">
-                                    <Label htmlFor="name" className="sr-only">Name</Label>
+                                    <Label htmlFor="name" className="sr-only">
+                                        Name
+                                    </Label>
                                     <Input
                                         id="name"
                                         value={name}
