@@ -322,13 +322,14 @@ export function RecurringRuleDialog({
 
                                     <div className="flex items-end justify-between gap-3">
                                         <div className="flex w-1/2 flex-col gap-1">
-                                            <span>
-                                                Start date{" "}
-                                                <span className="text-muted font-mono text-xs">
+                                            <Label htmlFor="startDate">
+                                                Start date
+                                                <span className="text-muted ml-2 font-mono text-xs">
                                                     {localeDateFormat}
                                                 </span>
-                                            </span>
+                                            </Label>
                                             <Input
+                                                id="startDate"
                                                 type="date"
                                                 value={startDate}
                                                 onChange={(e) =>
