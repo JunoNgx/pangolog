@@ -41,12 +41,6 @@ function getRepeatLabel(frequency: Frequency, dateStr: string): string {
     }
 }
 
-const statusPanelClasses = `
-    p-3 rounded-lg border
-    flex items-center justify-between
-    bg-surface-tertiary
-`;
-
 interface RecurringRuleDialogProps {
     isOpen: boolean;
     onClose: () => void;
@@ -177,13 +171,8 @@ export function RecurringRuleDialog({
         (isTxTypeSwitchVisible && !isExpenseTypeSwitchVisible) ||
         (!isTxTypeSwitchVisible && isExpenseTypeSwitchVisible);
 
-    const toggleRowClasses = `
-        flex gap-4 mt-2
-        ${isSingleToggle ? "justify-center" : isEditing ? "justify-around" : "justify-between"}
-    `;
-
     const ruleStatusPanel = isEditing && rule && (
-        <div className={statusPanelClasses}>
+        <div className="bg-surface-tertiary flex items-center justify-between rounded-lg border p-3">
             <div className="flex flex-col gap-1">
                 <Switch isSelected={isActive} onChange={setIsActive}>
                     <Switch.Control>
@@ -214,7 +203,9 @@ export function RecurringRuleDialog({
     );
 
     const typeToggleRow = (
-        <div className={toggleRowClasses}>
+        <div
+            className={`mt-2 flex gap-4 ${isSingleToggle ? "justify-center" : isEditing ? "justify-around" : "justify-between"}`}
+        >
             {isTxTypeSwitchVisible && (
                 <ToggleSwitch
                     label="Transaction flow type"

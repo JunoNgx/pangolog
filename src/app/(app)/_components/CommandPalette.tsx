@@ -321,21 +321,12 @@ export function CommandPalette() {
 
                                     const { cmd, idx } = item;
                                     const isSelected = selectedIndex === idx;
-                                    const itemClasses = `
-                                        w-full
-                                        flex items-center gap-3 px-3 py-2
-                                        text-sm text-left
-                                        rounded-lg
-                                        cursor-pointer
-                                        ${isSelected ? "bg-surface" : "hover:bg-surface-tertiary"}
-                                    `;
-
                                     return (
                                         <button
                                             key={cmd.id}
                                             type="button"
                                             data-index={idx}
-                                            className={itemClasses}
+                                            className={`flex w-full cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-left text-sm ${isSelected ? "bg-surface" : "hover:bg-surface-tertiary"}`}
                                             onClick={() => execute(cmd)}
                                             onMouseEnter={() =>
                                                 setSelectedIndex(idx)

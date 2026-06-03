@@ -25,10 +25,10 @@ export function DialogFooter({
         </Button>
     );
 
-    const containerClasses = `flex gap-2 p-2 ${isEditing && onDelete ? "justify-between" : "justify-end"}`;
-
     return (
-        <div className={containerClasses}>
+        <div
+            className={`flex gap-2 p-2 ${isEditing && onDelete ? "justify-between" : "justify-end"}`}
+        >
             {isEditing && onDelete && (
                 <Button
                     variant="danger-soft"
