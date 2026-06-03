@@ -11,13 +11,11 @@ import { TransactionDialog } from "./TransactionDialog";
 interface TransactionListProps {
     transactions: Transaction[];
     categories: Category[];
-    isLoading: boolean;
 }
 
 export function TransactionList({
     transactions,
     categories,
-    isLoading,
 }: TransactionListProps) {
     const [editingTx, setEditingTx] = useState<Transaction | undefined>();
     const [isDialogOpen, setIsDialogOpen] = useState(false);
