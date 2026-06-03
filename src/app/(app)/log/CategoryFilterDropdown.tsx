@@ -60,22 +60,6 @@ function CategoryFilterItem({
     );
 }
 
-const popoverClasses = `
-    flex flex-col w-64
-`;
-
-const listClasses = `
-    flex flex-col max-h-64 overflow-y-auto px-2 py-1
-`;
-
-const footerClasses = `
-    flex gap-1 p-2 border-t
-`;
-
-const actionButtonClasses = `
-    flex-1 text-sm
-`;
-
 export function CategoryFilterDropdown({
     categories,
     selectedIds,
@@ -146,8 +130,8 @@ export function CategoryFilterDropdown({
             </Popover.Trigger>
             <Popover.Content placement="bottom end" className="p-0">
                 <Popover.Dialog>
-                    <div className={popoverClasses}>
-                        <ul className={listClasses}>
+                    <div className="flex flex-col w-64">
+                        <ul className="flex flex-col max-h-64 overflow-y-auto px-2 py-1">
                             {uncategorisedItem}
                             {activeCategories.map((cat) => (
                                 <CategoryFilterItem
@@ -161,19 +145,19 @@ export function CategoryFilterDropdown({
                                 />
                             ))}
                         </ul>
-                        <div className={footerClasses}>
+                        <div className="flex gap-1 pt-2 border-t">
                             <Button
                                 size="sm"
-                                variant="tertiary"
-                                className={actionButtonClasses}
+                                variant="ghost"
+                                className="flex-1 text-sm"
                                 onPress={() => onChange(null)}
                             >
                                 Check all
                             </Button>
                             <Button
                                 size="sm"
-                                variant="tertiary"
-                                className={actionButtonClasses}
+                                variant="ghost"
+                                className="flex-1 text-sm"
                                 onPress={() => onChange([])}
                             >
                                 Uncheck all
