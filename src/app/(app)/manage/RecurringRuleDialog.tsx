@@ -302,18 +302,22 @@ export function RecurringRuleDialog({
                                     />
 
                                     <div className="flex flex-col gap-1">
-                                        <span>Description</span>
+                                        <Label
+                                            htmlFor="description"
+                                            className="sr-only"
+                                        >
+                                            Description
+                                        </Label>
                                         <Input
+                                            id="description"
                                             className="font-mono"
                                             value={description}
                                             onChange={(e) =>
                                                 setDescription(e.target.value)
                                             }
                                             maxLength={60}
+                                            placeholder="Description"
                                         />
-                                        <span className="text-muted text-xs">
-                                            {description.length}/60
-                                        </span>
                                     </div>
 
                                     <div className="flex items-end justify-between gap-3">
