@@ -1,11 +1,6 @@
 "use client";
 
-import {
-    Input,
-    Label,
-    Modal,
-    Switch,
-} from "@heroui/react";
+import { Input, Label, Modal, Switch } from "@heroui/react";
 import { DateTime } from "luxon";
 import { type SubmitEventHandler, useEffect, useMemo, useState } from "react";
 import { AmountInput } from "@/components/AmountInput";
@@ -190,10 +185,7 @@ export function RecurringRuleDialog({
     const ruleStatusPanel = isEditing && rule && (
         <div className={statusPanelClasses}>
             <div className="flex flex-col gap-1">
-                <Switch
-                    isSelected={isActive}
-                    onChange={setIsActive}
-                >
+                <Switch isSelected={isActive} onChange={setIsActive}>
                     <Switch.Control>
                         <Switch.Thumb />
                     </Switch.Control>
@@ -249,11 +241,13 @@ export function RecurringRuleDialog({
             <Modal>
                 <Modal.Backdrop
                     isOpen={isOpen}
-                    onOpenChange={(open) => { if (!open) handleClose(); }}
+                    onOpenChange={(open) => {
+                        if (!open) handleClose();
+                    }}
                 >
                     <Modal.Container>
                         <Modal.Dialog>
-                            {({close}) => (
+                            {({ close }) => (
                                 <>
                                     <Modal.CloseTrigger className="cursor-pointer" />
                                     <form onSubmit={handleSubmit}>
@@ -279,10 +273,16 @@ export function RecurringRuleDialog({
                                                 <Input
                                                     className="font-mono"
                                                     value={description}
-                                                    onChange={(e) => setDescription(e.target.value)}
+                                                    onChange={(e) =>
+                                                        setDescription(
+                                                            e.target.value,
+                                                        )
+                                                    }
                                                     maxLength={60}
                                                 />
-                                                <span className="text-muted text-xs">{description.length}/60</span>
+                                                <span className="text-muted text-xs">
+                                                    {description.length}/60
+                                                </span>
                                             </div>
 
                                             <div className="flex items-end justify-between gap-3">
@@ -296,7 +296,11 @@ export function RecurringRuleDialog({
                                                     <Input
                                                         type="date"
                                                         value={startDate}
-                                                        onChange={(e) => setStartDate(e.target.value)}
+                                                        onChange={(e) =>
+                                                            setStartDate(
+                                                                e.target.value,
+                                                            )
+                                                        }
                                                         required
                                                     />
                                                 </div>
@@ -306,13 +310,25 @@ export function RecurringRuleDialog({
                                                     </span>
                                                     <select
                                                         value={frequency}
-                                                        onChange={handleFrequencyChange}
-                                                        className={SELECT_CLASSES}
+                                                        onChange={
+                                                            handleFrequencyChange
+                                                        }
+                                                        className={
+                                                            SELECT_CLASSES
+                                                        }
                                                     >
-                                                        <option value="daily">Daily</option>
-                                                        <option value="weekly">Weekly</option>
-                                                        <option value="monthly">Monthly</option>
-                                                        <option value="yearly">Yearly</option>
+                                                        <option value="daily">
+                                                            Daily
+                                                        </option>
+                                                        <option value="weekly">
+                                                            Weekly
+                                                        </option>
+                                                        <option value="monthly">
+                                                            Monthly
+                                                        </option>
+                                                        <option value="yearly">
+                                                            Yearly
+                                                        </option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -325,13 +341,21 @@ export function RecurringRuleDialog({
                                                 categories={filteredCategories}
                                                 selectedId={categoryId}
                                                 onChange={setCategoryId}
-                                                onAdd={() => setIsCategoryDialogOpen(true)}
+                                                onAdd={() =>
+                                                    setIsCategoryDialogOpen(
+                                                        true,
+                                                    )
+                                                }
                                             />
                                         </Modal.Body>
                                         <DialogFooter
                                             isEditing={isEditing}
                                             onCancel={handleClose}
-                                            onDelete={isEditing ? handleDelete : undefined}
+                                            onDelete={
+                                                isEditing
+                                                    ? handleDelete
+                                                    : undefined
+                                            }
                                             isSubmitting={isPending}
                                             isDeleting={isDeleting}
                                         />

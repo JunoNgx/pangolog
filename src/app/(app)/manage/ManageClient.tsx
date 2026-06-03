@@ -31,7 +31,10 @@ export default function ManageClient() {
             className="w-full justify-center"
         >
             <Tabs.ListContainer className="flex justify-center">
-                <Tabs.List aria-label="Manage sections" className="w-fit whitespace-nowrap">
+                <Tabs.List
+                    aria-label="Manage sections"
+                    className="w-fit whitespace-nowrap"
+                >
                     <Tabs.Tab id="categories">
                         Categories
                         <Tabs.Indicator />

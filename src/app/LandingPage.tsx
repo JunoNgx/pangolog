@@ -60,9 +60,7 @@ export default function LandingPage() {
                             <p className="text-foreground mb-2 font-semibold">
                                 {feature.headline}
                             </p>
-                            <p className="text-muted text-sm">
-                                {feature.body}
-                            </p>
+                            <p className="text-muted text-sm">{feature.body}</p>
                         </li>
                     ))}
                 </ul>

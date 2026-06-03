@@ -1,12 +1,6 @@
 "use client";
 
-import {
-    Checkbox,
-    Input,
-    Label,
-    Modal,
-    Popover,
-} from "@heroui/react";
+import { Checkbox, Input, Label, Modal, Popover } from "@heroui/react";
 import { EmojiPicker, type EmojiPickerListComponents } from "frimousse";
 import { Shuffle } from "lucide-react";
 import { type SubmitEventHandler, useEffect, useState } from "react";
@@ -92,7 +86,11 @@ const emojiPickerComponents: EmojiPickerListComponents = {
         </div>
     ),
     Emoji: ({ emoji: e, ...props }) => (
-        <button type="button" className="size-9 flex items-center justify-center text-lg rounded-md data-active:bg-surface-secondary hover:bg-surface" {...props}>
+        <button
+            type="button"
+            className="size-9 flex items-center justify-center text-lg rounded-md data-active:bg-surface-secondary hover:bg-surface"
+            {...props}
+        >
             {e.emoji}
         </button>
     ),
@@ -225,9 +223,7 @@ export function CategoryDialog({
                             onEmojiSelect={handleEmojiSelect}
                             className="w-75 h-90 rounded-lg overflow-hidden flex flex-col bg-surface text-foreground"
                         >
-                            <EmojiPicker.Search
-                                className="mx-2 mt-2 rounded-md px-2.5 py-2 bg-surface text-sm text-foreground placeholder:text-muted outline-none focus:bg-surface-secondary"
-                            />
+                            <EmojiPicker.Search className="mx-2 mt-2 rounded-md px-2.5 py-2 bg-surface text-sm text-foreground placeholder:text-muted outline-none focus:bg-surface-secondary" />
                             <EmojiPicker.Viewport className="relative flex-1 outline-none">
                                 <EmojiPicker.Loading className="text-muted absolute inset-0 flex items-center justify-center text-sm">
                                     Loading...
@@ -262,9 +258,7 @@ export function CategoryDialog({
                                 className="size-6 shrink-0 rounded-full"
                                 style={{ backgroundColor: colour }}
                             />
-                            <span className="text-muted text-sm">
-                                {colour}
-                            </span>
+                            <span className="text-muted text-sm">{colour}</span>
                         </button>
                     </Popover.Trigger>
                     <Popover.Content placement="bottom end">
@@ -280,7 +274,11 @@ export function CategoryDialog({
                                         <span>Hex</span>
                                         <Input
                                             value={colour}
-                                            onChange={(e) => handleColourHexChange(e.target.value)}
+                                            onChange={(e) =>
+                                                handleColourHexChange(
+                                                    e.target.value,
+                                                )
+                                            }
                                             maxLength={7}
                                             className="flex-1"
                                         />
@@ -310,17 +308,21 @@ export function CategoryDialog({
         <Modal>
             <Modal.Backdrop
                 isOpen={isOpen}
-                onOpenChange={(open) => { if (!open) onClose(); }}
+                onOpenChange={(open) => {
+                    if (!open) onClose();
+                }}
             >
                 <Modal.Container>
                     <Modal.Dialog>
-                        {({close}) => (
+                        {({ close }) => (
                             <>
                                 <Modal.CloseTrigger className="cursor-pointer" />
                                 <form onSubmit={handleSubmit}>
                                     <Modal.Header>
                                         <Modal.Heading>
-                                            {isEditing ? "Edit Category" : "New Category"}
+                                            {isEditing
+                                                ? "Edit Category"
+                                                : "New Category"}
                                         </Modal.Heading>
                                     </Modal.Header>
                                     <Modal.Body className="gap-4 overflow-y-auto max-h-[calc(var(--visual-viewport-height,100svh)-10rem)]">
@@ -328,7 +330,9 @@ export function CategoryDialog({
                                             <span>Name</span>
                                             <Input
                                                 value={name}
-                                                onChange={(e) => setName(e.target.value)}
+                                                onChange={(e) =>
+                                                    setName(e.target.value)
+                                                }
                                                 required
                                                 autoFocus
                                             />
@@ -365,7 +369,9 @@ export function CategoryDialog({
                                     <DialogFooter
                                         isEditing={isEditing}
                                         onCancel={onClose}
-                                        onDelete={isEditing ? handleDelete : undefined}
+                                        onDelete={
+                                            isEditing ? handleDelete : undefined
+                                        }
                                         isSubmitting={isPending}
                                         isDeleting={deleteCategory.isPending}
                                     />

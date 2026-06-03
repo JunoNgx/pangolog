@@ -45,7 +45,9 @@ export function DialogFooter({
                 {showSubmitTooltip ? (
                     <Tooltip delay={0}>
                         {submitButton}
-                        <Tooltip.Content placement="left">Ctrl/Cmd + Enter</Tooltip.Content>
+                        <Tooltip.Content placement="left">
+                            Ctrl/Cmd + Enter
+                        </Tooltip.Content>
                     </Tooltip>
                 ) : (
                     submitButton

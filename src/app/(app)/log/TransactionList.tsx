@@ -43,9 +43,7 @@ export function TransactionList({
     if (!displayedItems.length) {
         return (
             <>
-                <p className="text-muted py-12 text-center">
-                    Nothing to show.
-                </p>
+                <p className="text-muted py-12 text-center">Nothing to show.</p>
                 <TransactionDialog
                     isOpen={isDialogOpen}
                     onClose={handleCloseDialog}

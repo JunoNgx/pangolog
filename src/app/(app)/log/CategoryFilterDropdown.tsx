@@ -1,9 +1,4 @@
-import {
-    Button,
-    Checkbox,
-    Label,
-    Popover,
-} from "@heroui/react";
+import { Button, Checkbox, Label, Popover } from "@heroui/react";
 import { ChevronDown } from "lucide-react";
 import { UNCATEGORISED_ID } from "@/lib/constants";
 import type { Category } from "@/lib/db/types";
@@ -42,7 +37,8 @@ function CategoryFilterItem({
                 </Checkbox.Control>
                 <Checkbox.Content>
                     <Label>
-                        {icon && <span className="text-base">{icon}</span>} {name}
+                        {icon && <span className="text-base">{icon}</span>}{" "}
+                        {name}
                         {isBuck && (
                             <span className="ml-2 text-xs font-medium text-amber-500">
                                 BUCK
@@ -121,9 +117,7 @@ export function CategoryFilterDropdown({
     return (
         <Popover>
             <Popover.Trigger>
-                <Button
-                    variant={isFiltered ? "primary" : "tertiary"}
-                >
+                <Button variant={isFiltered ? "primary" : "tertiary"}>
                     {label}
                     <ChevronDown className="size-3" />
                 </Button>

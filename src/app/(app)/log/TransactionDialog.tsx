@@ -1,9 +1,6 @@
 "use client";
 
-import {
-    Input,
-    Modal,
-} from "@heroui/react";
+import { Input, Modal } from "@heroui/react";
 import { DateTime } from "luxon";
 import type React from "react";
 import {
@@ -194,32 +191,41 @@ export function TransactionDialog({
             <Modal>
                 <Modal.Backdrop
                     isOpen={isOpen}
-                    onOpenChange={(open) => { if (!open) handleClose(); }}
+                    onOpenChange={(open) => {
+                        if (!open) handleClose();
+                    }}
                     onTouchStart={handleBackdropTouchStart}
                 >
                     <Modal.Container>
                         <Modal.Dialog>
-                            {({close}) => (
+                            {({ close }) => (
                                 <>
                                     <Modal.CloseTrigger className="cursor-pointer" />
                                     <form ref={formRef} onSubmit={handleSubmit}>
                                         <Modal.Header>
                                             <Modal.Heading>
-                                                {isEditing ? "Edit Transaction" : "New Transaction"}
+                                                {isEditing
+                                                    ? "Edit Transaction"
+                                                    : "New Transaction"}
                                             </Modal.Heading>
                                         </Modal.Header>
                                         <Modal.Body className="gap-4 overflow-y-auto max-h-[calc(var(--visual-viewport-height,100svh)-10rem)]">
-                                            {!isEditing && !isExpenseOnlyMode && (
-                                                <div className="mb-4 flex items-center justify-center gap-4">
-                                                    <ToggleSwitch
-                                                        label="Transaction flow type"
-                                                        isSelectingRight={isIncome}
-                                                        onValueChange={setIsIncome}
-                                                        leftLabel="Expense"
-                                                        rightLabel="Income"
-                                                    />
-                                                </div>
-                                            )}
+                                            {!isEditing &&
+                                                !isExpenseOnlyMode && (
+                                                    <div className="mb-4 flex items-center justify-center gap-4">
+                                                        <ToggleSwitch
+                                                            label="Transaction flow type"
+                                                            isSelectingRight={
+                                                                isIncome
+                                                            }
+                                                            onValueChange={
+                                                                setIsIncome
+                                                            }
+                                                            leftLabel="Expense"
+                                                            rightLabel="Income"
+                                                        />
+                                                    </div>
+                                                )}
 
                                             <div className="flex items-end gap-4">
                                                 <div className="flex flex-1 flex-col gap-1">
@@ -232,7 +238,11 @@ export function TransactionDialog({
                                                     <Input
                                                         type="date"
                                                         value={transactedAt}
-                                                        onChange={(e) => setTransactedAt(e.target.value)}
+                                                        onChange={(e) =>
+                                                            setTransactedAt(
+                                                                e.target.value,
+                                                            )
+                                                        }
                                                         required
                                                     />
                                                 </div>
@@ -257,23 +267,37 @@ export function TransactionDialog({
                                                 <Input
                                                     className="font-mono"
                                                     value={description}
-                                                    onChange={(e) => setDescription(e.target.value)}
+                                                    onChange={(e) =>
+                                                        setDescription(
+                                                            e.target.value,
+                                                        )
+                                                    }
                                                     maxLength={60}
                                                 />
-                                                <span className="text-muted text-xs">{description.length}/60</span>
+                                                <span className="text-muted text-xs">
+                                                    {description.length}/60
+                                                </span>
                                             </div>
 
                                             <CategoryPicker
                                                 categories={filteredCategories}
                                                 selectedId={categoryId}
                                                 onChange={setCategoryId}
-                                                onAdd={() => setIsCategoryDialogOpen(true)}
+                                                onAdd={() =>
+                                                    setIsCategoryDialogOpen(
+                                                        true,
+                                                    )
+                                                }
                                             />
                                         </Modal.Body>
                                         <DialogFooter
                                             isEditing={isEditing}
                                             onCancel={handleClose}
-                                            onDelete={isEditing ? handleDelete : undefined}
+                                            onDelete={
+                                                isEditing
+                                                    ? handleDelete
+                                                    : undefined
+                                            }
                                             isSubmitting={isPending}
                                             isDeleting={isDeleting}
                                             showSubmitTooltip

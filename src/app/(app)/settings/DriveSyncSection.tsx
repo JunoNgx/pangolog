@@ -33,9 +33,7 @@ export function DriveSyncSection() {
         </p>
     );
 
-    const errorRow = error && (
-        <p className="text-danger text-xs">{error}</p>
-    );
+    const errorRow = error && <p className="text-danger text-xs">{error}</p>;
 
     const autobackupDisabledInfo = !isConnected && (
         <p className="text-muted text-xs">

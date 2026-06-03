@@ -202,9 +202,7 @@ export default function HelpClient() {
                     paste-friendly for an LLM - you can share this section with
                     one to help generate a valid import file.
                 </p>
-                <p className="text-muted mb-2 text-sm">
-                    Top-level structure:
-                </p>
+                <p className="text-muted mb-2 text-sm">Top-level structure:</p>
                 <pre className="bg-surface text-foreground mb-3 overflow-x-auto rounded p-3 font-mono text-xs leading-relaxed">{`{
   "exportedAt":     "2026-04-10T00:00:00.000Z",
   "categories":     [ ... ],  // required, may be empty

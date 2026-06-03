@@ -1,10 +1,6 @@
 "use client";
 
-import {
-    Button,
-    Dropdown,
-    Label,
-} from "@heroui/react";
+import { Button, Dropdown, Label } from "@heroui/react";
 import { Monitor, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useLayoutEffect, useState } from "react";

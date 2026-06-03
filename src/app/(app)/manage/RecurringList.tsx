@@ -61,9 +61,7 @@ export function RecurringList({
     if (!rules || !rules.length) {
         return (
             <>
-                <p className="text-muted py-12 text-center">
-                    Nothing to show.
-                </p>
+                <p className="text-muted py-12 text-center">Nothing to show.</p>
                 <RecurringRuleDialog
                     isOpen={isDialogOpen}
                     onClose={handleCloseDialog}
