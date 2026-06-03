@@ -37,17 +37,11 @@ export function AppNavbar() {
                     <nav className="ml-auto flex items-center gap-1">
                         {navItems.map((item) => {
                             const isActive = pathname === item.href;
-                            const linkClass = `
-                                flex items-center gap-2 px-3 py-1.5 rounded-md
-                                text-sm
-                                transition-colors
-                                ${isActive ? "bg-primary/10 text-primary" : "text-muted hover:bg-surface hover:text-foreground"}
-                            `;
                             return (
                                 <NextLink
                                     key={item.href}
                                     href={item.href}
-                                    className={linkClass}
+                                    className={`flex items-center gap-2 rounded-md px-3 py-1.5 text-sm transition-colors ${isActive ? "bg-primary/10 text-primary" : "text-muted hover:bg-surface hover:text-foreground"}`}
                                     aria-current={isActive ? "page" : undefined}
                                 >
                                     <item.icon size={15} />
@@ -72,16 +66,11 @@ export function AppNavbar() {
             >
                 {navItems.map((item) => {
                     const isActive = pathname === item.href;
-                    const itemClass = `
-                        flex flex-col items-center justify-center flex-1 gap-1
-                        transition-colors
-                        ${isActive ? "bg-primary/10 text-primary rounded-lg" : "text-muted"}
-                    `;
                     return (
                         <NextLink
                             key={item.href}
                             href={item.href}
-                            className={itemClass}
+                            className={`flex flex-1 flex-col items-center justify-center gap-1 transition-colors ${isActive ? "bg-primary/10 text-primary rounded-lg" : "text-muted"}`}
                             aria-current={isActive ? "page" : undefined}
                         >
                             <item.icon size={20} />

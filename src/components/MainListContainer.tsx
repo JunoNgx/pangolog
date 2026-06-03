@@ -13,16 +13,10 @@ export function MainListContainer({
     className,
     children,
 }: MainListContainerProps) {
-    const baseClasses = `
-        /* INNER STRUCTURE */
-        flex flex-col
-
-        /* CONTAINER */
-        max-w-lg mx-auto pb-20
-    `;
-
     return (
-        <Component className={`${baseClasses} ${className ?? ""}`}>
+        <Component
+            className={`mx-auto flex max-w-lg flex-col pb-20 ${className ?? ""}`}
+        >
             {children}
         </Component>
     );

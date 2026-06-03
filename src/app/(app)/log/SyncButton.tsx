@@ -28,13 +28,6 @@ export function SyncButton() {
         sync();
     }
 
-    const iconClass = `
-        shrink-0
-        ${syncStatus === "idle" ? "text-success" : ""}
-        ${syncStatus === "syncing" ? "text-blue-500 animate-spin" : ""}
-        ${syncStatus === "error" ? "text-danger" : ""}
-    `;
-
     const lastSyncDt = lastSyncTime ? DateTime.fromISO(lastSyncTime) : null;
     const isWithin24Hours = lastSyncDt
         ? lastSyncDt.diffNow("hours").hours > -24
@@ -62,7 +55,11 @@ export function SyncButton() {
                 aria-label="Sync with Google Drive"
                 className="text-muted flex h-7 min-w-0 items-center gap-1.5 px-2"
             >
-                <RefreshCw size={12} className={iconClass} aria-hidden="true" />
+                <RefreshCw
+                    size={12}
+                    className={`shrink-0 ${syncStatus === "idle" ? "text-success" : ""} ${syncStatus === "syncing" ? "animate-spin text-blue-500" : ""} ${syncStatus === "error" ? "text-danger" : ""}`}
+                    aria-hidden="true"
+                />
                 <span
                     aria-live="polite"
                     aria-atomic="true"

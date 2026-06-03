@@ -13,16 +13,11 @@ export function RouteHeader({
     rightContent,
     onHeadingTap,
 }: RouteHeaderProps) {
-    const headerClasses = `
-        text-xl font-bold
-        ${onHeadingTap ? "cursor-pointer" : ""}
-    `;
-
     return (
         <div className="mb-4 flex min-h-8 items-center">
             <div className="flex flex-1 items-center gap-2">{leftContent}</div>
             <h2
-                className={`${headerClasses} text-center`}
+                className={`text-xl font-bold ${onHeadingTap ? "cursor-pointer" : ""} text-center`}
                 onClick={onHeadingTap}
                 onKeyDown={
                     onHeadingTap
