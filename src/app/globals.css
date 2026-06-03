@@ -45,6 +45,14 @@
     .dropdown__popover {
         border-radius: 0.5rem;
     }
+
+    .popover {
+        border-radius: 0.5rem;
+    }
+
+    .popover__dialog {
+        padding: 0.5rem;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
