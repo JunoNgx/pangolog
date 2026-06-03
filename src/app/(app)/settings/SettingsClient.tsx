@@ -11,7 +11,7 @@ import {
 } from "@heroui/react";
 import { DateTime } from "luxon";
 import { useTheme } from "next-themes";
-import { useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { DriveSyncSection } from "@/app/(app)/settings/DriveSyncSection";
 import { ImportDataSection } from "@/app/(app)/settings/ImportDataSection";
@@ -59,6 +59,8 @@ export default function SettingsClient() {
     const [isLogDialogOpen, setIsLogDialogOpen] = useState(false);
 
     const [isDebugVisible, setIsDebugVisible] = useState(false);
+    const [isThemeMounted, setIsThemeMounted] = useState(false);
+    useLayoutEffect(() => setIsThemeMounted(true), []);
     const headingTapCountRef = useRef(0);
     const headingTapTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
         null,
@@ -428,38 +430,42 @@ export default function SettingsClient() {
                                 </Radio.Content>
                             </Radio>
                         </RadioGroup>
-                        <RadioGroup
-                            orientation="horizontal"
-                            value={theme ?? "system"}
-                            onChange={setTheme}
-                            className="gap-6"
-                        >
-                            <Label>Theme</Label>
-                            <Radio value="light">
-                                <Radio.Control>
-                                    <Radio.Indicator />
-                                </Radio.Control>
-                                <Radio.Content>
-                                    <Label>Light</Label>
-                                </Radio.Content>
-                            </Radio>
-                            <Radio value="dark">
-                                <Radio.Control>
-                                    <Radio.Indicator />
-                                </Radio.Control>
-                                <Radio.Content>
-                                    <Label>Dark</Label>
-                                </Radio.Content>
-                            </Radio>
-                            <Radio value="system">
-                                <Radio.Control>
-                                    <Radio.Indicator />
-                                </Radio.Control>
-                                <Radio.Content>
-                                    <Label>System</Label>
-                                </Radio.Content>
-                            </Radio>
-                        </RadioGroup>
+                        {isThemeMounted ? (
+                            <RadioGroup
+                                orientation="horizontal"
+                                value={theme ?? "system"}
+                                onChange={setTheme}
+                                className="gap-6"
+                            >
+                                <Label>Theme</Label>
+                                <Radio value="light">
+                                    <Radio.Control>
+                                        <Radio.Indicator />
+                                    </Radio.Control>
+                                    <Radio.Content>
+                                        <Label>Light</Label>
+                                    </Radio.Content>
+                                </Radio>
+                                <Radio value="dark">
+                                    <Radio.Control>
+                                        <Radio.Indicator />
+                                    </Radio.Control>
+                                    <Radio.Content>
+                                        <Label>Dark</Label>
+                                    </Radio.Content>
+                                </Radio>
+                                <Radio value="system">
+                                    <Radio.Control>
+                                        <Radio.Indicator />
+                                    </Radio.Control>
+                                    <Radio.Content>
+                                        <Label>System</Label>
+                                    </Radio.Content>
+                                </Radio>
+                            </RadioGroup>
+                        ) : (
+                            <div className="h-32" aria-hidden />
+                        )}
                     </div>
                 </section>
 
