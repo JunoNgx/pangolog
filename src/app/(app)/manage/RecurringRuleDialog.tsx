@@ -177,7 +177,7 @@ export function RecurringRuleDialog({
 
     const frequencyDropdown = (
         <div className="flex shrink-0 flex-col gap-1">
-            <span className="text-muted text-sm">Frequency</span>
+            <span className="text-foreground text-sm">Frequency</span>
             <Dropdown>
                 <Button variant="outline" size="sm">
                     {FREQUENCY_OPTIONS.find((o) => o.value === frequency)
