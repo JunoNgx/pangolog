@@ -35,7 +35,6 @@ export default function CategoriesClient() {
                     isSelectingRight={isCategoryAlphabetical}
                     onValueChange={setIsCategoryAlphabetical}
                 />
-                <DemoDataBanner />
             </ConfigWrapper>
             <ConfigWrapper className="mb-4 flex justify-end">
                 <Button
@@ -46,6 +45,7 @@ export default function CategoriesClient() {
                     <span>Category</span>
                 </Button>
             </ConfigWrapper>
+            <DemoDataBanner />
             <CategoryList />
             <CategoryDialog
                 isOpen={isCreateOpen}
