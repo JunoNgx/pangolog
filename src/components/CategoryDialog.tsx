@@ -203,7 +203,7 @@ export function CategoryDialog({
 
     const emojiPickerSection = (
         <div className="flex flex-col gap-1">
-            <span className="text-muted text-xs">Icon</span>
+            <span className="text-foreground text-sm">Icon</span>
             <Popover
                 isOpen={isEmojiPickerOpen}
                 onOpenChange={setIsEmojiPickerOpen}
@@ -245,7 +245,7 @@ export function CategoryDialog({
 
     const colourPickerSection = (
         <div className="flex w-2/3 flex-col gap-1">
-            <span className="text-muted text-xs">Colour</span>
+            <span className="text-foreground text-sm">Colour</span>
             <div className="flex gap-2">
                 <Popover>
                     <Popover.Trigger className="flex-1">
@@ -323,16 +323,18 @@ export function CategoryDialog({
                                         : "New Category"}
                                 </Modal.Heading>
                             </Modal.Header>
-                            <Modal.Body className="max-h-[calc(var(--visual-viewport-height,100svh)-10rem)] gap-4 overflow-y-auto">
+                            <Modal.Body className="flex flex-col max-h-[calc(var(--visual-viewport-height,100svh)-10rem)] gap-4 overflow-y-auto">
                                 <div className="flex flex-col gap-1">
-                                    <span>Name</span>
+                                    <Label htmlFor="name" className="sr-only">Name</Label>
                                     <Input
+                                        id="name"
                                         value={name}
                                         onChange={(e) =>
                                             setName(e.target.value)
                                         }
                                         required
                                         autoFocus
+                                        placeholder="Name"
                                     />
                                 </div>
                                 <div className="flex justify-between pb-4">
