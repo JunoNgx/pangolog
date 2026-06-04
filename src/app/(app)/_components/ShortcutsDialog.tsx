@@ -80,7 +80,7 @@ const SHORTCUT_GROUPS: ShortcutGroup[] = [
     },
 ];
 
-export function ShortcutsDialog() {
+export function ShortcutsDialog({ children }: { children?: React.ReactNode }) {
     const [isOpen, setIsOpen] = useState(false);
 
     const open = useCallback(() => setIsOpen(true), []);
@@ -97,9 +97,15 @@ export function ShortcutsDialog() {
         <Modal
             isOpen={isOpen}
             onOpenChange={(open) => {
-                if (!open) close();
+                if (open) setIsOpen(true);
+                else close();
             }}
         >
+            {children && (
+                <Modal.Trigger className="block" tabIndex={-1}>
+                    {children}
+                </Modal.Trigger>
+            )}
             <Modal.Backdrop>
                 <Modal.Container size="md" scroll="inside">
                     <Modal.Dialog>

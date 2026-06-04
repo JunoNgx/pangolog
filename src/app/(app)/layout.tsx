@@ -15,9 +15,23 @@ export default function AppLayout({
         <ErrorBoundary>
             <SyncManager />
             <RecurringRulesManager />
-            <ShortcutsDialog />
+            <ShortcutsDialog>
+                <button
+                    type="button"
+                    className="focus:bg-background focus:text-foreground focus:border-accent focus:ring-primary sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded focus:border focus:px-4 focus:py-2 focus:ring-2 focus:outline-none"
+                >
+                    Open keyboard shortcuts (Ctrl/Cmd+/)
+                </button>
+            </ShortcutsDialog>
             <Suspense>
-                <CommandPalette />
+                <CommandPalette>
+                    <button
+                        type="button"
+                        className="focus:bg-background focus:text-foreground focus:border-accent focus:ring-primary sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded focus:border focus:px-4 focus:py-2 focus:ring-2 focus:outline-none"
+                    >
+                        Open command palette (Ctrl/Cmd+K)
+                    </button>
+                </CommandPalette>
             </Suspense>
             <a
                 href="#main-content"
