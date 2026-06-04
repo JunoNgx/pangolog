@@ -1,4 +1,4 @@
-import { Tooltip } from "@heroui/react";
+import { Popover } from "@heroui/react";
 import { DateTime } from "luxon";
 import { MONTH_NAMES } from "@/lib/constants";
 import type { Transaction } from "@/lib/db/types";
@@ -48,8 +48,8 @@ export default function ExpensesByMonthChart({
     const averagePct = (average / maxTotal) * 100;
 
     const bars = monthlyTotals.map((total, index) => (
-        <Tooltip key={MONTH_NAMES[index]} delay={0}>
-            <Tooltip.Trigger
+        <Popover key={MONTH_NAMES[index]}>
+            <Popover.Trigger
                 className="relative flex flex-1 cursor-pointer flex-col justify-end"
                 style={{
                     height: total > 0 ? `${(total / maxTotal) * 100}%` : "0%",
@@ -63,13 +63,15 @@ export default function ExpensesByMonthChart({
                         {formatAmountShort(total)}
                     </span>
                 )}
-            </Tooltip.Trigger>
-            <Tooltip.Content placement="top" offset={8}>
-                <span className="font-mono text-xs">
-                    {MONTH_NAMES[index]}: {formatAmount(total)}
-                </span>
-            </Tooltip.Content>
-        </Tooltip>
+            </Popover.Trigger>
+            <Popover.Content placement="top" className="min-w-0">
+                <Popover.Dialog>
+                    <span className="font-mono text-xs">
+                        {formatAmount(total)}
+                    </span>
+                </Popover.Dialog>
+            </Popover.Content>
+        </Popover>
     ));
 
     const monthLabels = MONTH_NAMES.map((label) => (
