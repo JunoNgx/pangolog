@@ -2,7 +2,6 @@
 
 import { Input, Label, Modal } from "@heroui/react";
 import { DateTime } from "luxon";
-import type React from "react";
 import {
     type SubmitEventHandler,
     useEffect,
@@ -92,17 +91,6 @@ export function TransactionDialog({
             return true;
         });
     }, [categories, isBigBuck, isIncome]);
-
-    // On Android (Chrome and Firefox), tapping the backdrop to close the dialog
-    // causes the keyboard to flash briefly. This happens because the input blur
-    // fires mid-animation, after the close has already begun. Blurring on
-    // touchstart (before the click/onClose fires) gives the keyboard a full
-    // touch cycle to dismiss before the modal starts closing.
-    function handleBackdropTouchStart(e: React.TouchEvent) {
-        if (!(e.target as HTMLElement).closest('[role="dialog"]')) {
-            (document.activeElement as HTMLElement)?.blur();
-        }
-    }
 
     function handleClose() {
         setAmount("");
@@ -194,7 +182,6 @@ export function TransactionDialog({
                     onOpenChange={(open) => {
                         if (!open) handleClose();
                     }}
-                    onTouchStart={handleBackdropTouchStart}
                 >
                     <Modal.Container>
                         <Modal.Dialog>
