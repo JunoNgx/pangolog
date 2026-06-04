@@ -10,6 +10,12 @@
 :root {
     --accent: oklch(0.75 0.16 70);
     --accent-foreground: #000000;
+    accent-color: var(--accent);
+}
+
+::selection {
+    background-color: var(--accent);
+    color: var(--accent-foreground);
 }
 
 /* Originally #f59e0b (amber) */

@@ -35,12 +35,12 @@ function SortableCategoryItem({
         <li
             ref={ref}
             style={{ borderLeftColor: cat.colour }}
-            className={`bg-background hover:border-foreground flex items-center rounded-none border-b-1 border-l-4 transition ${isDragging ? "opacity-50" : ""} `}
+            className={`bg-background hover:border-foreground flex items-center rounded-none border-b border-l-4 transition ${isDragging ? "opacity-50" : ""} `}
         >
             <button
                 type="button"
                 onClick={() => onEdit(cat)}
-                className="focus-visible:ring-primary flex min-w-0 flex-1 cursor-pointer items-center gap-3 px-4 py-3 text-left focus:outline-none focus-visible:ring-2"
+                className="flex min-w-0 flex-1 cursor-pointer items-center gap-3 px-4 py-3 text-left outline-none focus-visible:ring-2 focus:ring-offset-2 focus:ring-accent"
             >
                 <span className="flex shrink-0 items-center gap-4">
                     <span className="text-xl leading-none">
@@ -131,13 +131,13 @@ export function CategoryList() {
             {categories.map((cat) => (
                 <li
                     key={cat.id}
-                    className="bg-background hover:border-foreground flex items-center rounded-none border-b border-l-4 transition"
+                    className="bg-background hover:border-foreground flex items-center rounded-none border-b border-l-4 transition-[border-color]"
                     style={{ borderLeftColor: cat.colour }}
                 >
                     <button
                         type="button"
                         onClick={() => handleEdit(cat)}
-                        className="focus-visible:ring-primary flex min-w-0 flex-1 cursor-pointer items-center gap-3 px-4 py-3 text-left focus:outline-none focus-visible:ring-2"
+                        className="flex min-w-0 flex-1 cursor-pointer items-center gap-3 px-4 py-3 text-left outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent"
                     >
                         <span className="flex shrink-0 items-center gap-4">
                             <span className="text-xl leading-none">

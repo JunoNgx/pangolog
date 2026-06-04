@@ -105,7 +105,7 @@ function RecurringItem({ rule, category, onEdit }: RecurringItemProps) {
             <button
                 type="button"
                 onClick={() => onEdit(rule)}
-                className={`bg-background hover:border-foreground focus-visible:ring-primary flex w-full cursor-pointer items-center gap-3 rounded-none border-b-1 border-l-4 px-4 py-3 text-left transition focus:outline-none focus-visible:ring-2 ${!rule.isActive ? "opacity-50" : ""} `}
+                className={`bg-background hover:border-foreground flex w-full cursor-pointer items-center gap-3 rounded-none border-b-1 border-l-4 px-4 py-3 text-left transition-[border-color,opacity] outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent ${!rule.isActive ? "opacity-50" : ""} `}
                 style={{ borderLeftColor: category?.colour }}
             >
                 <div className="min-w-0 flex-1">

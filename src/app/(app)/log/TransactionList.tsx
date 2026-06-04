@@ -147,7 +147,7 @@ function TransactionItem({
                 type="button"
                 aria-label={ariaLabel}
                 onClick={() => openEditDialog(transaction)}
-                className="bg-background hover:border-foreground focus-visible:ring-primary mt-2 flex w-full cursor-pointer gap-2 border-b border-l-4 pt-1 pr-2 pb-1 pl-1 text-left transition focus:outline-none focus-visible:ring-2"
+                className="bg-background hover:border-foreground mt-2 flex w-full cursor-pointer gap-2 border-b border-l-4 pt-1 pr-2 pb-1 pl-1 text-left transition-[border-color] outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent"
                 style={{ borderLeftColor: category?.colour }}
             >
                 <div className="ml-2 min-w-0 grow-4">
