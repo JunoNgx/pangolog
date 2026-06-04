@@ -210,10 +210,6 @@ export function RecurringRuleDialog({
     );
 
     const isTxTypeSwitchVisible = !isExpenseOnlyMode;
-    const isExpenseTypeSwitchVisible = true;
-    const isSingleToggle =
-        (isTxTypeSwitchVisible && !isExpenseTypeSwitchVisible) ||
-        (!isTxTypeSwitchVisible && isExpenseTypeSwitchVisible);
 
     const ruleStatusPanel = isEditing && rule && (
         <div className="bg-surface-tertiary flex items-center justify-between rounded-lg border p-3">
@@ -246,28 +242,27 @@ export function RecurringRuleDialog({
         </div>
     );
 
-    const typeToggleRow = (
-        <div
-            className={`mt-2 flex gap-4 ${isSingleToggle ? "justify-center" : isEditing ? "justify-around" : "justify-between"}`}
-        >
-            {isTxTypeSwitchVisible && (
-                <ToggleSwitch
-                    label="Transaction flow type"
-                    isSelectingRight={isIncome}
-                    onValueChange={setIsIncome}
-                    leftLabel="Expense"
-                    rightLabel="Income"
-                />
-            )}
-            {isExpenseTypeSwitchVisible && (
-                <ToggleSwitch
-                    label="Transaction type"
-                    isSelectingRight={isBigBuck}
-                    onValueChange={setIsBigBuck}
-                    leftLabel="Small dime"
-                    rightLabel="Big buck"
-                />
-            )}
+    const typeToggleRow = isTxTypeSwitchVisible && (
+        <div className="mt-2 flex justify-center">
+            <ToggleSwitch
+                label="Transaction flow type"
+                isSelectingRight={isIncome}
+                onValueChange={setIsIncome}
+                leftLabel="Expense"
+                rightLabel="Income"
+            />
+        </div>
+    );
+
+    const expenseTypeToggleRow = (
+        <div className="mt-2 flex justify-center">
+            <ToggleSwitch
+                label="Transaction type"
+                isSelectingRight={isBigBuck}
+                onValueChange={setIsBigBuck}
+                leftLabel="Small dime"
+                rightLabel="Big buck"
+            />
         </div>
     );
 
@@ -297,6 +292,7 @@ export function RecurringRuleDialog({
                                 <Modal.Body>
                                     {ruleStatusPanel}
                                     {typeToggleRow}
+                                    {expenseTypeToggleRow}
 
                                     <AmountInput
                                         value={amount}
