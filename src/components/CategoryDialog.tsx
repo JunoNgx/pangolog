@@ -1,10 +1,21 @@
 "use client";
 
-import { Button, Checkbox, Input, Label, Modal, Popover } from "@heroui/react";
+import {
+    Button,
+    Checkbox,
+    ColorArea,
+    ColorField,
+    ColorPicker,
+    ColorSlider,
+    Input,
+    Label,
+    Modal,
+    Popover,
+    parseColor,
+} from "@heroui/react";
 import { EmojiPicker, type EmojiPickerListComponents } from "frimousse";
 import { Shuffle } from "lucide-react";
 import { type SubmitEventHandler, useEffect, useRef, useState } from "react";
-import { HexColorPicker } from "react-colorful";
 import { DialogFooter } from "@/components/DialogFooter";
 import type { Category } from "@/lib/db/types";
 import {
@@ -111,7 +122,7 @@ export function CategoryDialog({
     const [name, setName] = useState("");
     const nameInputRef = useRef<HTMLInputElement>(null);
     useDelayedAutoFocus(isOpen, nameInputRef);
-    const [colour, setColour] = useState(randomHexColor);
+    const [colour, setColour] = useState(() => parseColor(randomHexColor()));
     const [icon, setIcon] = useState(randomEmoji());
 
     const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
@@ -127,14 +138,14 @@ export function CategoryDialog({
     useEffect(() => {
         if (category) {
             setName(category.name);
-            setColour(category.colour);
+            setColour(parseColor(category.colour));
             setIcon(category.icon);
 
             setIsIncomeOnly(category.isIncomeOnly);
             setIsBuckOnly(category.isBuckOnly);
         } else {
             setName("");
-            setColour(randomHexColor());
+            setColour(parseColor(randomHexColor()));
             setIcon(randomEmoji());
 
             setIsIncomeOnly(false);
@@ -149,7 +160,7 @@ export function CategoryDialog({
 
     function handleClose() {
         setName("");
-        setColour(randomHexColor());
+        setColour(parseColor(randomHexColor()));
         setIcon(randomEmoji());
         setIsEmojiPickerOpen(false);
         setIsIncomeOnly(false);
@@ -157,15 +168,11 @@ export function CategoryDialog({
         onClose();
     }
 
-    function handleColourHexChange(v: string) {
-        setColour(v.startsWith("#") ? v : `#${v}`);
-    }
-
     const handleSubmit: SubmitEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault();
         const input = {
             name,
-            colour,
+            colour: colour.toString("hex"),
             icon,
             priority: category?.priority ?? -1,
             isIncomeOnly,
@@ -244,59 +251,55 @@ export function CategoryDialog({
         </div>
     );
 
+    const colourTrigger = (
+        <ColorPicker.Trigger
+            className="hover:bg-default-hover bg-default flex h-10 w-full cursor-pointer items-center justify-start gap-2 rounded-xl px-4 text-sm font-medium md:h-9"
+            aria-label={`Choose colour, currently ${colour.toString("hex")}`}
+        >
+            <div
+                className="size-6 shrink-0 rounded-full"
+                style={{
+                    backgroundColor: colour.toString("hex"),
+                }}
+            />
+            <span className="text-muted">{colour.toString("hex")}</span>
+        </ColorPicker.Trigger>
+    );
+
+    const colourPopover = (
+        <ColorPicker.Popover placement="bottom end" className="w-56 min-w-56">
+            <ColorArea.Root>
+                <ColorArea.Thumb />
+            </ColorArea.Root>
+            <ColorSlider.Root channel="hue" colorSpace="hsb">
+                <ColorSlider.Track>
+                    <ColorSlider.Thumb />
+                </ColorSlider.Track>
+            </ColorSlider.Root>
+                <ColorField.Root>
+                    <ColorField.Group>
+                        <ColorField.Input />
+                    </ColorField.Group>
+                </ColorField.Root>
+        </ColorPicker.Popover>
+    );
+
     const colourPickerSection = (
         <div className="flex w-2/3 flex-col gap-1">
             <span className="text-foreground text-sm">Colour</span>
             <div className="flex gap-2">
-                <Popover>
-                    <Popover.Trigger className="flex-1">
-                        <Button
-                            variant="tertiary"
-                            className="flex w-full justify-start gap-3 px-3 py-2"
-                            aria-label={`Choose colour, currently ${colour}`}
-                        >
-                            <div
-                                className="size-6 shrink-0 rounded-full"
-                                style={{ backgroundColor: colour }}
-                            />
-                            <span className="text-muted text-sm">{colour}</span>
-                        </Button>
-                    </Popover.Trigger>
-                    <Popover.Content placement="bottom end">
-                        <Popover.Dialog>
-                            <div className="flex flex-col gap-2 p-2">
-                                <HexColorPicker
-                                    color={colour}
-                                    onChange={setColour}
-                                    style={{ width: "100%" }}
-                                />
-                                <div className="flex gap-2">
-                                    <div className="flex flex-1 flex-col gap-1">
-                                        <span>Hex</span>
-                                        <Input
-                                            value={colour}
-                                            onChange={(e) =>
-                                                handleColourHexChange(
-                                                    e.target.value,
-                                                )
-                                            }
-                                            maxLength={7}
-                                            className="flex-1"
-                                        />
-                                    </div>
-                                    <div
-                                        className="flex-1 rounded"
-                                        style={{ backgroundColor: colour }}
-                                    />
-                                </div>
-                            </div>
-                        </Popover.Dialog>
-                    </Popover.Content>
-                </Popover>
+                <ColorPicker.Root
+                    value={colour}
+                    onChange={setColour}
+                    className="flex-1"
+                >
+                    {colourTrigger}
+                    {colourPopover}
+                </ColorPicker.Root>
                 <Button
                     variant="tertiary"
                     isIconOnly
-                    onPress={() => setColour(randomHexColor())}
+                    onPress={() => setColour(parseColor(randomHexColor()))}
                     aria-label="Random colour"
                 >
                     <Shuffle size={16} />
