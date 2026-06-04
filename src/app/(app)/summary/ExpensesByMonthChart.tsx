@@ -54,6 +54,7 @@ export default function ExpensesByMonthChart({
                 style={{
                     height: total > 0 ? `${(total / maxTotal) * 100}%` : "0%",
                 }}
+                tabIndex={total === 0 ? -1 : undefined}
             >
                 <div className="bg-foreground h-full w-full rounded-sm" />
                 {index === tallestIndex && (
