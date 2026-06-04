@@ -86,9 +86,7 @@ export const RO: IDBTransactionMode = "readonly";
 export const PURGE_DAYS = 60;
 
 /* SYNC FILES */
-export const CATEGORIES_FILE = "categories.json";
-export const RECURRING_RULES_FILE = "recurring-rules.json";
-export const SETTINGS_FILE = "settings.json";
+export const DATA_FILE = "data.json";
 
 export const MIME_JSON = "application/json";
 
