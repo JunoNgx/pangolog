@@ -14,7 +14,7 @@ export function RouteHeader({
     onHeadingTap,
 }: RouteHeaderProps) {
     return (
-        <div className="mb-4 flex min-h-8 items-center">
+        <div className="mb-4 flex min-h-10 items-center">
             <div className="flex flex-1 items-center gap-2">{leftContent}</div>
             <h2
                 className={`text-xl font-bold ${onHeadingTap ? "cursor-pointer" : ""} text-center`}
