@@ -172,9 +172,7 @@ export default function SettingsClient() {
     const logsModal = (
         <Modal isOpen={isLogDialogOpen} onOpenChange={setIsLogDialogOpen}>
             <Modal.Trigger>
-                <Button className="mt-2 block" variant="secondary">
-                    View logs
-                </Button>
+                <Button variant="secondary">View logs</Button>
             </Modal.Trigger>
             <Modal.Backdrop>
                 <Modal.Container size="full">
@@ -594,18 +592,20 @@ export default function SettingsClient() {
                 {isDebugVisible && (
                     <section className="mt-8">
                         <h3 className="mb-1 text-lg font-semibold">Debug</h3>
-                        <Button
-                            variant="secondary"
-                            onPress={() =>
-                                toast("Debug toast notification", {
-                                    timeout: 0,
-                                })
-                            }
-                        >
-                            Trigger toast
-                        </Button>
+                        <div className="flex gap-2">
+                            <Button
+                                variant="secondary"
+                                onPress={() =>
+                                    toast("Debug toast notification", {
+                                        timeout: 0,
+                                    })
+                                }
+                            >
+                                Trigger toast
+                            </Button>
 
-                        {logsModal}
+                            {logsModal}
+                        </div>
 
                         <Button
                             className="mt-2 block"
