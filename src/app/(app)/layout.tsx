@@ -13,7 +13,7 @@ export default function AppLayout({
     children: React.ReactNode;
 }>) {
     const A11Y_FOCUS_STYLES =
-        "sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded focus:border focus:px-4 focus:py-2 focus:ring-2 focus:outline-none focus:bg-background focus:text-foreground focus:border-accent focus:ring-primary";
+        "outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded focus:px-4 focus:py-2 focus:bg-background focus:text-foreground";
 
     return (
         <ErrorBoundary>
