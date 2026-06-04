@@ -6,7 +6,7 @@ import {
 import { useProfileSettingsStore } from "./store/useProfileSettingsStore";
 import { utcNowString } from "./utils";
 
-export async function buildDataSnapshot(shouldIncludeDeleted = false) {
+export async function buildDataSnapshot(shouldIncludeDeleted = true) {
     const [transactions, categories, recurringRules] = await Promise.all([
         getAllTransactions(),
         getAllCategoriesForSync(),

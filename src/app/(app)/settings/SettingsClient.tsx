@@ -49,7 +49,7 @@ export default function SettingsClient() {
     const { getLoggerEntries, clearLoggerEntries } = useLogger();
 
     const [isPrettyPrint, setIsPrettyPrint] = useState(true);
-    const [shouldIncludeDeleted, setIsIncludeDeleted] = useState(false);
+    const [shouldIncludeDeleted, setShouldIncludeDeleted] = useState(true);
     const [isExportingJson, setIsExportingJson] = useState(false);
 
     const [isClearRecordsDialogOpen, setIsResetDialogOpen] = useState(false);
@@ -495,7 +495,7 @@ export default function SettingsClient() {
                             </Checkbox>
                             <Checkbox
                                 isSelected={shouldIncludeDeleted}
-                                onChange={setIsIncludeDeleted}
+                                onChange={setShouldIncludeDeleted}
                             >
                                 <Checkbox.Control>
                                     <Checkbox.Indicator />
