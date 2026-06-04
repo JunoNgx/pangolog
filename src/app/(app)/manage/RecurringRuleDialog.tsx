@@ -291,7 +291,7 @@ export function RecurringRuleDialog({
                                             : "New Recurring Rule"}
                                     </Modal.Heading>
                                 </Modal.Header>
-                                <Modal.Body className="flex max-h-[calc(var(--visual-viewport-height,100svh)-10rem)] flex-col gap-4 overflow-y-auto">
+                                <Modal.Body>
                                     {ruleStatusPanel}
                                     {typeToggleRow}
 
@@ -354,15 +354,17 @@ export function RecurringRuleDialog({
                                         }
                                     />
                                 </Modal.Body>
-                                <DialogFooter
-                                    isEditing={isEditing}
-                                    onCancel={handleClose}
-                                    onDelete={
-                                        isEditing ? handleDelete : undefined
-                                    }
-                                    isSubmitting={isPending}
-                                    isDeleting={isDeleting}
-                                />
+                                <Modal.Footer>
+                                    <DialogFooter
+                                        isEditing={isEditing}
+                                        onCancel={handleClose}
+                                        onDelete={
+                                            isEditing ? handleDelete : undefined
+                                        }
+                                        isSubmitting={isPending}
+                                        isDeleting={isDeleting}
+                                    />
+                                </Modal.Footer>
                             </form>
                         </Modal.Dialog>
                     </Modal.Container>

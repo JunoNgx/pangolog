@@ -1,6 +1,14 @@
 "use client";
 
-import { Button, Checkbox, Input, Label, Modal, Popover } from "@heroui/react";
+import {
+    Button,
+    Checkbox,
+    Input,
+    Label,
+    Modal,
+    ModalFooter,
+    Popover,
+} from "@heroui/react";
 import { EmojiPicker, type EmojiPickerListComponents } from "frimousse";
 import { Shuffle } from "lucide-react";
 import { type SubmitEventHandler, useEffect, useState } from "react";
@@ -323,7 +331,7 @@ export function CategoryDialog({
                                         : "New Category"}
                                 </Modal.Heading>
                             </Modal.Header>
-                            <Modal.Body className="flex max-h-[calc(var(--visual-viewport-height,100svh)-10rem)] flex-col gap-4 overflow-y-auto">
+                            <Modal.Body>
                                 <div className="flex flex-col gap-1">
                                     <Label htmlFor="name" className="sr-only">
                                         Name
@@ -368,13 +376,17 @@ export function CategoryDialog({
                                     </Checkbox>
                                 )}
                             </Modal.Body>
-                            <DialogFooter
-                                isEditing={isEditing}
-                                onCancel={onClose}
-                                onDelete={isEditing ? handleDelete : undefined}
-                                isSubmitting={isPending}
-                                isDeleting={deleteCategory.isPending}
-                            />
+                            <Modal.Footer>
+                                <DialogFooter
+                                    isEditing={isEditing}
+                                    onCancel={onClose}
+                                    onDelete={
+                                        isEditing ? handleDelete : undefined
+                                    }
+                                    isSubmitting={isPending}
+                                    isDeleting={deleteCategory.isPending}
+                                />
+                            </Modal.Footer>
                         </form>
                     </Modal.Dialog>
                 </Modal.Container>

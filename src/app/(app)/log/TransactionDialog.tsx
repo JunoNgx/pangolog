@@ -207,7 +207,7 @@ export function TransactionDialog({
                                             : "New Transaction"}
                                     </Modal.Heading>
                                 </Modal.Header>
-                                <Modal.Body className="flex max-h-[calc(var(--visual-viewport-height,100svh)-10rem)] flex-col gap-4 overflow-y-auto">
+                                <Modal.Body>
                                     {!isEditing && !isExpenseOnlyMode && (
                                         <div className="mb-4 flex items-center justify-center">
                                             <ToggleSwitch
@@ -286,16 +286,18 @@ export function TransactionDialog({
                                         }
                                     />
                                 </Modal.Body>
-                                <DialogFooter
-                                    isEditing={isEditing}
-                                    onCancel={handleClose}
-                                    onDelete={
-                                        isEditing ? handleDelete : undefined
-                                    }
-                                    isSubmitting={isPending}
-                                    isDeleting={isDeleting}
-                                    showSubmitTooltip
-                                />
+                                <Modal.Footer>
+                                    <DialogFooter
+                                        isEditing={isEditing}
+                                        onCancel={handleClose}
+                                        onDelete={
+                                            isEditing ? handleDelete : undefined
+                                        }
+                                        isSubmitting={isPending}
+                                        isDeleting={isDeleting}
+                                        showSubmitTooltip
+                                    />
+                                </Modal.Footer>
                             </form>
                         </Modal.Dialog>
                     </Modal.Container>
