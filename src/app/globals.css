@@ -56,7 +56,19 @@
     }
 
     .modal__dialog {
-        @apply rounded-2xl p-4 md:p-6;
+        @apply rounded-2xl px-0 py-4;
+    }
+
+    .modal__header {
+        @apply px-3;
+    }
+
+    .modal__body {
+        @apply flex max-h-[calc(var(--visual-viewport-height,100svh)-10rem)] flex-col gap-4 px-4;
+    }
+
+    .modal__body + .modal__footer {
+        @apply mt-0 px-3 pt-2;
     }
 
     .modal__close-trigger {
