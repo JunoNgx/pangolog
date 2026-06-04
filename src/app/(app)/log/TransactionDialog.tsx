@@ -250,7 +250,7 @@ export function TransactionDialog({
                                         />
                                     </div>
 
-                                    <div className="flex items-center gap-4">
+                                    <div className="flex items-center gap-4 sm:gap-16">
                                         <Label
                                             htmlFor="date"
                                             className="shrink-0"
