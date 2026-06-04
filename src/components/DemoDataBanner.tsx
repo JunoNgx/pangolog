@@ -39,24 +39,23 @@ export function DemoDataBanner() {
 
     return (
         <div
-            className={`/* CONTAINER */ /* INNER STRUCTURE */ /* VISUAL EFFECTS */ border-default-200 bg-default-50 /* BEHAVIOR */ mx-auto mb-4 flex w-fit max-w-lg flex-col items-center gap-3 rounded-lg border px-4 py-3 sm:w-full sm:flex-row sm:items-center`}
+            className={`bg-surface-tertiary mx-auto mb-4 flex w-fit max-w-lg flex-col items-center gap-3 rounded-lg border px-4 py-3 sm:w-full sm:flex-row sm:items-center`}
         >
-            <p className="text-default-600 flex-1 text-center text-sm sm:text-left">
+            <p className="text-foreground flex-1 text-center text-sm sm:text-left">
                 New here? Have a taste and explore.
             </p>
             <div className="flex shrink-0 gap-2">
                 <Button
                     size="sm"
-                    variant="flat"
-                    color="primary"
-                    isLoading={isLoading}
+                    variant="primary"
+                    isPending={isLoading}
                     onPress={handleLoadSampleData}
                 >
                     Load sample data
                 </Button>
                 <Button
                     size="sm"
-                    variant="light"
+                    variant="tertiary"
                     onPress={handleDismiss}
                     isDisabled={isLoading}
                 >

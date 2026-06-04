@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Checkbox } from "@heroui/react";
+import { Button, Checkbox, Label } from "@heroui/react";
 import { DateTime } from "luxon";
 import dynamic from "next/dynamic";
 import { useSync } from "@/lib/hooks/useSync";
@@ -24,7 +24,7 @@ export function DriveSyncSection() {
         useLocalUserSettingsStore();
 
     const lastSyncRow = lastSyncTime && (
-        <p className="text-default-400 text-xs">
+        <p className="text-muted text-xs">
             Last synced:{" "}
             {DateTime.fromISO(lastSyncTime).toLocaleString({
                 ...DateTime.DATETIME_MED,
@@ -33,39 +33,35 @@ export function DriveSyncSection() {
         </p>
     );
 
-    const errorRow = error && (
-        <p className="text-danger-500 text-xs">{error}</p>
-    );
+    const errorRow = error && <p className="text-danger text-xs">{error}</p>;
 
     const autobackupDisabledInfo = !isConnected && (
-        <p className="text-default-400 text-xs">
+        <p className="text-muted text-xs">
             Connect Google Drive to enable autobackup.
         </p>
     );
 
     const connectedContent = (
         <>
-            <p className="text-success-500 text-sm">
+            <p className="text-success text-sm">
                 Status: Connected as {authToken?.email}
             </p>
-            <p className="text-default-400 text-xs">
+            <p className="text-muted text-xs">
                 {syncStatus === "syncing" && "Syncing..."}
                 {syncStatus === "error" && `Error: ${syncError}`}
             </p>
             <div className="flex gap-2">
                 <Button
-                    color="danger"
-                    variant="flat"
+                    variant="danger-soft"
                     className="max-w-xs"
                     onPress={disconnect}
                 >
                     Disconnect
                 </Button>
                 <Button
-                    color="primary"
-                    variant="flat"
+                    variant="primary"
                     className="max-w-xs"
-                    isLoading={syncStatus === "syncing"}
+                    isPending={syncStatus === "syncing"}
                     onPress={() => sync()}
                 >
                     Sync now
@@ -76,17 +72,16 @@ export function DriveSyncSection() {
 
     const disconnectedContent = (
         <>
-            <p className="text-default-400 text-sm">Status: Not connected</p>
+            <p className="text-muted text-sm">Status: Not connected</p>
             <Button
-                color="primary"
-                variant="flat"
+                variant="primary"
                 className="self-start"
-                isLoading={isConnecting}
+                isPending={isConnecting}
                 onPress={connect}
             >
                 Connect Google Drive
             </Button>
-            <p className="text-default-400 text-xs">
+            <p className="text-muted text-xs">
                 Your email address is requested solely to display which account
                 is connected. This is never sent anywhere.
             </p>
@@ -110,14 +105,18 @@ export function DriveSyncSection() {
                 {errorRow}
                 <Checkbox
                     isSelected={isAutobackupEnabled}
-                    onValueChange={setIsAutobackupEnabled}
+                    onChange={setIsAutobackupEnabled}
                     isDisabled={!isConnected}
-                    size="sm"
                 >
-                    <span className="text-sm">Monthly autobackup</span>
+                    <Checkbox.Control>
+                        <Checkbox.Indicator />
+                    </Checkbox.Control>
+                    <Checkbox.Content>
+                        <Label>Monthly autobackup</Label>
+                    </Checkbox.Content>
                 </Checkbox>
                 {autobackupDisabledInfo}
-                <p className="text-default-400 text-xs">
+                <p className="text-muted text-xs">
                     A backup is written to your Pangolog Drive folder each month
                     (backup-YYYY-MM.json) in the same format as the JSON export
                     below. Backups accumulate over time - clean up old ones

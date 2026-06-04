@@ -21,3 +21,4 @@ Personal expense tracker PWA. See `.docs/spec.md` and `.docs/plan.md` for full d
 - Ask for permission before committing
 - Start the commit message with github ticket number, if not on `main`; followed by conventional commit type; start the actual verb with a lowercase character (e.g. `#12 refactor: rename and add boolean prefix to variables`)
 - Avoid regex for implementation and usage when possible. Only use when absolutely necessary or the benefit is significant.
+- Run `pnpm lint`, `pnpm format`, and `pnpm efix` after edit and before handing back to user

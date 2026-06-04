@@ -3,7 +3,6 @@
 import { move } from "@dnd-kit/helpers";
 import { DragDropProvider } from "@dnd-kit/react";
 import { useSortable } from "@dnd-kit/react/sortable";
-import { Skeleton } from "@heroui/react";
 import { GripVertical } from "lucide-react";
 import { useState } from "react";
 import { CategoryDialog } from "@/components/CategoryDialog";
@@ -36,12 +35,12 @@ function SortableCategoryItem({
         <li
             ref={ref}
             style={{ borderLeftColor: cat.colour }}
-            className={`bg-background border-default-200 hover:border-default-400 flex items-center rounded-none border-b-1 border-l-4 transition ${isDragging ? "opacity-50" : ""} `}
+            className={`bg-background hover:border-foreground flex items-center rounded-none border-b border-l-4 transition ${isDragging ? "opacity-50" : ""} `}
         >
             <button
                 type="button"
                 onClick={() => onEdit(cat)}
-                className="focus-visible:ring-primary flex min-w-0 flex-1 cursor-pointer items-center gap-3 px-4 py-3 text-left focus:outline-none focus-visible:ring-2"
+                className="focus:ring-accent flex min-w-0 flex-1 cursor-pointer items-center gap-3 px-4 py-3 text-left outline-none focus:ring-offset-2 focus-visible:ring-2"
             >
                 <span className="flex shrink-0 items-center gap-4">
                     <span className="text-xl leading-none">
@@ -62,7 +61,7 @@ function SortableCategoryItem({
                     ref={handleRef}
                     onClick={(e) => e.stopPropagation()}
                     aria-label={`Drag to reorder ${cat.name}`}
-                    className="text-default-400 mr-2 cursor-grab border-0 bg-transparent py-3 select-none active:cursor-grabbing"
+                    className="text-muted mr-2 cursor-grab border-0 bg-transparent py-3 select-none active:cursor-grabbing"
                 >
                     <GripVertical />
                 </button>
@@ -72,7 +71,7 @@ function SortableCategoryItem({
 }
 
 export function CategoryList() {
-    const { data: categories, isLoading } = useCategories();
+    const { data: categories } = useCategories();
     const reorderCategories = useReorderCategories();
     const { isCategoryAlphabetical } = useProfileSettingsStore();
     const [editingCategory, setEditingCategory] = useState<
@@ -102,20 +101,10 @@ export function CategoryList() {
         reorderCategories.mutate(updates);
     }
 
-    if (isLoading) {
-        return (
-            <MainListContainer className="gap-2">
-                {["s1", "s2", "s3", "s4", "s5", "s6", "s7"].map((key) => (
-                    <Skeleton key={key} className="h-12 w-full rounded-none" />
-                ))}
-            </MainListContainer>
-        );
-    }
-
     if (!categories?.length) {
         return (
             <>
-                <p className="text-default-400 py-12 text-center">
+                <p className="text-muted py-12 text-center">
                     No categories yet. Tap + to create one.
                 </p>
                 <CategoryDialog
@@ -128,7 +117,7 @@ export function CategoryList() {
     }
 
     const notice = (
-        <div className="text-default-400 py-2 text-center text-sm">
+        <div className="text-muted py-2 text-center text-sm">
             <p>
                 This display order is also used in transaction and recurring
                 rule dialogs.
@@ -142,13 +131,13 @@ export function CategoryList() {
             {categories.map((cat) => (
                 <li
                     key={cat.id}
-                    className="bg-background border-default-200 hover:border-default-400 flex items-center rounded-none border-b-1 border-l-4 transition"
+                    className="bg-background hover:border-foreground flex items-center rounded-none border-b border-l-4 transition-[border-color]"
                     style={{ borderLeftColor: cat.colour }}
                 >
                     <button
                         type="button"
                         onClick={() => handleEdit(cat)}
-                        className="focus-visible:ring-primary flex min-w-0 flex-1 cursor-pointer items-center gap-3 px-4 py-3 text-left focus:outline-none focus-visible:ring-2"
+                        className="focus:ring-accent flex min-w-0 flex-1 cursor-pointer items-center gap-3 px-4 py-3 text-left outline-none focus:ring-2 focus:ring-offset-2"
                     >
                         <span className="flex shrink-0 items-center gap-4">
                             <span className="text-xl leading-none">

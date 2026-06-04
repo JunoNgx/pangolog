@@ -1,5 +1,5 @@
+import { toast } from "@heroui/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
 import { CATEGORIES_KEY } from "@/lib/constants";
 import {
     createCategory,
@@ -37,8 +37,7 @@ export function useCreateCategory() {
         mutationFn: (input: CategoryInput) => createCategory(input),
         onSuccess: () =>
             queryClient.invalidateQueries({ queryKey: CATEGORIES_KEY }),
-        onError: () =>
-            toast.error("Failed to save category", { duration: Infinity }),
+        onError: () => toast.danger("Failed to save category", { timeout: 0 }),
     });
 }
 
@@ -50,7 +49,7 @@ export function useUpdateCategory() {
         onSuccess: () =>
             queryClient.invalidateQueries({ queryKey: CATEGORIES_KEY }),
         onError: () =>
-            toast.error("Failed to update category", { duration: Infinity }),
+            toast.danger("Failed to update category", { timeout: 0 }),
     });
 }
 
@@ -99,7 +98,7 @@ export function useDeleteCategory() {
         onSuccess: () =>
             queryClient.invalidateQueries({ queryKey: CATEGORIES_KEY }),
         onError: () =>
-            toast.error("Failed to delete category", { duration: Infinity }),
+            toast.danger("Failed to delete category", { timeout: 0 }),
     });
 }
 
@@ -109,7 +108,6 @@ export function useRestoreCategory() {
         mutationFn: (id: string) => restoreCategory(id),
         onSuccess: () =>
             queryClient.invalidateQueries({ queryKey: CATEGORIES_KEY }),
-        onError: () =>
-            toast.error("Failed to undo deletion", { duration: Infinity }),
+        onError: () => toast.danger("Failed to undo deletion", { timeout: 0 }),
     });
 }

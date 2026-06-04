@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { CommandPalette } from "./_components/CommandPalette";
 import { RecurringRulesManager } from "./_components/RecurringRulesManager";
@@ -11,18 +12,26 @@ export default function AppLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+    const A11Y_FOCUS_STYLES =
+        "outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded focus:px-4 focus:py-2 focus:bg-background focus:text-foreground";
+
     return (
         <ErrorBoundary>
             <SyncManager />
             <RecurringRulesManager />
-            <ShortcutsDialog />
+            <ShortcutsDialog>
+                <button type="button" className={A11Y_FOCUS_STYLES}>
+                    Open keyboard shortcuts (Ctrl/Cmd+/)
+                </button>
+            </ShortcutsDialog>
             <Suspense>
-                <CommandPalette />
+                <CommandPalette>
+                    <button type="button" className={A11Y_FOCUS_STYLES}>
+                        Open command palette (Ctrl/Cmd+K)
+                    </button>
+                </CommandPalette>
             </Suspense>
-            <a
-                href="#main-content"
-                className="focus:bg-background focus:text-foreground focus:border-default-300 focus:ring-primary sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded focus:border focus:px-4 focus:py-2 focus:ring-2 focus:outline-none"
-            >
+            <a href="#main-content" className={A11Y_FOCUS_STYLES}>
                 Skip to main content
             </a>
             <div className="flex h-screen flex-col">

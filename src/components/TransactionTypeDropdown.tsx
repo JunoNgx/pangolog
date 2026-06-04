@@ -1,12 +1,6 @@
 "use client";
 
-import {
-    Button,
-    Dropdown,
-    DropdownItem,
-    DropdownMenu,
-    DropdownTrigger,
-} from "@heroui/react";
+import { Button, Dropdown, Label } from "@heroui/react";
 import type { LucideIcon } from "lucide-react";
 import { Banknote, Coins, HandCoins } from "lucide-react";
 import type { ViewDisplayMode } from "@/lib/types";
@@ -42,37 +36,35 @@ export function TransactionTypeDropdown({
     }
 
     return (
-        <Dropdown
-            classNames={{
-                content: "min-w-0 w-fit",
-            }}
-        >
-            <DropdownTrigger>
-                <Button
-                    variant="ghost"
-                    size="sm"
-                    isIconOnly
-                    aria-label={modeLabel}
-                    title="Ctrl/Cmd+Shift+U"
-                >
-                    <CurrentIcon size={16} />
-                </Button>
-            </DropdownTrigger>
-            <DropdownMenu
-                aria-label="Transaction type display mode"
-                selectionMode="single"
-                selectedKeys={new Set([displayMode])}
-                onSelectionChange={handleSelectionChange}
+        <Dropdown>
+            <Button
+                variant="outline"
+                size="sm"
+                isIconOnly
+                aria-label={modeLabel}
             >
-                {MODE_OPTIONS.map((opt) => (
-                    <DropdownItem
-                        key={opt.key}
-                        startContent={<opt.icon size={16} />}
-                    >
-                        {opt.label}
-                    </DropdownItem>
-                ))}
-            </DropdownMenu>
+                <CurrentIcon size={16} />
+            </Button>
+            <Dropdown.Popover className="w-fit min-w-0" placement="bottom end">
+                <Dropdown.Menu
+                    aria-label="Transaction type display mode"
+                    selectionMode="single"
+                    selectedKeys={new Set([displayMode])}
+                    onSelectionChange={handleSelectionChange}
+                >
+                    {MODE_OPTIONS.map((opt) => (
+                        <Dropdown.Item
+                            id={opt.key}
+                            key={opt.key}
+                            textValue={opt.label}
+                        >
+                            <opt.icon size={16} />
+                            <Label>{opt.label}</Label>
+                            <Dropdown.ItemIndicator />
+                        </Dropdown.Item>
+                    ))}
+                </Dropdown.Menu>
+            </Dropdown.Popover>
         </Dropdown>
     );
 }

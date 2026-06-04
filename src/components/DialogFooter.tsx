@@ -20,32 +20,34 @@ export function DialogFooter({
     showSubmitTooltip,
 }: DialogFooterProps) {
     const submitButton = (
-        <Button type="submit" color="primary" isLoading={isSubmitting}>
+        <Button type="submit" variant="primary" isPending={isSubmitting}>
             {isEditing ? "Save" : "Create"}
         </Button>
     );
 
-    const containerClasses = `flex gap-2 p-2 ${isEditing && onDelete ? "justify-between" : "justify-end"}`;
-
     return (
-        <div className={containerClasses}>
+        <div
+            className={`flex gap-2 ${isEditing && onDelete ? "justify-between" : "justify-end"}`}
+        >
             {isEditing && onDelete && (
                 <Button
-                    color="danger"
-                    variant="light"
-                    isLoading={isDeleting}
+                    variant="danger-soft"
+                    isPending={isDeleting}
                     onPress={onDelete}
                 >
                     Delete
                 </Button>
             )}
             <div className="flex gap-2">
-                <Button variant="light" onPress={onCancel}>
+                <Button variant="tertiary" onPress={onCancel}>
                     Cancel
                 </Button>
                 {showSubmitTooltip ? (
-                    <Tooltip content="Ctrl/Cmd + Enter" placement="left">
+                    <Tooltip delay={0}>
                         {submitButton}
+                        <Tooltip.Content placement="left">
+                            Ctrl/Cmd + Enter
+                        </Tooltip.Content>
                     </Tooltip>
                 ) : (
                     submitButton

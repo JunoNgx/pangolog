@@ -1,15 +1,27 @@
 @import "tailwindcss";
-@plugin "./heroui.plugin.mjs";
-@source "../../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}";
-@custom-variant dark (&:is(.dark *));
+@import "@heroui/styles";
 
 @theme inline {
     --font-sans: var(--font-sans-var);
     --font-mono: var(--font-mono-var);
+}
 
-    /* --radius-sm: 0;
-    --radius-md: 0;
-    --radius-lg: 0; */
+/* Originally #f59e0b (amber) */
+:root {
+    --accent: oklch(0.75 0.16 70);
+    --accent-foreground: #000000;
+    accent-color: var(--accent);
+}
+
+::selection {
+    background-color: var(--accent);
+    color: var(--accent-foreground);
+}
+
+/* Originally #f59e0b (amber) */
+.dark {
+    --accent: oklch(0.75 0.16 70);
+    --accent-foreground: #000000;
 }
 
 @layer base {
@@ -31,6 +43,65 @@
     }
 }
 
+@layer components {
+    .button {
+        @apply rounded-lg;
+    }
+
+    .input {
+        @apply border-foreground rounded-lg border shadow-none transition-colors;
+    }
+
+    .input:hover:not(:focus):not(:focus-visible) {
+        @apply border-foreground rounded-lg border bg-transparent;
+    }
+
+    .input:focus,
+    .input[data-focused="true"] {
+        @apply border-accent focus-visible:ring-0 focus-visible:outline-none;
+    }
+
+    .modal__dialog {
+        @apply rounded-2xl px-0 py-4;
+    }
+
+    .modal__header {
+        @apply px-3;
+    }
+
+    .modal__body {
+        @apply flex max-h-[calc(var(--visual-viewport-height,100svh)-10rem)] flex-col gap-4 px-4;
+    }
+
+    .modal__body + .modal__footer {
+        @apply mt-0 px-3 pt-2;
+    }
+
+    .modal__close-trigger {
+        @apply bg-transparent;
+    }
+
+    .modal__close-trigger:hover {
+        @apply bg-default;
+    }
+
+    .dropdown__popover {
+        @apply rounded-lg;
+    }
+
+    .popover {
+        @apply rounded-lg;
+    }
+
+    .popover__dialog {
+        @apply p-2;
+    }
+
+    .checkbox__control {
+        @apply border-border-secondary border;
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -38,11 +109,5 @@
         animation-duration: 0.01ms;
         animation-iteration-count: 1;
         transition-duration: 0.01ms;
-    }
-}
-
-.Sonner[data-sonner-toaster][data-y-position="bottom"] {
-    @media screen and (max-width: theme(--breakpoint-md)) {
-        bottom: var(--mobile-offset-bottom);
     }
 }
