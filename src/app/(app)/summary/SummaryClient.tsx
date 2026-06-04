@@ -114,12 +114,9 @@ function SegmentBar({ label, slices, total }: SegmentBarProps) {
                 {slices.map((slice) => (
                     <li
                         key={slice.categoryId ?? `__${slice.name}__`}
-                        className={`flex items-center gap-2 border-b border-dashed py-1 text-sm`}
+                        className="border-b-dashed flex items-center gap-2 border-b border-l-4 py-1 pl-2 text-sm"
+                        style={{ borderLeftColor: slice.colour }}
                     >
-                        <span
-                            className="h-2.5 w-2.5 shrink-0 rounded-full"
-                            style={{ backgroundColor: slice.colour }}
-                        />
                         <span className="text-foreground flex-1">
                             <span className="mr-1">
                                 {slice.icon ? `${slice.icon} ` : ""}
