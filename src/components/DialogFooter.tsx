@@ -27,7 +27,7 @@ export function DialogFooter({
 
     return (
         <div
-            className={`flex gap-2 ${isEditing && onDelete ? "justify-between" : "justify-end"}`}
+            className={`flex w-full gap-2 ${isEditing && onDelete ? "justify-between" : "justify-end"}`}
         >
             {isEditing && onDelete && (
                 <Button
