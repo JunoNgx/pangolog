@@ -49,6 +49,7 @@ export default function SettingsClient() {
     const { getLoggerEntries, clearLoggerEntries } = useLogger();
 
     const [isPrettyPrint, setIsPrettyPrint] = useState(true);
+    const [shouldIncludeDeleted, setShouldIncludeDeleted] = useState(true);
     const [isExportingJson, setIsExportingJson] = useState(false);
 
     const [isClearRecordsDialogOpen, setIsResetDialogOpen] = useState(false);
@@ -118,7 +119,7 @@ export default function SettingsClient() {
 
     async function handleExportJson() {
         setIsExportingJson(true);
-        await exportJson(isPrettyPrint);
+        await exportJson(isPrettyPrint, shouldIncludeDeleted);
         setIsExportingJson(false);
     }
 
@@ -476,6 +477,8 @@ export default function SettingsClient() {
                             >
                                 Export JSON
                             </Button>
+                        </div>
+                        <div className="flex items-center gap-3">
                             <Checkbox
                                 isSelected={isPrettyPrint}
                                 onChange={setIsPrettyPrint}
@@ -487,6 +490,20 @@ export default function SettingsClient() {
                                     <Label>Pretty print</Label>
                                     <span className="text-muted text-xs">
                                         Human-readable formatting.
+                                    </span>
+                                </Checkbox.Content>
+                            </Checkbox>
+                            <Checkbox
+                                isSelected={shouldIncludeDeleted}
+                                onChange={setShouldIncludeDeleted}
+                            >
+                                <Checkbox.Control>
+                                    <Checkbox.Indicator />
+                                </Checkbox.Control>
+                                <Checkbox.Content>
+                                    <Label>Include soft-deleted records</Label>
+                                    <span className="text-muted text-xs">
+                                        Useful for data sync
                                     </span>
                                 </Checkbox.Content>
                             </Checkbox>
