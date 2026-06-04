@@ -1,8 +1,6 @@
 "use client";
 
 import { Button, Dropdown, Label } from "@heroui/react";
-import type { LucideIcon } from "lucide-react";
-import { Calendar1, CalendarDays } from "lucide-react";
 
 interface PeriodViewDropdownProps {
     isYearly: boolean;
@@ -12,10 +10,10 @@ interface PeriodViewDropdownProps {
 const VIEW_OPTIONS: {
     key: string;
     label: string;
-    icon: LucideIcon;
+    icon: string;
 }[] = [
-    { key: "monthly", label: "Monthly", icon: Calendar1 },
-    { key: "yearly", label: "Yearly", icon: CalendarDays },
+    { key: "monthly", label: "Monthly", icon: "M" },
+    { key: "yearly", label: "Yearly", icon: "Y" },
 ];
 
 export function PeriodViewDropdown({
@@ -25,7 +23,7 @@ export function PeriodViewDropdown({
     const currentOption = VIEW_OPTIONS.find(
         (opt) => opt.key === (isYearly ? "yearly" : "monthly"),
     );
-    const CurrentIcon = currentOption?.icon ?? Calendar1;
+    const currentIcon = currentOption?.icon ?? "M";
     const viewLabel = currentOption?.label ?? "Monthly";
 
     function handleSelectionChange(keys: "all" | Set<React.Key>) {
@@ -43,7 +41,7 @@ export function PeriodViewDropdown({
                 isIconOnly
                 aria-label={viewLabel}
             >
-                <CurrentIcon size={16} />
+                <span className="text-sm font-bold">{currentIcon}</span>
             </Button>
             <Dropdown.Popover className="w-fit min-w-0">
                 <Dropdown.Menu
@@ -58,7 +56,9 @@ export function PeriodViewDropdown({
                             key={opt.key}
                             textValue={opt.label}
                         >
-                            <opt.icon size={16} />
+                            <span className="text-sm font-bold">
+                                {opt.icon}
+                            </span>
                             <Label>{opt.label}</Label>
                             <Dropdown.ItemIndicator />
                         </Dropdown.Item>
