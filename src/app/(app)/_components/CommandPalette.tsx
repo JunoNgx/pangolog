@@ -50,7 +50,7 @@ const THEME_OPTIONS = [
     },
 ];
 
-export function CommandPalette() {
+export function CommandPalette({ children }: { children?: React.ReactNode }) {
     const [isOpen, setIsOpen] = useState(false);
     const [query, setQuery] = useState("");
     const [selectedIndex, setSelectedIndex] = useState(0);
@@ -281,9 +281,15 @@ export function CommandPalette() {
         <Modal
             isOpen={isOpen}
             onOpenChange={(open) => {
-                if (!open) close();
+                if (open) setIsOpen(true);
+                else close();
             }}
         >
+            {children && (
+                <Modal.Trigger className="block" tabIndex={-1}>
+                    {children}
+                </Modal.Trigger>
+            )}
             <Modal.Backdrop>
                 <Modal.Container size="sm">
                     <Modal.Dialog className="max-w-md">
