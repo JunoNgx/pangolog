@@ -1,14 +1,6 @@
 "use client";
 
-import {
-    Button,
-    Checkbox,
-    Input,
-    Label,
-    Modal,
-    ModalFooter,
-    Popover,
-} from "@heroui/react";
+import { Button, Checkbox, Input, Label, Modal, Popover } from "@heroui/react";
 import { EmojiPicker, type EmojiPickerListComponents } from "frimousse";
 import { Shuffle } from "lucide-react";
 import { type SubmitEventHandler, useEffect, useState } from "react";
