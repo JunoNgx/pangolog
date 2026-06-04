@@ -21,7 +21,7 @@ function triggerDownload(
     URL.revokeObjectURL(url);
 }
 
-export async function buildExportData() {
+export async function buildExportData(shouldIncludeDeleted = false) {
     const [transactions, categories, recurringRules] = await Promise.all([
         getAllTransactions(),
         getAllCategoriesForSync(),
@@ -46,15 +46,22 @@ export async function buildExportData() {
             updatedAt,
         },
         transactions: transactions
-            .filter((t) => t.deletedAt === null)
+            .filter((t) => shouldIncludeDeleted || t.deletedAt === null)
             .sort((a, b) => a.transactedAt.localeCompare(b.transactedAt)),
-        categories: categories.filter((c) => c.deletedAt === null),
-        recurringRules: recurringRules.filter((r) => r.deletedAt === null),
+        categories: categories.filter(
+            (c) => shouldIncludeDeleted || c.deletedAt === null,
+        ),
+        recurringRules: recurringRules.filter(
+            (r) => shouldIncludeDeleted || r.deletedAt === null,
+        ),
     };
 }
 
-export async function exportJson(isPrettyPrint: boolean): Promise<void> {
-    const data = await buildExportData();
+export async function exportJson(
+    isPrettyPrint: boolean,
+    shouldIncludeDeleted = false,
+): Promise<void> {
+    const data = await buildExportData(shouldIncludeDeleted);
 
     const content = isPrettyPrint
         ? JSON.stringify(data, null, 2)
