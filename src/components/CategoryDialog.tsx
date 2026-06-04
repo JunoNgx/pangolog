@@ -24,7 +24,6 @@ import {
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
 import { showDeleteToast } from "@/lib/utils";
 
-// biome-ignore-start format: Formatting is intentional
 const EMOJI_DEFAULTS = [
     "🍽️",
     "🛒",
@@ -67,7 +66,6 @@ const EMOJI_DEFAULTS = [
     "🏦",
     "📦",
 ];
-// biome-ignore-end format: Formatting is intentional
 
 function randomEmoji() {
     return EMOJI_DEFAULTS[Math.floor(Math.random() * EMOJI_DEFAULTS.length)];
