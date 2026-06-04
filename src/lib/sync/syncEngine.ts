@@ -6,6 +6,7 @@ import {
     STORE_RECURRING_RULES,
     STORE_TRANSACTIONS,
 } from "@/lib/constants";
+import { buildDataSnapshot } from "@/lib/dataProcess";
 import {
     bulkPutCategories,
     bulkPutRecurringRules,
@@ -17,7 +18,6 @@ import {
 } from "@/lib/db/bulk";
 import { getDb } from "@/lib/db/connection";
 import type { Transaction } from "@/lib/db/types";
-import { buildExportData } from "@/lib/export";
 import type { ImportData } from "@/lib/import";
 import { useLocalUserSettingsStore } from "@/lib/store/useLocalUserSettingsStore";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
@@ -200,7 +200,7 @@ export async function runFullSync(
     // Re-read from DB rather than reusing in-memory merged data: dedup may have
     // written additional soft-deletes, and the parallel bulkPut above merges
     // records by last-write-wins -- the DB is the authoritative final state.
-    const uploadData = await buildExportData(true);
+    const uploadData = await buildDataSnapshot(true);
     await provider.upsertFile(token, rootId, DATA_FILE, uploadData);
 
     // --- Autobackup ---
@@ -212,7 +212,7 @@ export async function runFullSync(
     const fileName = backupFileName(backupTime.year, backupTime.month);
     if (remoteFileMap.has(fileName)) return syncStartTime;
 
-    const backupData = await buildExportData();
+    const backupData = await buildDataSnapshot();
     await provider.createFile(token, rootId, fileName, backupData);
 
     return syncStartTime;
