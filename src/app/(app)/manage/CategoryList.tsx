@@ -40,7 +40,7 @@ function SortableCategoryItem({
             <button
                 type="button"
                 onClick={() => onEdit(cat)}
-                className="flex min-w-0 flex-1 cursor-pointer items-center gap-3 px-4 py-3 text-left outline-none focus-visible:ring-2 focus:ring-offset-2 focus:ring-accent"
+                className="focus:ring-accent flex min-w-0 flex-1 cursor-pointer items-center gap-3 px-4 py-3 text-left outline-none focus:ring-offset-2 focus-visible:ring-2"
             >
                 <span className="flex shrink-0 items-center gap-4">
                     <span className="text-xl leading-none">
@@ -137,7 +137,7 @@ export function CategoryList() {
                     <button
                         type="button"
                         onClick={() => handleEdit(cat)}
-                        className="flex min-w-0 flex-1 cursor-pointer items-center gap-3 px-4 py-3 text-left outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent"
+                        className="focus:ring-accent flex min-w-0 flex-1 cursor-pointer items-center gap-3 px-4 py-3 text-left outline-none focus:ring-2 focus:ring-offset-2"
                     >
                         <span className="flex shrink-0 items-center gap-4">
                             <span className="text-xl leading-none">
