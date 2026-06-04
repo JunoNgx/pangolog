@@ -84,8 +84,8 @@ function SegmentBar({ label, slices, total }: SegmentBarProps) {
     if (slices.length === 0) {
         return (
             <div className="mb-6">
-                <p className="text-default-500 mb-2 font-semibold">{label}</p>
-                <p className="text-default-400 text-sm">No data.</p>
+                <p className="text-muted mb-2 font-semibold">{label}</p>
+                <p className="text-muted text-sm">No data.</p>
             </div>
         );
     }
@@ -93,8 +93,8 @@ function SegmentBar({ label, slices, total }: SegmentBarProps) {
     return (
         <div className="mb-6">
             <div className="mb-2 flex items-baseline justify-between">
-                <p className="text-default-500 font-semibold">{label}</p>
-                <p className="text-default-700 font-mono text-sm font-semibold">
+                <p className="text-muted font-semibold">{label}</p>
+                <p className="text-foreground font-mono text-sm font-semibold">
                     {formatAmount(total)}
                 </p>
             </div>
@@ -114,22 +114,22 @@ function SegmentBar({ label, slices, total }: SegmentBarProps) {
                 {slices.map((slice) => (
                     <li
                         key={slice.categoryId ?? `__${slice.name}__`}
-                        className={`border-default-200 flex items-center gap-2 border-b border-dashed py-1 text-sm`}
+                        className={`flex items-center gap-2 border-b border-dashed py-1 text-sm`}
                     >
                         <span
                             className="h-2.5 w-2.5 shrink-0 rounded-full"
                             style={{ backgroundColor: slice.colour }}
                         />
-                        <span className="text-default-700 flex-1">
+                        <span className="text-foreground flex-1">
                             <span className="mr-1">
                                 {slice.icon ? `${slice.icon} ` : ""}
                             </span>
                             {slice.name}
                         </span>
-                        <span className="text-default-500 font-mono">
+                        <span className="text-muted font-mono">
                             {formatAmount(slice.total)}
                         </span>
-                        <span className="text-default-400 w-14 text-right font-mono">
+                        <span className="text-muted w-14 text-right font-mono">
                             {slice.pct.toFixed(1)}%
                         </span>
                     </li>

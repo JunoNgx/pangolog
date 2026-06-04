@@ -1,6 +1,5 @@
 "use client";
 
-import { Skeleton } from "@heroui/react";
 import { DateTime } from "luxon";
 import { useState } from "react";
 import { ChipLabel } from "@/components/ChipLabel";
@@ -12,13 +11,11 @@ import { TransactionDialog } from "./TransactionDialog";
 interface TransactionListProps {
     transactions: Transaction[];
     categories: Category[];
-    isLoading: boolean;
 }
 
 export function TransactionList({
     transactions,
     categories,
-    isLoading,
 }: TransactionListProps) {
     const [editingTx, setEditingTx] = useState<Transaction | undefined>();
     const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -41,25 +38,10 @@ export function TransactionList({
             DateTime.fromISO(a.transactedAt).toMillis(),
     );
 
-    if (isLoading) {
-        return (
-            <MainListContainer className="gap-2">
-                {["s1", "s2", "s3", "s4", "s5", "s6", "s7"].map((key) => (
-                    <Skeleton
-                        key={key}
-                        className="my-1 h-12 w-full rounded-lg"
-                    />
-                ))}
-            </MainListContainer>
-        );
-    }
-
     if (!displayedItems.length) {
         return (
             <>
-                <p className="text-default-400 py-12 text-center">
-                    Nothing to show.
-                </p>
+                <p className="text-muted py-12 text-center">Nothing to show.</p>
                 <TransactionDialog
                     isOpen={isDialogOpen}
                     onClose={handleCloseDialog}
@@ -99,7 +81,7 @@ export function TransactionList({
             <MainListContainer>
                 {groupedByDateItems.map(({ dateKey, dateText, items }) => (
                     <li key={dateKey}>
-                        <h3 className="text-default-400 mt-6 mb-0 text-sm">
+                        <h3 className="text-muted mt-6 mb-0 text-sm">
                             {dateText}
                         </h3>
                         <ul>
@@ -165,26 +147,26 @@ function TransactionItem({
                 type="button"
                 aria-label={ariaLabel}
                 onClick={() => openEditDialog(transaction)}
-                className="border-default-200 bg-background hover:border-default-400 focus-visible:ring-primary mt-2 flex w-full cursor-pointer gap-2 border-b-1 border-l-4 pt-1 pr-2 pb-1 pl-1 text-left transition focus:outline-none focus-visible:ring-2"
+                className="bg-background hover:border-foreground focus:ring-accent mt-2 flex w-full cursor-pointer gap-2 border-b border-l-4 pt-1 pr-2 pb-1 pl-1 text-left transition-[border-color] outline-none focus:ring-2 focus:ring-offset-2"
                 style={{ borderLeftColor: category?.colour }}
             >
                 <div className="ml-2 min-w-0 grow-4">
                     {hasCategory ? (
                         <p>
                             <span className="mr-1">{category.icon || "·"}</span>
-                            <span className="text-default-700">
+                            <span className="text-foreground">
                                 {category.name}
                             </span>
                         </p>
                     ) : (
-                        <p className="text-default-400">(no category)</p>
+                        <p className="text-muted">(no category)</p>
                     )}
                     {hasDescription ? (
-                        <p className="text-default-400 truncate font-mono text-sm">
+                        <p className="text-muted truncate font-mono text-sm">
                             {transaction.description}
                         </p>
                     ) : (
-                        <p className="text-default-400 font-mono text-sm">
+                        <p className="text-muted font-mono text-sm">
                             (no description)
                         </p>
                     )}

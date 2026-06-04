@@ -1,23 +1,23 @@
 "use client";
 
-import {
-    Input,
-    Modal,
-    ModalBody,
-    ModalContent,
-    ModalHeader,
-    Switch,
-} from "@heroui/react";
+import { Button, Dropdown, Input, Label, Modal, Switch } from "@heroui/react";
 import { DateTime } from "luxon";
-import { type SubmitEventHandler, useEffect, useMemo, useState } from "react";
+import {
+    type SubmitEventHandler,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from "react";
 import { AmountInput } from "@/components/AmountInput";
 import { CategoryDialog } from "@/components/CategoryDialog";
 import { CategoryPicker } from "@/components/CategoryPicker";
 import { DialogFooter } from "@/components/DialogFooter";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
-import { DAY_NAMES_FULL, MONTH_NAMES, SELECT_CLASSES } from "@/lib/constants";
+import { DAY_NAMES_FULL, MONTH_NAMES } from "@/lib/constants";
 import type { RecurringRule } from "@/lib/db/types";
 import { useCategories } from "@/lib/hooks/useCategories";
+import { useDelayedAutoFocus } from "@/lib/hooks/useDelayedAutoFocus";
 import {
     useCreateRecurringRule,
     useDeleteRecurringRule,
@@ -34,6 +34,13 @@ import {
     todayDateString,
 } from "@/lib/utils";
 
+const FREQUENCY_OPTIONS: { value: Frequency; label: string }[] = [
+    { value: "daily", label: "Daily" },
+    { value: "weekly", label: "Weekly" },
+    { value: "monthly", label: "Monthly" },
+    { value: "yearly", label: "Yearly" },
+];
+
 function getRepeatLabel(frequency: Frequency, dateStr: string): string {
     const dt = DateTime.fromISO(`${dateStr}T12:00:00`);
     switch (frequency) {
@@ -47,14 +54,6 @@ function getRepeatLabel(frequency: Frequency, dateStr: string): string {
             return `Repeats every ${MONTH_NAMES[dt.month - 1]} ${dt.day}`;
     }
 }
-
-import { FORM_MODAL_CLASS_NAMES } from "@/lib/constants";
-
-const statusPanelClasses = `
-    p-3 rounded-lg border
-    flex items-center justify-between
-    bg-default-50 border-default-200
-`;
 
 interface RecurringRuleDialogProps {
     isOpen: boolean;
@@ -77,6 +76,8 @@ export function RecurringRuleDialog({
     const [isActive, setIsActive] = useState(true);
     const [isCategoryDialogOpen, setIsCategoryDialogOpen] = useState(false);
 
+    const amountInputRef = useRef<HTMLInputElement>(null);
+    useDelayedAutoFocus(isOpen, amountInputRef);
     const { data: categories } = useCategories();
     const createRule = useCreateRecurringRule();
     const updateRule = useUpdateRecurringRule();
@@ -129,8 +130,11 @@ export function RecurringRuleDialog({
         onClose();
     }
 
-    function handleFrequencyChange(e: React.ChangeEvent<HTMLSelectElement>) {
-        setFrequency(e.target.value as Frequency);
+    function handleFrequencySelectionChange(keys: "all" | Set<React.Key>) {
+        if (keys === "all") return;
+        const key = Array.from(keys)[0] as Frequency;
+        if (!key) return;
+        setFrequency(key);
     }
 
     const handleSubmit: SubmitEventHandler<HTMLFormElement> = (e) => {
@@ -180,31 +184,55 @@ export function RecurringRuleDialog({
     const isDeleting = deleteRule.isPending;
     const repeatLabel = getRepeatLabel(frequency, startDate);
 
-    const isTxTypeSwitchVisible = !isExpenseOnlyMode;
-    const isExpenseTypeSwitchVisible = true;
-    const isSingleToggle =
-        (isTxTypeSwitchVisible && !isExpenseTypeSwitchVisible) ||
-        (!isTxTypeSwitchVisible && isExpenseTypeSwitchVisible);
+    const frequencyDropdown = (
+        <div className="flex shrink-0 flex-col gap-1">
+            <span className="text-foreground text-sm">Frequency</span>
+            <Dropdown>
+                <Button variant="outline" size="sm">
+                    {FREQUENCY_OPTIONS.find((o) => o.value === frequency)
+                        ?.label ?? frequency}
+                </Button>
+                <Dropdown.Popover
+                    className="w-fit min-w-0"
+                    placement="bottom end"
+                >
+                    <Dropdown.Menu
+                        aria-label="Frequency"
+                        selectionMode="single"
+                        selectedKeys={new Set([frequency])}
+                        onSelectionChange={handleFrequencySelectionChange}
+                    >
+                        {FREQUENCY_OPTIONS.map((opt) => (
+                            <Dropdown.Item
+                                id={opt.value}
+                                key={opt.value}
+                                textValue={opt.label}
+                            >
+                                {opt.label}
+                                <Dropdown.ItemIndicator />
+                            </Dropdown.Item>
+                        ))}
+                    </Dropdown.Menu>
+                </Dropdown.Popover>
+            </Dropdown>
+        </div>
+    );
 
-    const toggleRowClasses = `
-        flex gap-4 mt-2
-        ${isSingleToggle ? "justify-center" : isEditing ? "justify-around" : "justify-between"}
-    `;
+    const isTxTypeSwitchVisible = !isExpenseOnlyMode;
 
     const ruleStatusPanel = isEditing && rule && (
-        <div className={statusPanelClasses}>
+        <div className="bg-surface-tertiary flex items-center justify-between rounded-lg border p-3">
             <div className="flex flex-col gap-1">
-                <Switch
-                    isSelected={isActive}
-                    onValueChange={setIsActive}
-                    color="success"
-                >
-                    <span className="text-sm font-medium">
-                        {isActive ? "Active" : "Paused"}
-                    </span>
+                <Switch isSelected={isActive} onChange={setIsActive}>
+                    <Switch.Control>
+                        <Switch.Thumb />
+                    </Switch.Control>
+                    <Switch.Content>
+                        <Label>{isActive ? "Active" : "Paused"}</Label>
+                    </Switch.Content>
                 </Switch>
             </div>
-            <div className="text-default-400 flex flex-col items-end gap-1 font-mono text-xs">
+            <div className="text-muted flex flex-col items-end gap-1 font-mono text-xs">
                 <span>
                     Next:{" "}
                     {DateTime.fromISO(rule.nextGenerationAt).toLocaleString(
@@ -223,26 +251,27 @@ export function RecurringRuleDialog({
         </div>
     );
 
-    const typeToggleRow = (
-        <div className={toggleRowClasses}>
-            {isTxTypeSwitchVisible && (
-                <ToggleSwitch
-                    label="Transaction flow type"
-                    isSelectingRight={isIncome}
-                    onValueChange={setIsIncome}
-                    leftLabel="Expense"
-                    rightLabel="Income"
-                />
-            )}
-            {isExpenseTypeSwitchVisible && (
-                <ToggleSwitch
-                    label="Transaction type"
-                    isSelectingRight={isBigBuck}
-                    onValueChange={setIsBigBuck}
-                    leftLabel="Small dime"
-                    rightLabel="Big buck"
-                />
-            )}
+    const typeToggleRow = isTxTypeSwitchVisible && (
+        <div className="mt-2 flex justify-center">
+            <ToggleSwitch
+                label="Transaction flow type"
+                isSelectingRight={isIncome}
+                onValueChange={setIsIncome}
+                leftLabel="Expense"
+                rightLabel="Income"
+            />
+        </div>
+    );
+
+    const expenseTypeToggleRow = (
+        <div className="mt-2 flex justify-center">
+            <ToggleSwitch
+                label="Transaction type"
+                isSelectingRight={isBigBuck}
+                onValueChange={setIsBigBuck}
+                leftLabel="Small dime"
+                rightLabel="Big buck"
+            />
         </div>
     );
 
@@ -250,88 +279,106 @@ export function RecurringRuleDialog({
         <>
             <Modal
                 isOpen={isOpen}
-                onClose={handleClose}
-                classNames={FORM_MODAL_CLASS_NAMES}
+                onOpenChange={(open) => {
+                    if (!open) handleClose();
+                }}
             >
-                <ModalContent>
-                    <form onSubmit={handleSubmit}>
-                        <ModalHeader>
-                            {isEditing
-                                ? "Edit Recurring Rule"
-                                : "New Recurring Rule"}
-                        </ModalHeader>
-                        <ModalBody className="gap-4">
-                            {ruleStatusPanel}
-                            {typeToggleRow}
+                <Modal.Trigger>
+                    <span hidden />
+                </Modal.Trigger>
+                <Modal.Backdrop>
+                    <Modal.Container>
+                        <Modal.Dialog>
+                            <div tabIndex={-1} className="sr-only" />
+                            <Modal.CloseTrigger className="cursor-pointer" />
+                            <form onSubmit={handleSubmit}>
+                                <Modal.Header>
+                                    <Modal.Heading>
+                                        {isEditing
+                                            ? "Edit Recurring Rule"
+                                            : "New Recurring Rule"}
+                                    </Modal.Heading>
+                                </Modal.Header>
+                                <Modal.Body>
+                                    {ruleStatusPanel}
+                                    {typeToggleRow}
+                                    {expenseTypeToggleRow}
 
-                            <AmountInput
-                                value={amount}
-                                onChange={setAmount}
-                                isIncome={isIncome}
-                            />
+                                    <AmountInput
+                                        ref={amountInputRef}
+                                        value={amount}
+                                        onChange={setAmount}
+                                        isIncome={isIncome}
+                                    />
 
-                            <Input
-                                classNames={{ input: "font-mono" }}
-                                label="Description"
-                                value={description}
-                                onValueChange={setDescription}
-                                maxLength={60}
-                                description={`${description.length}/60`}
-                            />
+                                    <div className="flex flex-col gap-1">
+                                        <Label
+                                            htmlFor="description"
+                                            className="sr-only"
+                                        >
+                                            Description
+                                        </Label>
+                                        <Input
+                                            id="description"
+                                            className="font-mono"
+                                            value={description}
+                                            onChange={(e) =>
+                                                setDescription(e.target.value)
+                                            }
+                                            maxLength={60}
+                                            placeholder="Description"
+                                        />
+                                    </div>
 
-                            <div className="flex items-end justify-between gap-3">
-                                <Input
-                                    type="date"
-                                    label={
-                                        <span>
-                                            Start date{" "}
-                                            <span className="text-default-400 font-mono text-xs">
-                                                {localeDateFormat}
-                                            </span>
-                                        </span>
-                                    }
-                                    value={startDate}
-                                    onValueChange={setStartDate}
-                                    isRequired
-                                    className="w-1/2"
-                                />
-                                <div className="flex shrink-0 flex-col gap-1">
-                                    <span className="text-default-500 text-sm">
-                                        Frequency
-                                    </span>
-                                    <select
-                                        value={frequency}
-                                        onChange={handleFrequencyChange}
-                                        className={SELECT_CLASSES}
-                                    >
-                                        <option value="daily">Daily</option>
-                                        <option value="weekly">Weekly</option>
-                                        <option value="monthly">Monthly</option>
-                                        <option value="yearly">Yearly</option>
-                                    </select>
-                                </div>
-                            </div>
+                                    <div className="flex items-end justify-between gap-3">
+                                        <div className="flex w-1/2 flex-col gap-1">
+                                            <Label htmlFor="startDate">
+                                                Start date
+                                                <span className="text-muted ml-2 font-mono text-xs">
+                                                    {localeDateFormat}
+                                                </span>
+                                            </Label>
+                                            <Input
+                                                id="startDate"
+                                                type="date"
+                                                value={startDate}
+                                                onChange={(e) =>
+                                                    setStartDate(e.target.value)
+                                                }
+                                                required
+                                            />
+                                        </div>
+                                        {frequencyDropdown}
+                                    </div>
 
-                            <p className="-mt-2 font-mono text-xs">
-                                {repeatLabel}
-                            </p>
+                                    <p className="-mt-2 font-mono text-xs">
+                                        {repeatLabel}
+                                    </p>
 
-                            <CategoryPicker
-                                categories={filteredCategories}
-                                selectedId={categoryId}
-                                onChange={setCategoryId}
-                                onAdd={() => setIsCategoryDialogOpen(true)}
-                            />
-                        </ModalBody>
-                        <DialogFooter
-                            isEditing={isEditing}
-                            onCancel={handleClose}
-                            onDelete={isEditing ? handleDelete : undefined}
-                            isSubmitting={isPending}
-                            isDeleting={isDeleting}
-                        />
-                    </form>
-                </ModalContent>
+                                    <CategoryPicker
+                                        categories={filteredCategories}
+                                        selectedId={categoryId}
+                                        onChange={setCategoryId}
+                                        onAdd={() =>
+                                            setIsCategoryDialogOpen(true)
+                                        }
+                                    />
+                                </Modal.Body>
+                                <Modal.Footer>
+                                    <DialogFooter
+                                        isEditing={isEditing}
+                                        onCancel={handleClose}
+                                        onDelete={
+                                            isEditing ? handleDelete : undefined
+                                        }
+                                        isSubmitting={isPending}
+                                        isDeleting={isDeleting}
+                                    />
+                                </Modal.Footer>
+                            </form>
+                        </Modal.Dialog>
+                    </Modal.Container>
+                </Modal.Backdrop>
             </Modal>
             <CategoryDialog
                 isOpen={isCategoryDialogOpen}

@@ -11,10 +11,7 @@ export function ConfigWrapper({
     children,
     className = "",
 }: ConfigWrapperProps) {
-    const baseClasses = `
-        /* CONTAINER */
-        mx-auto w-full max-w-lg
-    `;
-
-    return <div className={`${baseClasses} ${className}`}>{children}</div>;
+    return (
+        <div className={`mx-auto w-full max-w-lg ${className}`}>{children}</div>
+    );
 }

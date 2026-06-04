@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Input } from "@heroui/react";
+import { Button, SearchField } from "@heroui/react";
 import { Search } from "lucide-react";
 import { DateTime } from "luxon";
 import dynamic from "next/dynamic";
@@ -88,12 +88,12 @@ export default function LogClient() {
     const searchInputRef = useRef<HTMLInputElement>(null);
     const isSearching = searchQuery.trim().length > 0;
 
-    const { data: monthlyTransactions, isLoading: isLoadingMonthly } =
-        useTransactionsByMonth(selectedYear, selectedMonth);
-    const { data: yearlyTransactions, isLoading: isLoadingYearly } =
-        useTransactionsByYear(selectedYear);
-    const { data: allTransactions, isLoading: isLoadingAll } =
-        useAllTransactions();
+    const { data: monthlyTransactions } = useTransactionsByMonth(
+        selectedYear,
+        selectedMonth,
+    );
+    const { data: yearlyTransactions } = useTransactionsByYear(selectedYear);
+    const { data: allTransactions } = useAllTransactions();
     const { data: categories } = useCategories();
 
     function handleSearchHotkey() {
@@ -192,8 +192,6 @@ export default function LogClient() {
             );
     }, [isSearching, searchQuery, allTransactions]);
 
-    const isLoading = isOnlyBigBucks ? isLoadingYearly : isLoadingMonthly;
-
     const periodPickerRow = (
         <PeriodPicker
             isYearly={isOnlyBigBucks}
@@ -214,7 +212,7 @@ export default function LogClient() {
     const totalAndFilterRow = (
         <div className="flex items-center justify-between">
             <span className="flex gap-2">
-                <span className="text-default-500">Total expense:</span>
+                <span className="text-muted">Total expense:</span>
                 <span
                     className="font-mono font-medium"
                     suppressHydrationWarning
@@ -249,21 +247,23 @@ export default function LogClient() {
 
     const searchInputRow = (
         <div className="flex items-center gap-2">
-            <Input
-                ref={searchInputRef}
-                placeholder="Search by description"
+            <SearchField
                 value={searchQuery}
-                onValueChange={setSearchQuery}
+                onChange={setSearchQuery}
                 onClear={() => setSearchQuery("")}
-                onKeyDown={handleSearchInputKeyDown}
-                startContent={<Search size={16} className="text-default-400" />}
-                isClearable
                 autoFocus
-                classNames={{
-                    inputWrapper:
-                        "data-[focus-visible=true]:ring-0 data-[focus-visible=true]:ring-offset-0 rounded-md",
-                }}
-            />
+                fullWidth
+            >
+                <SearchField.Group className="rounded-md data-[focus-visible=true]:ring-0 data-[focus-visible=true]:ring-offset-0">
+                    <SearchField.SearchIcon />
+                    <SearchField.Input
+                        ref={searchInputRef}
+                        placeholder="Search by description"
+                        onKeyDown={handleSearchInputKeyDown}
+                    />
+                    <SearchField.ClearButton />
+                </SearchField.Group>
+            </SearchField>
             <Button variant="ghost" size="sm" onPress={handleClearSearch}>
                 Cancel
             </Button>
@@ -278,7 +278,7 @@ export default function LogClient() {
                     !isSearchMode && (
                         <Button
                             isIconOnly
-                            variant="ghost"
+                            variant="outline"
                             size="sm"
                             onPress={handleToggleSearchMode}
                             aria-label="Search transactions"
@@ -312,13 +312,11 @@ export default function LogClient() {
                 <TransactionList
                     transactions={searchResults}
                     categories={categories ?? []}
-                    isLoading={isLoadingAll}
                 />
             ) : (
                 <TransactionList
                     transactions={filteredTransactions}
                     categories={categories ?? []}
-                    isLoading={isLoading}
                 />
             )}
 

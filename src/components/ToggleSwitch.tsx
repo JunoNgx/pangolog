@@ -28,19 +28,17 @@ export function ToggleSwitch({
     className = "",
 }: ToggleSwitchProps) {
     const buttonClasses =
-        "flex w-full items-center justify-center gap-1.5 rounded-sm px-3 py-1 text-sm transition-colors peer-focus-visible:outline-2 peer-focus-visible:outline-offset-3 peer-focus-visible:outline-accent";
+        "flex items-center justify-center gap-1.5 w-full rounded-sm px-3 py-1 text-sm transition-colors peer-focus-visible:outline-2 peer-focus-visible:outline-offset-3 peer-focus-visible:outline-focus";
 
     return (
         <div className={`inline-flex items-center gap-2 ${className}`}>
             <span
-                className={
-                    shouldShowLabel ? "text-default-500 text-sm" : "sr-only"
-                }
+                className={shouldShowLabel ? "text-muted text-sm" : "sr-only"}
             >
                 {label}
             </span>
-            <div className="border-default-200 inline-flex items-center gap-1 rounded-lg border p-1">
-                <label className="cursor-pointer rounded-sm">
+            <div className="flex flex-1 items-center gap-1 rounded-lg border p-1">
+                <label className="flex-1 cursor-pointer rounded-sm">
                     <input
                         type="radio"
                         name={`toggle-${leftLabel}-${rightLabel}`}
@@ -52,8 +50,8 @@ export function ToggleSwitch({
                     <span
                         className={`${buttonClasses} ${
                             !isSelectingRight
-                                ? "bg-primary text-primary-foreground"
-                                : "text-default-700 hover:bg-default-100 bg-transparent"
+                                ? "bg-accent text-accent-foreground"
+                                : "text-foreground hover:bg-surface bg-transparent"
                         } ${isDisabled ? "cursor-not-allowed opacity-50" : ""}`}
                     >
                         {LeftIcon && <LeftIcon size={16} />}
@@ -72,8 +70,8 @@ export function ToggleSwitch({
                     <span
                         className={`${buttonClasses} ${
                             isSelectingRight
-                                ? "bg-primary text-primary-foreground"
-                                : "text-default-700 hover:bg-default-100 bg-transparent"
+                                ? "bg-accent text-accent-foreground"
+                                : "text-foreground hover:bg-surface bg-transparent"
                         } ${isDisabled ? "cursor-not-allowed opacity-50" : ""}`}
                     >
                         {RightIcon && <RightIcon size={16} />}

@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@heroui/react";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
@@ -37,19 +36,19 @@ export default function LandingPage() {
                         <h1 className="text-3xl font-bold tracking-tight">
                             Pangolog
                         </h1>
-                        <div className="border-default-300 border-l-2 pl-4">
-                            <p className="text-default-700 font-mono text-sm">
+                        <div className="border-l-2 pl-4">
+                            <p className="text-foreground font-mono text-sm">
                                 log
                             </p>
-                            <p className="text-default-400 font-mono text-sm">
+                            <p className="text-muted font-mono text-sm">
                                 /lɔːɡ/ (verb)
                             </p>
-                            <p className="text-default-500 font-mono text-sm">
+                            <p className="text-muted font-mono text-sm">
                                 To add an entry in a logbook
                             </p>
                         </div>
                     </div>
-                    <p className="text-default-500">
+                    <p className="text-muted">
                         A minimalist, offline-first, and privacy-first personal
                         expense tracker.
                     </p>
@@ -58,39 +57,34 @@ export default function LandingPage() {
                 <ul className="flex flex-col gap-6">
                     {FEATURES.map((feature) => (
                         <li key={feature.headline}>
-                            <p className="text-default-700 mb-2 font-semibold">
+                            <p className="text-foreground mb-2 font-semibold">
                                 {feature.headline}
                             </p>
-                            <p className="text-default-500 text-sm">
-                                {feature.body}
-                            </p>
+                            <p className="text-muted text-sm">{feature.body}</p>
                         </li>
                     ))}
                 </ul>
 
                 <div className="flex flex-col gap-2">
-                    <Button
-                        as={Link}
+                    <Link
                         href="/log"
-                        color="primary"
-                        size="lg"
-                        className="self-center"
+                        className="bg-accent text-accent-foreground inline-flex items-center justify-center gap-2 self-center rounded-lg px-6 py-3 text-base font-medium hover:opacity-90"
                     >
                         Get started
-                    </Button>
-                    <p className="text-default-400 text-center text-xs">
+                    </Link>
+                    <p className="text-muted text-center text-xs">
                         (like, now; no account or signup needed)
                     </p>
                 </div>
 
                 <footer className="flex flex-col items-center gap-2">
-                    <p className="text-default-400 text-xs">
+                    <p className="text-muted text-xs">
                         by{" "}
                         <Link
                             href="https://junongx.com"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="hover:text-default-600"
+                            className="hover:text-foreground"
                         >
                             Juno Nguyen
                         </Link>
@@ -100,21 +94,21 @@ export default function LandingPage() {
                             href="https://github.com/JunoNgx/pangolog"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-default-400 hover:text-default-600 text-xs"
+                            className="text-muted hover:text-foreground text-xs"
                         >
                             Source
                         </Link>
-                        <span className="text-default-300 text-xs">|</span>
+                        <span className="text-muted text-xs">|</span>
                         <Link
                             href="/privacy"
-                            className="text-default-400 hover:text-default-600 text-xs"
+                            className="text-muted hover:text-foreground text-xs"
                         >
                             Privacy Policy
                         </Link>
-                        <span className="text-default-300 text-xs">|</span>
+                        <span className="text-muted text-xs">|</span>
                         <Link
                             href="/terms"
-                            className="text-default-400 hover:text-default-600 text-xs"
+                            className="text-muted hover:text-foreground text-xs"
                         >
                             Terms of Service
                         </Link>

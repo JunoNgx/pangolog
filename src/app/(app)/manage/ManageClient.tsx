@@ -1,6 +1,6 @@
 "use client";
 
-import { Tab, Tabs } from "@heroui/react";
+import { Tabs } from "@heroui/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
 import { useHotkey } from "@/lib/hooks/useHotkey";
@@ -28,15 +28,29 @@ export default function ManageClient() {
         <Tabs
             selectedKey={activeTab}
             onSelectionChange={handleTabChange}
-            aria-label="Manage sections"
             className="w-full justify-center"
         >
-            <Tab key="categories" title="Categories">
+            <Tabs.ListContainer className="flex justify-center">
+                <Tabs.List
+                    aria-label="Manage sections"
+                    className="w-fit whitespace-nowrap"
+                >
+                    <Tabs.Tab id="categories">
+                        Categories
+                        <Tabs.Indicator />
+                    </Tabs.Tab>
+                    <Tabs.Tab id="recurring">
+                        Recurring Rules
+                        <Tabs.Indicator />
+                    </Tabs.Tab>
+                </Tabs.List>
+            </Tabs.ListContainer>
+            <Tabs.Panel id="categories">
                 <CategoriesClient />
-            </Tab>
-            <Tab key="recurring" title="Recurring Rules">
+            </Tabs.Panel>
+            <Tabs.Panel id="recurring">
                 <RecurringClient />
-            </Tab>
+            </Tabs.Panel>
         </Tabs>
     );
 }

@@ -1,10 +1,4 @@
-import {
-    Button,
-    Checkbox,
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@heroui/react";
+import { Button, Checkbox, Label, Popover } from "@heroui/react";
 import { ChevronDown } from "lucide-react";
 import { UNCATEGORISED_ID } from "@/lib/constants";
 import type { Category } from "@/lib/db/types";
@@ -17,8 +11,6 @@ interface CategoryFilterDropdownProps {
     hasUncategorised: boolean;
     buckCategoryIds: Set<string>;
 }
-
-const checkboxClassNames = { base: "max-w-full", label: "truncate" };
 
 interface CategoryFilterItemProps {
     name: string;
@@ -39,43 +31,30 @@ function CategoryFilterItem({
 }: CategoryFilterItemProps) {
     return (
         <li className="py-1">
-            <Checkbox
-                isSelected={isSelected}
-                onValueChange={onToggle}
-                size="md"
-                classNames={checkboxClassNames}
-            >
-                {icon && <span className="text-base">{icon}</span>} {name}
-                {isBuck && (
-                    <span className="ml-2 text-xs font-medium text-amber-500">
-                        BUCK
-                    </span>
-                )}
-                {isIncomeOnly && (
-                    <span className="text-success ml-2 text-xs font-medium">
-                        INC
-                    </span>
-                )}
+            <Checkbox isSelected={isSelected} onChange={onToggle}>
+                <Checkbox.Control>
+                    <Checkbox.Indicator />
+                </Checkbox.Control>
+                <Checkbox.Content>
+                    <Label>
+                        {icon && <span className="text-base">{icon}</span>}{" "}
+                        {name}
+                        {isBuck && (
+                            <span className="ml-2 text-xs font-medium text-amber-500">
+                                BUCK
+                            </span>
+                        )}
+                        {isIncomeOnly && (
+                            <span className="text-success ml-2 text-xs font-medium">
+                                INC
+                            </span>
+                        )}
+                    </Label>
+                </Checkbox.Content>
             </Checkbox>
         </li>
     );
 }
-
-const popoverClasses = `
-    flex flex-col w-64
-`;
-
-const listClasses = `
-    flex flex-col max-h-64 overflow-y-auto px-2 py-1
-`;
-
-const footerClasses = `
-    flex gap-1 p-2 border-t border-default-200
-`;
-
-const actionButtonClasses = `
-    flex-1 text-sm
-`;
 
 export function CategoryFilterDropdown({
     categories,
@@ -123,62 +102,64 @@ export function CategoryFilterDropdown({
         <li className="py-1">
             <Checkbox
                 isSelected={isChecked(UNCATEGORISED_ID)}
-                onValueChange={() => handleToggle(UNCATEGORISED_ID)}
-                size="md"
-                classNames={checkboxClassNames}
+                onChange={() => handleToggle(UNCATEGORISED_ID)}
             >
-                Uncategorised
+                <Checkbox.Control>
+                    <Checkbox.Indicator />
+                </Checkbox.Control>
+                <Checkbox.Content>
+                    <Label>Uncategorised</Label>
+                </Checkbox.Content>
             </Checkbox>
         </li>
     );
 
     return (
-        <Popover placement="bottom-end">
-            <PopoverTrigger>
-                <Button
-                    variant={isFiltered ? "solid" : "flat"}
-                    color={isFiltered ? "primary" : "default"}
-                    endContent={<ChevronDown className="size-3" />}
-                >
+        <Popover>
+            <Popover.Trigger>
+                <Button variant={isFiltered ? "primary" : "tertiary"}>
                     {label}
+                    <ChevronDown className="size-3" />
                 </Button>
-            </PopoverTrigger>
-            <PopoverContent className="p-0">
-                <div className={popoverClasses}>
-                    <ul className={listClasses}>
-                        {uncategorisedItem}
-                        {activeCategories.map((cat) => (
-                            <CategoryFilterItem
-                                key={cat.id}
-                                name={cat.name}
-                                icon={cat.icon}
-                                isIncomeOnly={cat.isIncomeOnly}
-                                isBuck={buckCategoryIds.has(cat.id)}
-                                isSelected={isChecked(cat.id)}
-                                onToggle={() => handleToggle(cat.id)}
-                            />
-                        ))}
-                    </ul>
-                    <div className={footerClasses}>
-                        <Button
-                            size="sm"
-                            variant="light"
-                            className={actionButtonClasses}
-                            onPress={() => onChange(null)}
-                        >
-                            Check all
-                        </Button>
-                        <Button
-                            size="sm"
-                            variant="light"
-                            className={actionButtonClasses}
-                            onPress={() => onChange([])}
-                        >
-                            Uncheck all
-                        </Button>
+            </Popover.Trigger>
+            <Popover.Content placement="bottom end" className="p-0">
+                <Popover.Dialog>
+                    <div className="flex w-64 flex-col">
+                        <ul className="flex max-h-64 flex-col overflow-y-auto px-2 py-1">
+                            {uncategorisedItem}
+                            {activeCategories.map((cat) => (
+                                <CategoryFilterItem
+                                    key={cat.id}
+                                    name={cat.name}
+                                    icon={cat.icon}
+                                    isIncomeOnly={cat.isIncomeOnly}
+                                    isBuck={buckCategoryIds.has(cat.id)}
+                                    isSelected={isChecked(cat.id)}
+                                    onToggle={() => handleToggle(cat.id)}
+                                />
+                            ))}
+                        </ul>
+                        <div className="flex gap-1 border-t pt-2">
+                            <Button
+                                size="sm"
+                                variant="ghost"
+                                className="flex-1 text-sm"
+                                onPress={() => onChange(null)}
+                            >
+                                Check all
+                            </Button>
+                            <Button
+                                size="sm"
+                                variant="ghost"
+                                className="flex-1 text-sm"
+                                onPress={() => onChange([])}
+                            >
+                                Uncheck all
+                            </Button>
+                        </div>
                     </div>
-                </div>
-            </PopoverContent>
+                </Popover.Dialog>
+            </Popover.Content>
         </Popover>
     );
 }

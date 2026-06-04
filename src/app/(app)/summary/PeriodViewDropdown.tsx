@@ -1,12 +1,6 @@
 "use client";
 
-import {
-    Button,
-    Dropdown,
-    DropdownItem,
-    DropdownMenu,
-    DropdownTrigger,
-} from "@heroui/react";
+import { Button, Dropdown, Label } from "@heroui/react";
 import type { LucideIcon } from "lucide-react";
 import { Calendar1, CalendarDays } from "lucide-react";
 
@@ -42,37 +36,35 @@ export function PeriodViewDropdown({
     }
 
     return (
-        <Dropdown
-            classNames={{
-                content: "min-w-0 w-fit",
-            }}
-        >
-            <DropdownTrigger>
-                <Button
-                    variant="ghost"
-                    size="sm"
-                    isIconOnly
-                    aria-label={viewLabel}
-                    title="Ctrl/Cmd+Shift+Y"
-                >
-                    <CurrentIcon size={16} />
-                </Button>
-            </DropdownTrigger>
-            <DropdownMenu
-                aria-label="Period view mode"
-                selectionMode="single"
-                selectedKeys={new Set([isYearly ? "yearly" : "monthly"])}
-                onSelectionChange={handleSelectionChange}
+        <Dropdown>
+            <Button
+                variant="outline"
+                size="sm"
+                isIconOnly
+                aria-label={viewLabel}
             >
-                {VIEW_OPTIONS.map((opt) => (
-                    <DropdownItem
-                        key={opt.key}
-                        startContent={<opt.icon size={16} />}
-                    >
-                        {opt.label}
-                    </DropdownItem>
-                ))}
-            </DropdownMenu>
+                <CurrentIcon size={16} />
+            </Button>
+            <Dropdown.Popover className="w-fit min-w-0">
+                <Dropdown.Menu
+                    aria-label="Period view mode"
+                    selectionMode="single"
+                    selectedKeys={new Set([isYearly ? "yearly" : "monthly"])}
+                    onSelectionChange={handleSelectionChange}
+                >
+                    {VIEW_OPTIONS.map((opt) => (
+                        <Dropdown.Item
+                            id={opt.key}
+                            key={opt.key}
+                            textValue={opt.label}
+                        >
+                            <opt.icon size={16} />
+                            <Label>{opt.label}</Label>
+                            <Dropdown.ItemIndicator />
+                        </Dropdown.Item>
+                    ))}
+                </Dropdown.Menu>
+            </Dropdown.Popover>
         </Dropdown>
     );
 }

@@ -95,7 +95,7 @@ export function PeriodPicker({
         <div className="justify flex flex-1 items-center justify-between gap-1">
             <Button
                 size="sm"
-                variant="light"
+                variant="ghost"
                 isDisabled={isPrevDisabled}
                 onPress={handlePrev}
                 className={chevronClasses}
@@ -108,7 +108,7 @@ export function PeriodPicker({
             {picker}
             <Button
                 size="sm"
-                variant="light"
+                variant="ghost"
                 isDisabled={isNextDisabled}
                 onPress={handleNext}
                 className={chevronClasses}

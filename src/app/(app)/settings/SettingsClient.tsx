@@ -4,23 +4,20 @@ import {
     Button,
     Checkbox,
     Input,
+    Label,
     Modal,
-    ModalBody,
-    ModalContent,
-    ModalFooter,
-    ModalHeader,
     Radio,
     RadioGroup,
+    toast,
 } from "@heroui/react";
 import { DateTime } from "luxon";
 import { useTheme } from "next-themes";
-import { useRef, useState } from "react";
-import { toast } from "sonner";
+import { useLayoutEffect, useRef, useState } from "react";
 import { DriveSyncSection } from "@/app/(app)/settings/DriveSyncSection";
 import { ImportDataSection } from "@/app/(app)/settings/ImportDataSection";
 import { MainListContainer } from "@/components/MainListContainer";
 import { RouteHeader } from "@/components/RouteHeader";
-import { DEFAULT_MODAL_CLASS_NAMES, MIME_JSON } from "@/lib/constants";
+import { MIME_JSON } from "@/lib/constants";
 import { clearAllData, forceDeleteDb } from "@/lib/db";
 import { exportJson } from "@/lib/export";
 import { useLogger } from "@/lib/hooks/useLogger";
@@ -62,6 +59,8 @@ export default function SettingsClient() {
     const [isLogDialogOpen, setIsLogDialogOpen] = useState(false);
 
     const [isDebugVisible, setIsDebugVisible] = useState(false);
+    const [isThemeMounted, setIsThemeMounted] = useState(false);
+    useLayoutEffect(() => setIsThemeMounted(true), []);
     const headingTapCountRef = useRef(0);
     const headingTapTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
         null,
@@ -96,7 +95,7 @@ export default function SettingsClient() {
             await new Promise((resolve) => setTimeout(resolve, 1500));
             window.location.reload();
         } catch (err) {
-            toast.error(`Record clearing failed: ${err}`);
+            toast.danger(`Record clearing failed: ${err}`);
             setIsResetting(false);
         }
     }
@@ -112,7 +111,7 @@ export default function SettingsClient() {
             await new Promise((resolve) => setTimeout(resolve, 1500));
             window.location.href = "/";
         } catch (err) {
-            toast.error(`Reset failed: ${err}`);
+            toast.danger(`Reset failed: ${err}`);
             setIsResettingApp(false);
         }
     }
@@ -146,11 +145,9 @@ export default function SettingsClient() {
             console.log("Logger content: ", content);
             await navigator.clipboard.writeText(content);
         } catch (error) {
-            toast.error(
+            toast.danger(
                 `Unable to copy Logger content to clipboard: ${error}`,
-                {
-                    duration: Infinity,
-                },
+                { timeout: 0 },
             );
         }
     }
@@ -172,6 +169,137 @@ export default function SettingsClient() {
         URL.revokeObjectURL(url);
     }
 
+    const logsModal = (
+        <Modal isOpen={isLogDialogOpen} onOpenChange={setIsLogDialogOpen}>
+            <Modal.Trigger>
+                <Button className="mt-2 block" variant="secondary">
+                    View logs
+                </Button>
+            </Modal.Trigger>
+            <Modal.Backdrop>
+                <Modal.Container size="full">
+                    <Modal.Dialog>
+                        <Modal.CloseTrigger className="cursor-pointer" />
+                        <Modal.Header>
+                            <Modal.Heading>Logs</Modal.Heading>
+                        </Modal.Header>
+                        <Modal.Body className="overflow-y-auto">
+                            <pre className="font-mono text-xs break-all whitespace-pre-wrap">
+                                {JSON.stringify(getLoggerEntries(), null, 2)}
+                            </pre>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button
+                                variant="secondary"
+                                onPress={handleDumpDebugLoggerContent}
+                            >
+                                Export logs
+                            </Button>
+                            <Button
+                                variant="secondary"
+                                onPress={handleCopyDebugLoggerEntries}
+                            >
+                                Copy content
+                            </Button>
+                            <Button
+                                variant="tertiary"
+                                onPress={() => setIsLogDialogOpen(false)}
+                            >
+                                Close
+                            </Button>
+                        </Modal.Footer>
+                    </Modal.Dialog>
+                </Modal.Container>
+            </Modal.Backdrop>
+        </Modal>
+    );
+
+    const resetAppModal = (
+        <Modal
+            isOpen={isResetAppDialogOpen}
+            onOpenChange={setIsResetAppDialogOpen}
+        >
+            <Modal.Trigger>
+                <Button className="mt-2 block" variant="danger-soft">
+                    Reset app
+                </Button>
+            </Modal.Trigger>
+            <Modal.Backdrop>
+                <Modal.Container>
+                    <Modal.Dialog>
+                        <Modal.CloseTrigger className="cursor-pointer" />
+                        <Modal.Header>
+                            <Modal.Heading>
+                                Confirm resetting app?
+                            </Modal.Heading>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <p className="text-danger text-sm">
+                                This cannot be undone.
+                            </p>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button
+                                variant="tertiary"
+                                onPress={() => setIsResetAppDialogOpen(false)}
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                variant="danger"
+                                isPending={isResettingApp}
+                                onPress={handleResetApp}
+                            >
+                                Reset app
+                            </Button>
+                        </Modal.Footer>
+                    </Modal.Dialog>
+                </Modal.Container>
+            </Modal.Backdrop>
+        </Modal>
+    );
+
+    const clearRecordsModal = (
+        <Modal
+            isOpen={isClearRecordsDialogOpen}
+            onOpenChange={setIsResetDialogOpen}
+        >
+            <Modal.Trigger>
+                <Button variant="danger-soft">Clear local records</Button>
+            </Modal.Trigger>
+            <Modal.Backdrop>
+                <Modal.Container>
+                    <Modal.Dialog>
+                        <Modal.CloseTrigger className="cursor-pointer" />
+                        <Modal.Header>
+                            <Modal.Heading>Clear local records?</Modal.Heading>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <p className="text-danger text-sm">
+                                This cannot be undone.
+                            </p>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button
+                                variant="tertiary"
+                                onPress={() => setIsResetDialogOpen(false)}
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                variant="danger"
+                                isPending={isClearingRecords}
+                                onPress={handleClearLocalRecords}
+                            >
+                                Clear
+                            </Button>
+                        </Modal.Footer>
+                    </Modal.Dialog>
+                </Modal.Container>
+            </Modal.Backdrop>
+        </Modal>
+    );
+
     return (
         <div>
             <div className="mb-6">
@@ -186,29 +314,48 @@ export default function SettingsClient() {
                         Display Currency
                     </h3>
                     <div className="flex flex-col gap-4">
-                        <Input
-                            classNames={{
-                                inputWrapper: "max-w-xs",
-                                description: "",
-                            }}
-                            label="Currency symbol"
-                            placeholder="e.g. €, SGD, Gil"
-                            description="Cosmetic only, so feel free to use orens, woolong, or bottle caps to your heart's content. Long texts might not look good in this UI, but that's your life decision."
-                            value={customCurrency}
-                            onValueChange={setCustomCurrency}
-                        />
+                        <div className="flex max-w-xs flex-col gap-1">
+                            <span>Currency symbol</span>
+                            <Input
+                                placeholder="e.g. €, SGD, Gil"
+                                value={customCurrency}
+                                onChange={(e) =>
+                                    setCustomCurrency(e.target.value)
+                                }
+                            />
+                            <span className="text-muted text-xs">
+                                Cosmetic only, so feel free to use orens,
+                                woolong, or bottle caps to your heart's content.
+                                Long texts might not look good in this UI, but
+                                that's your life decision.
+                            </span>
+                        </div>
                         <RadioGroup
-                            label="Position"
                             orientation="horizontal"
                             value={isPrefixCurrency ? "prefix" : "suffix"}
-                            onValueChange={(v) =>
+                            onChange={(v) =>
                                 setIsPrefixCurrency(v === "prefix")
                             }
                         >
-                            <Radio value="prefix">Prefix ($12)</Radio>
-                            <Radio value="suffix">Suffix (12 SGD)</Radio>
+                            <Label>Position</Label>
+                            <Radio value="prefix">
+                                <Radio.Control>
+                                    <Radio.Indicator />
+                                </Radio.Control>
+                                <Radio.Content>
+                                    <Label>Prefix ($12)</Label>
+                                </Radio.Content>
+                            </Radio>
+                            <Radio value="suffix">
+                                <Radio.Control>
+                                    <Radio.Indicator />
+                                </Radio.Control>
+                                <Radio.Content>
+                                    <Label>Suffix (12 SGD)</Label>
+                                </Radio.Content>
+                            </Radio>
                         </RadioGroup>
-                        <p className="text-default-500 font-mono text-sm">
+                        <p className="text-muted font-mono text-sm">
                             Preview: {preview}
                         </p>
                     </div>
@@ -219,49 +366,104 @@ export default function SettingsClient() {
                     <div className="flex flex-col gap-4">
                         <Checkbox
                             isSelected={isExpenseOnlyMode}
-                            onValueChange={setIsExpenseOnlyMode}
-                            size="sm"
+                            onChange={setIsExpenseOnlyMode}
                         >
-                            <span className="text-sm">Expense only mode</span>
-                            <p className="text-default-400 text-xs">
-                                Hides income-related UI to reduce clutter.
-                            </p>
+                            <Checkbox.Control>
+                                <Checkbox.Indicator />
+                            </Checkbox.Control>
+                            <Checkbox.Content>
+                                <Label>Expense only mode</Label>
+                                <span className="text-muted text-xs">
+                                    Hides income-related UI to reduce clutter.
+                                </span>
+                            </Checkbox.Content>
                         </Checkbox>
                         <RadioGroup
-                            label="Category order"
                             orientation="horizontal"
                             value={isCategoryAlphabetical ? "alpha" : "custom"}
-                            onValueChange={(v) =>
+                            onChange={(v) =>
                                 setIsCategoryAlphabetical(v === "alpha")
                             }
-                            classNames={{ wrapper: "gap-6" }}
+                            className="gap-6"
                         >
-                            <Radio value="custom">Custom order</Radio>
-                            <Radio value="alpha">Alphabetical</Radio>
+                            <Label>Category order</Label>
+                            <Radio value="custom">
+                                <Radio.Control>
+                                    <Radio.Indicator />
+                                </Radio.Control>
+                                <Radio.Content>
+                                    <Label>Custom order</Label>
+                                </Radio.Content>
+                            </Radio>
+                            <Radio value="alpha">
+                                <Radio.Control>
+                                    <Radio.Indicator />
+                                </Radio.Control>
+                                <Radio.Content>
+                                    <Label>Alphabetical</Label>
+                                </Radio.Content>
+                            </Radio>
                         </RadioGroup>
                         <RadioGroup
-                            label="Time format"
                             orientation="horizontal"
                             value={timeFormat}
-                            onValueChange={(v) =>
-                                setTimeFormat(v as TimeFormat)
-                            }
-                            classNames={{ wrapper: "gap-6" }}
+                            onChange={(v) => setTimeFormat(v as TimeFormat)}
+                            className="gap-6"
                         >
-                            <Radio value="12h">12-hour</Radio>
-                            <Radio value="24h">24-hour</Radio>
+                            <Label>Time format</Label>
+                            <Radio value="12h">
+                                <Radio.Control>
+                                    <Radio.Indicator />
+                                </Radio.Control>
+                                <Radio.Content>
+                                    <Label>12-hour</Label>
+                                </Radio.Content>
+                            </Radio>
+                            <Radio value="24h">
+                                <Radio.Control>
+                                    <Radio.Indicator />
+                                </Radio.Control>
+                                <Radio.Content>
+                                    <Label>24-hour</Label>
+                                </Radio.Content>
+                            </Radio>
                         </RadioGroup>
-                        <RadioGroup
-                            label="Theme"
-                            orientation="horizontal"
-                            value={theme ?? "system"}
-                            onValueChange={setTheme}
-                            classNames={{ wrapper: "gap-6" }}
-                        >
-                            <Radio value="light">Light</Radio>
-                            <Radio value="dark">Dark</Radio>
-                            <Radio value="system">System</Radio>
-                        </RadioGroup>
+                        {isThemeMounted ? (
+                            <RadioGroup
+                                orientation="horizontal"
+                                value={theme ?? "system"}
+                                onChange={setTheme}
+                                className="gap-6"
+                            >
+                                <Label>Theme</Label>
+                                <Radio value="light">
+                                    <Radio.Control>
+                                        <Radio.Indicator />
+                                    </Radio.Control>
+                                    <Radio.Content>
+                                        <Label>Light</Label>
+                                    </Radio.Content>
+                                </Radio>
+                                <Radio value="dark">
+                                    <Radio.Control>
+                                        <Radio.Indicator />
+                                    </Radio.Control>
+                                    <Radio.Content>
+                                        <Label>Dark</Label>
+                                    </Radio.Content>
+                                </Radio>
+                                <Radio value="system">
+                                    <Radio.Control>
+                                        <Radio.Indicator />
+                                    </Radio.Control>
+                                    <Radio.Content>
+                                        <Label>System</Label>
+                                    </Radio.Content>
+                                </Radio>
+                            </RadioGroup>
+                        ) : (
+                            <div className="h-32" aria-hidden />
+                        )}
                     </div>
                 </section>
 
@@ -270,25 +472,28 @@ export default function SettingsClient() {
                     <div className="flex flex-col gap-3">
                         <div className="flex items-center gap-3">
                             <Button
-                                color="primary"
-                                variant="flat"
-                                isLoading={isExportingJson}
+                                variant="primary"
+                                isPending={isExportingJson}
                                 onPress={handleExportJson}
                             >
                                 Export JSON
                             </Button>
                             <Checkbox
                                 isSelected={isPrettyPrint}
-                                onValueChange={setIsPrettyPrint}
-                                size="sm"
+                                onChange={setIsPrettyPrint}
                             >
-                                <span className="text-sm">Pretty print</span>
-                                <p className="text-default-400 text-xs">
-                                    Human-readable formatting.
-                                </p>
+                                <Checkbox.Control>
+                                    <Checkbox.Indicator />
+                                </Checkbox.Control>
+                                <Checkbox.Content>
+                                    <Label>Pretty print</Label>
+                                    <span className="text-muted text-xs">
+                                        Human-readable formatting.
+                                    </span>
+                                </Checkbox.Content>
                             </Checkbox>
                         </div>
-                        <p className="text-default-400 text-xs">
+                        <p className="text-muted text-xs">
                             Exports all transactions, categories, and display
                             settings into a single file. On import, records are
                             resolved by last-updated timestamp to avoid
@@ -303,31 +508,28 @@ export default function SettingsClient() {
                     <h3 className="mb-1 text-lg font-semibold">
                         Help &amp; Info
                     </h3>
-                    <p className="text-default-400 mb-4 text-xs">
+                    <p className="text-muted mb-4 text-xs">
                         Overview of concepts, pages, hotkeys, and sync
                         behaviour.
                     </p>
-                    <Button
-                        as="a"
+                    <a
                         href="/help"
-                        color="primary"
-                        variant="flat"
-                        className="self-start"
+                        className="bg-accent text-accent-foreground inline-flex items-center justify-center gap-2 self-start rounded-lg px-4 py-2 text-sm font-medium hover:opacity-90"
                     >
                         View manual
-                    </Button>
+                    </a>
                 </section>
 
                 <section>
                     <h3 className="mb-1 text-lg font-semibold">
                         Troubleshooting
                     </h3>
-                    <p className="text-default-400 mb-4 text-xs">
+                    <p className="text-muted mb-4 text-xs">
                         If the app appears outdated after an update, clear the
                         offline cache to force a fresh reload. Your data is
                         stored separately and will not be affected.
                     </p>
-                    <Button variant="flat" onPress={handleClearSwCache}>
+                    <Button variant="secondary" onPress={handleClearSwCache}>
                         Clear offline cache
                     </Button>
                 </section>
@@ -343,51 +545,47 @@ export default function SettingsClient() {
                         About
                     </h3>
                     <div className="flex flex-col gap-1">
-                        <p className="text-default-400 text-xs">
+                        <p className="text-muted text-xs">
                             Pangolog is developed by{" "}
                             <a
                                 href="https://junongx.com"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-primary-500 hover:underline"
+                                className="text-blue-500 hover:underline"
                             >
                                 Juno Nguyen
                             </a>
                             , with playfulness and curiosity.
                         </p>
-                        <p className="text-default-400 text-xs">
+                        <p className="text-muted text-xs">
                             This project is free and{" "}
                             <a
                                 href="https://github.com/JunoNgx/pangolog"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-primary-500 hover:underline"
+                                className="text-blue-500 hover:underline"
                             >
                                 open source software
                             </a>
                             .
                         </p>
-                        <p className="text-default-400 mt-2 font-mono text-xs">
+                        <p className="text-muted mt-2 font-mono text-xs">
                             v{process.env.NEXT_PUBLIC_VERSION} (
                             {process.env.NEXT_PUBLIC_COMMIT_HASH})
                         </p>
                         <div className="mt-2 flex flex-wrap gap-2">
-                            <Button
-                                as="a"
+                            <a
                                 href="/privacy"
-                                variant="flat"
-                                size="sm"
+                                className="bg-surface text-muted hover:text-foreground hover:bg-surface-secondary inline-flex items-center justify-center gap-2 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors"
                             >
                                 Privacy Policy
-                            </Button>
-                            <Button
-                                as="a"
+                            </a>
+                            <a
                                 href="/terms"
-                                variant="flat"
-                                size="sm"
+                                className="bg-surface text-muted hover:text-foreground hover:bg-surface-secondary inline-flex items-center justify-center gap-2 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors"
                             >
                                 Terms of Service
-                            </Button>
+                            </a>
                         </div>
                     </div>
                 </section>
@@ -397,47 +595,33 @@ export default function SettingsClient() {
                     <section className="mt-8">
                         <h3 className="mb-1 text-lg font-semibold">Debug</h3>
                         <Button
-                            variant="flat"
+                            variant="secondary"
                             onPress={() =>
                                 toast("Debug toast notification", {
-                                    duration: Infinity,
+                                    timeout: 0,
                                 })
                             }
                         >
                             Trigger toast
                         </Button>
 
-                        <Button
-                            className="mt-2 block"
-                            variant="flat"
-                            onPress={() => setIsLogDialogOpen(true)}
-                        >
-                            View logs
-                        </Button>
+                        {logsModal}
 
                         <Button
                             className="mt-2 block"
-                            color="danger"
-                            variant="flat"
+                            variant="danger-soft"
                             onPress={handleClearDebugLoggerEntry}
                         >
                             Clear Logger entries
                         </Button>
 
-                        <p className="text-default-400 mt-8 text-xs">
+                        <p className="text-muted mt-8 text-xs">
                             Wipes the local database and all local app data.
                             This will make a fresh new user experience. Your
                             data on Google Drive will remain intact. This cannot
                             be undone.
                         </p>
-                        <Button
-                            className="mt-2 block"
-                            color="danger"
-                            variant="flat"
-                            onPress={() => setIsResetAppDialogOpen(true)}
-                        >
-                            Reset app
-                        </Button>
+                        {resetAppModal}
                     </section>
                 )}
                 {/* END DEBUG */}
@@ -446,116 +630,14 @@ export default function SettingsClient() {
                     <h3 className="text-danger mb-1 text-lg font-semibold">
                         Danger Zone
                     </h3>
-                    <p className="text-default-400 mb-4 text-xs">
+                    <p className="text-muted mb-4 text-xs">
                         Removes all local transactions, categories, and
                         recurring rules, and disconnects Google Drive. Your data
                         on Google Drive will remain intact.
                     </p>
-                    <Button
-                        color="danger"
-                        variant="flat"
-                        onPress={() => setIsResetDialogOpen(true)}
-                    >
-                        Clear local records
-                    </Button>
+                    {clearRecordsModal}
                 </section>
             </MainListContainer>
-
-            <Modal
-                isOpen={isClearRecordsDialogOpen}
-                onClose={() => setIsResetDialogOpen(false)}
-                classNames={DEFAULT_MODAL_CLASS_NAMES}
-            >
-                <ModalContent>
-                    <ModalHeader>Clear local records?</ModalHeader>
-                    <ModalBody>
-                        <p className="text-danger-500 text-sm">
-                            This cannot be undone.
-                        </p>
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button
-                            variant="light"
-                            onPress={() => setIsResetDialogOpen(false)}
-                        >
-                            Cancel
-                        </Button>
-                        <Button
-                            color="danger"
-                            isLoading={isClearingRecords}
-                            onPress={handleClearLocalRecords}
-                        >
-                            Clear
-                        </Button>
-                    </ModalFooter>
-                </ModalContent>
-            </Modal>
-
-            <Modal
-                isOpen={isResetAppDialogOpen}
-                onClose={() => setIsResetAppDialogOpen(false)}
-                classNames={DEFAULT_MODAL_CLASS_NAMES}
-            >
-                <ModalContent>
-                    <ModalHeader>Confirm resetting app?</ModalHeader>
-                    <ModalBody>
-                        <p className="text-danger-500 text-sm">
-                            This cannot be undone.
-                        </p>
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button
-                            variant="light"
-                            onPress={() => setIsResetAppDialogOpen(false)}
-                        >
-                            Cancel
-                        </Button>
-                        <Button
-                            color="danger"
-                            isLoading={isResettingApp}
-                            onPress={handleResetApp}
-                        >
-                            Reset app
-                        </Button>
-                    </ModalFooter>
-                </ModalContent>
-            </Modal>
-
-            <Modal
-                isOpen={isLogDialogOpen}
-                onClose={() => setIsLogDialogOpen(false)}
-                size="full"
-                classNames={DEFAULT_MODAL_CLASS_NAMES}
-            >
-                <ModalContent>
-                    <ModalHeader>Logs</ModalHeader>
-                    <ModalBody className="overflow-y-auto">
-                        <pre className="font-mono text-xs break-all whitespace-pre-wrap">
-                            {JSON.stringify(getLoggerEntries(), null, 2)}
-                        </pre>
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button
-                            variant="flat"
-                            onPress={handleDumpDebugLoggerContent}
-                        >
-                            Export logs
-                        </Button>
-                        <Button
-                            variant="flat"
-                            onPress={handleCopyDebugLoggerEntries}
-                        >
-                            Copy content
-                        </Button>
-                        <Button
-                            variant="light"
-                            onPress={() => setIsLogDialogOpen(false)}
-                        >
-                            Close
-                        </Button>
-                    </ModalFooter>
-                </ModalContent>
-            </Modal>
         </div>
     );
 }

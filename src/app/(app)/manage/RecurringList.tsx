@@ -1,6 +1,5 @@
 "use client";
 
-import { Skeleton } from "@heroui/react";
 import { DateTime } from "luxon";
 import { useState } from "react";
 import { ChipLabel } from "@/components/ChipLabel";
@@ -36,14 +35,9 @@ function formatFrequency(rule: RecurringRule): string {
 interface RecurringListProps {
     rules: RecurringRule[];
     categories: Category[];
-    isLoading: boolean;
 }
 
-export function RecurringList({
-    rules,
-    categories,
-    isLoading,
-}: RecurringListProps) {
+export function RecurringList({ rules, categories }: RecurringListProps) {
     const [editingRule, setEditingRule] = useState<RecurringRule | undefined>();
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
@@ -59,22 +53,10 @@ export function RecurringList({
         setEditingRule(undefined);
     }
 
-    if (isLoading) {
-        return (
-            <MainListContainer className="gap-2">
-                {["s1", "s2", "s3"].map((key) => (
-                    <Skeleton key={key} className="h-16 w-full rounded-none" />
-                ))}
-            </MainListContainer>
-        );
-    }
-
-    if (!rules.length) {
+    if (!rules || !rules.length) {
         return (
             <>
-                <p className="text-default-400 py-12 text-center">
-                    Nothing to show.
-                </p>
+                <p className="text-muted py-12 text-center">Nothing to show.</p>
                 <RecurringRuleDialog
                     isOpen={isDialogOpen}
                     onClose={handleCloseDialog}
@@ -123,19 +105,19 @@ function RecurringItem({ rule, category, onEdit }: RecurringItemProps) {
             <button
                 type="button"
                 onClick={() => onEdit(rule)}
-                className={`bg-background border-default-200 hover:border-default-400 focus-visible:ring-primary flex w-full cursor-pointer items-center gap-3 rounded-none border-b-1 border-l-4 px-4 py-3 text-left transition focus:outline-none focus-visible:ring-2 ${!rule.isActive ? "opacity-50" : ""} `}
+                className={`bg-background hover:border-foreground focus:ring-accent flex w-full cursor-pointer items-center gap-3 rounded-none border-b border-l-4 px-4 py-3 text-left transition-[border-color,opacity] outline-none focus:ring-2 focus:ring-offset-2 ${!rule.isActive ? "opacity-50" : ""} `}
                 style={{ borderLeftColor: category?.colour }}
             >
                 <div className="min-w-0 flex-1">
                     <p>
                         <span className="mr-1">{category?.icon ?? "·"}</span>
-                        <span className="text-default-700">
+                        <span className="text-foreground">
                             {category?.name ?? "(no category)"}
                         </span>
                     </p>
                     {rule.description && (
                         <p
-                            className={`text-default-400 truncate font-mono text-sm ${!hasIndicator ? "mt-1" : ""} `}
+                            className={`text-muted truncate font-mono text-sm ${!hasIndicator ? "mt-1" : ""} `}
                         >
                             {rule.description}
                         </p>
@@ -148,7 +130,7 @@ function RecurringItem({ rule, category, onEdit }: RecurringItemProps) {
                                 </ChipLabel>
                             )}
                             {!rule.isActive && (
-                                <ChipLabel className="text-default-400 mx-0">
+                                <ChipLabel className="text-muted mx-0">
                                     PAUSED
                                 </ChipLabel>
                             )}
@@ -163,10 +145,10 @@ function RecurringItem({ rule, category, onEdit }: RecurringItemProps) {
                         {rule.isIncome ? "+" : ""}
                         {formatAmount(rule.amount)}
                     </span>
-                    <span className="text-default-400 font-mono text-xs">
+                    <span className="text-muted font-mono text-xs">
                         {formatFrequency(rule)}
                     </span>
-                    <span className="text-default-400 font-mono text-xs">
+                    <span className="text-muted font-mono text-xs">
                         Next:{" "}
                         {DateTime.fromISO(rule.nextGenerationAt).toLocaleString(
                             DateTime.DATE_MED,

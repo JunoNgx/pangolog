@@ -12,27 +12,18 @@ export function FloatingBackButton() {
     const goBack = useCallback(() => router.back(), [router]);
     useHotkey("Escape", goBack);
 
-    const buttonClasses = `
-        /* CONTAINER */
-        absolute right-4 bottom-0
-        h-14 min-w-0 rounded-full
-        md:right-6 md:rounded-lg
-
-        /* BEHAVIOUR */
-        pointer-events-auto
-    `;
-
     return (
         <FloatingButtonContainer>
-            <Tooltip content="Esc" placement="left">
+            <Tooltip delay={0}>
                 <Button
-                    color="default"
-                    className={buttonClasses}
+                    variant="tertiary"
+                    className="pointer-events-auto absolute right-4 bottom-0 h-14 min-w-0 rounded-full md:right-6 md:rounded-lg"
                     onPress={goBack}
                 >
                     <ArrowLeft />
                     <span className="hidden md:inline">Go back</span>
                 </Button>
+                <Tooltip.Content placement="left">Esc</Tooltip.Content>
             </Tooltip>
         </FloatingButtonContainer>
     );

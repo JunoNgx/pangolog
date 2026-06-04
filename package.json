@@ -14,10 +14,9 @@
     "dependencies": {
         "@dnd-kit/helpers": "^0.3.0",
         "@dnd-kit/react": "^0.3.0",
-        "@heroui/react": "^2.8.9",
-        "@heroui/theme": "^2.4.26",
+        "@heroui/react": "^3.1.0",
+        "@heroui/styles": "^3.1.0",
         "@tanstack/react-query": "^5.90.21",
-        "framer-motion": "^12.38.0",
         "frimousse": "^0.3.0",
         "iron-session": "^8.0.4",
         "lucide-react": "^0.574.0",
@@ -25,9 +24,7 @@
         "next": "16.2.6",
         "next-themes": "^0.4.6",
         "react": "19.2.3",
-        "react-colorful": "^5.6.1",
         "react-dom": "19.2.3",
-        "sonner": "^2.0.7",
         "uuid": "^14.0.0",
         "zustand": "^5.0.11"
     },

@@ -1,4 +1,4 @@
-import { Popover, PopoverContent, PopoverTrigger } from "@heroui/react";
+import { Tooltip } from "@heroui/react";
 import { DateTime } from "luxon";
 import { MONTH_NAMES } from "@/lib/constants";
 import type { Transaction } from "@/lib/db/types";
@@ -27,10 +27,10 @@ export default function ExpensesByMonthChart({
     if (maxTotal === 0) {
         return (
             <div className="mb-6">
-                <p className="text-default-500 mb-2 font-semibold">
+                <p className="text-muted mb-2 font-semibold">
                     Expenses by month
                 </p>
-                <p className="text-default-400 text-sm">No data.</p>
+                <p className="text-muted text-sm">No data.</p>
             </div>
         );
     }
@@ -48,37 +48,34 @@ export default function ExpensesByMonthChart({
     const averagePct = (average / maxTotal) * 100;
 
     const bars = monthlyTotals.map((total, index) => (
-        <Popover key={MONTH_NAMES[index]} placement="top">
-            <PopoverTrigger>
-                <div
-                    className="relative flex-1 cursor-pointer"
-                    style={{
-                        height:
-                            total > 0 ? `${(total / maxTotal) * 100}%` : "0%",
-                    }}
-                >
-                    <div className="bg-default-400 h-full w-full rounded-sm" />
-                    {index === tallestIndex && (
-                        <span
-                            className={`absolute -top-5 ${tallestLabelAlign} text-default-500 font-mono text-xs whitespace-nowrap`}
-                        >
-                            {formatAmountShort(total)}
-                        </span>
-                    )}
-                </div>
-            </PopoverTrigger>
-            <PopoverContent>
+        <Tooltip key={MONTH_NAMES[index]} delay={0}>
+            <Tooltip.Trigger
+                className="relative flex flex-1 cursor-pointer flex-col justify-end"
+                style={{
+                    height: total > 0 ? `${(total / maxTotal) * 100}%` : "0%",
+                }}
+            >
+                <div className="bg-foreground h-full w-full rounded-sm" />
+                {index === tallestIndex && (
+                    <span
+                        className={`absolute -top-5 ${tallestLabelAlign} text-muted font-mono text-xs whitespace-nowrap`}
+                    >
+                        {formatAmountShort(total)}
+                    </span>
+                )}
+            </Tooltip.Trigger>
+            <Tooltip.Content placement="top" offset={8}>
                 <span className="font-mono text-xs">
                     {MONTH_NAMES[index]}: {formatAmount(total)}
                 </span>
-            </PopoverContent>
-        </Popover>
+            </Tooltip.Content>
+        </Tooltip>
     ));
 
     const monthLabels = MONTH_NAMES.map((label) => (
         <span
             key={label}
-            className="text-default-400 flex-1 text-center font-mono text-xs"
+            className="text-muted flex-1 text-center font-mono text-xs"
         >
             {label}
         </span>
@@ -89,9 +86,9 @@ export default function ExpensesByMonthChart({
             className="pointer-events-none absolute right-0 left-0 z-10"
             style={{ bottom: `${averagePct}%` }}
         >
-            <div className="border-primary-400 border-t border-dashed" />
+            <div className="border-t border-dashed border-blue-500" />
             <span
-                className={`text-primary-400 absolute -top-5 ${
+                className={`absolute -top-5 text-blue-500 ${
                     tallestIndex > 9 ? "left-0" : "right-0"
                 } font-mono text-xs whitespace-nowrap`}
             >
@@ -102,9 +99,7 @@ export default function ExpensesByMonthChart({
 
     return (
         <div className="mb-6">
-            <p className="text-default-500 mb-3 font-semibold">
-                Expenses by month
-            </p>
+            <p className="text-muted mb-3 font-semibold">Expenses by month</p>
             <div className="relative mt-10 mb-1 flex h-24 items-end gap-1">
                 {bars}
                 {averageMarker}
