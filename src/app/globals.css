@@ -66,15 +66,15 @@
     }
 
     .modal__header {
-        @apply px-3;
+        @apply px-7;
     }
 
     .modal__body {
-        @apply flex max-h-[calc(var(--visual-viewport-height,100svh)-10rem)] flex-col gap-4 px-4;
+        @apply flex max-h-[calc(var(--visual-viewport-height,100svh)-10rem)] flex-col gap-4 px-8;
     }
 
     .modal__body + .modal__footer {
-        @apply mt-0 px-3 pt-2;
+        @apply mt-0 px-6 pt-2;
     }
 
     .modal__close-trigger {
