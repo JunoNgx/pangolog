@@ -28,7 +28,7 @@ export function ToggleSwitch({
     className = "",
 }: ToggleSwitchProps) {
     const buttonClasses =
-        "flex items-center justify-center gap-1.5 w-full rounded-sm px-3 py-1 text-sm transition-colors peer-focus-visible:outline-2 peer-focus-visible:outline-offset-3 peer-focus-visible:outline-primary";
+        "flex items-center justify-center gap-1.5 w-full rounded-sm px-3 py-1 text-sm transition-colors peer-focus-visible:outline-2 peer-focus-visible:outline-offset-3 peer-focus-visible:outline-focus";
 
     return (
         <div className={`inline-flex items-center gap-2 ${className}`}>
