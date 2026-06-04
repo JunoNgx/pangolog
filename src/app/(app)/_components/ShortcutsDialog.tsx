@@ -94,13 +94,13 @@ export function ShortcutsDialog() {
     useHotkey("/", toggle, { hasMod: true });
 
     return (
-        <Modal>
-            <Modal.Backdrop
-                isOpen={isOpen}
-                onOpenChange={(open) => {
-                    if (!open) close();
-                }}
-            >
+        <Modal
+            isOpen={isOpen}
+            onOpenChange={(open) => {
+                if (!open) close();
+            }}
+        >
+            <Modal.Backdrop>
                 <Modal.Container size="md" scroll="inside">
                     <Modal.Dialog>
                         <Modal.CloseTrigger className="cursor-pointer" />

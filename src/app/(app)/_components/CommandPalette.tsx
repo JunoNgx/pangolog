@@ -278,13 +278,13 @@ export function CommandPalette() {
     }
 
     return (
-        <Modal>
-            <Modal.Backdrop
-                isOpen={isOpen}
-                onOpenChange={(open) => {
-                    if (!open) close();
-                }}
-            >
+        <Modal
+            isOpen={isOpen}
+            onOpenChange={(open) => {
+                if (!open) close();
+            }}
+        >
+            <Modal.Backdrop>
                 <Modal.Container size="sm">
                     <Modal.Dialog className="max-w-md">
                         <Modal.Body className="gap-0 p-0">
