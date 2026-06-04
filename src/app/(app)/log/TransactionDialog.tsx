@@ -182,6 +182,14 @@ export function TransactionDialog({
                     if (!open) handleClose();
                 }}
             >
+                {/**
+                 * DialogTrigger's internal PressResponder requires a pressable
+                 * child to avoid a dev warning. Since isOpen is controlled
+                 * externally, a hidden dummy is used instead.
+                 */}
+                <Modal.Trigger>
+                    <span hidden />
+                </Modal.Trigger>
                 <Modal.Backdrop>
                     <Modal.Container>
                         <Modal.Dialog>

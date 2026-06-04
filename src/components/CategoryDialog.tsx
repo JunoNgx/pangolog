@@ -309,6 +309,9 @@ export function CategoryDialog({
                 if (!open) onClose();
             }}
         >
+            <Modal.Trigger>
+                <span hidden />
+            </Modal.Trigger>
             <Modal.Backdrop>
                 <Modal.Container>
                     <Modal.Dialog>
