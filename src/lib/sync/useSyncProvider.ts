@@ -1,7 +1,7 @@
 "use client";
 
+import { toast } from "@heroui/react";
 import { useCallback, useState } from "react";
-import { toast } from "sonner";
 import { useLocalSyncDataStore } from "@/lib/store/useLocalSyncDataStore";
 import { googleProvider } from "@/lib/sync/googleProvider";
 import type {

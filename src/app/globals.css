@@ -111,9 +111,3 @@
         transition-duration: 0.01ms;
     }
 }
-
-.Sonner[data-sonner-toaster][data-y-position="bottom"] {
-    @media screen and (max-width: 768px) {
-        bottom: var(--mobile-offset-bottom);
-    }
-}

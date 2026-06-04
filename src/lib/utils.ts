@@ -1,5 +1,5 @@
+import { toast } from "@heroui/react";
 import { DateTime } from "luxon";
-import { toast } from "sonner";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
 import type { TimeFormat } from "@/lib/types";
 
@@ -112,10 +112,7 @@ export function formatAmountShort(minorUnits: number): string {
 
 export function showDeleteToast(entityName: string, undoFn: () => void) {
     toast(`${entityName} deleted`, {
-        duration: 5000,
-        action: {
-            label: "Undo",
-            onClick: undoFn,
-        },
+        timeout: 5000,
+        actionProps: { children: "Undo", onPress: undoFn },
     });
 }

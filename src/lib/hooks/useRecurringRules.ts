@@ -1,5 +1,5 @@
+import { toast } from "@heroui/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
 import { RECURRING_RULES_KEY } from "@/lib/constants";
 import {
     createRecurringRule,
@@ -24,9 +24,7 @@ export function useCreateRecurringRule() {
         onSuccess: () =>
             queryClient.invalidateQueries({ queryKey: RECURRING_RULES_KEY }),
         onError: () =>
-            toast.error("Failed to save recurring rule", {
-                duration: Infinity,
-            }),
+            toast.danger("Failed to save recurring rule", { timeout: 0 }),
     });
 }
 
@@ -43,9 +41,7 @@ export function useUpdateRecurringRule() {
         onSuccess: () =>
             queryClient.invalidateQueries({ queryKey: RECURRING_RULES_KEY }),
         onError: () =>
-            toast.error("Failed to update recurring rule", {
-                duration: Infinity,
-            }),
+            toast.danger("Failed to update recurring rule", { timeout: 0 }),
     });
 }
 
@@ -56,9 +52,7 @@ export function useDeleteRecurringRule() {
         onSuccess: () =>
             queryClient.invalidateQueries({ queryKey: RECURRING_RULES_KEY }),
         onError: () =>
-            toast.error("Failed to delete recurring rule", {
-                duration: Infinity,
-            }),
+            toast.danger("Failed to delete recurring rule", { timeout: 0 }),
     });
 }
 
@@ -68,7 +62,6 @@ export function useRestoreRecurringRule() {
         mutationFn: (id: string) => restoreRecurringRule(id),
         onSuccess: () =>
             queryClient.invalidateQueries({ queryKey: RECURRING_RULES_KEY }),
-        onError: () =>
-            toast.error("Failed to undo deletion", { duration: Infinity }),
+        onError: () => toast.danger("Failed to undo deletion", { timeout: 0 }),
     });
 }

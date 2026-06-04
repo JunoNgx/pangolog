@@ -276,11 +276,11 @@ export function CategoryDialog({
                     <ColorSlider.Thumb />
                 </ColorSlider.Track>
             </ColorSlider.Root>
-                <ColorField.Root>
-                    <ColorField.Group>
-                        <ColorField.Input />
-                    </ColorField.Group>
-                </ColorField.Root>
+            <ColorField.Root>
+                <ColorField.Group>
+                    <ColorField.Input />
+                </ColorField.Group>
+            </ColorField.Root>
         </ColorPicker.Popover>
     );
 
