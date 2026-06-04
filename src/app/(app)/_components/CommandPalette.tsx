@@ -287,7 +287,7 @@ export function CommandPalette() {
             <Modal.Backdrop>
                 <Modal.Container size="sm">
                     <Modal.Dialog className="max-w-md">
-                        <Modal.Body className="gap-0 p-0">
+                        <Modal.Body>
                             <Input
                                 autoFocus
                                 placeholder="Type a command..."
@@ -296,7 +296,7 @@ export function CommandPalette() {
                                     handleQueryChange(e.target.value)
                                 }
                                 onKeyDown={handleKeyDown}
-                                className="w-full rounded-none border-b bg-transparent shadow-none"
+                                className="w-full rounded-none border-0 border-b bg-transparent shadow-none"
                             />
                             <div
                                 ref={scrollRef}
