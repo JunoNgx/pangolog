@@ -303,13 +303,13 @@ export function CategoryDialog({
     );
 
     return (
-        <Modal>
-            <Modal.Backdrop
-                isOpen={isOpen}
-                onOpenChange={(open) => {
-                    if (!open) onClose();
-                }}
-            >
+        <Modal
+            isOpen={isOpen}
+            onOpenChange={(open) => {
+                if (!open) onClose();
+            }}
+        >
+            <Modal.Backdrop>
                 <Modal.Container>
                     <Modal.Dialog>
                         <Modal.CloseTrigger className="cursor-pointer" />

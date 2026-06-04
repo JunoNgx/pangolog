@@ -176,13 +176,13 @@ export function TransactionDialog({
 
     return (
         <>
-            <Modal>
-                <Modal.Backdrop
-                    isOpen={isOpen}
-                    onOpenChange={(open) => {
-                        if (!open) handleClose();
-                    }}
-                >
+            <Modal
+                isOpen={isOpen}
+                onOpenChange={(open) => {
+                    if (!open) handleClose();
+                }}
+            >
+                <Modal.Backdrop>
                     <Modal.Container>
                         <Modal.Dialog>
                             <Modal.CloseTrigger className="cursor-pointer" />
