@@ -1,9 +1,8 @@
 "use client";
 
-import { Button, Tooltip } from "@heroui/react";
+import { Button, Tooltip, toast } from "@heroui/react";
 import { RefreshCw } from "lucide-react";
 import { DateTime } from "luxon";
-import { toast } from "sonner";
 import { useOnlineStatus } from "@/lib/hooks/useOnlineStatus";
 import { useSyncFn } from "@/lib/hooks/useSync";
 import { useLocalSyncDataStore } from "@/lib/store/useLocalSyncDataStore";

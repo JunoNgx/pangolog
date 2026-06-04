@@ -1,8 +1,8 @@
 "use client";
 
+import { toast } from "@heroui/react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef } from "react";
-import { toast } from "sonner";
 import { DEBOUNCE_MS, RESTORE_SYNC_THRESHOLD_MS } from "@/lib/constants";
 import { useLocalSyncDataStore } from "@/lib/store/useLocalSyncDataStore";
 import { runFullSync } from "@/lib/sync/syncEngine";
@@ -12,7 +12,7 @@ import { useLogger } from "./useLogger";
 
 // Module-level flag prevents concurrent syncs across hook instances.
 let isSyncing = false;
-const AUTH_RECONNECT_TOAST = "auth-reconnect";
+let authReconnectToastKey: string | null = null;
 
 function isExpiredResult(
     result: SyncTokenResult,
@@ -53,9 +53,8 @@ export function useSyncFn() {
         (logMessage: string, logcode: string, toastMessage: string) => {
             addLoggerEntry(logMessage, logcode);
             if (navigator.onLine) setAuthToken(null);
-            toast.error(toastMessage, {
-                id: AUTH_RECONNECT_TOAST,
-                duration: Infinity,
+            authReconnectToastKey = toast.danger(toastMessage, {
+                timeout: 0,
             });
         },
         [addLoggerEntry, setAuthToken],
@@ -101,17 +100,20 @@ export function useSyncFn() {
 
                 setSyncStatus("idle");
                 setLastSyncTime(syncStartTime);
-                toast.dismiss(AUTH_RECONNECT_TOAST);
+                if (authReconnectToastKey) {
+                    toast.close(authReconnectToastKey);
+                    authReconnectToastKey = null;
+                }
                 if (!isSilent) {
                     toast.success("Sync complete");
                 }
             } catch (err) {
                 if (provider.isScopeError(err)) {
                     setSyncStatus("idle");
-                    toast.error(provider.revokedMessage, {
-                        id: AUTH_RECONNECT_TOAST,
-                        duration: Infinity,
-                    });
+                    authReconnectToastKey = toast.danger(
+                        provider.revokedMessage,
+                        { timeout: 0 },
+                    );
                     return;
                 }
 
@@ -120,7 +122,7 @@ export function useSyncFn() {
                         err instanceof Error ? err.message : "Sync failed.";
                     setSyncStatus("error");
                     setSyncError(message);
-                    toast.error(`Sync failed: ${message}`);
+                    toast.danger(`Sync failed: ${message}`);
                     return;
                 }
 

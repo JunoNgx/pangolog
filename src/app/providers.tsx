@@ -1,10 +1,11 @@
 "use client";
 
+import { Toast } from "@heroui/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider, useTheme } from "next-themes";
 import { useEffect, useState } from "react";
-import { Toaster } from "sonner";
 import { ServiceWorkerRegistration } from "@/components/ServiceWorkerRegistration";
+import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 import { useLocalAppDataStore } from "@/lib/store/useLocalAppDataStore";
 import { useLocalSyncDataStore } from "@/lib/store/useLocalSyncDataStore";
 import { useLocalUserSettingsStore } from "@/lib/store/useLocalUserSettingsStore";
@@ -31,18 +32,9 @@ function ThemeColorSync() {
     return null;
 }
 
-function ThemedToaster() {
-    const { resolvedTheme } = useTheme();
-    return (
-        <Toaster
-            className="Sonner"
-            position="bottom-center"
-            swipeDirections={["left"]}
-            theme={resolvedTheme as "light" | "dark"}
-            toastOptions={{ classNames: { toast: "" } }}
-            mobileOffset={{ bottom: "90px" }}
-        />
-    );
+function ToastProvider() {
+    const isDesktop = useMediaQuery("(min-width: 768px)");
+    return <Toast.Provider placement={isDesktop ? "bottom" : "top"} />;
 }
 
 function StoreHydration() {
@@ -65,7 +57,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
                 {children}
                 <StoreHydration />
                 <ThemeColorSync />
-                <ThemedToaster />
+                <ToastProvider />
                 <ServiceWorkerRegistration />
             </ThemeProvider>
         </QueryClientProvider>

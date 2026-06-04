@@ -1,5 +1,5 @@
+import { toast } from "@heroui/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
 import { TRANSACTIONS_KEY } from "@/lib/constants";
 import { getAllTransactions } from "../db/bulk";
 import {
@@ -40,7 +40,7 @@ export function useCreateTransaction() {
         onSuccess: () =>
             queryClient.invalidateQueries({ queryKey: TRANSACTIONS_KEY }),
         onError: () =>
-            toast.error("Failed to save transaction", { duration: Infinity }),
+            toast.danger("Failed to save transaction", { timeout: 0 }),
     });
 }
 
@@ -52,7 +52,7 @@ export function useUpdateTransaction() {
         onSuccess: () =>
             queryClient.invalidateQueries({ queryKey: TRANSACTIONS_KEY }),
         onError: () =>
-            toast.error("Failed to update transaction", { duration: Infinity }),
+            toast.danger("Failed to update transaction", { timeout: 0 }),
     });
 }
 
@@ -63,7 +63,7 @@ export function useDeleteTransaction() {
         onSuccess: () =>
             queryClient.invalidateQueries({ queryKey: TRANSACTIONS_KEY }),
         onError: () =>
-            toast.error("Failed to delete transaction", { duration: Infinity }),
+            toast.danger("Failed to delete transaction", { timeout: 0 }),
     });
 }
 
@@ -73,7 +73,6 @@ export function useRestoreTransaction() {
         mutationFn: (id: string) => restoreTransaction(id),
         onSuccess: () =>
             queryClient.invalidateQueries({ queryKey: TRANSACTIONS_KEY }),
-        onError: () =>
-            toast.error("Failed to undo deletion", { duration: Infinity }),
+        onError: () => toast.danger("Failed to undo deletion", { timeout: 0 }),
     });
 }

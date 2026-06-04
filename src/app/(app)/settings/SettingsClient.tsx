@@ -8,11 +8,11 @@ import {
     Modal,
     Radio,
     RadioGroup,
+    toast,
 } from "@heroui/react";
 import { DateTime } from "luxon";
 import { useTheme } from "next-themes";
 import { useLayoutEffect, useRef, useState } from "react";
-import { toast } from "sonner";
 import { DriveSyncSection } from "@/app/(app)/settings/DriveSyncSection";
 import { ImportDataSection } from "@/app/(app)/settings/ImportDataSection";
 import { MainListContainer } from "@/components/MainListContainer";
@@ -95,7 +95,7 @@ export default function SettingsClient() {
             await new Promise((resolve) => setTimeout(resolve, 1500));
             window.location.reload();
         } catch (err) {
-            toast.error(`Record clearing failed: ${err}`);
+            toast.danger(`Record clearing failed: ${err}`);
             setIsResetting(false);
         }
     }
@@ -111,7 +111,7 @@ export default function SettingsClient() {
             await new Promise((resolve) => setTimeout(resolve, 1500));
             window.location.href = "/";
         } catch (err) {
-            toast.error(`Reset failed: ${err}`);
+            toast.danger(`Reset failed: ${err}`);
             setIsResettingApp(false);
         }
     }
@@ -145,11 +145,9 @@ export default function SettingsClient() {
             console.log("Logger content: ", content);
             await navigator.clipboard.writeText(content);
         } catch (error) {
-            toast.error(
+            toast.danger(
                 `Unable to copy Logger content to clipboard: ${error}`,
-                {
-                    duration: Infinity,
-                },
+                { timeout: 0 },
             );
         }
     }
@@ -600,7 +598,7 @@ export default function SettingsClient() {
                             variant="secondary"
                             onPress={() =>
                                 toast("Debug toast notification", {
-                                    duration: Infinity,
+                                    timeout: 0,
                                 })
                             }
                         >
