@@ -3,7 +3,7 @@
 import { Button, Checkbox, Input, Label, Modal, Popover } from "@heroui/react";
 import { EmojiPicker, type EmojiPickerListComponents } from "frimousse";
 import { Shuffle } from "lucide-react";
-import { type SubmitEventHandler, useEffect, useState } from "react";
+import { type SubmitEventHandler, useEffect, useRef, useState } from "react";
 import { HexColorPicker } from "react-colorful";
 import { DialogFooter } from "@/components/DialogFooter";
 import type { Category } from "@/lib/db/types";
@@ -13,6 +13,7 @@ import {
     useRestoreCategory,
     useUpdateCategory,
 } from "@/lib/hooks/useCategories";
+import { useDelayedAutoFocus } from "@/lib/hooks/useDelayedAutoFocus";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
 import { showDeleteToast } from "@/lib/utils";
 
@@ -108,6 +109,8 @@ export function CategoryDialog({
     onCreated,
 }: CategoryDialogProps) {
     const [name, setName] = useState("");
+    const nameInputRef = useRef<HTMLInputElement>(null);
+    useDelayedAutoFocus(isOpen, nameInputRef);
     const [colour, setColour] = useState(randomHexColor);
     const [icon, setIcon] = useState(randomEmoji());
 
@@ -315,6 +318,7 @@ export function CategoryDialog({
             <Modal.Backdrop>
                 <Modal.Container>
                     <Modal.Dialog>
+                        <div tabIndex={-1} className="sr-only" />
                         <Modal.CloseTrigger className="cursor-pointer" />
                         <form onSubmit={handleSubmit}>
                             <Modal.Header>
@@ -331,12 +335,12 @@ export function CategoryDialog({
                                     </Label>
                                     <Input
                                         id="name"
+                                        ref={nameInputRef}
                                         value={name}
                                         onChange={(e) =>
                                             setName(e.target.value)
                                         }
                                         required
-                                        autoFocus
                                         placeholder="Name"
                                     />
                                 </div>

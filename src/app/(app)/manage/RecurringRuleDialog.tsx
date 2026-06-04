@@ -2,7 +2,13 @@
 
 import { Button, Dropdown, Input, Label, Modal, Switch } from "@heroui/react";
 import { DateTime } from "luxon";
-import { type SubmitEventHandler, useEffect, useMemo, useState } from "react";
+import {
+    type SubmitEventHandler,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from "react";
 import { AmountInput } from "@/components/AmountInput";
 import { CategoryDialog } from "@/components/CategoryDialog";
 import { CategoryPicker } from "@/components/CategoryPicker";
@@ -11,6 +17,7 @@ import { ToggleSwitch } from "@/components/ToggleSwitch";
 import { DAY_NAMES_FULL, MONTH_NAMES } from "@/lib/constants";
 import type { RecurringRule } from "@/lib/db/types";
 import { useCategories } from "@/lib/hooks/useCategories";
+import { useDelayedAutoFocus } from "@/lib/hooks/useDelayedAutoFocus";
 import {
     useCreateRecurringRule,
     useDeleteRecurringRule,
@@ -69,6 +76,8 @@ export function RecurringRuleDialog({
     const [isActive, setIsActive] = useState(true);
     const [isCategoryDialogOpen, setIsCategoryDialogOpen] = useState(false);
 
+    const amountInputRef = useRef<HTMLInputElement>(null);
+    useDelayedAutoFocus(isOpen, amountInputRef);
     const { data: categories } = useCategories();
     const createRule = useCreateRecurringRule();
     const updateRule = useUpdateRecurringRule();
@@ -280,6 +289,7 @@ export function RecurringRuleDialog({
                 <Modal.Backdrop>
                     <Modal.Container>
                         <Modal.Dialog>
+                            <div tabIndex={-1} className="sr-only" />
                             <Modal.CloseTrigger className="cursor-pointer" />
                             <form onSubmit={handleSubmit}>
                                 <Modal.Header>
@@ -295,6 +305,7 @@ export function RecurringRuleDialog({
                                     {expenseTypeToggleRow}
 
                                     <AmountInput
+                                        ref={amountInputRef}
                                         value={amount}
                                         onChange={setAmount}
                                         isIncome={isIncome}
