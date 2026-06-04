@@ -7,6 +7,7 @@ interface AmountInputProps {
     onChange: (value: string) => void;
     isIncome: boolean;
     isRequired?: boolean;
+    ref?: React.Ref<HTMLInputElement>;
 }
 
 export function AmountInput({
@@ -14,6 +15,7 @@ export function AmountInput({
     onChange,
     isIncome,
     isRequired = true,
+    ref,
 }: AmountInputProps) {
     function handleAmountChange(inputValue: string) {
         const match = inputValue.match(/^\d*\.?\d{0,2}$/);
@@ -26,10 +28,10 @@ export function AmountInput({
         <div className="my-2">
             <Input
                 fullWidth
+                ref={ref}
                 value={value}
                 onChange={(e) => handleAmountChange(e.target.value)}
                 required={isRequired}
-                autoFocus
                 inputMode="decimal"
                 placeholder="0.00"
                 onFocus={(e) => e.target.select()}

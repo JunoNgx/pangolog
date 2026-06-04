@@ -16,6 +16,7 @@ import { DialogFooter } from "@/components/DialogFooter";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
 import type { Transaction } from "@/lib/db/types";
 import { useCategories } from "@/lib/hooks/useCategories";
+import { useDelayedAutoFocus } from "@/lib/hooks/useDelayedAutoFocus";
 import {
     useCreateTransaction,
     useDeleteTransaction,
@@ -62,6 +63,8 @@ export function TransactionDialog({
     const { isExpenseOnlyMode } = useProfileSettingsStore();
     const isEditing = !!transaction;
     const formRef = useRef<HTMLFormElement>(null);
+    const amountInputRef = useRef<HTMLInputElement>(null);
+    useDelayedAutoFocus(isOpen, amountInputRef);
 
     useEffect(() => {
         if (transaction) {
@@ -193,6 +196,7 @@ export function TransactionDialog({
                 <Modal.Backdrop>
                     <Modal.Container>
                         <Modal.Dialog>
+                            <div tabIndex={-1} className="sr-only" />
                             <Modal.CloseTrigger className="cursor-pointer" />
                             <form ref={formRef} onSubmit={handleSubmit}>
                                 <Modal.Header>
@@ -226,6 +230,7 @@ export function TransactionDialog({
                                     </div>
 
                                     <AmountInput
+                                        ref={amountInputRef}
                                         value={amount}
                                         onChange={setAmount}
                                         isIncome={isIncome}
