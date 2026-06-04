@@ -279,6 +279,9 @@ export function RecurringRuleDialog({
                     if (!open) handleClose();
                 }}
             >
+                <Modal.Trigger>
+                    <span hidden />
+                </Modal.Trigger>
                 <Modal.Backdrop>
                     <Modal.Container>
                         <Modal.Dialog>
