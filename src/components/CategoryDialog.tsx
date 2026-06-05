@@ -3,10 +3,7 @@
 import {
     Button,
     Checkbox,
-    ColorArea,
-    ColorField,
     ColorPicker,
-    ColorSlider,
     Input,
     Label,
     Modal,
@@ -16,6 +13,7 @@ import {
 import { EmojiPicker, type EmojiPickerListComponents } from "frimousse";
 import { Shuffle } from "lucide-react";
 import { type SubmitEventHandler, useEffect, useRef, useState } from "react";
+import { HexColorInput, HexColorPicker } from "react-colorful";
 import { DialogFooter } from "@/components/DialogFooter";
 import type { Category } from "@/lib/db/types";
 import {
@@ -257,7 +255,7 @@ export function CategoryDialog({
             aria-label={`Choose colour, currently ${colour.toString("hex")}`}
         >
             <div
-                className="size-6 shrink-0 rounded-full"
+                className="size-5 shrink-0 rounded-full"
                 style={{
                     backgroundColor: colour.toString("hex"),
                 }}
@@ -267,20 +265,20 @@ export function CategoryDialog({
     );
 
     const colourPopover = (
-        <ColorPicker.Popover placement="bottom end" className="w-56 min-w-56">
-            <ColorArea.Root>
-                <ColorArea.Thumb />
-            </ColorArea.Root>
-            <ColorSlider.Root channel="hue" colorSpace="hsb">
-                <ColorSlider.Track>
-                    <ColorSlider.Thumb />
-                </ColorSlider.Track>
-            </ColorSlider.Root>
-            <ColorField.Root>
-                <ColorField.Group>
-                    <ColorField.Input />
-                </ColorField.Group>
-            </ColorField.Root>
+        <ColorPicker.Popover
+            placement="bottom end"
+            className="w-58 min-w-58 p-4"
+        >
+            <HexColorPicker
+                color={colour.toString("hex")}
+                onChange={(hex) => setColour(parseColor(hex))}
+            />
+            <HexColorInput
+                color={colour.toString("hex")}
+                onChange={(hex) => setColour(parseColor(hex))}
+                prefixed
+                className="bg-default text-foreground text-md w-full rounded-md px-2.5 py-1.5"
+            />
         </ColorPicker.Popover>
     );
 
@@ -347,7 +345,7 @@ export function CategoryDialog({
                                         placeholder="Name"
                                     />
                                 </div>
-                                <div className="flex justify-between pb-4">
+                                <div className="flex justify-between">
                                     {emojiPickerSection}
                                     {colourPickerSection}
                                 </div>
@@ -364,6 +362,7 @@ export function CategoryDialog({
                                 </Checkbox>
                                 {!isExpenseOnlyMode && (
                                     <Checkbox
+                                        className="mb-4"
                                         isSelected={isIncomeOnly}
                                         onChange={setIsIncomeOnly}
                                     >
