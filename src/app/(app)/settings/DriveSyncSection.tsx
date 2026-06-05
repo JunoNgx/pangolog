@@ -94,7 +94,7 @@ export function DriveSyncSection() {
 
     return (
         <section>
-            <h3 className="mb-4 text-lg font-semibold">Google Drive Sync</h3>
+            <h3 className="mb-2 text-lg font-semibold">Google Drive Sync</h3>
             <div className="flex flex-col gap-3">
                 {lastSyncRow}
                 <OfflineIndicator

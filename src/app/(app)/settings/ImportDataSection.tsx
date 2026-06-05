@@ -174,7 +174,7 @@ export function ImportDataSection() {
 
     return (
         <section>
-            <h3 className="mb-4 text-lg font-semibold">Import Data</h3>
+            <h3 className="mb-2 text-lg font-semibold">Import Data</h3>
             <div className="flex flex-col gap-3">
                 <input
                     ref={fileInputRef}
@@ -183,6 +183,11 @@ export function ImportDataSection() {
                     className="hidden"
                     onChange={handleFileChange}
                 />
+                <p className="text-muted text-xs">
+                    Merge data from a record snapshot file into existing local
+                    records. Duplicated records are resolved by last-updated
+                    timestamp.
+                </p>
                 <Button
                     variant="primary"
                     className="self-start"
