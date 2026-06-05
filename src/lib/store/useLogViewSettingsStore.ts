@@ -11,7 +11,7 @@ interface LogViewSettingsStore {
 export const useLogViewSettingsStore = create<LogViewSettingsStore>()(
     persist(
         (set) => ({
-            logViewDisplayMode: "dimes",
+            logViewDisplayMode: "all",
             setLogViewDisplayMode: (mode) => set({ logViewDisplayMode: mode }),
         }),
         {
