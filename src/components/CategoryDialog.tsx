@@ -229,7 +229,7 @@ export function CategoryDialog({
                             onEmojiSelect={handleEmojiSelect}
                             className="bg-surface text-foreground flex h-90 w-75 flex-col overflow-hidden rounded-lg"
                         >
-                            <EmojiPicker.Search className="bg-surface text-foreground placeholder:text-muted focus:bg-surface-secondary mx-2 mt-2 rounded-md px-2.5 py-2 text-sm outline-none" />
+                            <EmojiPicker.Search className="text-foreground placeholder:text-muted border-foreground focus:border-accent mx-2 mt-2 rounded-md border px-2.5 py-1.5 text-sm outline-none" />
                             <EmojiPicker.Viewport className="relative flex-1 outline-none">
                                 <EmojiPicker.Loading className="text-muted absolute inset-0 flex items-center justify-center text-sm">
                                     Loading...
