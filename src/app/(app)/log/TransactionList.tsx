@@ -153,7 +153,7 @@ function TransactionItem({
                 <div className="ml-2 min-w-0 grow-4">
                     {hasCategory ? (
                         <p>
-                            <span className="mr-1">{category.icon || "·"}</span>
+                            <span className="mr-2">{category.icon || "·"}</span>
                             <span className="text-foreground">
                                 {category.name}
                             </span>
