@@ -305,11 +305,11 @@ export default function SettingsClient() {
                 <RouteHeader label="Settings" />
             </div>
 
-            <MainListContainer as="div" className="gap-8">
+            <MainListContainer as="div" className="gap-12">
                 <DriveSyncSection />
 
                 <section>
-                    <h3 className="mb-4 text-lg font-semibold">
+                    <h3 className="mb-2 text-lg font-semibold">
                         Display Currency
                     </h3>
                     <div className="flex flex-col gap-4">
@@ -361,7 +361,7 @@ export default function SettingsClient() {
                 </section>
 
                 <section>
-                    <h3 className="mb-4 text-lg font-semibold">Preferences</h3>
+                    <h3 className="mb-2 text-lg font-semibold">Preferences</h3>
                     <div className="flex flex-col gap-4">
                         <Checkbox
                             isSelected={isExpenseOnlyMode}
@@ -467,8 +467,40 @@ export default function SettingsClient() {
                 </section>
 
                 <section>
-                    <h3 className="mb-4 text-lg font-semibold">Export Data</h3>
+                    <h3 className="mb-2 text-lg font-semibold">Export Data</h3>
                     <div className="flex flex-col gap-3">
+                        <p className="text-muted text-xs">
+                            Exports all data into a single record snapshot file.
+                        </p>
+                        <Checkbox
+                            isSelected={isPrettyPrint}
+                            onChange={setIsPrettyPrint}
+                        >
+                            <Checkbox.Control>
+                                <Checkbox.Indicator />
+                            </Checkbox.Control>
+                            <Checkbox.Content>
+                                <Label>Pretty print</Label>
+                                <span className="text-muted text-xs">
+                                    Includes line breaks for human-readability
+                                </span>
+                            </Checkbox.Content>
+                        </Checkbox>
+                        <Checkbox
+                            isSelected={shouldIncludeDeleted}
+                            onChange={setShouldIncludeDeleted}
+                        >
+                            <Checkbox.Control>
+                                <Checkbox.Indicator />
+                            </Checkbox.Control>
+                            <Checkbox.Content>
+                                <Label>Include soft-deleted records</Label>
+                                <span className="text-muted text-xs">
+                                    Useful for synchronising and resolving
+                                    conflicts from multiple sources
+                                </span>
+                            </Checkbox.Content>
+                        </Checkbox>
                         <div className="flex items-center gap-3">
                             <Button
                                 variant="primary"
@@ -478,42 +510,6 @@ export default function SettingsClient() {
                                 Export JSON
                             </Button>
                         </div>
-                        <div className="flex items-center gap-3">
-                            <Checkbox
-                                isSelected={isPrettyPrint}
-                                onChange={setIsPrettyPrint}
-                            >
-                                <Checkbox.Control>
-                                    <Checkbox.Indicator />
-                                </Checkbox.Control>
-                                <Checkbox.Content>
-                                    <Label>Pretty print</Label>
-                                    <span className="text-muted text-xs">
-                                        Human-readable formatting.
-                                    </span>
-                                </Checkbox.Content>
-                            </Checkbox>
-                            <Checkbox
-                                isSelected={shouldIncludeDeleted}
-                                onChange={setShouldIncludeDeleted}
-                            >
-                                <Checkbox.Control>
-                                    <Checkbox.Indicator />
-                                </Checkbox.Control>
-                                <Checkbox.Content>
-                                    <Label>Include soft-deleted records</Label>
-                                    <span className="text-muted text-xs">
-                                        Useful for data sync
-                                    </span>
-                                </Checkbox.Content>
-                            </Checkbox>
-                        </div>
-                        <p className="text-muted text-xs">
-                            Exports all transactions, categories, and display
-                            settings into a single file. On import, records are
-                            resolved by last-updated timestamp to avoid
-                            duplicates.
-                        </p>
                     </div>
                 </section>
 
