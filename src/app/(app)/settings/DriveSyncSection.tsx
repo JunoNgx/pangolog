@@ -4,7 +4,10 @@ import { Button, Checkbox, Label } from "@heroui/react";
 import { DateTime } from "luxon";
 import dynamic from "next/dynamic";
 import { useSync } from "@/lib/hooks/useSync";
-import { useLocalSyncDataStore } from "@/lib/store/useLocalSyncDataStore";
+import {
+    type SyncStatus,
+    useLocalSyncDataStore,
+} from "@/lib/store/useLocalSyncDataStore";
 import { useLocalUserSettingsStore } from "@/lib/store/useLocalUserSettingsStore";
 import { useSyncProvider } from "@/lib/sync/useSyncProvider";
 import { getTimeFormatOptions } from "@/lib/utils";
@@ -14,6 +17,19 @@ const OfflineIndicator = dynamic(
         import("@/components/OfflineIndicator").then((m) => m.OfflineIndicator),
     { ssr: false },
 );
+
+function getSyncStatusText(
+    status: SyncStatus,
+    error: string | null,
+): string | null {
+    if (status === "syncing") {
+        return "Syncing...";
+    }
+    if (status === "error") {
+        return `Error: ${error}`;
+    }
+    return null;
+}
 
 export function DriveSyncSection() {
     const { authToken, isConnected, isConnecting, error, connect, disconnect } =
@@ -41,14 +57,12 @@ export function DriveSyncSection() {
         </p>
     );
 
+    const syncStatusText = getSyncStatusText(syncStatus, syncError);
+
     const connectedContent = (
         <>
             <p className="text-success text-sm">
                 Status: Connected as {authToken?.email}
-            </p>
-            <p className="text-muted text-xs">
-                {syncStatus === "syncing" && "Syncing..."}
-                {syncStatus === "error" && `Error: ${syncError}`}
             </p>
             <div className="flex gap-2">
                 <Button
@@ -67,6 +81,9 @@ export function DriveSyncSection() {
                     Sync now
                 </Button>
             </div>
+            {syncStatusText && (
+                <p className="text-muted text-xs">{syncStatusText}</p>
+            )}
         </>
     );
 
