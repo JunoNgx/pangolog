@@ -13,17 +13,25 @@ export async function seedDemoData(): Promise<void> {
     const db = await getDb();
     const now = DateTime.now();
     const threeDaysAgo = now.minus({ days: 3 });
+    const twoDaysAgo = now.minus({ days: 2 });
     const yesterday = now.minus({ days: 1 });
 
     const auditNow = toIsoString(now.toUTC());
     const catCreatedAt = toIsoString(threeDaysAgo.toUTC());
 
+    const threeDaysAgoIso = toIsoString(threeDaysAgo);
+    const twoDaysAgoIso = toIsoString(twoDaysAgo);
+    const yesterdayIso = toIsoString(yesterday);
+    const todayIso = toIsoString(now);
+
+    const catMedicine = generateId();
+    const catDrink = generateId();
     const catFood = generateId();
-    const catVideogame = generateId();
-    const catGrocery = generateId();
-    const catFreelancing = generateId();
-    const catWage = generateId();
-    const catSubscription = generateId();
+    const catIncome = generateId();
+    const catClothings = generateId();
+    const catReading = generateId();
+    const catHardware = generateId();
+    const catRent = generateId();
 
     await new Promise<void>((resolve, reject) => {
         const tx = db.transaction(
@@ -35,10 +43,10 @@ export async function seedDemoData(): Promise<void> {
 
         const catStore = tx.objectStore(STORE_CATEGORIES);
         catStore.put({
-            id: catFood,
-            name: "Food",
-            colour: "#F97316",
-            icon: "🍔",
+            id: catMedicine,
+            name: "Medicine",
+            colour: "#EF4444",
+            icon: "💊",
             priority: 0,
             isBuckOnly: false,
             isIncomeOnly: false,
@@ -47,22 +55,22 @@ export async function seedDemoData(): Promise<void> {
             deletedAt: null,
         });
         catStore.put({
-            id: catVideogame,
-            name: "Videogame",
-            colour: "#8B5CF6",
-            icon: "🎮",
+            id: catDrink,
+            name: "Drink",
+            colour: "#FBBF24",
+            icon: "🍺",
             priority: 1,
-            isBuckOnly: true,
+            isBuckOnly: false,
             isIncomeOnly: false,
             createdAt: catCreatedAt,
             updatedAt: catCreatedAt,
             deletedAt: null,
         });
         catStore.put({
-            id: catGrocery,
-            name: "Grocery",
-            colour: "#22C55E",
-            icon: "🛒",
+            id: catFood,
+            name: "Food",
+            colour: "#F97316",
+            icon: "🥪",
             priority: 2,
             isBuckOnly: false,
             isIncomeOnly: false,
@@ -71,10 +79,10 @@ export async function seedDemoData(): Promise<void> {
             deletedAt: null,
         });
         catStore.put({
-            id: catFreelancing,
-            name: "Freelancing",
-            colour: "#3B82F6",
-            icon: "💼",
+            id: catIncome,
+            name: "Income",
+            colour: "#22C55E",
+            icon: "💵",
             priority: 3,
             isBuckOnly: false,
             isIncomeOnly: true,
@@ -83,23 +91,47 @@ export async function seedDemoData(): Promise<void> {
             deletedAt: null,
         });
         catStore.put({
-            id: catWage,
-            name: "Wage",
-            colour: "#14B8A6",
-            icon: "💰",
+            id: catClothings,
+            name: "Clothings",
+            colour: "#EC4899",
+            icon: "👕",
             priority: 4,
-            isBuckOnly: false,
-            isIncomeOnly: true,
+            isBuckOnly: true,
+            isIncomeOnly: false,
             createdAt: catCreatedAt,
             updatedAt: catCreatedAt,
             deletedAt: null,
         });
         catStore.put({
-            id: catSubscription,
-            name: "Subscription",
-            colour: "#EC4899",
-            icon: "📺",
+            id: catReading,
+            name: "Reading",
+            colour: "#3B82F6",
+            icon: "📖",
             priority: 5,
+            isBuckOnly: true,
+            isIncomeOnly: false,
+            createdAt: catCreatedAt,
+            updatedAt: catCreatedAt,
+            deletedAt: null,
+        });
+        catStore.put({
+            id: catHardware,
+            name: "Hardware",
+            colour: "#6B7280",
+            icon: "🔧",
+            priority: 6,
+            isBuckOnly: true,
+            isIncomeOnly: false,
+            createdAt: catCreatedAt,
+            updatedAt: catCreatedAt,
+            deletedAt: null,
+        });
+        catStore.put({
+            id: catRent,
+            name: "Rent",
+            colour: "#8B5CF6",
+            icon: "🏠",
+            priority: 7,
             isBuckOnly: false,
             isIncomeOnly: false,
             createdAt: catCreatedAt,
@@ -107,67 +139,148 @@ export async function seedDemoData(): Promise<void> {
             deletedAt: null,
         });
 
-        const yesterdayIso = toIsoString(yesterday);
-        const todayIso = toIsoString(now);
-
         const txStore = tx.objectStore(STORE_TRANSACTIONS);
+
+        // Three days ago
         txStore.put({
             id: generateId(),
-            description: "Eggs",
+            description: "Nosaphed",
+            amount: 270,
+            categoryId: catMedicine,
+            isIncome: false,
+            isBigBuck: false,
+            transactedAt: threeDaysAgoIso,
+            year: threeDaysAgo.year,
+            month: threeDaysAgo.month,
+            updatedAt: auditNow,
+            deletedAt: null,
+        });
+        txStore.put({
+            id: generateId(),
+            description: "Commodore wine",
             amount: 500,
-            categoryId: catGrocery,
+            categoryId: catDrink,
             isIncome: false,
             isBigBuck: false,
-            transactedAt: yesterdayIso,
-            year: yesterday.year,
-            month: yesterday.month,
+            transactedAt: threeDaysAgoIso,
+            year: threeDaysAgo.year,
+            month: threeDaysAgo.month,
             updatedAt: auditNow,
             deletedAt: null,
         });
         txStore.put({
             id: generateId(),
-            description: "Sandwich",
-            amount: 1200,
+            description: "Pilsner beer",
+            amount: 300,
+            categoryId: catDrink,
+            isIncome: false,
+            isBigBuck: false,
+            transactedAt: threeDaysAgoIso,
+            year: threeDaysAgo.year,
+            month: threeDaysAgo.month,
+            updatedAt: auditNow,
+            deletedAt: null,
+        });
+        txStore.put({
+            id: generateId(),
+            description: "Frittte Rain Coat",
+            amount: 400,
+            categoryId: catClothings,
+            isIncome: false,
+            isBigBuck: true,
+            transactedAt: threeDaysAgoIso,
+            year: threeDaysAgo.year,
+            month: threeDaysAgo.month,
+            updatedAt: auditNow,
+            deletedAt: null,
+        });
+        txStore.put({
+            id: generateId(),
+            description: "Ham Sandwich",
+            amount: 150,
             categoryId: catFood,
             isIncome: false,
             isBigBuck: false,
-            transactedAt: yesterdayIso,
-            year: yesterday.year,
-            month: yesterday.month,
+            transactedAt: threeDaysAgoIso,
+            year: threeDaysAgo.year,
+            month: threeDaysAgo.month,
             updatedAt: auditNow,
             deletedAt: null,
         });
         txStore.put({
             id: generateId(),
-            description: "Chinese noodle",
-            amount: 2000,
-            categoryId: catFood,
-            isIncome: false,
-            isBigBuck: false,
-            transactedAt: todayIso,
-            year: now.year,
-            month: now.month,
-            updatedAt: auditNow,
-            deletedAt: null,
-        });
-        txStore.put({
-            id: generateId(),
-            description: "4U Gas payment",
-            amount: 35000,
-            categoryId: catWage,
+            description: "Donation from Joyce",
+            amount: 13000,
+            categoryId: catIncome,
             isIncome: true,
             isBigBuck: false,
-            transactedAt: todayIso,
-            year: now.year,
-            month: now.month,
+            transactedAt: threeDaysAgoIso,
+            year: threeDaysAgo.year,
+            month: threeDaysAgo.month,
+            updatedAt: auditNow,
+            deletedAt: null,
+        });
+
+        // Two days ago
+        txStore.put({
+            id: generateId(),
+            description: "Cheque from Evrart",
+            amount: 2500,
+            categoryId: catIncome,
+            isIncome: true,
+            isBigBuck: false,
+            transactedAt: twoDaysAgoIso,
+            year: twoDaysAgo.year,
+            month: twoDaysAgo.month,
             updatedAt: auditNow,
             deletedAt: null,
         });
         txStore.put({
             id: generateId(),
-            description: "What Remains of Edith Finch",
-            amount: 2000,
-            categoryId: catVideogame,
+            description: "Magnesium",
+            amount: 180,
+            categoryId: catMedicine,
+            isIncome: false,
+            isBigBuck: false,
+            transactedAt: twoDaysAgoIso,
+            year: twoDaysAgo.year,
+            month: twoDaysAgo.month,
+            updatedAt: auditNow,
+            deletedAt: null,
+        });
+        txStore.put({
+            id: generateId(),
+            description: "Dick Mullen and the Mistaken Identity",
+            amount: 800,
+            categoryId: catReading,
+            isIncome: false,
+            isBigBuck: true,
+            transactedAt: twoDaysAgoIso,
+            year: twoDaysAgo.year,
+            month: twoDaysAgo.month,
+            updatedAt: auditNow,
+            deletedAt: null,
+        });
+        txStore.put({
+            id: generateId(),
+            description: "Borscht",
+            amount: 300,
+            categoryId: catFood,
+            isIncome: false,
+            isBigBuck: false,
+            transactedAt: twoDaysAgoIso,
+            year: twoDaysAgo.year,
+            month: twoDaysAgo.month,
+            updatedAt: auditNow,
+            deletedAt: null,
+        });
+
+        // One day ago
+        txStore.put({
+            id: generateId(),
+            description: "The Greatest Innocence",
+            amount: 470,
+            categoryId: catReading,
             isIncome: false,
             isBigBuck: true,
             transactedAt: yesterdayIso,
@@ -178,22 +291,128 @@ export async function seedDemoData(): Promise<void> {
         });
         txStore.put({
             id: generateId(),
-            description: "Poster design for LSPD",
-            amount: 200000,
-            categoryId: catFreelancing,
-            isIncome: true,
-            isBigBuck: true,
-            transactedAt: todayIso,
-            year: now.year,
-            month: now.month,
+            description: "Hypnogamma",
+            amount: 500,
+            categoryId: catMedicine,
+            isIncome: false,
+            isBigBuck: false,
+            transactedAt: yesterdayIso,
+            year: yesterday.year,
+            month: yesterday.month,
             updatedAt: auditNow,
             deletedAt: null,
         });
         txStore.put({
             id: generateId(),
-            description: "Streaming service",
+            description: "Drouamine",
+            amount: 500,
+            categoryId: catMedicine,
+            isIncome: false,
+            isBigBuck: false,
+            transactedAt: yesterdayIso,
+            year: yesterday.year,
+            month: yesterday.month,
+            updatedAt: auditNow,
+            deletedAt: null,
+        });
+        txStore.put({
+            id: generateId(),
+            description: "Harmon Tape Player",
             amount: 1000,
-            categoryId: catSubscription,
+            categoryId: catHardware,
+            isIncome: false,
+            isBigBuck: true,
+            transactedAt: yesterdayIso,
+            year: yesterday.year,
+            month: yesterday.month,
+            updatedAt: auditNow,
+            deletedAt: null,
+        });
+        txStore.put({
+            id: generateId(),
+            description: "FALN modular track pants",
+            amount: 1500,
+            categoryId: catClothings,
+            isIncome: false,
+            isBigBuck: true,
+            transactedAt: yesterdayIso,
+            year: yesterday.year,
+            month: yesterday.month,
+            updatedAt: auditNow,
+            deletedAt: null,
+        });
+        txStore.put({
+            id: generateId(),
+            description: "Salami",
+            amount: 100,
+            categoryId: catFood,
+            isIncome: false,
+            isBigBuck: false,
+            transactedAt: yesterdayIso,
+            year: yesterday.year,
+            month: yesterday.month,
+            updatedAt: auditNow,
+            deletedAt: null,
+        });
+
+        // Today
+        txStore.put({
+            id: generateId(),
+            description: "Selling bottles at Frittte",
+            amount: 300,
+            categoryId: catIncome,
+            isIncome: true,
+            isBigBuck: false,
+            transactedAt: todayIso,
+            year: now.year,
+            month: now.month,
+            updatedAt: auditNow,
+            deletedAt: null,
+        });
+        txStore.put({
+            id: generateId(),
+            description: "FALN ultra sneakers",
+            amount: 5000,
+            categoryId: catClothings,
+            isIncome: false,
+            isBigBuck: true,
+            transactedAt: todayIso,
+            year: now.year,
+            month: now.month,
+            updatedAt: auditNow,
+            deletedAt: null,
+        });
+        txStore.put({
+            id: generateId(),
+            description: "Suzerainty board game",
+            amount: 1200,
+            categoryId: catHardware,
+            isIncome: false,
+            isBigBuck: true,
+            transactedAt: todayIso,
+            year: now.year,
+            month: now.month,
+            updatedAt: auditNow,
+            deletedAt: null,
+        });
+        txStore.put({
+            id: generateId(),
+            description: "Topping pie",
+            amount: 200,
+            categoryId: catFood,
+            isIncome: false,
+            isBigBuck: false,
+            transactedAt: todayIso,
+            year: now.year,
+            month: now.month,
+            updatedAt: auditNow,
+            deletedAt: null,
+        });
+        txStore.put({
+            id: generateId(),
+            description: "Apartment rent",
+            amount: 3000,
+            categoryId: catRent,
             isIncome: false,
             isBigBuck: false,
             transactedAt: todayIso,
@@ -206,17 +425,17 @@ export async function seedDemoData(): Promise<void> {
         const rrStore = tx.objectStore(STORE_RECURRING_RULES);
         rrStore.put({
             id: generateId(),
-            description: "Streaming service",
-            amount: 1000,
-            categoryId: catSubscription,
+            description: "Apartment rent",
+            amount: 3000,
+            categoryId: catRent,
             isIncome: false,
             isBigBuck: false,
-            frequency: "monthly",
-            dayOfWeek: null,
-            dayOfMonth: now.day,
+            frequency: "weekly",
+            dayOfWeek: now.weekday,
+            dayOfMonth: null,
             monthOfYear: null,
             lastGeneratedAt: auditNow,
-            nextGenerationAt: toIsoString(now.plus({ months: 1 })),
+            nextGenerationAt: toIsoString(now.plus({ weeks: 1 })),
             isActive: true,
             createdAt: auditNow,
             updatedAt: auditNow,
