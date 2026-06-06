@@ -7,7 +7,7 @@ export function RouteHeader() {
         useRouteHeaderContent();
 
     return (
-        <div className="flex h-18 items-center p-2">
+        <div className="flex h-14 items-center p-2">
             <div className="flex flex-1 items-center gap-2">{leftContent}</div>
             {centerContent ?? (
                 <h2 className="text-center text-xl font-bold">{label}</h2>
