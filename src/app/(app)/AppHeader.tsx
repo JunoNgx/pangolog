@@ -58,7 +58,7 @@ function NavLink({
     );
 }
 
-export function AppNavbar() {
+export function AppHeader() {
     const pathname = usePathname();
 
     return (
