@@ -71,7 +71,8 @@
     }
 
     .modal__dialog {
-        @apply rounded-2xl px-0 py-4;
+        @apply border-foreground rounded-2xl border px-0 py-4;
+        box-shadow: 4px 4px 0 var(--foreground);
     }
 
     .modal__header {
