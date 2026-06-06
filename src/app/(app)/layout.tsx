@@ -44,7 +44,7 @@ export default function AppLayout({
                 <AppHeader />
                 <div
                     id="main-panel"
-                    className="m-b-2 bg-background-tertiary border-foreground app-shadow-hard-md flex flex-1 flex-col overflow-hidden border-0 p-2 pt-0 pb-4 md:rounded-b-xl md:border md:border-t-0 md:pb-2"
+                    className="m-b-2 bg-background-tertiary border-foreground app-shadow-hard-none md:app-shadow-hard-md flex flex-1 flex-col overflow-hidden border-0 p-2 pt-0 pb-4 md:rounded-b-xl md:border md:border-t-0 md:pb-2"
                 >
                     <RouteHeaderProvider>
                         <RouteHeader />
