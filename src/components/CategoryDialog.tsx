@@ -15,6 +15,7 @@ import { Shuffle } from "lucide-react";
 import { type SubmitEventHandler, useEffect, useRef, useState } from "react";
 import { HexColorInput, HexColorPicker } from "react-colorful";
 import { DialogFooter } from "@/components/DialogFooter";
+import { FocusSink } from "@/components/FocusSink";
 import type { Category } from "@/lib/db/types";
 import {
     useCreateCategory,
@@ -319,7 +320,7 @@ export function CategoryDialog({
             <Modal.Backdrop>
                 <Modal.Container>
                     <Modal.Dialog>
-                        <div tabIndex={-1} className="sr-only" />
+                        <FocusSink isEnabled={true} />
                         <Modal.CloseTrigger className="cursor-pointer" />
                         <form onSubmit={handleSubmit}>
                             <Modal.Header>
