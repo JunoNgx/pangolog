@@ -33,20 +33,28 @@ export default function AppLayout({
                     </button>
                 </CommandPalette>
             </Suspense>
-            <a href="#main-content" className={A11Y_FOCUS_STYLES}>
+            <a href="#content-card" className={A11Y_FOCUS_STYLES}>
                 Skip to main content
             </a>
-            <div className="m-auto flex h-screen max-w-3xl flex-col">
+            <div
+                id="app-wrapper"
+                className="h-app-wrapper m-auto flex max-w-3xl flex-col overflow-hidden"
+            >
                 <AppNavbar />
-                <RouteHeaderProvider>
-                    <RouteHeader />
-                    <main
-                        id="main-content"
-                        className="container mx-auto max-w-3xl flex-1 overflow-y-auto px-4 pb-24 md:pb-6"
-                    >
-                        {children}
-                    </main>
-                </RouteHeaderProvider>
+                <div
+                    id="main-panel"
+                    className="m-b-2 bg-background-tertiary border-foreground flex flex-1 flex-col overflow-hidden rounded-b-xl border border-t-0 p-2 pt-0"
+                >
+                    <RouteHeaderProvider>
+                        <RouteHeader />
+                        <main
+                            id="#content-card"
+                            className="bg-background border-foreground container max-h-full flex-1 overflow-y-scroll rounded-b-md border"
+                        >
+                            {children}
+                        </main>
+                    </RouteHeaderProvider>
+                </div>
             </div>
         </ErrorBoundary>
     );
