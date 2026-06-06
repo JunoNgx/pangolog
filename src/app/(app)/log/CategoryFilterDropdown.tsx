@@ -37,15 +37,15 @@ function CategoryFilterItem({
                 </Checkbox.Control>
                 <Checkbox.Content>
                     <Label>
-                        {icon && <span className="text-base">{icon}</span>}{" "}
+                        {icon && <span className="text-base mr-1">{icon}</span>}{" "}
                         {name}
                         {isBuck && (
-                            <span className="ml-2 text-xs font-medium text-amber-500">
+                            <span className="ml-2 text-xs font-medium text-amber-500 shrink-0">
                                 BUCK
                             </span>
                         )}
                         {isIncomeOnly && (
-                            <span className="text-success ml-2 text-xs font-medium">
+                            <span className="text-success ml-2 text-xs font-medium shrink-0">
                                 INC
                             </span>
                         )}
@@ -122,9 +122,9 @@ export function CategoryFilterDropdown({
                     <ChevronDown className="size-3" />
                 </Button>
             </Popover.Trigger>
-            <Popover.Content placement="bottom end" className="p-0">
+            <Popover.Content placement="bottom end">
                 <Popover.Dialog>
-                    <div className="flex w-64 flex-col">
+                    <div className="flex w-48 flex-col">
                         <ul className="flex max-h-64 flex-col overflow-y-auto px-2 py-1">
                             {uncategorisedItem}
                             {activeCategories.map((cat) => (
