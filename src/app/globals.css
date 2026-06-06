@@ -39,25 +39,27 @@
 }
 
 /* Scrollbar */
-::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
-}
+@media (hover: hover) and (pointer: fine) {
+    ::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+    }
 
-::-webkit-scrollbar-track {
-    background: var(--color-background);
-    border-radius: 5px;
-}
+    ::-webkit-scrollbar-track {
+        background: var(--color-background);
+        border-radius: 5px;
+    }
 
-::-webkit-scrollbar-thumb {
-    background: var(--color-muted);
-    border-radius: 5px;
-    border: 2px solid var(--color-background);
-}
+    ::-webkit-scrollbar-thumb {
+        background: var(--color-muted);
+        border-radius: 5px;
+        border: 2px solid var(--color-background);
+    }
 
-::-webkit-scrollbar-thumb:hover {
-    /* Hardcoded against convention, but works surprisingly well in both light and dark theme */
-    background: #555;
+    ::-webkit-scrollbar-thumb:hover {
+        /* Hardcoded against convention, but works surprisingly well in both light and dark theme */
+        background: #555;
+    }
 }
 
 @layer base {
@@ -184,7 +186,7 @@
     }
 
     .toast__close-button {
-        @apply border border-foreground
+        @apply border border-foreground;
     }
 }
 
