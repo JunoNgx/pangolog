@@ -6,6 +6,7 @@
     --font-mono: var(--font-mono-var);
 
     --height-app-wrapper: calc(100dvh - 1rem);
+    --height-app-wrapper-mobile: 100dvh;
 }
 
 @utility app-shadow-hard-md {
