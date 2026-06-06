@@ -3,6 +3,7 @@
 import { Tabs } from "@heroui/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
+import { useRouteHeader } from "@/lib/context/RouteHeaderContext";
 import { useHotkey } from "@/lib/hooks/useHotkey";
 import CategoriesClient from "./CategoriesClient";
 import RecurringClient from "./RecurringClient";
@@ -24,7 +25,7 @@ export default function ManageClient() {
     }, [activeTab, router]);
     useHotkey("U", toggleTab, { hasMod: true, hasShift: true });
 
-    return (
+    const manageTabBar = (
         <Tabs
             selectedKey={activeTab}
             onSelectionChange={handleTabChange}
@@ -45,12 +46,17 @@ export default function ManageClient() {
                     </Tabs.Tab>
                 </Tabs.List>
             </Tabs.ListContainer>
-            <Tabs.Panel id="categories">
-                <CategoriesClient />
-            </Tabs.Panel>
-            <Tabs.Panel id="recurring">
-                <RecurringClient />
-            </Tabs.Panel>
         </Tabs>
+    );
+
+    useRouteHeader({
+        label: "Manage",
+        centerContent: manageTabBar,
+    });
+
+    return activeTab === "categories" ? (
+        <CategoriesClient />
+    ) : (
+        <RecurringClient />
     );
 }
