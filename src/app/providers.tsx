@@ -17,10 +17,12 @@ function ThemeColorSync() {
 
     useEffect(() => {
         if (!resolvedTheme) return;
-        const root = document.documentElement;
-        const cssThemeColor = getComputedStyle(root)
-            .getPropertyValue("--color-background-tertiary")
-            .trim();
+        const tempEl = document.createElement("div");
+        tempEl.style.backgroundColor = "var(--color-background-tertiary)";
+        document.body.appendChild(tempEl);
+        const cssThemeColor = getComputedStyle(tempEl).backgroundColor;
+        document.body.removeChild(tempEl);
+
         const fallbackColor = resolvedTheme === "dark" ? "#000000" : "#ffffff";
         const metaThemeColor = cssThemeColor || fallbackColor;
         let meta = document.querySelector(
