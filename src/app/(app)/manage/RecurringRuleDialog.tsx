@@ -6,7 +6,6 @@ import { DateTime } from "luxon";
 import {
     type SubmitEventHandler,
     useEffect,
-    useLayoutEffect,
     useMemo,
     useRef,
     useState,
@@ -20,7 +19,7 @@ import { ToggleSwitch } from "@/components/ToggleSwitch";
 import { DAY_NAMES_FULL, MONTH_NAMES } from "@/lib/constants";
 import type { RecurringRule } from "@/lib/db/types";
 import { useCategories } from "@/lib/hooks/useCategories";
-import { useDelayedAutoFocus } from "@/lib/hooks/useDelayedAutoFocus";
+import { useDelayedAutoFocusOnAndroid } from "@/lib/hooks/useDelayedAutoFocusOnAndroid";
 import {
     useCreateRecurringRule,
     useDeleteRecurringRule,
@@ -32,7 +31,6 @@ import type { Frequency } from "@/lib/types";
 import {
     fromDateInputValue,
     getLocaleDateFormat,
-    isAndroid,
     showDeleteToast,
     toDateInputValue,
     todayDateString,
@@ -79,14 +77,12 @@ export function RecurringRuleDialog({
     const [startDate, setStartDate] = useState(todayDateString());
     const [isActive, setIsActive] = useState(true);
     const [isCategoryDialogOpen, setIsCategoryDialogOpen] = useState(false);
-    const [shouldDelayFocus, setShouldDelayFocus] = useState(false);
-
-    useLayoutEffect(() => {
-        if (isAndroid()) setShouldDelayFocus(true);
-    }, []);
 
     const amountInputRef = useRef<HTMLInputElement>(null);
-    useDelayedAutoFocus(isOpen, amountInputRef, shouldDelayFocus);
+    const { shouldAutoFocus } = useDelayedAutoFocusOnAndroid({
+        isModalOpen: isOpen,
+        focusableElRef: amountInputRef,
+    });
     const { data: categories } = useCategories();
     const createRule = useCreateRecurringRule();
     const updateRule = useUpdateRecurringRule();
@@ -300,7 +296,7 @@ export function RecurringRuleDialog({
                 <Modal.Backdrop>
                     <Modal.Container>
                         <Modal.Dialog>
-                            <FocusSink isEnabled={shouldDelayFocus} />
+                            <FocusSink isEnabled={!shouldAutoFocus} />
                             <Modal.CloseTrigger className="cursor-pointer" />
                             <form onSubmit={handleSubmit}>
                                 <Modal.Header>
@@ -320,7 +316,7 @@ export function RecurringRuleDialog({
                                         value={amount}
                                         onChange={setAmount}
                                         isIncome={isIncome}
-                                        shouldAutoFocus={!shouldDelayFocus}
+                                        shouldAutoFocus={shouldAutoFocus}
                                     />
 
                                     <div className="flex flex-col gap-1">

@@ -1,4 +1,5 @@
-import { type RefObject, useEffect } from "react";
+import { type RefObject, useEffect, useLayoutEffect, useState } from "react";
+import { isAndroid } from "@/lib/utils";
 
 // HeroUI v3 modals (React Aria FocusScope) auto-focus the first focusable element
 // on mount before the enter animation settles, with no interface to opt out.
@@ -10,19 +11,31 @@ import { type RefObject, useEffect } from "react";
 // Safari's behaviour is acceptable. The workaround is only applicable to
 // Android devices, upon detected.
 
-export function useDelayedAutoFocus(
-    isOpen: boolean,
-    ref: RefObject<HTMLInputElement | null>,
-    shouldApplyDelay: boolean = true,
-) {
+interface UseDelayedAutoFocusOnAndroidOptions {
+    isModalOpen: boolean;
+    focusableElRef: RefObject<HTMLInputElement | null>;
+}
+
+export function useDelayedAutoFocusOnAndroid({
+    isModalOpen,
+    focusableElRef,
+}: UseDelayedAutoFocusOnAndroidOptions) {
+    const [isAndroidDevice, setIsAndroidDevice] = useState(false);
+
+    useLayoutEffect(() => {
+        if (isAndroid()) setIsAndroidDevice(true);
+    }, []);
+
     const MODAL_ENTER_DELAY_MS = 250;
 
     useEffect(() => {
-        if (!isOpen || !shouldApplyDelay) return;
+        if (!isModalOpen || !isAndroidDevice) return;
         const timeout = setTimeout(
-            () => ref.current?.focus(),
+            () => focusableElRef.current?.focus(),
             MODAL_ENTER_DELAY_MS,
         );
         return () => clearTimeout(timeout);
-    }, [isOpen, ref, shouldApplyDelay]);
+    }, [isModalOpen, focusableElRef, isAndroidDevice]);
+
+    return { shouldAutoFocus: !isAndroidDevice };
 }
