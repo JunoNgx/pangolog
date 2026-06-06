@@ -8,6 +8,10 @@
     --height-app-wrapper: calc(100dvh - 1rem);
 }
 
+@utility app-shadow-hard {
+    box-shadow: 4px 4px 0 var(--foreground);
+}
+
 :root {
     --accent: #f4db5c;
     --accent-foreground: #000000;
@@ -93,8 +97,7 @@
     }
 
     .modal__dialog {
-        @apply border-foreground rounded-2xl border px-0 py-4;
-        box-shadow: 4px 4px 0 var(--foreground);
+        @apply border-foreground app-shadow-hard rounded-2xl border px-0 py-4;
     }
 
     .modal__header {
@@ -118,8 +121,7 @@
     }
 
     .dropdown__popover {
-        @apply border-foreground rounded-lg border;
-        box-shadow: 4px 4px 0 var(--foreground);
+        @apply border-foreground app-shadow-hard rounded-lg border;
     }
 
     .menu-item {
@@ -139,8 +141,7 @@
     }
 
     .popover {
-        @apply border-foreground border;
-        box-shadow: 4px 4px 0 var(--foreground);
+        @apply border-foreground app-shadow-hard border;
     }
 
     .popover__dialog {
