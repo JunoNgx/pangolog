@@ -48,6 +48,15 @@
         @apply rounded-lg;
     }
 
+    .button--primary {
+        @apply border border-foreground;
+        @apply dark:border-background;
+    }
+
+    .button--outline {
+        @apply border-foreground;
+    }
+
     .input {
         @apply border-foreground rounded-lg border shadow-none transition-colors;
     }
