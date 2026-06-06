@@ -2,8 +2,8 @@
 
 import { Toast } from "@heroui/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ThemeProvider, useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { ThemeProvider } from "next-themes";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { ServiceWorkerRegistration } from "@/components/ServiceWorkerRegistration";
 import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 import { useLocalAppDataStore } from "@/lib/store/useLocalAppDataStore";
@@ -13,28 +13,50 @@ import { useLogViewSettingsStore } from "@/lib/store/useLogViewSettingsStore";
 import { useSummaryViewSettingsStore } from "@/lib/store/useSummaryViewSettingsStore";
 
 function ThemeColorSync() {
-    const { resolvedTheme } = useTheme();
+    useLayoutEffect(() => {
+        function updateMetaThemeColor() {
+            const tempEl = document.createElement("div");
+            tempEl.style.backgroundColor = "var(--color-background-tertiary)";
+            document.body.appendChild(tempEl);
+            const cssThemeColor = getComputedStyle(tempEl).backgroundColor;
+            document.body.removeChild(tempEl);
 
-    useEffect(() => {
-        if (!resolvedTheme) return;
-        const tempEl = document.createElement("div");
-        tempEl.style.backgroundColor = "var(--color-background-tertiary)";
-        document.body.appendChild(tempEl);
-        const cssThemeColor = getComputedStyle(tempEl).backgroundColor;
-        document.body.removeChild(tempEl);
-
-        const fallbackColor = resolvedTheme === "dark" ? "#000000" : "#ffffff";
-        const metaThemeColor = cssThemeColor || fallbackColor;
-        let meta = document.querySelector(
-            'meta[name="theme-color"]',
-        ) as HTMLMetaElement | null;
-        if (!meta) {
-            meta = document.createElement("meta");
-            meta.name = "theme-color";
-            document.head.appendChild(meta);
+            const hasDarkClass =
+                document.documentElement.classList.contains("dark");
+            const fallbackColor = hasDarkClass ? "#000000" : "#ffffff";
+            const metaThemeColor = cssThemeColor || fallbackColor;
+            let meta = document.querySelector(
+                'meta[name="theme-color"]',
+            ) as HTMLMetaElement | null;
+            if (!meta) {
+                meta = document.createElement("meta");
+                meta.name = "theme-color";
+                document.head.appendChild(meta);
+            }
+            meta.content = metaThemeColor;
         }
-        meta.content = metaThemeColor;
-    }, [resolvedTheme]);
+
+        updateMetaThemeColor();
+
+        const observer = new MutationObserver((mutations) => {
+            for (const mutation of mutations) {
+                if (
+                    mutation.type === "attributes" &&
+                    mutation.attributeName === "class"
+                ) {
+                    updateMetaThemeColor();
+                    break;
+                }
+            }
+        });
+
+        observer.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ["class"],
+        });
+
+        return () => observer.disconnect();
+    }, []);
 
     return null;
 }
