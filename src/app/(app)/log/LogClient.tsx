@@ -122,6 +122,7 @@ export default function LogClient() {
                 size="sm"
                 onPress={handleToggleSearchMode}
                 aria-label="Search transactions"
+                className="app-shadow-hard-sm"
             >
                 <Search size={16} />
             </Button>

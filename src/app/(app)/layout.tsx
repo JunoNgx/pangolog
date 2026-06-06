@@ -39,12 +39,12 @@ export default function AppLayout({
             </a>
             <div
                 id="app-wrapper"
-                className="md:h-app-wrapper m-auto flex h-screen max-w-3xl flex-col overflow-hidden"
+                className="md:h-app-wrapper m-auto flex h-screen max-w-3xl flex-col"
             >
                 <AppHeader />
                 <div
                     id="main-panel"
-                    className="m-b-2 bg-background-tertiary border-foreground flex flex-1 flex-col overflow-hidden border-0 p-2 pt-0 pb-8 md:rounded-b-xl md:border md:border-t-0 md:pb-2"
+                    className="m-b-2 bg-background-tertiary border-foreground app-shadow-hard-md flex flex-1 flex-col overflow-hidden border-0 p-2 pt-0 pb-8 md:rounded-b-xl md:border md:border-t-0 md:pb-2"
                 >
                     <RouteHeaderProvider>
                         <RouteHeader />
