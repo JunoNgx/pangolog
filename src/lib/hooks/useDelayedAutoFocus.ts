@@ -6,6 +6,10 @@ import { type RefObject, useEffect } from "react";
 // position. A focus sink div absorbs the initial focus, and this hook delays
 // focusing the intended input until after the animation finishes.
 
+function isIos(): boolean {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent);
+}
+
 export function useDelayedAutoFocus(
     isOpen: boolean,
     ref: RefObject<HTMLInputElement | null>,
@@ -14,6 +18,10 @@ export function useDelayedAutoFocus(
 
     useEffect(() => {
         if (!isOpen) return;
+        // iOS Safari does not show the soft keyboard for programmatic .focus()
+        // called outside a user gesture. Skip auto-focus entirely to avoid the
+        // misleading state where the input is focused but the keyboard is hidden.
+        if (isIos()) return;
         const timeout = setTimeout(
             () => ref.current?.focus(),
             MODAL_ENTER_DELAY_MS,
