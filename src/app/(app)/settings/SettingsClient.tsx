@@ -15,6 +15,7 @@ import { useTheme } from "next-themes";
 import { useLayoutEffect, useRef, useState } from "react";
 import { DriveSyncSection } from "@/app/(app)/settings/DriveSyncSection";
 import { ImportDataSection } from "@/app/(app)/settings/ImportDataSection";
+import { LinkButton } from "@/components/LinkButton";
 import { MainListContainer } from "@/components/MainListContainer";
 import { MIME_JSON } from "@/lib/constants";
 import { useRouteHeader } from "@/lib/context/RouteHeaderContext";
@@ -522,12 +523,9 @@ export default function SettingsClient() {
                         Overview of concepts, pages, hotkeys, and sync
                         behaviour.
                     </p>
-                    <a
-                        href="/help"
-                        className="bg-accent text-accent-foreground inline-flex items-center justify-center gap-2 self-start rounded-lg px-4 py-2 text-sm font-medium hover:opacity-90"
-                    >
+                    <LinkButton href="/help" className="self-start">
                         View manual
-                    </a>
+                    </LinkButton>
                 </section>
 
                 <section>
@@ -584,18 +582,12 @@ export default function SettingsClient() {
                             {process.env.NEXT_PUBLIC_COMMIT_HASH})
                         </p>
                         <div className="mt-2 flex flex-wrap gap-2">
-                            <a
-                                href="/privacy"
-                                className="bg-surface text-muted hover:text-foreground hover:bg-surface-secondary inline-flex items-center justify-center gap-2 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors"
-                            >
+                            <LinkButton href="/privacy">
                                 Privacy Policy
-                            </a>
-                            <a
-                                href="/terms"
-                                className="bg-surface text-muted hover:text-foreground hover:bg-surface-secondary inline-flex items-center justify-center gap-2 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors"
-                            >
+                            </LinkButton>
+                            <LinkButton href="/terms">
                                 Terms of Service
-                            </a>
+                            </LinkButton>
                         </div>
                     </div>
                 </section>
