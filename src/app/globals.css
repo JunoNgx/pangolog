@@ -8,8 +8,12 @@
     --height-app-wrapper: calc(100dvh - 1rem);
 }
 
-@utility app-shadow-hard {
+@utility app-shadow-hard-md {
     box-shadow: 4px 4px 0 var(--foreground);
+}
+
+@utility app-shadow-hard-sm {
+    box-shadow: 2px 2px 0 var(--foreground);
 }
 
 :root {
@@ -97,7 +101,7 @@
     }
 
     .modal__dialog {
-        @apply border-foreground app-shadow-hard rounded-2xl border px-0 py-4;
+        @apply border-foreground app-shadow-hard-md rounded-2xl border px-0 py-4;
     }
 
     .modal__header {
@@ -121,7 +125,7 @@
     }
 
     .dropdown__popover {
-        @apply border-foreground app-shadow-hard rounded-lg border;
+        @apply border-foreground app-shadow-hard-sm rounded-lg border;
     }
 
     .menu-item {
@@ -141,7 +145,7 @@
     }
 
     .popover {
-        @apply border-foreground app-shadow-hard border;
+        @apply border-foreground app-shadow-hard-sm border;
     }
 
     .popover__dialog {
