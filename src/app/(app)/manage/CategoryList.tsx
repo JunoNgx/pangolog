@@ -116,16 +116,6 @@ export function CategoryList() {
         );
     }
 
-    const notice = (
-        <div className="text-muted py-2 text-center text-sm">
-            <p>
-                This display order is also used in transaction and recurring
-                rule dialogs.
-            </p>
-            {!isCategoryAlphabetical && <p>Drag to set a custom sort order.</p>}
-        </div>
-    );
-
     const alphabeticalList = (
         <MainListContainer className="gap-2">
             {categories.map((cat) => (
@@ -179,7 +169,6 @@ export function CategoryList() {
 
     return (
         <>
-            {notice}
             {isCategoryAlphabetical ? alphabeticalList : customSortList}
             <CategoryDialog
                 isOpen={isDialogOpen}
