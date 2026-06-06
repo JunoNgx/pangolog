@@ -39,7 +39,7 @@ export default function AppLayout({
             </a>
             <div
                 id="app-wrapper"
-                className="md:h-app-wrapper m-auto flex h-screen max-w-3xl flex-col"
+                className="md:h-app-wrapper m-auto flex h-100dvh max-w-3xl flex-col"
             >
                 <AppHeader />
                 <div
