@@ -8,7 +8,6 @@
     --height-app-wrapper: calc(100dvh - 1rem);
 }
 
-/* #f4db5c (pale gold) */
 :root {
     --accent: #f4db5c;
     --accent-foreground: #000000;
@@ -20,7 +19,6 @@
     color: var(--accent-foreground);
 }
 
-/* #f4db5c (pale gold) */
 .dark {
     --accent: #f4db5c;
     --accent-foreground: #000000;
