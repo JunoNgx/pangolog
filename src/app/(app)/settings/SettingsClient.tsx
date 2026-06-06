@@ -201,7 +201,7 @@ export default function SettingsClient() {
                                 Copy content
                             </Button>
                             <Button
-                                variant="tertiary"
+                                variant="outline"
                                 onPress={() => setIsLogDialogOpen(false)}
                             >
                                 Close
@@ -239,7 +239,7 @@ export default function SettingsClient() {
                         </Modal.Body>
                         <Modal.Footer>
                             <Button
-                                variant="tertiary"
+                                variant="outline"
                                 onPress={() => setIsResetAppDialogOpen(false)}
                             >
                                 Cancel
@@ -280,7 +280,7 @@ export default function SettingsClient() {
                         </Modal.Body>
                         <Modal.Footer>
                             <Button
-                                variant="tertiary"
+                                variant="outline"
                                 onPress={() => setIsResetDialogOpen(false)}
                             >
                                 Cancel

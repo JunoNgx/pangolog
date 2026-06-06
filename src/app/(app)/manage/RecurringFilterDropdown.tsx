@@ -35,7 +35,7 @@ export function RecurringFilterDropdown({
         <Popover>
             <Popover.Trigger>
                 <Button
-                    variant={hasActiveFilter ? "primary" : "tertiary"}
+                    variant={hasActiveFilter ? "primary" : "outline"}
                     className="w-min"
                 >
                     Filter
@@ -92,7 +92,7 @@ export function RecurringFilterDropdown({
                         <div className="mt-1 flex gap-1 border-t pt-2">
                             <Button
                                 size="sm"
-                                variant="tertiary"
+                                variant="outline"
                                 className="flex-1 text-xs"
                                 onPress={() => {
                                     onShowDimesChange(true);

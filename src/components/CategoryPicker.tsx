@@ -41,7 +41,7 @@ export function CategoryPicker({
                         key={cat.id}
                         className="pl-2"
                         size="sm"
-                        variant={selectedId === cat.id ? "primary" : "tertiary"}
+                        variant={selectedId === cat.id ? "primary" : "outline"}
                         onPress={() =>
                             onChange(selectedId === cat.id ? null : cat.id)
                         }

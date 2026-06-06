@@ -77,7 +77,7 @@ export function ImportDataSection() {
                 </Button>
                 <Button
                     size="sm"
-                    variant="tertiary"
+                    variant="outline"
                     onPress={handleCancelImport}
                 >
                     Cancel

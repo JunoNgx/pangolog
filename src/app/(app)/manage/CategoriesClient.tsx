@@ -37,7 +37,7 @@ export default function CategoriesClient() {
                         onValueChange={setIsCategoryAlphabetical}
                     />
                     <Button
-                        variant="tertiary"
+                        variant="outline"
                         className="ml-auto"
                         onPress={() => setIsCreateOpen(true)}
                     >
