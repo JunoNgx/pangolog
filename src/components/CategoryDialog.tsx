@@ -12,7 +12,13 @@ import {
 } from "@heroui/react";
 import { EmojiPicker, type EmojiPickerListComponents } from "frimousse";
 import { Shuffle } from "lucide-react";
-import { type SubmitEventHandler, useEffect, useRef, useState } from "react";
+import {
+    type SubmitEventHandler,
+    useEffect,
+    useLayoutEffect,
+    useRef,
+    useState,
+} from "react";
 import { HexColorInput, HexColorPicker } from "react-colorful";
 import { DialogFooter } from "@/components/DialogFooter";
 import { FocusSink } from "@/components/FocusSink";
@@ -25,7 +31,7 @@ import {
 } from "@/lib/hooks/useCategories";
 import { useDelayedAutoFocus } from "@/lib/hooks/useDelayedAutoFocus";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
-import { showDeleteToast } from "@/lib/utils";
+import { isAndroid, showDeleteToast } from "@/lib/utils";
 
 const EMOJI_DEFAULTS = [
     "🍽️",
@@ -118,9 +124,15 @@ export function CategoryDialog({
     category,
     onCreated,
 }: CategoryDialogProps) {
+    const [shouldDelayFocus, setShouldDelayFocus] = useState(false);
+
+    useLayoutEffect(() => {
+        if (isAndroid()) setShouldDelayFocus(true);
+    }, []);
+
     const [name, setName] = useState("");
     const nameInputRef = useRef<HTMLInputElement>(null);
-    useDelayedAutoFocus(isOpen, nameInputRef);
+    useDelayedAutoFocus(isOpen, nameInputRef, shouldDelayFocus);
     const [colour, setColour] = useState(() => parseColor(randomHexColor()));
     const [icon, setIcon] = useState(randomEmoji());
 
@@ -320,7 +332,7 @@ export function CategoryDialog({
             <Modal.Backdrop>
                 <Modal.Container>
                     <Modal.Dialog>
-                        <FocusSink isEnabled={true} />
+                        <FocusSink isEnabled={shouldDelayFocus} />
                         <Modal.CloseTrigger className="cursor-pointer" />
                         <form onSubmit={handleSubmit}>
                             <Modal.Header>
@@ -343,6 +355,7 @@ export function CategoryDialog({
                                             setName(e.target.value)
                                         }
                                         required
+                                        autoFocus={!shouldDelayFocus}
                                         placeholder="Name"
                                     />
                                 </div>

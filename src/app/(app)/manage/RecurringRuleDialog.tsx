@@ -6,6 +6,7 @@ import { DateTime } from "luxon";
 import {
     type SubmitEventHandler,
     useEffect,
+    useLayoutEffect,
     useMemo,
     useRef,
     useState,
@@ -31,6 +32,7 @@ import type { Frequency } from "@/lib/types";
 import {
     fromDateInputValue,
     getLocaleDateFormat,
+    isAndroid,
     showDeleteToast,
     toDateInputValue,
     todayDateString,
@@ -77,9 +79,14 @@ export function RecurringRuleDialog({
     const [startDate, setStartDate] = useState(todayDateString());
     const [isActive, setIsActive] = useState(true);
     const [isCategoryDialogOpen, setIsCategoryDialogOpen] = useState(false);
+    const [shouldDelayFocus, setShouldDelayFocus] = useState(false);
+
+    useLayoutEffect(() => {
+        if (isAndroid()) setShouldDelayFocus(true);
+    }, []);
 
     const amountInputRef = useRef<HTMLInputElement>(null);
-    useDelayedAutoFocus(isOpen, amountInputRef);
+    useDelayedAutoFocus(isOpen, amountInputRef, shouldDelayFocus);
     const { data: categories } = useCategories();
     const createRule = useCreateRecurringRule();
     const updateRule = useUpdateRecurringRule();
@@ -293,7 +300,7 @@ export function RecurringRuleDialog({
                 <Modal.Backdrop>
                     <Modal.Container>
                         <Modal.Dialog>
-                            <FocusSink isEnabled={true} />
+                            <FocusSink isEnabled={shouldDelayFocus} />
                             <Modal.CloseTrigger className="cursor-pointer" />
                             <form onSubmit={handleSubmit}>
                                 <Modal.Header>
@@ -313,6 +320,7 @@ export function RecurringRuleDialog({
                                         value={amount}
                                         onChange={setAmount}
                                         isIncome={isIncome}
+                                        shouldAutoFocus={!shouldDelayFocus}
                                     />
 
                                     <div className="flex flex-col gap-1">
