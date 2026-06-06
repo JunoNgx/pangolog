@@ -50,7 +50,7 @@ export default function AppLayout({
                         <RouteHeader />
                         <main
                             id="content-card"
-                            className="bg-background border-foreground max-h-full flex-1 overflow-y-scroll border border-b-0 px-4 pt-4 md:rounded-b-md md:border-b"
+                            className="bg-background border-foreground max-h-full flex-1 overflow-y-scroll rounded-t-md border border-b-0 px-4 pt-4 md:rounded-b-md md:border-b"
                         >
                             {children}
                         </main>
