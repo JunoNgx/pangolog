@@ -8,6 +8,7 @@ import { RecurringRulesManager } from "./_components/RecurringRulesManager";
 import { ShortcutsDialog } from "./_components/ShortcutsDialog";
 import { SyncManager } from "./_components/SyncManager";
 import { AppHeader } from "./AppHeader";
+import { AppNavbar } from "./AppNavbar";
 
 export default function AppLayout({
     children,
@@ -49,10 +50,11 @@ export default function AppLayout({
                         <RouteHeader />
                         <main
                             id="#content-card"
-                            className="bg-background border-foreground max-h-full flex-1 overflow-y-scroll rounded-b-md border px-4 pt-4"
+                            className="bg-background border-foreground max-h-full flex-1 overflow-y-scroll border border-b-0 px-4 pt-4 md:rounded-b-md md:border-b"
                         >
                             {children}
                         </main>
+                        <AppNavbar isMobile />
                     </RouteHeaderProvider>
                 </div>
             </div>
