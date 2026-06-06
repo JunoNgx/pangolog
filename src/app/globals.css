@@ -178,6 +178,14 @@
     .tabs__indicator {
         @apply bg-accent text-foreground rounded-lg;
     }
+
+    .toast {
+        @apply border border-foreground rounded-lg;
+    }
+
+    .toast__close-button {
+        @apply border border-foreground
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
