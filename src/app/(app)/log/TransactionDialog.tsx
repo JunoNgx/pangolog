@@ -213,7 +213,7 @@ export function TransactionDialog({
                                 </Modal.Header>
                                 <Modal.Body>
                                     {!isEditing && !isExpenseOnlyMode && (
-                                        <div className="mb-4 flex items-center justify-center">
+                                        <div className="flex items-center justify-center">
                                             <ToggleSwitch
                                                 label="Transaction flow type"
                                                 isSelectingRight={isIncome}
