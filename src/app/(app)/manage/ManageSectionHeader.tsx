@@ -16,7 +16,7 @@ export function ManageSectionHeader({
     children,
 }: ManageSectionHeaderProps) {
     return (
-        <div className="mx-auto mb-4 flex w-full max-w-lg flex-col gap-4">
+        <div className="mx-auto mb-8 flex w-full max-w-lg flex-col gap-4">
             <div className="flex items-center justify-between gap-2">
                 <h2 className="text-lg font-semibold">{title}</h2>
                 <Button variant="outline" onPress={onCreate}>
