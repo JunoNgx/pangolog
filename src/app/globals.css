@@ -16,6 +16,10 @@
     box-shadow: 2px 2px 0 var(--foreground);
 }
 
+@utility app-shadow-hard-none {
+    box-shadow: 2 2 0 transparent;
+}
+
 :root {
     --accent: #f4db5c;
     --accent-foreground: #000000;
