@@ -1,6 +1,7 @@
 "use client";
 
 import { Input, Label, Modal } from "@heroui/react";
+import { Banknote, Coins } from "lucide-react";
 import { DateTime } from "luxon";
 import {
     type SubmitEventHandler,
@@ -226,6 +227,8 @@ export function TransactionDialog({
                                             onValueChange={setIsBigBuck}
                                             leftLabel="Small dime"
                                             rightLabel="Big buck"
+                                            leftIcon={Coins}
+                                            rightIcon={Banknote}
                                         />
                                     </div>
 
