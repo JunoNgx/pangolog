@@ -313,7 +313,7 @@ export function CategoryDialog({
                 if (!open) onClose();
             }}
         >
-            <Modal.Trigger>
+            <Modal.Trigger tabIndex={-1}>
                 <span hidden />
             </Modal.Trigger>
             <Modal.Backdrop>

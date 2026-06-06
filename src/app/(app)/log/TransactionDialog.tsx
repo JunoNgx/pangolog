@@ -191,7 +191,7 @@ export function TransactionDialog({
                  * child to avoid a dev warning. Since isOpen is controlled
                  * externally, a hidden dummy is used instead.
                  */}
-                <Modal.Trigger>
+                <Modal.Trigger tabIndex={-1}>
                     <span hidden />
                 </Modal.Trigger>
                 <Modal.Backdrop>
