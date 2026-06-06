@@ -1,16 +1,14 @@
 "use client";
 
-import { Button } from "@heroui/react";
-import { Plus } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { CategoryDialog } from "@/components/CategoryDialog";
-import { ConfigWrapper } from "@/components/ConfigWrapper";
 import { DemoDataBanner } from "@/components/DemoDataBanner";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
 import { commandPaletteCreateActions } from "@/lib/commandPaletteActionRegistry";
 import { useHotkey } from "@/lib/hooks/useHotkey";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
 import { CategoryList } from "./CategoryList";
+import { ManageSectionHeader } from "./ManageSectionHeader";
 
 export default function CategoriesClient() {
     const [isCreateOpen, setIsCreateOpen] = useState(false);
@@ -26,26 +24,20 @@ export default function CategoriesClient() {
 
     return (
         <div>
-            <ConfigWrapper className="mt-4 mb-4">
-                <div className="flex w-full flex-wrap items-center gap-2">
-                    <ToggleSwitch
-                        label="Sort by"
-                        shouldShowLabel={true}
-                        leftLabel="Custom order"
-                        rightLabel="Alphabetical"
-                        isSelectingRight={isCategoryAlphabetical}
-                        onValueChange={setIsCategoryAlphabetical}
-                    />
-                    <Button
-                        variant="outline"
-                        className="ml-auto"
-                        onPress={() => setIsCreateOpen(true)}
-                    >
-                        <Plus />
-                        <span>Category</span>
-                    </Button>
-                </div>
-            </ConfigWrapper>
+            <ManageSectionHeader
+                title="Categories"
+                createLabel="Category"
+                onCreate={() => setIsCreateOpen(true)}
+            >
+                <ToggleSwitch
+                    label="Sort by"
+                    shouldShowLabel={true}
+                    leftLabel="Custom order"
+                    rightLabel="Alphabetical"
+                    isSelectingRight={isCategoryAlphabetical}
+                    onValueChange={setIsCategoryAlphabetical}
+                />
+            </ManageSectionHeader>
             <DemoDataBanner />
             <CategoryList />
             <CategoryDialog
