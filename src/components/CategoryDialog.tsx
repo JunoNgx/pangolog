@@ -12,13 +12,7 @@ import {
 } from "@heroui/react";
 import { EmojiPicker, type EmojiPickerListComponents } from "frimousse";
 import { Shuffle } from "lucide-react";
-import {
-    type SubmitEventHandler,
-    useEffect,
-    useLayoutEffect,
-    useRef,
-    useState,
-} from "react";
+import { type SubmitEventHandler, useEffect, useRef, useState } from "react";
 import { HexColorInput, HexColorPicker } from "react-colorful";
 import { DialogFooter } from "@/components/DialogFooter";
 import { FocusSink } from "@/components/FocusSink";
@@ -29,9 +23,9 @@ import {
     useRestoreCategory,
     useUpdateCategory,
 } from "@/lib/hooks/useCategories";
-import { useDelayedAutoFocus } from "@/lib/hooks/useDelayedAutoFocus";
+import { useDelayedAutoFocusOnAndroid } from "@/lib/hooks/useDelayedAutoFocusOnAndroid";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
-import { isAndroid, showDeleteToast } from "@/lib/utils";
+import { showDeleteToast } from "@/lib/utils";
 
 const EMOJI_DEFAULTS = [
     "🍽️",
@@ -124,15 +118,12 @@ export function CategoryDialog({
     category,
     onCreated,
 }: CategoryDialogProps) {
-    const [shouldDelayFocus, setShouldDelayFocus] = useState(false);
-
-    useLayoutEffect(() => {
-        if (isAndroid()) setShouldDelayFocus(true);
-    }, []);
-
     const [name, setName] = useState("");
     const nameInputRef = useRef<HTMLInputElement>(null);
-    useDelayedAutoFocus(isOpen, nameInputRef, shouldDelayFocus);
+    const { shouldAutoFocus } = useDelayedAutoFocusOnAndroid({
+        isModalOpen: isOpen,
+        focusableElRef: nameInputRef,
+    });
     const [colour, setColour] = useState(() => parseColor(randomHexColor()));
     const [icon, setIcon] = useState(randomEmoji());
 
@@ -332,7 +323,7 @@ export function CategoryDialog({
             <Modal.Backdrop>
                 <Modal.Container>
                     <Modal.Dialog>
-                        <FocusSink isEnabled={shouldDelayFocus} />
+                        <FocusSink isEnabled={!shouldAutoFocus} />
                         <Modal.CloseTrigger className="cursor-pointer" />
                         <form onSubmit={handleSubmit}>
                             <Modal.Header>
@@ -355,7 +346,7 @@ export function CategoryDialog({
                                             setName(e.target.value)
                                         }
                                         required
-                                        autoFocus={!shouldDelayFocus}
+                                        autoFocus={shouldAutoFocus}
                                         placeholder="Name"
                                     />
                                 </div>
