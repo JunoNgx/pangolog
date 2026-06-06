@@ -98,7 +98,7 @@ function SegmentBar({ label, slices, total }: SegmentBarProps) {
                     {formatAmount(total)}
                 </p>
             </div>
-            <div className="mb-3 flex h-5 overflow-hidden rounded-sm">
+            <div className="mb-3 flex h-8 overflow-hidden rounded-lg">
                 {slices.map((slice) => (
                     <div
                         key={slice.categoryId ?? `__${slice.name}__`}
