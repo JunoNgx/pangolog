@@ -2,31 +2,31 @@ import { type RefObject, useEffect } from "react";
 
 // HeroUI v3 modals (React Aria FocusScope) auto-focus the first focusable element
 // on mount before the enter animation settles, with no interface to opt out.
-// On mobile browsers with a soft keyboard, this scrolls the modal to the wrong
-// position. A focus sink div absorbs the initial focus, and this hook delays
-// focusing the intended input until after the animation finishes.
+// This scrolls the modal to the wrong position on mobile. A companion
+// <FocusSink /> absorbs that initial focus so the modal stays in position.
+// This hook then delays focusing the intended input until after the animation
+// finishes. iOS Safari ignores programmatic .focus() outside a user gesture,
+// so this hook is Android-only (controlled via shouldApplyDelayedFocus).
 
-function isIos(): boolean {
-    return /iPad|iPhone|iPod/.test(navigator.userAgent);
+interface UseDelayedAutoFocusOptions {
+    isOpen: boolean;
+    ref: RefObject<HTMLInputElement | null>;
+    shouldApplyDelayedFocus: boolean;
 }
 
-export function useDelayedAutoFocus(
-    isOpen: boolean,
-    ref: RefObject<HTMLInputElement | null>,
-) {
+export function useDelayedAutoFocus({
+    isOpen,
+    ref,
+    shouldApplyDelayedFocus,
+}: UseDelayedAutoFocusOptions) {
     const MODAL_ENTER_DELAY_MS = 250;
 
     useEffect(() => {
-        if (!isOpen) return;
-
-        const delayDuration = isIos()
-            ? 0
-            : MODAL_ENTER_DELAY_MS;
-
+        if (!isOpen || !shouldApplyDelayedFocus) return;
         const timeout = setTimeout(
             () => ref.current?.focus(),
-            delayDuration,
+            MODAL_ENTER_DELAY_MS,
         );
         return () => clearTimeout(timeout);
-    }, [isOpen, ref]);
+    }, [isOpen, ref, shouldApplyDelayedFocus]);
 }

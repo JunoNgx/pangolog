@@ -12,9 +12,16 @@ import {
 } from "@heroui/react";
 import { EmojiPicker, type EmojiPickerListComponents } from "frimousse";
 import { Shuffle } from "lucide-react";
-import { type SubmitEventHandler, useEffect, useRef, useState } from "react";
+import {
+    type SubmitEventHandler,
+    useEffect,
+    useLayoutEffect,
+    useRef,
+    useState,
+} from "react";
 import { HexColorInput, HexColorPicker } from "react-colorful";
 import { DialogFooter } from "@/components/DialogFooter";
+import { FocusSink } from "@/components/FocusSink";
 import type { Category } from "@/lib/db/types";
 import {
     useCreateCategory,
@@ -24,7 +31,7 @@ import {
 } from "@/lib/hooks/useCategories";
 import { useDelayedAutoFocus } from "@/lib/hooks/useDelayedAutoFocus";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
-import { showDeleteToast } from "@/lib/utils";
+import { isAndroid, showDeleteToast } from "@/lib/utils";
 
 const EMOJI_DEFAULTS = [
     "🍽️",
@@ -119,7 +126,15 @@ export function CategoryDialog({
 }: CategoryDialogProps) {
     const [name, setName] = useState("");
     const nameInputRef = useRef<HTMLInputElement>(null);
-    useDelayedAutoFocus(isOpen, nameInputRef);
+    useDelayedAutoFocus({
+        isOpen,
+        ref: nameInputRef,
+        shouldApplyDelayedFocus: isAndroid(),
+    });
+    const [shouldUseFocusSink, setShouldUseFocusSink] = useState(false);
+    useLayoutEffect(() => {
+        setShouldUseFocusSink(isAndroid());
+    }, []);
     const [colour, setColour] = useState(() => parseColor(randomHexColor()));
     const [icon, setIcon] = useState(randomEmoji());
 
@@ -319,7 +334,7 @@ export function CategoryDialog({
             <Modal.Backdrop>
                 <Modal.Container>
                     <Modal.Dialog>
-                        <div tabIndex={-1} className="sr-only" />
+                        <FocusSink isEnabled={shouldUseFocusSink} />
                         <Modal.CloseTrigger className="cursor-pointer" />
                         <form onSubmit={handleSubmit}>
                             <Modal.Header>

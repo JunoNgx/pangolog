@@ -110,6 +110,16 @@ export function formatAmountShort(minorUnits: number): string {
     return `${value} ${customCurrency}`;
 }
 
+export function isIos(): boolean {
+    if (typeof navigator === "undefined") return false;
+    return /iPad|iPhone|iPod/.test(navigator.userAgent);
+}
+
+export function isAndroid(): boolean {
+    if (typeof navigator === "undefined") return false;
+    return /Android/i.test(navigator.userAgent);
+}
+
 export function showDeleteToast(entityName: string, undoFn: () => void) {
     toast(`${entityName} deleted`, {
         timeout: 5000,

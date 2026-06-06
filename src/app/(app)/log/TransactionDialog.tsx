@@ -6,6 +6,7 @@ import { DateTime } from "luxon";
 import {
     type SubmitEventHandler,
     useEffect,
+    useLayoutEffect,
     useMemo,
     useRef,
     useState,
@@ -14,6 +15,7 @@ import { AmountInput } from "@/components/AmountInput";
 import { CategoryDialog } from "@/components/CategoryDialog";
 import { CategoryPicker } from "@/components/CategoryPicker";
 import { DialogFooter } from "@/components/DialogFooter";
+import { FocusSink } from "@/components/FocusSink";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
 import type { Transaction } from "@/lib/db/types";
 import { useCategories } from "@/lib/hooks/useCategories";
@@ -28,6 +30,7 @@ import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
 import {
     fromDateInputValue,
     getLocaleDateFormat,
+    isAndroid,
     showDeleteToast,
     toDateInputValue,
     todayDateString,
@@ -65,7 +68,15 @@ export function TransactionDialog({
     const isEditing = !!transaction;
     const formRef = useRef<HTMLFormElement>(null);
     const amountInputRef = useRef<HTMLInputElement>(null);
-    useDelayedAutoFocus(isOpen, amountInputRef);
+    useDelayedAutoFocus({
+        isOpen,
+        ref: amountInputRef,
+        shouldApplyDelayedFocus: isAndroid(),
+    });
+    const [shouldUseFocusSink, setShouldUseFocusSink] = useState(false);
+    useLayoutEffect(() => {
+        setShouldUseFocusSink(isAndroid());
+    }, []);
 
     useEffect(() => {
         if (transaction) {
@@ -197,7 +208,7 @@ export function TransactionDialog({
                 <Modal.Backdrop>
                     <Modal.Container>
                         <Modal.Dialog>
-                            <div tabIndex={-1} className="sr-only" />
+                            <FocusSink isEnabled={shouldUseFocusSink} />
                             <Modal.CloseTrigger className="cursor-pointer" />
                             <form ref={formRef} onSubmit={handleSubmit}>
                                 <Modal.Header>

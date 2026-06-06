@@ -6,6 +6,7 @@ import { DateTime } from "luxon";
 import {
     type SubmitEventHandler,
     useEffect,
+    useLayoutEffect,
     useMemo,
     useRef,
     useState,
@@ -14,6 +15,7 @@ import { AmountInput } from "@/components/AmountInput";
 import { CategoryDialog } from "@/components/CategoryDialog";
 import { CategoryPicker } from "@/components/CategoryPicker";
 import { DialogFooter } from "@/components/DialogFooter";
+import { FocusSink } from "@/components/FocusSink";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
 import { DAY_NAMES_FULL, MONTH_NAMES } from "@/lib/constants";
 import type { RecurringRule } from "@/lib/db/types";
@@ -30,6 +32,7 @@ import type { Frequency } from "@/lib/types";
 import {
     fromDateInputValue,
     getLocaleDateFormat,
+    isAndroid,
     showDeleteToast,
     toDateInputValue,
     todayDateString,
@@ -78,7 +81,15 @@ export function RecurringRuleDialog({
     const [isCategoryDialogOpen, setIsCategoryDialogOpen] = useState(false);
 
     const amountInputRef = useRef<HTMLInputElement>(null);
-    useDelayedAutoFocus(isOpen, amountInputRef);
+    useDelayedAutoFocus({
+        isOpen,
+        ref: amountInputRef,
+        shouldApplyDelayedFocus: isAndroid(),
+    });
+    const [shouldUseFocusSink, setShouldUseFocusSink] = useState(false);
+    useLayoutEffect(() => {
+        setShouldUseFocusSink(isAndroid());
+    }, []);
     const { data: categories } = useCategories();
     const createRule = useCreateRecurringRule();
     const updateRule = useUpdateRecurringRule();
@@ -292,7 +303,7 @@ export function RecurringRuleDialog({
                 <Modal.Backdrop>
                     <Modal.Container>
                         <Modal.Dialog>
-                            <div tabIndex={-1} className="sr-only" />
+                            <FocusSink isEnabled={shouldUseFocusSink} />
                             <Modal.CloseTrigger className="cursor-pointer" />
                             <form onSubmit={handleSubmit}>
                                 <Modal.Header>
