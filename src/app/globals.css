@@ -30,6 +30,7 @@
 .dark {
     --accent: #f4db5c;
     --accent-foreground: #000000;
+    --background-tertiary: #21201f;
 }
 
 /* Scrollbar */
