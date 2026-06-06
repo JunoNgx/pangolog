@@ -15,6 +15,7 @@ import { Shuffle } from "lucide-react";
 import { type SubmitEventHandler, useEffect, useRef, useState } from "react";
 import { HexColorInput, HexColorPicker } from "react-colorful";
 import { DialogFooter } from "@/components/DialogFooter";
+import { FocusSink } from "@/components/FocusSink";
 import type { Category } from "@/lib/db/types";
 import {
     useCreateCategory,
@@ -22,7 +23,7 @@ import {
     useRestoreCategory,
     useUpdateCategory,
 } from "@/lib/hooks/useCategories";
-import { useDelayedAutoFocus } from "@/lib/hooks/useDelayedAutoFocus";
+import { useDelayedAutoFocusOnAndroid } from "@/lib/hooks/useDelayedAutoFocusOnAndroid";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
 import { showDeleteToast } from "@/lib/utils";
 
@@ -119,7 +120,10 @@ export function CategoryDialog({
 }: CategoryDialogProps) {
     const [name, setName] = useState("");
     const nameInputRef = useRef<HTMLInputElement>(null);
-    useDelayedAutoFocus(isOpen, nameInputRef);
+    const { shouldAutoFocus } = useDelayedAutoFocusOnAndroid({
+        isModalOpen: isOpen,
+        focusableElRef: nameInputRef,
+    });
     const [colour, setColour] = useState(() => parseColor(randomHexColor()));
     const [icon, setIcon] = useState(randomEmoji());
 
@@ -319,7 +323,7 @@ export function CategoryDialog({
             <Modal.Backdrop>
                 <Modal.Container>
                     <Modal.Dialog>
-                        <div tabIndex={-1} className="sr-only" />
+                        <FocusSink isEnabled={!shouldAutoFocus} />
                         <Modal.CloseTrigger className="cursor-pointer" />
                         <form onSubmit={handleSubmit}>
                             <Modal.Header>
@@ -342,6 +346,7 @@ export function CategoryDialog({
                                             setName(e.target.value)
                                         }
                                         required
+                                        autoFocus={shouldAutoFocus}
                                         placeholder="Name"
                                     />
                                 </div>
