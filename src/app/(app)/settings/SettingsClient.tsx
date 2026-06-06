@@ -29,7 +29,7 @@ import { useLocalUserSettingsStore } from "@/lib/store/useLocalUserSettingsStore
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
 import { useSyncProvider } from "@/lib/sync/useSyncProvider";
 import type { TimeFormat } from "@/lib/types";
-import { toIsoDateString } from "@/lib/utils";
+import { showDeleteToast, toIsoDateString } from "@/lib/utils";
 
 export default function SettingsClient() {
     const {
@@ -602,6 +602,7 @@ export default function SettingsClient() {
                                 onPress={() =>
                                     toast("Debug toast notification", {
                                         timeout: 0,
+                                        actionProps: { children: "Dummy Btn", onPress: () => {}}
                                     })
                                 }
                             >
