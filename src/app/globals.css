@@ -6,9 +6,9 @@
     --font-mono: var(--font-mono-var);
 }
 
-/* Originally #f59e0b (amber) */
+/* #f4db5c (pale gold) */
 :root {
-    --accent: oklch(0.75 0.16 70);
+    --accent: #f4db5c;
     --accent-foreground: #000000;
     accent-color: var(--accent);
 }
@@ -18,9 +18,9 @@
     color: var(--accent-foreground);
 }
 
-/* Originally #f59e0b (amber) */
+/* #f4db5c (pale gold) */
 .dark {
-    --accent: oklch(0.75 0.16 70);
+    --accent: #f4db5c;
     --accent-foreground: #000000;
 }
 
