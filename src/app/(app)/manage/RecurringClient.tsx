@@ -155,10 +155,7 @@ export default function RecurringClient() {
                 </div>
             </ConfigWrapper>
             <ConfigWrapper className="mb-4 flex justify-end">
-                <Button
-                    variant="tertiary"
-                    onPress={() => setIsCreateOpen(true)}
-                >
+                <Button variant="outline" onPress={() => setIsCreateOpen(true)}>
                     <Plus />
                     <span>Rule</span>
                 </Button>

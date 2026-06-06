@@ -39,7 +39,7 @@ export function DialogFooter({
                 </Button>
             )}
             <div className="flex gap-2">
-                <Button variant="tertiary" onPress={onCancel}>
+                <Button variant="outline" onPress={onCancel}>
                     Cancel
                 </Button>
                 {showSubmitTooltip ? (

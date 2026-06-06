@@ -16,7 +16,7 @@ export function FloatingBackButton() {
         <FloatingButtonContainer>
             <Tooltip delay={0}>
                 <Button
-                    variant="tertiary"
+                    variant="outline"
                     className="pointer-events-auto absolute right-4 bottom-0 h-14 min-w-0 rounded-full md:right-6 md:rounded-lg"
                     onPress={goBack}
                 >

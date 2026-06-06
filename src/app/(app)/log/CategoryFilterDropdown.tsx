@@ -117,7 +117,7 @@ export function CategoryFilterDropdown({
     return (
         <Popover>
             <Popover.Trigger>
-                <Button variant={isFiltered ? "primary" : "tertiary"}>
+                <Button variant={isFiltered ? "primary" : "outline"}>
                     {label}
                     <ChevronDown className="size-3" />
                 </Button>

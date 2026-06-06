@@ -216,7 +216,7 @@ export function CategoryDialog({
             >
                 <Popover.Trigger>
                     <Button
-                        variant="tertiary"
+                        variant="outline"
                         aria-label="Choose icon"
                         className="h-10"
                     >
@@ -295,7 +295,7 @@ export function CategoryDialog({
                     {colourPopover}
                 </ColorPicker.Root>
                 <Button
-                    variant="tertiary"
+                    variant="outline"
                     isIconOnly
                     onPress={() => setColour(parseColor(randomHexColor()))}
                     aria-label="Random colour"
