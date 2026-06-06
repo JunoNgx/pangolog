@@ -9,15 +9,16 @@ import { type RefObject, useEffect } from "react";
 export function useDelayedAutoFocus(
     isOpen: boolean,
     ref: RefObject<HTMLInputElement | null>,
+    shouldApplyDelay: boolean = true,
 ) {
     const MODAL_ENTER_DELAY_MS = 250;
 
     useEffect(() => {
-        if (!isOpen) return;
+        if (!isOpen || !shouldApplyDelay) return;
         const timeout = setTimeout(
             () => ref.current?.focus(),
             MODAL_ENTER_DELAY_MS,
         );
         return () => clearTimeout(timeout);
-    }, [isOpen, ref]);
+    }, [isOpen, ref, shouldApplyDelay]);
 }
