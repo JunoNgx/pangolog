@@ -4,11 +4,20 @@
 @theme inline {
     --font-sans: var(--font-sans-var);
     --font-mono: var(--font-mono-var);
+
+    --height-app-wrapper: calc(100dvh - 1rem);
 }
 
-/* Originally #f59e0b (amber) */
+@utility app-shadow-hard-md {
+    box-shadow: 4px 4px 0 var(--foreground);
+}
+
+@utility app-shadow-hard-sm {
+    box-shadow: 2px 2px 0 var(--foreground);
+}
+
 :root {
-    --accent: oklch(0.75 0.16 70);
+    --accent: #f4db5c;
     --accent-foreground: #000000;
     accent-color: var(--accent);
 }
@@ -18,10 +27,31 @@
     color: var(--accent-foreground);
 }
 
-/* Originally #f59e0b (amber) */
 .dark {
-    --accent: oklch(0.75 0.16 70);
+    --accent: #f4db5c;
     --accent-foreground: #000000;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-background);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-muted);
+    border-radius: 5px;
+    border: 2px solid var(--color-background);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    /* Hardcoded against convention, but works surprisingly well in both light and dark theme */
+    background: #555;
 }
 
 @layer base {
@@ -48,8 +78,17 @@
         @apply rounded-lg;
     }
 
+    .button--primary {
+        @apply border-foreground border;
+        @apply dark:border-background;
+    }
+
+    .button--outline {
+        @apply border-foreground;
+    }
+
     .input {
-        @apply border-border rounded-lg border shadow-none transition-colors;
+        @apply border-foreground rounded-lg border shadow-none transition-colors;
     }
 
     .input:hover:not(:focus):not(:focus-visible) {
@@ -62,7 +101,7 @@
     }
 
     .modal__dialog {
-        @apply rounded-2xl px-0 py-4;
+        @apply border-foreground app-shadow-hard-md rounded-2xl border px-0 py-4;
     }
 
     .modal__header {
@@ -86,11 +125,27 @@
     }
 
     .dropdown__popover {
-        @apply rounded-lg;
+        @apply border-foreground app-shadow-hard-sm rounded-lg border;
+    }
+
+    .menu-item {
+        @apply rounded-sm;
+    }
+
+    .menu-item:has(.menu-item__indicator) {
+        @apply ps-8;
+    }
+
+    .menu-item__indicator {
+        @apply text-foreground;
     }
 
     .popover {
         @apply rounded-lg;
+    }
+
+    .popover {
+        @apply border-foreground app-shadow-hard-sm border;
     }
 
     .popover__dialog {
@@ -99,6 +154,23 @@
 
     .checkbox__control {
         @apply border-border-secondary border;
+    }
+
+    .tabs__list {
+        @apply border-foreground bg-background app-shadow-hard-sm rounded-xl border;
+    }
+
+    .tabs__tab[data-selected="true"] {
+        @apply text-foreground;
+        @apply dark:text-background;
+    }
+
+    .tabs__tab:not([data-selected="true"]):not([data-disabled="true"]):hover {
+        @apply text-foreground opacity-100;
+    }
+
+    .tabs__indicator {
+        @apply bg-accent text-foreground rounded-lg;
     }
 }
 

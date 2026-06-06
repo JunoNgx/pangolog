@@ -1,15 +1,15 @@
 "use client";
 
 import { Button, Dropdown } from "@heroui/react";
-import { ArrowDownAZ, ArrowUpAZ, Plus } from "lucide-react";
+import { ArrowDownAZ, ArrowUpAZ } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { ConfigWrapper } from "@/components/ConfigWrapper";
 import { DemoDataBanner } from "@/components/DemoDataBanner";
 import { commandPaletteCreateActions } from "@/lib/commandPaletteActionRegistry";
 import { FREQUENCY_ORDER } from "@/lib/constants";
 import { useCategories } from "@/lib/hooks/useCategories";
 import { useHotkey } from "@/lib/hooks/useHotkey";
 import { useRecurringRules } from "@/lib/hooks/useRecurringRules";
+import { ManageSectionHeader } from "./ManageSectionHeader";
 import { RecurringFilterDropdown } from "./RecurringFilterDropdown";
 import { RecurringList } from "./RecurringList";
 import { RecurringRuleDialog } from "./RecurringRuleDialog";
@@ -139,7 +139,11 @@ export default function RecurringClient() {
 
     return (
         <div>
-            <ConfigWrapper className="mt-4 mb-4">
+            <ManageSectionHeader
+                title="Recurring Rules"
+                createLabel="Rule"
+                onCreate={() => setIsCreateOpen(true)}
+            >
                 <div className="flex w-full items-center justify-between gap-2">
                     {sortControls}
                     <RecurringFilterDropdown
@@ -153,16 +157,7 @@ export default function RecurringClient() {
                         onHideInactiveChange={setShouldHideInactive}
                     />
                 </div>
-            </ConfigWrapper>
-            <ConfigWrapper className="mb-4 flex justify-end">
-                <Button
-                    variant="tertiary"
-                    onPress={() => setIsCreateOpen(true)}
-                >
-                    <Plus />
-                    <span>Rule</span>
-                </Button>
-            </ConfigWrapper>
+            </ManageSectionHeader>
             <DemoDataBanner />
             <RecurringList rules={sortedRules} categories={categories ?? []} />
 

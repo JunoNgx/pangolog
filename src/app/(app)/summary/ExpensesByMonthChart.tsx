@@ -66,7 +66,7 @@ export default function ExpensesByMonthChart({
                     </span>
                 )}
             </Popover.Trigger>
-            <Popover.Content placement="top" className="min-w-0">
+            <Popover.Content placement="top">
                 <Popover.Dialog>
                     <span className="font-mono text-xs">
                         {MONTH_NAMES[index]}: {formatAmount(total)}
