@@ -123,7 +123,7 @@
     }
 
     .modal__close-trigger {
-        @apply bg-transparent;
+        @apply cursor-pointer bg-transparent;
     }
 
     .modal__close-trigger:hover {

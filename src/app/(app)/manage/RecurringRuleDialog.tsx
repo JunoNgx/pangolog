@@ -297,7 +297,7 @@ export function RecurringRuleDialog({
                     <Modal.Container>
                         <Modal.Dialog>
                             <FocusSink isEnabled={!shouldAutoFocus} />
-                            <Modal.CloseTrigger className="cursor-pointer" />
+                            <Modal.CloseTrigger />
                             <form onSubmit={handleSubmit}>
                                 <Modal.Header>
                                     <Modal.Heading>
