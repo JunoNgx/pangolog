@@ -15,7 +15,7 @@ export function NavLinkMobile({
     return (
         <NextLink
             href={item.href}
-            className={`flex flex-1 items-center justify-center gap-2 border-t py-3 text-sm transition-colors ${activeStatusClasses}`}
+            className={`flex flex-auto items-center justify-center gap-1 border-t py-3 text-sm transition-colors ${activeStatusClasses}`}
             aria-current={isActive ? "page" : undefined}
         >
             <item.icon size={14} />
