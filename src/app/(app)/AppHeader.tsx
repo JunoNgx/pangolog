@@ -41,23 +41,21 @@ export function AppHeader() {
     const pathname = usePathname();
 
     return (
-        <header className="bg-background z-40 hidden border-b backdrop-blur-md md:flex">
-            <div className="mx-auto flex h-14 w-full items-center gap-2">
-                <nav className="flex items-center gap-1">
-                    {navItems.map((item) => (
-                        <NavLink
-                            key={item.href}
-                            item={item}
-                            isActive={pathname === item.href}
-                        />
-                    ))}
-                </nav>
-                <div className="ml-auto flex shrink-0 items-center gap-2">
-                    <ThemeSwitcher />
-                    <NextLink href="/" className="shrink-0 text-lg font-bold">
-                        Pangolog
-                    </NextLink>
-                </div>
+        <header className="bg-background z-40 hidden h-14 w-full items-center gap-2 border-b backdrop-blur-md md:flex">
+            <nav className="flex items-center gap-1">
+                {navItems.map((item) => (
+                    <NavLink
+                        key={item.href}
+                        item={item}
+                        isActive={pathname === item.href}
+                    />
+                ))}
+            </nav>
+            <div className="ml-auto flex shrink-0 items-center gap-2">
+                <ThemeSwitcher />
+                <NextLink href="/" className="shrink-0 text-lg font-bold">
+                    Pangolog
+                </NextLink>
             </div>
         </header>
     );
