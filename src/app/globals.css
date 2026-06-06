@@ -160,6 +160,10 @@
         @apply dark:text-background;
     }
 
+    .tabs__tab:not([data-selected="true"]):not([data-disabled="true"]):hover {
+        @apply text-foreground opacity-100;
+    }
+
     .tabs__indicator {
         @apply bg-accent text-foreground rounded-lg;
     }
