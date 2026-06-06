@@ -17,7 +17,12 @@ function ThemeColorSync() {
 
     useEffect(() => {
         if (!resolvedTheme) return;
-        const color = resolvedTheme === "dark" ? "#000000" : "#ffffff";
+        const root = document.documentElement;
+        const cssThemeColor = getComputedStyle(root)
+            .getPropertyValue("--color-background-tertiary")
+            .trim();
+        const fallbackColor = resolvedTheme === "dark" ? "#000000" : "#ffffff";
+        const metaThemeColor = cssThemeColor || fallbackColor;
         let meta = document.querySelector(
             'meta[name="theme-color"]',
         ) as HTMLMetaElement | null;
@@ -26,7 +31,7 @@ function ThemeColorSync() {
             meta.name = "theme-color";
             document.head.appendChild(meta);
         }
-        meta.content = color;
+        meta.content = metaThemeColor;
     }, [resolvedTheme]);
 
     return null;
