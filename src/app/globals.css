@@ -96,11 +96,29 @@
     }
 
     .dropdown__popover {
-        @apply rounded-lg;
+        @apply border-foreground rounded-lg border;
+        box-shadow: 4px 4px 0 var(--foreground);
+    }
+
+    .menu-item {
+        @apply rounded-sm;
+    }
+
+    .menu-item:has(.menu-item__indicator) {
+        @apply ps-8;
+    }
+
+    .menu-item__indicator {
+        @apply text-foreground;
     }
 
     .popover {
         @apply rounded-lg;
+    }
+
+    .popover {
+        @apply border-foreground border;
+        box-shadow: 4px 4px 0 var(--foreground);
     }
 
     .popover__dialog {
