@@ -1,6 +1,7 @@
 "use client";
 
 import { Button, Dropdown, Input, Label, Modal, Switch } from "@heroui/react";
+import { Banknote, Coins } from "lucide-react";
 import { DateTime } from "luxon";
 import {
     type SubmitEventHandler,
@@ -271,6 +272,8 @@ export function RecurringRuleDialog({
                 onValueChange={setIsBigBuck}
                 leftLabel="Small dime"
                 rightLabel="Big buck"
+                leftIcon={Coins}
+                rightIcon={Banknote}
             />
         </div>
     );
