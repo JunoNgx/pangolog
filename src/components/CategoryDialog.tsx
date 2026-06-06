@@ -223,7 +223,7 @@ export function CategoryDialog({
                         <span className="text-xl">{icon}</span>
                     </Button>
                 </Popover.Trigger>
-                <Popover.Content placement="bottom start" className="p-0">
+                <Popover.Content placement="bottom start">
                     <Popover.Dialog>
                         <EmojiPicker.Root
                             onEmojiSelect={handleEmojiSelect}

@@ -42,7 +42,7 @@ export function RecurringFilterDropdown({
                     <ChevronDown className="size-3" />
                 </Button>
             </Popover.Trigger>
-            <Popover.Content placement="bottom end" className="p-2">
+            <Popover.Content placement="bottom end">
                 <Popover.Dialog>
                     <div className="flex min-w-32 flex-col gap-1">
                         <Checkbox
@@ -92,7 +92,7 @@ export function RecurringFilterDropdown({
                         <div className="mt-1 flex gap-1 border-t pt-2">
                             <Button
                                 size="sm"
-                                variant="outline"
+                                variant="ghost"
                                 className="flex-1 text-xs"
                                 onPress={() => {
                                     onShowDimesChange(true);
