@@ -100,6 +100,14 @@
     .checkbox__control {
         @apply border-border-secondary border;
     }
+
+    .tabs__list {
+        @apply rounded-xl;
+    }
+
+    .tabs__indicator {
+        @apply rounded-lg;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
