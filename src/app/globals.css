@@ -49,7 +49,7 @@
     }
 
     .button--primary {
-        @apply border border-foreground;
+        @apply border-foreground border;
         @apply dark:border-background;
     }
 
@@ -111,7 +111,7 @@
     }
 
     .tabs__list {
-        @apply border border-foreground rounded-xl bg-background;
+        @apply border-foreground bg-background rounded-xl border;
     }
 
     .tabs__tab[data-selected="true"] {
@@ -120,7 +120,7 @@
     }
 
     .tabs__indicator {
-        @apply rounded-lg bg-accent text-foreground;
+        @apply bg-accent text-foreground rounded-lg;
     }
 }
 
