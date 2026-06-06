@@ -202,7 +202,7 @@ export function TransactionDialog({
                     <Modal.Container>
                         <Modal.Dialog>
                             <FocusSink isEnabled={!shouldAutoFocus} />
-                            <Modal.CloseTrigger className="cursor-pointer" />
+                            <Modal.CloseTrigger />
                             <form ref={formRef} onSubmit={handleSubmit}>
                                 <Modal.Header>
                                     <Modal.Heading>

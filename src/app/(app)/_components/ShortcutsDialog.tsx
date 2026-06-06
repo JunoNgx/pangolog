@@ -109,7 +109,7 @@ export function ShortcutsDialog({ children }: { children?: React.ReactNode }) {
             <Modal.Backdrop>
                 <Modal.Container size="md" scroll="inside">
                     <Modal.Dialog>
-                        <Modal.CloseTrigger className="cursor-pointer" />
+                        <Modal.CloseTrigger />
                         <Modal.Header>
                             <Modal.Heading className="text-base">
                                 Keyboard shortcuts

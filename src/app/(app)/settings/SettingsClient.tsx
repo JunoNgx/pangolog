@@ -182,7 +182,7 @@ export default function SettingsClient() {
             <Modal.Backdrop>
                 <Modal.Container size="full">
                     <Modal.Dialog>
-                        <Modal.CloseTrigger className="cursor-pointer" />
+                        <Modal.CloseTrigger />
                         <Modal.Header>
                             <Modal.Heading>Logs</Modal.Heading>
                         </Modal.Header>
@@ -230,7 +230,7 @@ export default function SettingsClient() {
             <Modal.Backdrop>
                 <Modal.Container>
                     <Modal.Dialog>
-                        <Modal.CloseTrigger className="cursor-pointer" />
+                        <Modal.CloseTrigger />
                         <Modal.Header>
                             <Modal.Heading>
                                 Confirm resetting app?
@@ -273,7 +273,7 @@ export default function SettingsClient() {
             <Modal.Backdrop>
                 <Modal.Container>
                     <Modal.Dialog>
-                        <Modal.CloseTrigger className="cursor-pointer" />
+                        <Modal.CloseTrigger />
                         <Modal.Header>
                             <Modal.Heading>Clear local records?</Modal.Heading>
                         </Modal.Header>
