@@ -10,9 +10,9 @@ import { ConfigWrapper } from "@/components/ConfigWrapper";
 import { DemoDataBanner } from "@/components/DemoDataBanner";
 import { FloatingActionButton } from "@/components/FloatingActionButton";
 import { PeriodPicker } from "@/components/PeriodPicker";
-import { RouteHeader } from "@/components/RouteHeader";
 import { TransactionTypeDropdown } from "@/components/TransactionTypeDropdown";
 import { commandPaletteCreateActions } from "@/lib/commandPaletteActionRegistry";
+import { useRouteHeader } from "@/lib/context/RouteHeaderContext";
 import { useCategories } from "@/lib/hooks/useCategories";
 import { useHotkey } from "@/lib/hooks/useHotkey";
 import { useSyncFn } from "@/lib/hooks/useSync";
@@ -112,6 +112,27 @@ export default function LogClient() {
         }
         setIsSearchMode(true);
     }
+
+    useRouteHeader({
+        label: "Transactions",
+        leftContent: !isSearchMode && (
+            <Button
+                isIconOnly
+                variant="outline"
+                size="sm"
+                onPress={handleToggleSearchMode}
+                aria-label="Search transactions"
+            >
+                <Search size={16} />
+            </Button>
+        ),
+        rightContent: !isSearchMode && (
+            <TransactionTypeDropdown
+                displayMode={logViewDisplayMode}
+                setDisplayMode={setLogViewDisplayMode}
+            />
+        ),
+    });
 
     function handleClearSearch() {
         setIsSearchMode(false);
@@ -272,31 +293,6 @@ export default function LogClient() {
 
     return (
         <div>
-            <RouteHeader
-                label="Transactions"
-                leftContent={
-                    !isSearchMode && (
-                        <Button
-                            isIconOnly
-                            variant="outline"
-                            size="sm"
-                            onPress={handleToggleSearchMode}
-                            aria-label="Search transactions"
-                        >
-                            <Search size={16} />
-                        </Button>
-                    )
-                }
-                rightContent={
-                    !isSearchMode && (
-                        <TransactionTypeDropdown
-                            displayMode={logViewDisplayMode}
-                            setDisplayMode={setLogViewDisplayMode}
-                        />
-                    )
-                }
-            />
-
             <ConfigWrapper className="mb-6">
                 {isSearchMode ? (
                     searchInputRow

@@ -16,8 +16,8 @@ import { useLayoutEffect, useRef, useState } from "react";
 import { DriveSyncSection } from "@/app/(app)/settings/DriveSyncSection";
 import { ImportDataSection } from "@/app/(app)/settings/ImportDataSection";
 import { MainListContainer } from "@/components/MainListContainer";
-import { RouteHeader } from "@/components/RouteHeader";
 import { MIME_JSON } from "@/lib/constants";
+import { useRouteHeader } from "@/lib/context/RouteHeaderContext";
 import { clearAllData, forceDeleteDb } from "@/lib/db";
 import { exportJson } from "@/lib/export";
 import { useLogger } from "@/lib/hooks/useLogger";
@@ -61,6 +61,9 @@ export default function SettingsClient() {
 
     const [isDebugVisible, setIsDebugVisible] = useState(false);
     const [isThemeMounted, setIsThemeMounted] = useState(false);
+
+    useRouteHeader({ label: "Settings" });
+
     useLayoutEffect(() => setIsThemeMounted(true), []);
     const headingTapCountRef = useRef(0);
     const headingTapTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
@@ -301,10 +304,6 @@ export default function SettingsClient() {
 
     return (
         <div>
-            <div className="mb-6">
-                <RouteHeader label="Settings" />
-            </div>
-
             <MainListContainer as="div" className="gap-12">
                 <DriveSyncSection />
 

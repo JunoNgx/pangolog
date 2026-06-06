@@ -1,6 +1,8 @@
 import { Suspense } from "react";
 
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { RouteHeader } from "@/components/RouteHeader";
+import { RouteHeaderProvider } from "@/lib/context/RouteHeaderContext";
 import { CommandPalette } from "./_components/CommandPalette";
 import { RecurringRulesManager } from "./_components/RecurringRulesManager";
 import { ShortcutsDialog } from "./_components/ShortcutsDialog";
@@ -36,12 +38,15 @@ export default function AppLayout({
             </a>
             <div className="m-auto flex h-screen max-w-3xl flex-col">
                 <AppNavbar />
-                <main
-                    id="main-content"
-                    className="container mx-auto max-w-3xl flex-1 overflow-y-auto px-4 pt-6 pb-24 md:pb-6"
-                >
-                    {children}
-                </main>
+                <RouteHeaderProvider>
+                    <RouteHeader />
+                    <main
+                        id="main-content"
+                        className="container mx-auto max-w-3xl flex-1 overflow-y-auto px-4 pb-24 md:pb-6"
+                    >
+                        {children}
+                    </main>
+                </RouteHeaderProvider>
             </div>
         </ErrorBoundary>
     );
