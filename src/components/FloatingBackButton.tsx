@@ -17,7 +17,7 @@ export function FloatingBackButton() {
             <Tooltip delay={0}>
                 <Button
                     variant="outline"
-                    className="pointer-events-auto absolute right-4 bottom-0 h-14 min-w-0 rounded-full md:right-6 md:rounded-lg"
+                    className="pointer-events-auto absolute right-4 bottom-4 h-14 w-14 md:w-auto min-w-0 rounded-full md:rounded-lg bg-background"
                     onPress={goBack}
                 >
                     <ArrowLeft />
