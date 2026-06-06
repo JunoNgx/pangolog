@@ -49,11 +49,11 @@
     }
 
     .input {
-        @apply border-foreground rounded-lg border shadow-none transition-colors;
+        @apply border-border rounded-lg border shadow-none transition-colors;
     }
 
     .input:hover:not(:focus):not(:focus-visible) {
-        @apply border-foreground rounded-lg border bg-transparent;
+        @apply border-foreground rounded-lg border;
     }
 
     .input:focus,
