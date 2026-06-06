@@ -37,15 +37,15 @@ function CategoryFilterItem({
                 </Checkbox.Control>
                 <Checkbox.Content>
                     <Label>
-                        {icon && <span className="text-base mr-1">{icon}</span>}{" "}
+                        {icon && <span className="mr-1 text-base">{icon}</span>}{" "}
                         {name}
                         {isBuck && (
-                            <span className="ml-2 text-xs font-medium text-amber-500 shrink-0">
+                            <span className="ml-2 shrink-0 text-xs font-medium text-amber-500">
                                 BUCK
                             </span>
                         )}
                         {isIncomeOnly && (
-                            <span className="text-success ml-2 text-xs font-medium shrink-0">
+                            <span className="text-success ml-2 shrink-0 text-xs font-medium">
                                 INC
                             </span>
                         )}
