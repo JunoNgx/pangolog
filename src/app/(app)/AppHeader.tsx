@@ -6,9 +6,9 @@ import { AppNavbar } from "./AppNavbar";
 
 export function AppHeader() {
     return (
-        <header className="bg-background z-40 hidden h-14 w-full items-center gap-2 border-b backdrop-blur-md md:flex">
+        <header className="z-40 mt-4 hidden w-full items-center md:flex">
             <AppNavbar />
-            <div className="ml-auto flex shrink-0 items-center gap-2">
+            <div className="border-b-foreground flex flex-1 shrink-0 items-center justify-end gap-2 border-b">
                 <ThemeSwitcher />
                 <NextLink href="/" className="shrink-0 text-lg font-bold">
                     Pangolog
