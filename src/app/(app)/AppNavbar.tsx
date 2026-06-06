@@ -16,7 +16,7 @@ export function AppNavbar() {
     const pathname = usePathname();
 
     return (
-        <nav className="flex items-center gap-1">
+        <nav className="divide-foreground border-foreground flex items-center divide-x border-t border-r border-l">
             {NAV_ITEMS.map((item) => (
                 <NavLinkDesktop
                     key={item.href}
