@@ -6,6 +6,7 @@ import { DateTime } from "luxon";
 import {
     type SubmitEventHandler,
     useEffect,
+    useLayoutEffect,
     useMemo,
     useRef,
     useState,
@@ -29,6 +30,7 @@ import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
 import {
     fromDateInputValue,
     getLocaleDateFormat,
+    isAndroid,
     showDeleteToast,
     toDateInputValue,
     todayDateString,
@@ -62,11 +64,20 @@ export function TransactionDialog({
     const deleteTransaction = useDeleteTransaction();
     const restoreTransaction = useRestoreTransaction();
 
+    const [shouldDelayFocus, setShouldDelayFocus] = useState(false);
+
+    useLayoutEffect(() => {
+        if (isAndroid()) {
+            console.log("is android");
+            setShouldDelayFocus(true);
+        }
+    }, []);
+
     const { isExpenseOnlyMode } = useProfileSettingsStore();
     const isEditing = !!transaction;
     const formRef = useRef<HTMLFormElement>(null);
     const amountInputRef = useRef<HTMLInputElement>(null);
-    useDelayedAutoFocus(isOpen, amountInputRef);
+    useDelayedAutoFocus(isOpen, amountInputRef, shouldDelayFocus);
 
     useEffect(() => {
         if (transaction) {
@@ -198,7 +209,7 @@ export function TransactionDialog({
                 <Modal.Backdrop>
                     <Modal.Container>
                         <Modal.Dialog>
-                            <FocusSink isEnabled={true} />
+                            <FocusSink isEnabled={shouldDelayFocus} />
                             <Modal.CloseTrigger className="cursor-pointer" />
                             <form ref={formRef} onSubmit={handleSubmit}>
                                 <Modal.Header>
@@ -238,6 +249,7 @@ export function TransactionDialog({
                                         value={amount}
                                         onChange={setAmount}
                                         isIncome={isIncome}
+                                        shouldAutoFocus={!shouldDelayFocus}
                                     />
 
                                     <div className="flex flex-col gap-1">
