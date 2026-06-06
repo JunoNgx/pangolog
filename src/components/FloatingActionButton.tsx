@@ -18,7 +18,7 @@ export function FloatingActionButton({
             <Tooltip delay={0}>
                 <Button
                     variant="primary"
-                    className="pointer-events-auto absolute right-6 bottom-20 h-14 w-14 min-w-0 md:bottom-4 md:w-auto md:rounded-lg"
+                    className="app-shadow-hard-sm pointer-events-auto absolute right-6 bottom-20 h-14 w-14 min-w-0 md:bottom-4 md:w-auto md:rounded-lg"
                     onPress={onPress}
                 >
                     <Plus />

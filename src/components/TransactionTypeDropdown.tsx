@@ -42,6 +42,7 @@ export function TransactionTypeDropdown({
                 size="sm"
                 isIconOnly
                 aria-label={modeLabel}
+                className="app-shadow-hard-sm"
             >
                 <CurrentIcon size={16} />
             </Button>

@@ -20,7 +20,12 @@ export function DialogFooter({
     showSubmitTooltip,
 }: DialogFooterProps) {
     const submitButton = (
-        <Button type="submit" variant="primary" isPending={isSubmitting}>
+        <Button
+            type="submit"
+            variant="primary"
+            isPending={isSubmitting}
+            className="app-shadow-hard-sm"
+        >
             {isEditing ? "Save" : "Create"}
         </Button>
     );
@@ -39,7 +44,11 @@ export function DialogFooter({
                 </Button>
             )}
             <div className="flex gap-2">
-                <Button variant="outline" onPress={onCancel}>
+                <Button
+                    variant="outline"
+                    onPress={onCancel}
+                    className="app-shadow-hard-sm"
+                >
                     Cancel
                 </Button>
                 {showSubmitTooltip ? (

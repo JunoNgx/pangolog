@@ -157,7 +157,7 @@
     }
 
     .tabs__list {
-        @apply border-foreground bg-background rounded-xl border;
+        @apply border-foreground bg-background app-shadow-hard-sm rounded-xl border;
     }
 
     .tabs__tab[data-selected="true"] {
