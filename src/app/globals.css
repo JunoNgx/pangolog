@@ -102,11 +102,16 @@
     }
 
     .tabs__list {
-        @apply rounded-xl;
+        @apply border border-foreground rounded-xl bg-background;
+    }
+
+    .tabs__tab[data-selected="true"] {
+        @apply text-foreground;
+        @apply dark:text-background;
     }
 
     .tabs__indicator {
-        @apply rounded-lg;
+        @apply rounded-lg bg-accent text-foreground;
     }
 }
 
