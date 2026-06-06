@@ -47,7 +47,7 @@ export function SyncButton() {
     return (
         <Tooltip delay={0}>
             <Button
-                size="md"
+                size="sm"
                 variant="outline"
                 isDisabled={syncStatus === "syncing"}
                 onPress={handleSync}

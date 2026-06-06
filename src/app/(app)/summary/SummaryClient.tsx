@@ -5,8 +5,8 @@ import { PeriodViewDropdown } from "@/app/(app)/summary/PeriodViewDropdown";
 import { ConfigWrapper } from "@/components/ConfigWrapper";
 import { MainListContainer } from "@/components/MainListContainer";
 import { PeriodPicker } from "@/components/PeriodPicker";
-import { RouteHeader } from "@/components/RouteHeader";
 import { TransactionTypeDropdown } from "@/components/TransactionTypeDropdown";
+import { useRouteHeader } from "@/lib/context/RouteHeaderContext";
 import type { Category, Transaction } from "@/lib/db/types";
 import { useCategories } from "@/lib/hooks/useCategories";
 import { useHotkey } from "@/lib/hooks/useHotkey";
@@ -98,7 +98,7 @@ function SegmentBar({ label, slices, total }: SegmentBarProps) {
                     {formatAmount(total)}
                 </p>
             </div>
-            <div className="mb-3 flex h-5 overflow-hidden rounded-sm">
+            <div className="mb-3 flex h-8 overflow-hidden rounded-lg">
                 {slices.map((slice) => (
                     <div
                         key={slice.categoryId ?? `__${slice.name}__`}
@@ -171,6 +171,22 @@ export default function SummaryClient() {
     useHotkey("u", handleCycleDisplayMode, { hasMod: true, hasShift: true });
     useHotkey("y", toggleIsYearly, { hasMod: true, hasShift: true });
 
+    useRouteHeader({
+        label: "Summary",
+        leftContent: (
+            <PeriodViewDropdown
+                isYearly={isYearly}
+                onViewChange={setIsYearly}
+            />
+        ),
+        rightContent: (
+            <TransactionTypeDropdown
+                displayMode={summaryViewDisplayMode}
+                setDisplayMode={setSummaryViewDisplayMode}
+            />
+        ),
+    });
+
     const { data: categories } = useCategories();
     const { data: monthlyTransactions } = useTransactionsByMonth(
         selectedYear,
@@ -217,23 +233,7 @@ export default function SummaryClient() {
 
     return (
         <div>
-            <RouteHeader
-                label="Summary"
-                leftContent={
-                    <PeriodViewDropdown
-                        isYearly={isYearly}
-                        onViewChange={setIsYearly}
-                    />
-                }
-                rightContent={
-                    <TransactionTypeDropdown
-                        displayMode={summaryViewDisplayMode}
-                        setDisplayMode={setSummaryViewDisplayMode}
-                    />
-                }
-            />
-
-            <ConfigWrapper className="mt-4 mb-4">
+            <ConfigWrapper className="mb-4">
                 <PeriodPicker
                     isYearly={isYearly}
                     selectedYear={selectedYear}

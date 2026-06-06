@@ -1,3 +1,5 @@
+import type { LucideIcon } from "lucide-react";
+
 export type Frequency = "daily" | "weekly" | "monthly" | "yearly";
 
 export type ViewDisplayMode = "dimes" | "bucks" | "all";
@@ -9,4 +11,10 @@ export interface ProfileSettings {
     isExpenseOnlyMode: boolean;
     isCategoryAlphabetical: boolean;
     updatedAt: string;
+}
+
+export interface NavItem {
+    label: string;
+    href: string;
+    icon: LucideIcon;
 }

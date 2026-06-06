@@ -1,9 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import { Geist_Mono, Outfit } from "next/font/google";
+import { Funnel_Display, Geist_Mono } from "next/font/google";
 import { Providers } from "./providers";
 import "./globals.css";
 
-const fontSans = Outfit({
+const fontSans = Funnel_Display({
     weight: "400",
     subsets: ["latin"],
     variable: "--font-sans-var",

@@ -40,6 +40,7 @@ export function PeriodViewDropdown({
                 size="sm"
                 isIconOnly
                 aria-label={viewLabel}
+                className="app-shadow-hard-sm"
             >
                 <span className="text-sm font-bold">{currentIcon}</span>
             </Button>

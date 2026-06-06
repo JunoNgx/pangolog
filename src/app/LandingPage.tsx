@@ -68,7 +68,7 @@ export default function LandingPage() {
                 <div className="flex flex-col gap-2">
                     <Link
                         href="/log"
-                        className="bg-accent text-accent-foreground inline-flex items-center justify-center gap-2 self-center rounded-lg px-6 py-3 text-base font-medium hover:opacity-90"
+                        className="bg-accent text-accent-foreground border-foreground dark:border-background app-shadow-hard-sm inline-flex items-center justify-center gap-2 self-center rounded-lg border px-6 py-3 text-base font-medium hover:opacity-90"
                     >
                         Get started
                     </Link>
@@ -78,13 +78,13 @@ export default function LandingPage() {
                 </div>
 
                 <footer className="flex flex-col items-center gap-2">
-                    <p className="text-muted text-xs">
+                    <p className="text-muted text-sm">
                         by{" "}
                         <Link
                             href="https://junongx.com"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="hover:text-foreground"
+                            className="text-blue-500 hover:underline"
                         >
                             Juno Nguyen
                         </Link>
@@ -94,21 +94,21 @@ export default function LandingPage() {
                             href="https://github.com/JunoNgx/pangolog"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-muted hover:text-foreground text-xs"
+                            className="text-sm text-blue-500 hover:underline"
                         >
                             Source
                         </Link>
-                        <span className="text-muted text-xs">|</span>
+                        <span className="text-muted text-sm">|</span>
                         <Link
                             href="/privacy"
-                            className="text-muted hover:text-foreground text-xs"
+                            className="text-sm text-blue-500 hover:underline"
                         >
                             Privacy Policy
                         </Link>
-                        <span className="text-muted text-xs">|</span>
+                        <span className="text-muted text-sm">|</span>
                         <Link
                             href="/terms"
-                            className="text-muted hover:text-foreground text-xs"
+                            className="text-sm text-blue-500 hover:underline"
                         >
                             Terms of Service
                         </Link>

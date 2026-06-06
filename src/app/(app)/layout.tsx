@@ -1,11 +1,14 @@
 import { Suspense } from "react";
 
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { RouteHeader } from "@/components/RouteHeader";
+import { RouteHeaderProvider } from "@/lib/context/RouteHeaderContext";
 import { CommandPalette } from "./_components/CommandPalette";
 import { RecurringRulesManager } from "./_components/RecurringRulesManager";
 import { ShortcutsDialog } from "./_components/ShortcutsDialog";
 import { SyncManager } from "./_components/SyncManager";
-import { AppNavbar } from "./navbar";
+import { AppHeader } from "./AppHeader";
+import { AppNavbar } from "./AppNavbar";
 
 export default function AppLayout({
     children,
@@ -31,17 +34,29 @@ export default function AppLayout({
                     </button>
                 </CommandPalette>
             </Suspense>
-            <a href="#main-content" className={A11Y_FOCUS_STYLES}>
+            <a href="#content-card" className={A11Y_FOCUS_STYLES}>
                 Skip to main content
             </a>
-            <div className="flex h-screen flex-col">
-                <AppNavbar />
-                <main
-                    id="main-content"
-                    className="container mx-auto max-w-3xl flex-1 overflow-y-auto px-4 pt-6 pb-24 md:pb-6"
+            <div
+                id="app-wrapper"
+                className="md:h-app-wrapper m-auto flex h-screen max-w-3xl flex-col"
+            >
+                <AppHeader />
+                <div
+                    id="main-panel"
+                    className="m-b-2 bg-background-tertiary border-foreground app-shadow-hard-md flex flex-1 flex-col overflow-hidden border-0 p-2 pt-0 pb-8 md:rounded-b-xl md:border md:border-t-0 md:pb-2"
                 >
-                    {children}
-                </main>
+                    <RouteHeaderProvider>
+                        <RouteHeader />
+                        <main
+                            id="content-card"
+                            className="bg-background border-foreground max-h-full flex-1 overflow-y-scroll rounded-t-md border border-b-0 px-4 pt-4 md:rounded-b-md md:border-b"
+                        >
+                            {children}
+                        </main>
+                        <AppNavbar isMobile />
+                    </RouteHeaderProvider>
+                </div>
             </div>
         </ErrorBoundary>
     );

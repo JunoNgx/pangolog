@@ -216,14 +216,14 @@ export function CategoryDialog({
             >
                 <Popover.Trigger>
                     <Button
-                        variant="tertiary"
+                        variant="outline"
                         aria-label="Choose icon"
                         className="h-10"
                     >
                         <span className="text-xl">{icon}</span>
                     </Button>
                 </Popover.Trigger>
-                <Popover.Content placement="bottom start" className="p-0">
+                <Popover.Content placement="bottom start">
                     <Popover.Dialog>
                         <EmojiPicker.Root
                             onEmojiSelect={handleEmojiSelect}
@@ -295,7 +295,7 @@ export function CategoryDialog({
                     {colourPopover}
                 </ColorPicker.Root>
                 <Button
-                    variant="tertiary"
+                    variant="outline"
                     isIconOnly
                     onPress={() => setColour(parseColor(randomHexColor()))}
                     aria-label="Random colour"
@@ -313,7 +313,7 @@ export function CategoryDialog({
                 if (!open) onClose();
             }}
         >
-            <Modal.Trigger>
+            <Modal.Trigger tabIndex={-1}>
                 <span hidden />
             </Modal.Trigger>
             <Modal.Backdrop>

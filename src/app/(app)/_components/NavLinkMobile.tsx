@@ -1,0 +1,25 @@
+import NextLink from "next/link";
+import type { NavItem } from "@/lib/types";
+
+export function NavLinkMobile({
+    item,
+    isActive,
+}: {
+    item: NavItem;
+    isActive: boolean;
+}) {
+    const activeStatusClasses = isActive
+        ? "bg-background border-t-transparent"
+        : "bg-background-tertiary border-t-foreground text-muted hover:text-foreground";
+
+    return (
+        <NextLink
+            href={item.href}
+            className={`flex flex-auto items-center justify-center gap-1 border-t py-3 text-sm transition-colors ${activeStatusClasses}`}
+            aria-current={isActive ? "page" : undefined}
+        >
+            <item.icon size={14} />
+            {item.label}
+        </NextLink>
+    );
+}

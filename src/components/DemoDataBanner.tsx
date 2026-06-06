@@ -55,7 +55,7 @@ export function DemoDataBanner() {
                 </Button>
                 <Button
                     size="sm"
-                    variant="tertiary"
+                    variant="outline"
                     onPress={handleDismiss}
                     isDisabled={isLoading}
                 >

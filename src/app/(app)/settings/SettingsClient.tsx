@@ -15,9 +15,10 @@ import { useTheme } from "next-themes";
 import { useLayoutEffect, useRef, useState } from "react";
 import { DriveSyncSection } from "@/app/(app)/settings/DriveSyncSection";
 import { ImportDataSection } from "@/app/(app)/settings/ImportDataSection";
+import { LinkButton } from "@/components/LinkButton";
 import { MainListContainer } from "@/components/MainListContainer";
-import { RouteHeader } from "@/components/RouteHeader";
 import { MIME_JSON } from "@/lib/constants";
+import { useRouteHeader } from "@/lib/context/RouteHeaderContext";
 import { clearAllData, forceDeleteDb } from "@/lib/db";
 import { exportJson } from "@/lib/export";
 import { useLogger } from "@/lib/hooks/useLogger";
@@ -61,6 +62,9 @@ export default function SettingsClient() {
 
     const [isDebugVisible, setIsDebugVisible] = useState(false);
     const [isThemeMounted, setIsThemeMounted] = useState(false);
+
+    useRouteHeader({ label: "Settings" });
+
     useLayoutEffect(() => setIsThemeMounted(true), []);
     const headingTapCountRef = useRef(0);
     const headingTapTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
@@ -201,7 +205,7 @@ export default function SettingsClient() {
                                 Copy content
                             </Button>
                             <Button
-                                variant="tertiary"
+                                variant="outline"
                                 onPress={() => setIsLogDialogOpen(false)}
                             >
                                 Close
@@ -239,7 +243,7 @@ export default function SettingsClient() {
                         </Modal.Body>
                         <Modal.Footer>
                             <Button
-                                variant="tertiary"
+                                variant="outline"
                                 onPress={() => setIsResetAppDialogOpen(false)}
                             >
                                 Cancel
@@ -280,7 +284,7 @@ export default function SettingsClient() {
                         </Modal.Body>
                         <Modal.Footer>
                             <Button
-                                variant="tertiary"
+                                variant="outline"
                                 onPress={() => setIsResetDialogOpen(false)}
                             >
                                 Cancel
@@ -301,10 +305,6 @@ export default function SettingsClient() {
 
     return (
         <div>
-            <div className="mb-6">
-                <RouteHeader label="Settings" />
-            </div>
-
             <MainListContainer as="div" className="gap-12">
                 <DriveSyncSection />
 
@@ -523,12 +523,9 @@ export default function SettingsClient() {
                         Overview of concepts, pages, hotkeys, and sync
                         behaviour.
                     </p>
-                    <a
-                        href="/help"
-                        className="bg-accent text-accent-foreground inline-flex items-center justify-center gap-2 self-start rounded-lg px-4 py-2 text-sm font-medium hover:opacity-90"
-                    >
+                    <LinkButton href="/help" className="self-start">
                         View manual
-                    </a>
+                    </LinkButton>
                 </section>
 
                 <section>
@@ -585,18 +582,12 @@ export default function SettingsClient() {
                             {process.env.NEXT_PUBLIC_COMMIT_HASH})
                         </p>
                         <div className="mt-2 flex flex-wrap gap-2">
-                            <a
-                                href="/privacy"
-                                className="bg-surface text-muted hover:text-foreground hover:bg-surface-secondary inline-flex items-center justify-center gap-2 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors"
-                            >
+                            <LinkButton href="/privacy">
                                 Privacy Policy
-                            </a>
-                            <a
-                                href="/terms"
-                                className="bg-surface text-muted hover:text-foreground hover:bg-surface-secondary inline-flex items-center justify-center gap-2 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors"
-                            >
+                            </LinkButton>
+                            <LinkButton href="/terms">
                                 Terms of Service
-                            </a>
+                            </LinkButton>
                         </div>
                     </div>
                 </section>

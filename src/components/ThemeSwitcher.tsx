@@ -22,7 +22,7 @@ export function ThemeSwitcher() {
 
     if (!isMounted) {
         return (
-            <Button isIconOnly variant="tertiary" size="sm" aria-label="Theme">
+            <Button isIconOnly variant="outline" size="sm" aria-label="Theme">
                 <div className="size-4.5" />
             </Button>
         );

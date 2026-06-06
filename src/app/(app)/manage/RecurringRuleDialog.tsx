@@ -286,7 +286,7 @@ export function RecurringRuleDialog({
                     if (!open) handleClose();
                 }}
             >
-                <Modal.Trigger>
+                <Modal.Trigger tabIndex={-1}>
                     <span hidden />
                 </Modal.Trigger>
                 <Modal.Backdrop>
