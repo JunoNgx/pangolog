@@ -203,7 +203,7 @@ export default function LogClient() {
     );
 
     const syncButtonRow = (
-        <div className="flex items-center justify-end gap-2">
+        <div className="flex items-center justify-center gap-2">
             <SyncButton />
             <OfflineIndicator variant="icon" isSuppressedWhenDisconnected />
         </div>
