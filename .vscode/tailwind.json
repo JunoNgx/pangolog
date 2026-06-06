@@ -29,6 +29,16 @@
                     "url": "https://tailwindcss.com/docs/functions-and-directives#import"
                 }
             ]
+        },
+        {
+            "name": "@utility",
+            "description": "Define custom utility classes in Tailwind CSS v4.",
+            "references": [
+                {
+                    "name": "Tailwind Docs",
+                    "url": "https://tailwindcss.com/docs/functions-and-directives#utility"
+                }
+            ]
         }
     ]
 }
