@@ -37,7 +37,7 @@ export function ToggleSwitch({
             >
                 {label}
             </span>
-            <div className="flex flex-1 items-center gap-1 rounded-xl border border-foreground p-1">
+            <div className="border-foreground flex flex-1 items-center gap-1 rounded-xl border p-1">
                 <label className="flex-1 cursor-pointer rounded-sm">
                     <input
                         type="radio"
