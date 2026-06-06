@@ -7,6 +7,7 @@ interface AmountInputProps {
     onChange: (value: string) => void;
     isIncome: boolean;
     isRequired?: boolean;
+    shouldAutoFocus?: boolean;
     ref?: React.Ref<HTMLInputElement>;
 }
 
@@ -15,6 +16,7 @@ export function AmountInput({
     onChange,
     isIncome,
     isRequired = true,
+    shouldAutoFocus,
     ref,
 }: AmountInputProps) {
     function handleAmountChange(inputValue: string) {
@@ -32,6 +34,7 @@ export function AmountInput({
                 value={value}
                 onChange={(e) => handleAmountChange(e.target.value)}
                 required={isRequired}
+                autoFocus={shouldAutoFocus}
                 inputMode="decimal"
                 placeholder="0.00"
                 onFocus={(e) => e.target.select()}

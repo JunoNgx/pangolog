@@ -3,6 +3,11 @@ import { DateTime } from "luxon";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
 import type { TimeFormat } from "@/lib/types";
 
+export function isAndroid(): boolean {
+    if (typeof window === "undefined") return false;
+    return /android/i.test(navigator.userAgent);
+}
+
 export function getLocaleDateFormat(): string {
     if (typeof window === "undefined") return "";
     return new Intl.DateTimeFormat(navigator.language, {

@@ -14,10 +14,11 @@ import { AmountInput } from "@/components/AmountInput";
 import { CategoryDialog } from "@/components/CategoryDialog";
 import { CategoryPicker } from "@/components/CategoryPicker";
 import { DialogFooter } from "@/components/DialogFooter";
+import { FocusSink } from "@/components/FocusSink";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
 import type { Transaction } from "@/lib/db/types";
 import { useCategories } from "@/lib/hooks/useCategories";
-import { useDelayedAutoFocus } from "@/lib/hooks/useDelayedAutoFocus";
+import { useDelayedAutoFocusOnAndroid } from "@/lib/hooks/useDelayedAutoFocusOnAndroid";
 import {
     useCreateTransaction,
     useDeleteTransaction,
@@ -65,7 +66,10 @@ export function TransactionDialog({
     const isEditing = !!transaction;
     const formRef = useRef<HTMLFormElement>(null);
     const amountInputRef = useRef<HTMLInputElement>(null);
-    useDelayedAutoFocus(isOpen, amountInputRef);
+    const { shouldAutoFocus } = useDelayedAutoFocusOnAndroid({
+        isModalOpen: isOpen,
+        focusableElRef: amountInputRef,
+    });
 
     useEffect(() => {
         if (transaction) {
@@ -197,7 +201,7 @@ export function TransactionDialog({
                 <Modal.Backdrop>
                     <Modal.Container>
                         <Modal.Dialog>
-                            <div tabIndex={-1} className="sr-only" />
+                            <FocusSink isEnabled={!shouldAutoFocus} />
                             <Modal.CloseTrigger className="cursor-pointer" />
                             <form ref={formRef} onSubmit={handleSubmit}>
                                 <Modal.Header>
@@ -237,6 +241,7 @@ export function TransactionDialog({
                                         value={amount}
                                         onChange={setAmount}
                                         isIncome={isIncome}
+                                        shouldAutoFocus={shouldAutoFocus}
                                     />
 
                                     <div className="flex flex-col gap-1">
