@@ -38,18 +38,18 @@ export default function AppLayout({
             </a>
             <div
                 id="app-wrapper"
-                className="h-app-wrapper m-auto flex max-w-3xl flex-col overflow-hidden"
+                className="h-screen md:h-app-wrapper m-auto flex max-w-3xl flex-col overflow-hidden"
             >
                 <AppNavbar />
                 <div
                     id="main-panel"
-                    className="m-b-2 bg-background-tertiary border-foreground flex flex-1 flex-col overflow-hidden rounded-b-xl border border-t-0 p-2 pt-0"
+                    className="m-b-2 bg-background-tertiary border-foreground flex flex-1 flex-col overflow-hidden md:rounded-b-xl border-0 md:border md:border-t-0 pb-8 md:pb-2 p-2 pt-0"
                 >
                     <RouteHeaderProvider>
                         <RouteHeader />
                         <main
                             id="#content-card"
-                            className="bg-background border-foreground max-h-full flex-1 overflow-y-scroll rounded-b-md border"
+                            className="bg-background border-foreground max-h-full flex-1 overflow-y-scroll rounded-b-md border pt-4 px-4"
                         >
                             {children}
                         </main>
