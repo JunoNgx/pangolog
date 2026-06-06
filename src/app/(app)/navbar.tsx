@@ -64,7 +64,7 @@ export function AppNavbar() {
     return (
         <>
             <header className="bg-background z-40 hidden border-b backdrop-blur-md md:flex">
-                <div className="mx-auto flex h-14 w-full items-center gap-2 px-4">
+                <div className="mx-auto flex h-14 w-full items-center gap-2">
                     <nav className="flex items-center gap-1">
                         {navItems.map((item) => (
                             <NavLink
