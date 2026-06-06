@@ -47,23 +47,18 @@ export function SyncButton() {
     return (
         <Tooltip delay={0}>
             <Button
-                size="sm"
-                variant="secondary"
+                size="md"
+                variant="outline"
                 isDisabled={syncStatus === "syncing"}
                 onPress={handleSync}
                 aria-label="Sync with Google Drive"
-                className="text-muted flex h-7 min-w-0 items-center gap-1.5 px-2"
             >
                 <RefreshCw
                     size={12}
                     className={`shrink-0 ${syncStatus === "idle" ? "text-success" : ""} ${syncStatus === "syncing" ? "animate-spin text-blue-500" : ""} ${syncStatus === "error" ? "text-danger" : ""}`}
                     aria-hidden="true"
                 />
-                <span
-                    aria-live="polite"
-                    aria-atomic="true"
-                    className="text-xs font-normal"
-                >
+                <span aria-live="polite" aria-atomic="true">
                     {statusLabel}
                 </span>
             </Button>
