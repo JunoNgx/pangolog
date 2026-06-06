@@ -23,7 +23,9 @@ export function FloatingBackButton() {
                     <ArrowLeft />
                     <span className="hidden md:inline">Go back</span>
                 </Button>
-                <Tooltip.Content placement="left">Esc</Tooltip.Content>
+                <Tooltip.Content placement="left" offset={7}>
+                    Esc
+                </Tooltip.Content>
             </Tooltip>
         </FloatingButtonContainer>
     );

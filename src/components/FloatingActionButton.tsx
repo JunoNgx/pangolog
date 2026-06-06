@@ -24,7 +24,7 @@ export function FloatingActionButton({
                     <Plus />
                     <span className="hidden md:inline">{label}</span>
                 </Button>
-                <Tooltip.Content placement="left">
+                <Tooltip.Content placement="left" offset={7}>
                     <span className="text-center">Ctrl/Cmd + Enter</span>
                 </Tooltip.Content>
             </Tooltip>
