@@ -7,7 +7,7 @@ import { CommandPalette } from "./_components/CommandPalette";
 import { RecurringRulesManager } from "./_components/RecurringRulesManager";
 import { ShortcutsDialog } from "./_components/ShortcutsDialog";
 import { SyncManager } from "./_components/SyncManager";
-import { AppNavbar } from "./navbar";
+import { AppHeader } from "./AppHeader";
 
 export default function AppLayout({
     children,
@@ -38,18 +38,18 @@ export default function AppLayout({
             </a>
             <div
                 id="app-wrapper"
-                className="h-screen md:h-app-wrapper m-auto flex max-w-3xl flex-col overflow-hidden"
+                className="md:h-app-wrapper m-auto flex h-screen max-w-3xl flex-col overflow-hidden"
             >
-                <AppNavbar />
+                <AppHeader />
                 <div
                     id="main-panel"
-                    className="m-b-2 bg-background-tertiary border-foreground flex flex-1 flex-col overflow-hidden md:rounded-b-xl border-0 md:border md:border-t-0 pb-8 md:pb-2 p-2 pt-0"
+                    className="m-b-2 bg-background-tertiary border-foreground flex flex-1 flex-col overflow-hidden border-0 p-2 pt-0 pb-8 md:rounded-b-xl md:border md:border-t-0 md:pb-2"
                 >
                     <RouteHeaderProvider>
                         <RouteHeader />
                         <main
                             id="#content-card"
-                            className="bg-background border-foreground max-h-full flex-1 overflow-y-scroll rounded-b-md border pt-4 px-4"
+                            className="bg-background border-foreground max-h-full flex-1 overflow-y-scroll rounded-b-md border px-4 pt-4"
                         >
                             {children}
                         </main>
