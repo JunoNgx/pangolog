@@ -34,7 +34,7 @@ export default function AppLayout({
             <a href="#main-content" className={A11Y_FOCUS_STYLES}>
                 Skip to main content
             </a>
-            <div className="flex h-screen flex-col">
+            <div className="flex h-screen flex-col max-w-3xl m-auto">
                 <AppNavbar />
                 <main
                     id="main-content"
