@@ -25,6 +25,9 @@
     --accent: #f4db5c;
     --accent-foreground: #000000;
     accent-color: var(--accent);
+    --color-body-bg-grid-line: #dedede;
+
+    --body-bg-grid-size: 64px;
 }
 
 ::selection {
@@ -35,7 +38,22 @@
 .dark {
     --accent: #f4db5c;
     --accent-foreground: #000000;
+    --color-body-bg-grid-line: #181818;
     --background-tertiary: #21201f;
+}
+
+body {
+    background-image:
+        linear-gradient(
+            var(--color-body-bg-grid-line) 1px,
+            transparent 0
+        ),
+        linear-gradient(
+            90deg,
+            var(--color-body-bg-grid-line) 1px,
+            transparent 0
+        );
+    background-size: var(--body-bg-grid-size) var(--body-bg-grid-size);
 }
 
 /* Scrollbar */
