@@ -1,10 +1,10 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 
 export function useMediaQuery(query: string): boolean {
     const [matches, setMatches] = useState(false);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         const mql = window.matchMedia(query);
         setMatches(mql.matches);
         const onChange = (e: MediaQueryListEvent) => setMatches(e.matches);
