@@ -11,7 +11,7 @@ import { createTransaction } from "../db/transactions";
 import type { RecurringRule } from "../db/types";
 import { toIsoDateString, toIsoString, utcNowString } from "../utils";
 
-function computeNextDate(from: DateTime, rule: RecurringRule): DateTime {
+export function computeNextDate(from: DateTime, rule: RecurringRule): DateTime {
     switch (rule.frequency) {
         case "daily":
             return from.plus({ days: 1 });

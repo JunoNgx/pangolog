@@ -65,7 +65,7 @@ function deduplicateRecurringTransactions(
     return softDeletedDuplicates;
 }
 
-function mergeRecords<T extends { id: string; updatedAt: string }>(
+export function mergeRecords<T extends { id: string; updatedAt: string }>(
     local: T[],
     remote: T[],
 ): T[] {
@@ -78,9 +78,6 @@ function mergeRecords<T extends { id: string; updatedAt: string }>(
             continue;
         }
         if (r.updatedAt > localRecord.updatedAt) {
-            console.debug(
-                `[sync] conflict on ${r.id}: remote (${r.updatedAt}) > local (${localRecord.updatedAt}), remote wins`,
-            );
             map.set(r.id, r);
         }
     }
