@@ -30,11 +30,6 @@
     --body-bg-grid-size: 64px;
 }
 
-::selection {
-    background-color: var(--accent);
-    color: var(--accent-foreground);
-}
-
 .dark {
     --accent: #f4db5c;
     --accent-foreground: #000000;
@@ -54,6 +49,11 @@ body {
             transparent 0
         );
     background-size: var(--body-bg-grid-size) var(--body-bg-grid-size);
+}
+
+::selection {
+    background-color: var(--accent);
+    color: var(--accent-foreground);
 }
 
 /* Scrollbar */
