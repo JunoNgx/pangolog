@@ -3,7 +3,7 @@
 import { Toast } from "@heroui/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "next-themes";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { ServiceWorkerRegistration } from "@/components/ServiceWorkerRegistration";
 import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 import { useLocalAppDataStore } from "@/lib/store/useLocalAppDataStore";
@@ -67,7 +67,7 @@ function ToastProvider() {
 }
 
 function StoreHydration() {
-    useEffect(() => {
+    useLayoutEffect(() => {
         useLocalSyncDataStore.persist.rehydrate();
         useLocalAppDataStore.persist.rehydrate();
         useLocalUserSettingsStore.persist.rehydrate();
