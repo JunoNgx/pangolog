@@ -177,6 +177,17 @@ body {
         @apply p-2;
     }
 
+    /* Bug: Clicking a Checkbox scrolls the entire page up.
+     * Why: HeroUI's checkbox label has no `position: relative`, so its hidden input
+     *      (position: absolute) is positioned against the viewport. When the browser
+     *      auto-focuses the input, the scroll coordinates are miscalculated.
+     * Fix: `position: relative` on the label constrains the hidden input to the
+     *      label's bounds so the scroll is correct.
+     * Todo: Remove workaround once the library fixes the issue. */
+    .checkbox {
+        @apply relative;
+    }
+
     .checkbox__control {
         @apply border-border-secondary border;
     }
