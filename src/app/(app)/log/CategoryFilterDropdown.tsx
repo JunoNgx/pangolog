@@ -1,5 +1,6 @@
 import { Button, Checkbox, Label, Popover } from "@heroui/react";
 import { ChevronDown } from "lucide-react";
+import { BigBuckIndicator } from "@/components/BigBuckIndicator";
 import { UNCATEGORISED_ID } from "@/lib/constants";
 import type { Category } from "@/lib/db/types";
 
@@ -39,11 +40,7 @@ function CategoryFilterItem({
                     <Label>
                         {icon && <span className="mr-1 text-base">{icon}</span>}{" "}
                         {name}
-                        {isBuck && (
-                            <span className="ml-2 shrink-0 text-xs font-medium text-amber-500">
-                                BUCK
-                            </span>
-                        )}
+                        {isBuck && <BigBuckIndicator />}
                         {isIncomeOnly && (
                             <span className="text-success ml-2 shrink-0 text-xs font-medium">
                                 INC

@@ -2,7 +2,7 @@
 
 import { DateTime } from "luxon";
 import { useState } from "react";
-import { ChipLabel } from "@/components/ChipLabel";
+import { BigBuckIndicator } from "@/components/BigBuckIndicator";
 import { MainListContainer } from "@/components/MainListContainer";
 import type { Category, Transaction } from "@/lib/db/types";
 import { formatAmount, toIsoDateString } from "@/lib/utils";
@@ -172,9 +172,7 @@ function TransactionItem({
                     )}
                 </div>
 
-                {isBigBuck && (
-                    <ChipLabel className="text-amber-500">BIG BUCK</ChipLabel>
-                )}
+                {isBigBuck && <BigBuckIndicator />}
 
                 <span
                     className={`self-center font-mono font-medium ${transaction.isIncome ? "text-success" : ""} `}

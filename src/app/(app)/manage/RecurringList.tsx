@@ -2,6 +2,7 @@
 
 import { DateTime } from "luxon";
 import { useState } from "react";
+import { BigBuckIndicator } from "@/components/BigBuckIndicator";
 import { ChipLabel } from "@/components/ChipLabel";
 import { MainListContainer } from "@/components/MainListContainer";
 import { DAY_NAMES_ABB, MONTH_NAMES } from "@/lib/constants";
@@ -124,11 +125,7 @@ function RecurringItem({ rule, category, onEdit }: RecurringItemProps) {
                     )}
                     {hasIndicator && (
                         <div className="mt-1 flex gap-4">
-                            {rule.isBigBuck && (
-                                <ChipLabel className="mx-0 text-amber-500">
-                                    BUCK
-                                </ChipLabel>
-                            )}
+                            {rule.isBigBuck && <BigBuckIndicator />}
                             {!rule.isActive && (
                                 <ChipLabel className="text-muted mx-0">
                                     PAUSED
