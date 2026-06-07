@@ -16,6 +16,7 @@ interface LocalSyncDataStore {
     setSyncStatus: (status: SyncStatus) => void;
     syncError: string | null;
     setSyncError: (error: string | null) => void;
+    hasHydrated: boolean;
 }
 
 export const useLocalSyncDataStore = create<LocalSyncDataStore>()(
@@ -31,6 +32,7 @@ export const useLocalSyncDataStore = create<LocalSyncDataStore>()(
             setSyncStatus: (status) => set({ syncStatus: status }),
             syncError: null,
             setSyncError: (error) => set({ syncError: error }),
+            hasHydrated: false,
         }),
         {
             name: PERSIST_LOCAL_SYNC,
@@ -39,6 +41,9 @@ export const useLocalSyncDataStore = create<LocalSyncDataStore>()(
                 driveFolderId: state.driveFolderId,
                 lastSyncTime: state.lastSyncTime,
             }),
+            onRehydrateStorage: () => () => {
+                useLocalSyncDataStore.setState({ hasHydrated: true });
+            },
         },
     ),
 );

@@ -35,7 +35,8 @@ export function DriveSyncSection() {
     const { authToken, isConnected, isConnecting, error, connect, disconnect } =
         useSyncProvider();
     const { sync } = useSync();
-    const { syncStatus, lastSyncTime, syncError } = useLocalSyncDataStore();
+    const { syncStatus, lastSyncTime, syncError, hasHydrated } =
+        useLocalSyncDataStore();
     const { timeFormat, isAutobackupEnabled, setIsAutobackupEnabled } =
         useLocalUserSettingsStore();
 
@@ -120,19 +121,23 @@ export function DriveSyncSection() {
                 />
                 {syncStatusContent}
                 {errorRow}
-                <Checkbox
-                    isSelected={isAutobackupEnabled}
-                    onChange={setIsAutobackupEnabled}
-                    isDisabled={!isConnected}
-                >
-                    <Checkbox.Control>
-                        <Checkbox.Indicator />
-                    </Checkbox.Control>
-                    <Checkbox.Content>
-                        <Label>Monthly autobackup</Label>
-                    </Checkbox.Content>
-                </Checkbox>
-                {autobackupDisabledInfo}
+                {hasHydrated && (
+                    <>
+                        <Checkbox
+                            isSelected={isAutobackupEnabled}
+                            onChange={setIsAutobackupEnabled}
+                            isDisabled={!isConnected}
+                        >
+                            <Checkbox.Control>
+                                <Checkbox.Indicator />
+                            </Checkbox.Control>
+                            <Checkbox.Content>
+                                <Label>Monthly autobackup</Label>
+                            </Checkbox.Content>
+                        </Checkbox>
+                        {autobackupDisabledInfo}
+                    </>
+                )}
                 <p className="text-muted text-xs">
                     A backup is written to your Pangolog Drive folder each month
                     (backup-YYYY-MM.json) in the same format as the JSON export
