@@ -29,7 +29,7 @@ import { useLocalUserSettingsStore } from "@/lib/store/useLocalUserSettingsStore
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
 import { useSyncProvider } from "@/lib/sync/useSyncProvider";
 import type { TimeFormat } from "@/lib/types";
-import { showDeleteToast, toIsoDateString } from "@/lib/utils";
+import { toIsoDateString } from "@/lib/utils";
 
 export default function SettingsClient() {
     const {

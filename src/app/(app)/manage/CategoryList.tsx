@@ -5,6 +5,7 @@ import { DragDropProvider } from "@dnd-kit/react";
 import { useSortable } from "@dnd-kit/react/sortable";
 import { GripVertical } from "lucide-react";
 import { useState } from "react";
+import { BigBuckIndicator } from "@/components/BigBuckIndicator";
 import { CategoryDialog } from "@/components/CategoryDialog";
 import { ChipLabel } from "@/components/ChipLabel";
 import { MainListContainer } from "@/components/MainListContainer";
@@ -51,9 +52,7 @@ function SortableCategoryItem({
                 {cat.isIncomeOnly && (
                     <ChipLabel className="text-green-600">INCOME</ChipLabel>
                 )}
-                {cat.isBuckOnly && (
-                    <ChipLabel className="text-amber-500">BIG BUCK</ChipLabel>
-                )}
+                {cat.isBuckOnly && <BigBuckIndicator />}
             </button>
             {isDragEnabled && (
                 <button
@@ -140,11 +139,7 @@ export function CategoryList() {
                                 INCOME
                             </ChipLabel>
                         )}
-                        {cat.isBuckOnly && (
-                            <ChipLabel className="text-amber-500">
-                                BIG BUCK
-                            </ChipLabel>
-                        )}
+                        {cat.isBuckOnly && <BigBuckIndicator />}
                     </button>
                 </li>
             ))}
