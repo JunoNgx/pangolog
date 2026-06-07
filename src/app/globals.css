@@ -39,17 +39,6 @@
     --background-tertiary: #21201f;
 }
 
-body {
-    background-image:
-        linear-gradient(var(--color-body-bg-grid-line) 1px, transparent 0),
-        linear-gradient(
-            90deg,
-            var(--color-body-bg-grid-line) 1px,
-            transparent 0
-        );
-    background-size: var(--body-bg-grid-size) var(--body-bg-grid-size);
-}
-
 ::selection {
     background-color: var(--accent);
     color: var(--accent-foreground);
@@ -77,6 +66,17 @@ body {
         /* Hardcoded against convention, but works surprisingly well in both light and dark theme */
         background: #555;
     }
+}
+
+#app-bg-grid {
+    background-image:
+        linear-gradient(var(--color-body-bg-grid-line) 1px, transparent 0),
+        linear-gradient(
+            90deg,
+            var(--color-body-bg-grid-line) 1px,
+            transparent 0
+        );
+    background-size: var(--body-bg-grid-size) var(--body-bg-grid-size);
 }
 
 @layer base {
