@@ -2,6 +2,7 @@ import { DateTime } from "luxon";
 import { RO, RW, STORE_TRANSACTIONS } from "@/lib/constants";
 import { utcNowString } from "../utils";
 import { getDb } from "./connection";
+import { openStore, performIdbRequest, performIdbUpdate } from "./idbHelpers";
 import type { Transaction, TransactionInput, TransactionUpdate } from "./types";
 import { generateId } from "./uuid";
 
@@ -21,13 +22,12 @@ export async function createTransaction(
         ...input,
     };
 
-    return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE_TRANSACTIONS, RW);
-        const store = tx.objectStore(STORE_TRANSACTIONS);
-        const request = store.add(transaction);
-        request.onsuccess = () => resolve(transaction);
-        request.onerror = () => reject(request.error);
-    });
+    await performIdbRequest(
+        openStore({ db, storeName: STORE_TRANSACTIONS, mode: RW }).add(
+            transaction,
+        ),
+    );
+    return transaction;
 }
 
 export async function updateTransaction(
@@ -36,23 +36,15 @@ export async function updateTransaction(
 ): Promise<Transaction> {
     const db = await getDb();
 
-    return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE_TRANSACTIONS, RW);
-        const store = tx.objectStore(STORE_TRANSACTIONS);
-        const getReq = store.get(id);
-
-        getReq.onerror = () => reject(getReq.error);
-        getReq.onsuccess = () => {
-            const storedTransaction: Transaction | undefined = getReq.result;
-            if (!storedTransaction) {
-                reject(new Error(`Transaction ${id} not found`));
-                return;
-            }
-
+    return performIdbUpdate({
+        db,
+        storeName: STORE_TRANSACTIONS,
+        id,
+        updater: (storedTransaction) => {
             const transactedAt =
                 input.transactedAt ?? storedTransaction.transactedAt;
             const dt = DateTime.fromISO(transactedAt);
-            const updatedTransaction: Transaction = {
+            return {
                 ...storedTransaction,
                 ...input,
                 id: storedTransaction.id,
@@ -62,68 +54,37 @@ export async function updateTransaction(
                 month: dt.month,
                 updatedAt: utcNowString(),
             };
-
-            const putReq = store.put(updatedTransaction);
-            putReq.onsuccess = () => resolve(updatedTransaction);
-            putReq.onerror = () => reject(putReq.error);
-        };
+        },
     });
 }
 
 export async function deleteTransaction(id: string): Promise<void> {
     const db = await getDb();
 
-    return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE_TRANSACTIONS, RW);
-        const store = tx.objectStore(STORE_TRANSACTIONS);
-        const getReq = store.get(id);
-
-        getReq.onerror = () => reject(getReq.error);
-        getReq.onsuccess = () => {
-            const storedTransaction: Transaction | undefined = getReq.result;
-            if (!storedTransaction) {
-                reject(new Error(`Transaction ${id} not found`));
-                return;
-            }
-
-            const now = utcNowString();
-            const updatedTransaction: Transaction = {
-                ...storedTransaction,
-                deletedAt: now,
-                updatedAt: now,
-            };
-
-            const putReq = store.put(updatedTransaction);
-            putReq.onsuccess = () => resolve();
-            putReq.onerror = () => reject(putReq.error);
-        };
+    await performIdbUpdate({
+        db,
+        storeName: STORE_TRANSACTIONS,
+        id,
+        updater: (storedTransaction) => ({
+            ...storedTransaction,
+            deletedAt: utcNowString(),
+            updatedAt: utcNowString(),
+        }),
     });
 }
 
 export async function restoreTransaction(id: string): Promise<void> {
     const db = await getDb();
 
-    return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE_TRANSACTIONS, RW);
-        const store = tx.objectStore(STORE_TRANSACTIONS);
-        const getReq = store.get(id);
-
-        getReq.onerror = () => reject(getReq.error);
-        getReq.onsuccess = () => {
-            const storedTransaction: Transaction | undefined = getReq.result;
-            if (!storedTransaction) {
-                reject(new Error(`Transaction ${id} not found`));
-                return;
-            }
-
-            const putReq = store.put({
-                ...storedTransaction,
-                deletedAt: null,
-                updatedAt: utcNowString(),
-            });
-            putReq.onsuccess = () => resolve();
-            putReq.onerror = () => reject(putReq.error);
-        };
+    await performIdbUpdate({
+        db,
+        storeName: STORE_TRANSACTIONS,
+        id,
+        updater: (storedTransaction) => ({
+            ...storedTransaction,
+            deletedAt: null,
+            updatedAt: utcNowString(),
+        }),
     });
 }
 
@@ -133,20 +94,15 @@ export async function getTransactionsByMonth(
 ): Promise<Transaction[]> {
     const db = await getDb();
 
-    return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE_TRANSACTIONS, RO);
-        const store = tx.objectStore(STORE_TRANSACTIONS);
-        const index = store.index("yearMonth");
-        const request = index.getAll(IDBKeyRange.only([year, month]));
+    const results = await performIdbRequest(
+        openStore({ db, storeName: STORE_TRANSACTIONS, mode: RO })
+            .index("yearMonth")
+            .getAll(IDBKeyRange.only([year, month])),
+    );
 
-        request.onerror = () => reject(request.error);
-        request.onsuccess = () => {
-            const results: Transaction[] = request.result.filter(
-                (t: Transaction) => t.deletedAt === null,
-            );
-            resolve(results);
-        };
-    });
+    return results.filter(
+        (transaction: Transaction) => transaction.deletedAt === null,
+    );
 }
 
 export async function getTransactionsByYear(
@@ -154,19 +110,13 @@ export async function getTransactionsByYear(
 ): Promise<Transaction[]> {
     const db = await getDb();
 
-    return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE_TRANSACTIONS, RO);
-        const store = tx.objectStore(STORE_TRANSACTIONS);
-        const index = store.index("yearMonth");
-        const range = IDBKeyRange.bound([year, 1], [year, 12]);
-        const request = index.getAll(range);
+    const results = await performIdbRequest(
+        openStore({ db, storeName: STORE_TRANSACTIONS, mode: RO })
+            .index("yearMonth")
+            .getAll(IDBKeyRange.bound([year, 1], [year, 12])),
+    );
 
-        request.onerror = () => reject(request.error);
-        request.onsuccess = () => {
-            const results: Transaction[] = request.result.filter(
-                (t: Transaction) => t.deletedAt === null,
-            );
-            resolve(results);
-        };
-    });
+    return results.filter(
+        (transaction: Transaction) => transaction.deletedAt === null,
+    );
 }
