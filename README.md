@@ -14,23 +14,6 @@ A minimalist, offline-first, and privacy-first personal expense tracker Progress
 - Overview and summary by month and year.
 - Recurring transactions.
 
-## Methodology
-
-The project is an experiment with spec-driven AI-assisted development.
-
-In the `.docs` directory, `spec.md` and `plan.md` were written before development started. `CLAUDE.md` was continuously maintained throughout the course of development, serving as instructions for the AI agent.
-
-The process follows the outlined phases, using the AI as the implementation agent. Generated code is moderately scrutinised, and technical decisions are documented as the project evolves.
-
-A significant degree of human oversight is present in the process, involving:
-
-- Overhauling and regorganizing UI/UX design choices.
-- Review and scrutinising generated code.
-- Refactor of deeply nested code, and un-intuitively organised components.
-- Fixing misleading variable names.
-
-The project is developed with the standard that the codebase is maintainable without the intervention of AI Agents.
-
 ## Tech stack
 
 - NextJS as based frontend framework
