@@ -207,6 +207,10 @@
         @apply bg-accent text-foreground rounded-lg;
     }
 
+    .toast-region--bottom {
+        @apply bottom-10;
+    }
+
     .toast {
         @apply border-foreground rounded-lg border;
     }
