@@ -182,11 +182,11 @@
     }
 
     .toast {
-        @apply border border-foreground rounded-lg;
+        @apply border-foreground rounded-lg border;
     }
 
     .toast__close-button {
-        @apply border border-foreground;
+        @apply border-foreground border;
     }
 }
 

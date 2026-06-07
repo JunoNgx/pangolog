@@ -602,7 +602,10 @@ export default function SettingsClient() {
                                 onPress={() =>
                                     toast("Debug toast notification", {
                                         timeout: 0,
-                                        actionProps: { children: "Dummy Btn", onPress: () => {}}
+                                        actionProps: {
+                                            children: "Dummy Btn",
+                                            onPress: () => {},
+                                        },
                                     })
                                 }
                             >
