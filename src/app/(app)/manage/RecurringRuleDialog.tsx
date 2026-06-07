@@ -49,7 +49,7 @@ function getRepeatLabel(frequency: Frequency, dateStr: string): string {
         case "daily":
             return "Repeats every day";
         case "weekly":
-            return `Repeats every ${DAY_NAMES_FULL[dt.weekday % 7]}`;
+            return `Repeats every ${DAY_NAMES_FULL[dt.weekday - 1]}`;
         case "monthly":
             return `Repeats on the ${dt.day} of each month`;
         case "yearly":
@@ -155,7 +155,7 @@ export function RecurringRuleDialog({
             isBigBuck,
             categoryId,
             frequency,
-            dayOfWeek: dt.weekday % 7,
+            dayOfWeek: dt.weekday - 1,
             dayOfMonth: dt.day,
             monthOfYear: dt.month,
             nextGenerationAt: fromDateInputValue(startDate),
