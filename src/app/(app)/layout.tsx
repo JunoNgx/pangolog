@@ -37,6 +37,7 @@ export default function AppLayout({
             <a href="#content-card" className={A11Y_FOCUS_STYLES}>
                 Skip to main content
             </a>
+            <div id="app-bg-grid" className="fixed inset-0 -z-10" />
             <div
                 id="app-wrapper"
                 className="md:h-app-wrapper h-app-wrapper-mobile m-auto flex max-w-3xl flex-col"
