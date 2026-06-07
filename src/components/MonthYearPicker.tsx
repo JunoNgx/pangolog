@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { MONTH_NAMES, SELECT_CLASSES, YEAR_OPTIONS } from "@/lib/constants";
 
 interface MonthYearPickerProps {
@@ -16,9 +16,9 @@ export function MonthYearPicker({
     onYearChange,
     onMonthChange,
 }: MonthYearPickerProps) {
-    const [doesSupportMonthInput, setSupportsMonthInput] = useState(true);
+    const [doesSupportMonthInput, setSupportsMonthInput] = useState(false);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         const input = document.createElement("input");
         input.type = "month";
         setSupportsMonthInput(input.type === "month");
