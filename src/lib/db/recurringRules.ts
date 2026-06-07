@@ -2,6 +2,7 @@ import { DateTime } from "luxon";
 import { RO, RW, STORE_RECURRING_RULES } from "@/lib/constants";
 import { todayDateString, toIsoDateString, utcNowString } from "../utils";
 import { getDb } from "./connection";
+import { openStore, performIdbRequest, performIdbUpdate } from "./idbHelpers";
 import type {
     RecurringRule,
     RecurringRuleInput,
@@ -24,13 +25,10 @@ export async function createRecurringRule(
         ...input,
     };
 
-    return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE_RECURRING_RULES, RW);
-        const store = tx.objectStore(STORE_RECURRING_RULES);
-        const request = store.add(rule);
-        request.onsuccess = () => resolve(rule);
-        request.onerror = () => reject(request.error);
-    });
+    await performIdbRequest(
+        openStore({ db, storeName: STORE_RECURRING_RULES, mode: RW }).add(rule),
+    );
+    return rule;
 }
 
 export async function updateRecurringRule(
@@ -39,87 +37,48 @@ export async function updateRecurringRule(
 ): Promise<RecurringRule> {
     const db = await getDb();
 
-    return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE_RECURRING_RULES, RW);
-        const store = tx.objectStore(STORE_RECURRING_RULES);
-        const getReq = store.get(id);
-
-        getReq.onerror = () => reject(getReq.error);
-        getReq.onsuccess = () => {
-            const storedRule: RecurringRule | undefined = getReq.result;
-            if (!storedRule) {
-                reject(new Error(`RecurringRule ${id} not found`));
-                return;
-            }
-
-            const updatedRule: RecurringRule = {
-                ...storedRule,
-                ...input,
-                id: storedRule.id,
-                createdAt: storedRule.createdAt,
-                deletedAt: storedRule.deletedAt,
-                updatedAt: utcNowString(),
-            };
-
-            const putReq = store.put(updatedRule);
-            putReq.onsuccess = () => resolve(updatedRule);
-            putReq.onerror = () => reject(putReq.error);
-        };
+    return performIdbUpdate({
+        db,
+        storeName: STORE_RECURRING_RULES,
+        id,
+        updater: (storedRule) => ({
+            ...storedRule,
+            ...input,
+            id: storedRule.id,
+            createdAt: storedRule.createdAt,
+            deletedAt: storedRule.deletedAt,
+            updatedAt: utcNowString(),
+        }),
     });
 }
 
 export async function deleteRecurringRule(id: string): Promise<void> {
     const db = await getDb();
 
-    return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE_RECURRING_RULES, RW);
-        const store = tx.objectStore(STORE_RECURRING_RULES);
-        const getReq = store.get(id);
-
-        getReq.onerror = () => reject(getReq.error);
-        getReq.onsuccess = () => {
-            const storedRule: RecurringRule | undefined = getReq.result;
-            if (!storedRule) {
-                reject(new Error(`RecurringRule ${id} not found`));
-                return;
-            }
-
-            const now = utcNowString();
-            const putReq = store.put({
-                ...storedRule,
-                deletedAt: now,
-                updatedAt: now,
-            });
-            putReq.onsuccess = () => resolve();
-            putReq.onerror = () => reject(putReq.error);
-        };
+    await performIdbUpdate({
+        db,
+        storeName: STORE_RECURRING_RULES,
+        id,
+        updater: (storedRule) => ({
+            ...storedRule,
+            deletedAt: utcNowString(),
+            updatedAt: utcNowString(),
+        }),
     });
 }
 
 export async function restoreRecurringRule(id: string): Promise<void> {
     const db = await getDb();
 
-    return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE_RECURRING_RULES, RW);
-        const store = tx.objectStore(STORE_RECURRING_RULES);
-        const getReq = store.get(id);
-
-        getReq.onerror = () => reject(getReq.error);
-        getReq.onsuccess = () => {
-            const storedRule: RecurringRule | undefined = getReq.result;
-            if (!storedRule) {
-                reject(new Error(`RecurringRule ${id} not found`));
-                return;
-            }
-
-            const putReq = store.put({
-                ...storedRule,
-                deletedAt: null,
-                updatedAt: utcNowString(),
-            });
-            putReq.onsuccess = () => resolve();
-            putReq.onerror = () => reject(putReq.error);
-        };
+    await performIdbUpdate({
+        db,
+        storeName: STORE_RECURRING_RULES,
+        id,
+        updater: (storedRule) => ({
+            ...storedRule,
+            deletedAt: null,
+            updatedAt: utcNowString(),
+        }),
     });
 }
 
@@ -130,70 +89,43 @@ export async function advanceRecurringRule(
 ): Promise<void> {
     const db = await getDb();
 
-    return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE_RECURRING_RULES, RW);
-        const store = tx.objectStore(STORE_RECURRING_RULES);
-        const getReq = store.get(id);
-
-        getReq.onerror = () => reject(getReq.error);
-        getReq.onsuccess = () => {
-            const storedRule: RecurringRule | undefined = getReq.result;
-            if (!storedRule) {
-                reject(new Error(`RecurringRule ${id} not found`));
-                return;
-            }
-
-            const putReq = store.put({
-                ...storedRule,
-                nextGenerationAt,
-                lastGeneratedAt,
-                // updatedAt is intentionally NOT changed - this is an operational
-                // update, not a user action, so it must not win sync conflicts
-                // over explicit user changes (e.g. deactivating a rule).
-            });
-            putReq.onsuccess = () => resolve();
-            putReq.onerror = () => reject(putReq.error);
-        };
+    await performIdbUpdate({
+        db,
+        storeName: STORE_RECURRING_RULES,
+        id,
+        updater: (storedRule) => ({
+            ...storedRule,
+            nextGenerationAt,
+            lastGeneratedAt,
+            // updatedAt is intentionally NOT changed - this is an operational
+            // update, not a user action, so it must not win sync conflicts
+            // over explicit user changes (e.g. deactivating a rule).
+        }),
     });
 }
 
 export async function getAllRecurringRules(): Promise<RecurringRule[]> {
     const db = await getDb();
 
-    return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE_RECURRING_RULES, RO);
-        const store = tx.objectStore(STORE_RECURRING_RULES);
-        const request = store.getAll();
+    const results = await performIdbRequest(
+        openStore({ db, storeName: STORE_RECURRING_RULES, mode: RO }).getAll(),
+    );
 
-        request.onerror = () => reject(request.error);
-        request.onsuccess = () => {
-            const results: RecurringRule[] = request.result.filter(
-                (r: RecurringRule) => r.deletedAt === null,
-            );
-            resolve(results);
-        };
-    });
+    return results.filter((rule: RecurringRule) => rule.deletedAt === null);
 }
 
 export async function getDueRecurringRules(): Promise<RecurringRule[]> {
     const db = await getDb();
     const today = todayDateString();
 
-    return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE_RECURRING_RULES, RO);
-        const store = tx.objectStore(STORE_RECURRING_RULES);
-        const request = store.getAll();
+    const results = await performIdbRequest(
+        openStore({ db, storeName: STORE_RECURRING_RULES, mode: RO }).getAll(),
+    );
 
-        request.onerror = () => reject(request.error);
-        request.onsuccess = () => {
-            const results: RecurringRule[] = request.result.filter(
-                (r: RecurringRule) =>
-                    r.deletedAt === null &&
-                    r.isActive &&
-                    toIsoDateString(DateTime.fromISO(r.nextGenerationAt)) <=
-                        today,
-            );
-            resolve(results);
-        };
-    });
+    return results.filter(
+        (rule: RecurringRule) =>
+            rule.deletedAt === null &&
+            rule.isActive &&
+            toIsoDateString(DateTime.fromISO(rule.nextGenerationAt)) <= today,
+    );
 }
