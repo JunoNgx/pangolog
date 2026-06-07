@@ -3,7 +3,11 @@
 import { Button } from "@heroui/react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { CATEGORIES_KEY, TRANSACTIONS_KEY } from "@/lib/constants";
+import {
+    CATEGORIES_KEY,
+    RECURRING_RULES_KEY,
+    TRANSACTIONS_KEY,
+} from "@/lib/constants";
 import { seedDemoData } from "@/lib/db/demo";
 import { useLocalAppDataStore } from "@/lib/store/useLocalAppDataStore";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
@@ -27,6 +31,9 @@ export function DemoDataBanner() {
             useProfileSettingsStore.getState().setIsPrefixCurrency(false);
             await queryClient.invalidateQueries({ queryKey: TRANSACTIONS_KEY });
             await queryClient.invalidateQueries({ queryKey: CATEGORIES_KEY });
+            await queryClient.invalidateQueries({
+                queryKey: RECURRING_RULES_KEY,
+            });
             setShouldShowDemoDataBanner(false);
         } finally {
             setIsLoading(false);
