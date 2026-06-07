@@ -35,16 +35,16 @@ export const YEAR_OPTIONS = Array.from(
 
 /* DAY NAMES */
 export const DAY_NAMES_FULL = [
-    "Sunday",
     "Monday",
     "Tuesday",
     "Wednesday",
     "Thursday",
     "Friday",
     "Saturday",
+    "Sunday",
 ];
 
-export const DAY_NAMES_ABB = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+export const DAY_NAMES_ABB = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 /* FREQUENCIES */
 export const FREQUENCY_ORDER = {

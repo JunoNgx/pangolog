@@ -431,7 +431,7 @@ export async function seedDemoData(): Promise<void> {
             isIncome: false,
             isBigBuck: false,
             frequency: "weekly",
-            dayOfWeek: now.weekday % 7,
+            dayOfWeek: now.weekday - 1,
             dayOfMonth: null,
             monthOfYear: null,
             lastGeneratedAt: auditNow,

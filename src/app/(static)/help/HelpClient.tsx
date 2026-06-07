@@ -269,7 +269,7 @@ categoryId:       string | null       //   references a category id, or null
 createdAt:        string              //   UTC ISO
 deletedAt:        null                //   null for active records
 lastGeneratedAt:  string | null       //   null if rule has never fired
-dayOfWeek:        number(1-7) | null  //   Mon=1 Sun=7; weekly rules only
+dayOfWeek:        number(0-6) | null  //   Mon=0, Tue=1, ..., Sun=6; weekly rules only
 dayOfMonth:       number(1-31) | null //   monthly/yearly rules; clamped to month end
 monthOfYear:      number(1-12) | null //   yearly rules only`}</pre>
 
