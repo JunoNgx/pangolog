@@ -5,6 +5,9 @@
     --font-sans: var(--font-sans-var);
     --font-mono: var(--font-mono-var);
 
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+
     --height-app-wrapper: calc(100dvh - 1rem);
     --height-app-wrapper-mobile: 100dvh;
 }
@@ -23,26 +26,22 @@
 
 :root {
     --accent: #f4db5c;
-    --accent-foreground: #000000;
-    accent-color: var(--accent);
+    --accent-foreground: #171717;
     --color-body-bg-grid-line: #dedede;
 
     --body-bg-grid-size: 64px;
+
+    accent-color: var(--accent);
 }
 
 .dark {
-    --accent: #f4db5c;
-    --accent-foreground: #000000;
     --color-body-bg-grid-line: #181818;
     --background-tertiary: #21201f;
 }
 
 body {
     background-image:
-        linear-gradient(
-            var(--color-body-bg-grid-line) 1px,
-            transparent 0
-        ),
+        linear-gradient(var(--color-body-bg-grid-line) 1px, transparent 0),
         linear-gradient(
             90deg,
             var(--color-body-bg-grid-line) 1px,
