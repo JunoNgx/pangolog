@@ -39,7 +39,7 @@ export function CategoryPicker({
                 {categories.map((cat) => (
                     <Button
                         key={cat.id}
-                        className="pl-2"
+                        className="h-7 gap-1.5 rounded-md px-2 sm:h-9 sm:rounded-lg"
                         size="sm"
                         variant={selectedId === cat.id ? "primary" : "outline"}
                         onPress={() =>
@@ -47,7 +47,7 @@ export function CategoryPicker({
                         }
                     >
                         <span
-                            className="inline-block h-6 w-1"
+                            className="inline-block h-5 w-1 sm:h-6"
                             style={{ backgroundColor: cat.colour }}
                         />
                         <span>{cat.icon}</span>
