@@ -57,7 +57,7 @@ export default function ExpensesByMonthChart({
                 tabIndex={total === 0 ? -1 : undefined}
                 aria-label={`${MONTH_NAMES[index]}: ${formatAmount(total)}`}
             >
-                <div className="bg-foreground h-full w-full rounded-sm" />
+                <div className="bg-foreground h-full w-full rounded-lg" />
                 {index === tallestIndex && (
                     <span
                         className={`absolute -top-5 ${tallestLabelAlign} text-muted font-mono text-xs whitespace-nowrap`}
