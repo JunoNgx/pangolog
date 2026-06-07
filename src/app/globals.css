@@ -104,8 +104,7 @@
     }
 
     .button--primary {
-        @apply border-foreground border;
-        @apply dark:border-background;
+        @apply border-accent-foreground border;
     }
 
     .button--outline {
@@ -197,8 +196,7 @@
     }
 
     .tabs__tab[data-selected="true"] {
-        @apply text-foreground;
-        @apply dark:text-background;
+        @apply text-accent-foreground;
     }
 
     .tabs__tab:not([data-selected="true"]):not([data-disabled="true"]):hover {
