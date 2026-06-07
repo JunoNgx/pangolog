@@ -1,15 +1,18 @@
 import { type RefObject, useEffect, useLayoutEffect, useState } from "react";
 import { isAndroid } from "@/lib/utils";
 
-// HeroUI v3 modals (React Aria FocusScope) auto-focus the first focusable element
-// on mount before the enter animation settles, with no interface to opt out.
-// On mobile browsers with a soft keyboard, this scrolls the modal to the wrong
-// position. A focus sink div absorbs the initial focus, and this hook delays
-// focusing the intended input until after the animation finishes.
-
-// At the time of writing, only Android suffers from misbehaved scrolling;
-// Safari's behaviour is acceptable. The workaround is only applicable to
-// Android devices, upon detected.
+// Bug: Opening a modal dialog with an auto-focus input scrolls to the wrong
+//      position on Android.
+// Why: HeroUI v3 (React Aria FocusScope) focuses the first focusable element
+//      on mount before the enter animation settles. On Android, the soft keyboard
+//      appears immediately and scrolls the modal to an incorrect position.
+//      Safari's behaviour is acceptable without the workaround.
+// Fix: Android detection at mount gates the entire workaround. Only on Android
+//      does the focus sink div absorb the initial auto-focus and the hook delay
+//      focusing the intended input by 250ms. Other platforms skip both.
+// Todo: Remove workaround when:
+//       - Android browsers fix the scroll behaviour
+//       - HeroUI's implementation improves and is more aligned with React Aria
 
 interface UseDelayedAutoFocusOnAndroidOptions {
     isModalOpen: boolean;
