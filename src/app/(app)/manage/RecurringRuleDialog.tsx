@@ -282,6 +282,64 @@ export function RecurringRuleDialog({
         </div>
     );
 
+    const modalBody = (
+        <>
+            {ruleStatusPanel}
+            {typeToggleRow}
+            {expenseTypeToggleRow}
+
+            <AmountInput
+                ref={amountInputRef}
+                value={amount}
+                onChange={setAmount}
+                isIncome={isIncome}
+                shouldAutoFocus={shouldAutoFocus}
+            />
+
+            <div className="flex flex-col gap-1">
+                <Label htmlFor="description" className="sr-only">
+                    Description
+                </Label>
+                <Input
+                    id="description"
+                    className="font-mono"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    maxLength={60}
+                    placeholder="Description"
+                />
+            </div>
+
+            <div className="flex items-end justify-between gap-3">
+                <div className="flex w-1/2 flex-col gap-1">
+                    <Label htmlFor="startDate">
+                        Start date
+                        <span className="text-muted ml-2 font-mono text-xs">
+                            {localeDateFormat}
+                        </span>
+                    </Label>
+                    <Input
+                        id="startDate"
+                        type="date"
+                        value={startDate}
+                        onChange={(e) => setStartDate(e.target.value)}
+                        required
+                    />
+                </div>
+                {frequencyDropdown}
+            </div>
+
+            <p className="-mt-2 font-mono text-xs">{repeatLabel}</p>
+
+            <CategoryPicker
+                categories={filteredCategories}
+                selectedId={categoryId}
+                onChange={setCategoryId}
+                onAdd={() => setIsCategoryDialogOpen(true)}
+            />
+        </>
+    );
+
     return (
         <>
             <Modal
@@ -306,72 +364,7 @@ export function RecurringRuleDialog({
                                             : "New Recurring Rule"}
                                     </Modal.Heading>
                                 </Modal.Header>
-                                <Modal.Body>
-                                    {ruleStatusPanel}
-                                    {typeToggleRow}
-                                    {expenseTypeToggleRow}
-
-                                    <AmountInput
-                                        ref={amountInputRef}
-                                        value={amount}
-                                        onChange={setAmount}
-                                        isIncome={isIncome}
-                                        shouldAutoFocus={shouldAutoFocus}
-                                    />
-
-                                    <div className="flex flex-col gap-1">
-                                        <Label
-                                            htmlFor="description"
-                                            className="sr-only"
-                                        >
-                                            Description
-                                        </Label>
-                                        <Input
-                                            id="description"
-                                            className="font-mono"
-                                            value={description}
-                                            onChange={(e) =>
-                                                setDescription(e.target.value)
-                                            }
-                                            maxLength={60}
-                                            placeholder="Description"
-                                        />
-                                    </div>
-
-                                    <div className="flex items-end justify-between gap-3">
-                                        <div className="flex w-1/2 flex-col gap-1">
-                                            <Label htmlFor="startDate">
-                                                Start date
-                                                <span className="text-muted ml-2 font-mono text-xs">
-                                                    {localeDateFormat}
-                                                </span>
-                                            </Label>
-                                            <Input
-                                                id="startDate"
-                                                type="date"
-                                                value={startDate}
-                                                onChange={(e) =>
-                                                    setStartDate(e.target.value)
-                                                }
-                                                required
-                                            />
-                                        </div>
-                                        {frequencyDropdown}
-                                    </div>
-
-                                    <p className="-mt-2 font-mono text-xs">
-                                        {repeatLabel}
-                                    </p>
-
-                                    <CategoryPicker
-                                        categories={filteredCategories}
-                                        selectedId={categoryId}
-                                        onChange={setCategoryId}
-                                        onAdd={() =>
-                                            setIsCategoryDialogOpen(true)
-                                        }
-                                    />
-                                </Modal.Body>
+                                <Modal.Body>{modalBody}</Modal.Body>
                                 <Modal.Footer>
                                     <DialogFooter
                                         isEditing={isEditing}
