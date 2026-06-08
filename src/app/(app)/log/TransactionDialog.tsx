@@ -192,6 +192,82 @@ export function TransactionDialog({
         </button>
     );
 
+    const modalBody = (
+        <>
+            {!isEditing && !isExpenseOnlyMode && (
+                <div className="flex items-center justify-center">
+                    <ToggleSwitch
+                        label="Transaction flow type"
+                        isSelectingRight={isIncome}
+                        onValueChange={setIsIncome}
+                        leftLabel="Expense"
+                        rightLabel="Income"
+                    />
+                </div>
+            )}
+
+            <div className="flex items-center justify-center">
+                <ToggleSwitch
+                    label="Transaction type"
+                    isSelectingRight={isBigBuck}
+                    onValueChange={setIsBigBuck}
+                    leftLabel="Small dime"
+                    rightLabel="Big buck"
+                    leftIcon={Coins}
+                    rightIcon={Banknote}
+                />
+            </div>
+
+            <AmountInput
+                ref={amountInputRef}
+                value={amount}
+                onChange={setAmount}
+                isIncome={isIncome}
+                shouldAutoFocus={shouldAutoFocus}
+            />
+
+            <div className="flex flex-col gap-1">
+                <Label htmlFor="description" className="sr-only">
+                    Description
+                </Label>
+                <Input
+                    id="description"
+                    className="font-mono"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    maxLength={60}
+                    placeholder="Description"
+                />
+            </div>
+
+            {skipToFirstCatBtn}
+
+            <div className="flex items-center gap-4 sm:gap-16">
+                <Label htmlFor="date" className="shrink-0">
+                    Date
+                    <span className="text-muted ml-2 font-mono text-xs">
+                        {localeDateFormat}
+                    </span>
+                </Label>
+                <Input
+                    id="date"
+                    className="min-w-0 grow"
+                    type="date"
+                    value={transactedAt}
+                    onChange={(e) => setTransactedAt(e.target.value)}
+                    required
+                />
+            </div>
+
+            <CategoryPicker
+                categories={filteredCategories}
+                selectedId={categoryId}
+                onChange={setCategoryId}
+                onAdd={() => setIsCategoryDialogOpen(true)}
+            />
+        </>
+    );
+
     return (
         <>
             <Modal
@@ -221,91 +297,7 @@ export function TransactionDialog({
                                             : "New Transaction"}
                                     </Modal.Heading>
                                 </Modal.Header>
-                                <Modal.Body>
-                                    {!isEditing && !isExpenseOnlyMode && (
-                                        <div className="flex items-center justify-center">
-                                            <ToggleSwitch
-                                                label="Transaction flow type"
-                                                isSelectingRight={isIncome}
-                                                onValueChange={setIsIncome}
-                                                leftLabel="Expense"
-                                                rightLabel="Income"
-                                            />
-                                        </div>
-                                    )}
-
-                                    <div className="flex items-center justify-center">
-                                        <ToggleSwitch
-                                            label="Transaction type"
-                                            isSelectingRight={isBigBuck}
-                                            onValueChange={setIsBigBuck}
-                                            leftLabel="Small dime"
-                                            rightLabel="Big buck"
-                                            leftIcon={Coins}
-                                            rightIcon={Banknote}
-                                        />
-                                    </div>
-
-                                    <AmountInput
-                                        ref={amountInputRef}
-                                        value={amount}
-                                        onChange={setAmount}
-                                        isIncome={isIncome}
-                                        shouldAutoFocus={shouldAutoFocus}
-                                    />
-
-                                    <div className="flex flex-col gap-1">
-                                        <Label
-                                            htmlFor="description"
-                                            className="sr-only"
-                                        >
-                                            Description
-                                        </Label>
-                                        <Input
-                                            id="description"
-                                            className="font-mono"
-                                            value={description}
-                                            onChange={(e) =>
-                                                setDescription(e.target.value)
-                                            }
-                                            maxLength={60}
-                                            placeholder="Description"
-                                        />
-                                    </div>
-
-                                    {skipToFirstCatBtn}
-
-                                    <div className="flex items-center gap-4 sm:gap-16">
-                                        <Label
-                                            htmlFor="date"
-                                            className="shrink-0"
-                                        >
-                                            Date
-                                            <span className="text-muted ml-2 font-mono text-xs">
-                                                {localeDateFormat}
-                                            </span>
-                                        </Label>
-                                        <Input
-                                            id="date"
-                                            className="min-w-0 grow"
-                                            type="date"
-                                            value={transactedAt}
-                                            onChange={(e) =>
-                                                setTransactedAt(e.target.value)
-                                            }
-                                            required
-                                        />
-                                    </div>
-
-                                    <CategoryPicker
-                                        categories={filteredCategories}
-                                        selectedId={categoryId}
-                                        onChange={setCategoryId}
-                                        onAdd={() =>
-                                            setIsCategoryDialogOpen(true)
-                                        }
-                                    />
-                                </Modal.Body>
+                                <Modal.Body>{modalBody}</Modal.Body>
                                 <Modal.Footer>
                                     <DialogFooter
                                         isEditing={isEditing}
