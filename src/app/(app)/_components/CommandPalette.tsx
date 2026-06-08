@@ -276,6 +276,55 @@ export function CommandPalette({ children }: { children?: React.ReactNode }) {
             if (cmd) execute(cmd);
         }
     }
+    const modalBody = (
+        <>
+            <Input
+                autoFocus
+                placeholder="Type a command..."
+                value={query}
+                onChange={(e) => handleQueryChange(e.target.value)}
+                onKeyDown={handleKeyDown}
+                className="w-full rounded-none border-0 border-b bg-transparent shadow-none"
+            />
+            <div ref={scrollRef} className="max-h-128 overflow-y-auto pb-2">
+                {filteredCommands.length === 0 && (
+                    <p className="text-muted py-6 text-center text-sm">
+                        No commands found
+                    </p>
+                )}
+                {groupedItems.map((item) => {
+                    if (item.type === "header") {
+                        return (
+                            <p
+                                key={`header-${item.group}`}
+                                className="text-muted px-3 pt-3 pb-1 text-xs font-medium"
+                            >
+                                {item.group}
+                            </p>
+                        );
+                    }
+
+                    const { cmd, idx } = item;
+                    const isSelected = selectedIndex === idx;
+                    return (
+                        <button
+                            key={cmd.id}
+                            type="button"
+                            data-index={idx}
+                            className={`flex w-full cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-left text-sm ${isSelected ? "bg-surface-secondary" : "hover:bg-surface-tertiary"}`}
+                            onClick={() => execute(cmd)}
+                            onMouseEnter={() => setSelectedIndex(idx)}
+                        >
+                            <span className="text-muted shrink-0">
+                                {cmd.icon}
+                            </span>
+                            {cmd.label}
+                        </button>
+                    );
+                })}
+            </div>
+        </>
+    );
 
     return (
         <Modal
@@ -293,60 +342,7 @@ export function CommandPalette({ children }: { children?: React.ReactNode }) {
             <Modal.Backdrop>
                 <Modal.Container size="sm">
                     <Modal.Dialog className="max-w-md">
-                        <Modal.Body className="gap-0">
-                            <Input
-                                autoFocus
-                                placeholder="Type a command..."
-                                value={query}
-                                onChange={(e) =>
-                                    handleQueryChange(e.target.value)
-                                }
-                                onKeyDown={handleKeyDown}
-                                className="w-full rounded-none border-0 border-b bg-transparent shadow-none"
-                            />
-                            <div
-                                ref={scrollRef}
-                                className="max-h-128 overflow-y-auto pb-2"
-                            >
-                                {filteredCommands.length === 0 && (
-                                    <p className="text-muted py-6 text-center text-sm">
-                                        No commands found
-                                    </p>
-                                )}
-                                {groupedItems.map((item) => {
-                                    if (item.type === "header") {
-                                        return (
-                                            <p
-                                                key={`header-${item.group}`}
-                                                className="text-muted px-3 pt-3 pb-1 text-xs font-medium"
-                                            >
-                                                {item.group}
-                                            </p>
-                                        );
-                                    }
-
-                                    const { cmd, idx } = item;
-                                    const isSelected = selectedIndex === idx;
-                                    return (
-                                        <button
-                                            key={cmd.id}
-                                            type="button"
-                                            data-index={idx}
-                                            className={`flex w-full cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-left text-sm ${isSelected ? "bg-surface-secondary" : "hover:bg-surface-tertiary"}`}
-                                            onClick={() => execute(cmd)}
-                                            onMouseEnter={() =>
-                                                setSelectedIndex(idx)
-                                            }
-                                        >
-                                            <span className="text-muted shrink-0">
-                                                {cmd.icon}
-                                            </span>
-                                            {cmd.label}
-                                        </button>
-                                    );
-                                })}
-                            </div>
-                        </Modal.Body>
+                        <Modal.Body className="gap-0">{modalBody}</Modal.Body>
                     </Modal.Dialog>
                 </Modal.Container>
             </Modal.Backdrop>
