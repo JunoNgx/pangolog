@@ -93,6 +93,39 @@ export function ShortcutsDialog({ children }: { children?: React.ReactNode }) {
     }, [open]);
     useHotkey("/", toggle, { hasMod: true });
 
+    const shortcutKeyboardItem = (shortcut: Shortcut) => (
+        <li
+            key={shortcut.description}
+            className="flex items-center justify-between gap-4"
+        >
+            <span className="text-foreground text-sm">
+                {shortcut.description}
+            </span>
+            <span className="flex shrink-0 items-center gap-1">
+                {shortcut.keys.map((key) => (
+                    <Kbd key={key}>{key}</Kbd>
+                ))}
+            </span>
+        </li>
+    );
+
+    const modalBody = (
+        <div className="flex flex-col gap-6 pt-6">
+            {SHORTCUT_GROUPS.map((group) => (
+                <div key={group.title}>
+                    <p className="text-muted mb-2 text-xs font-medium tracking-wide uppercase">
+                        {group.title}
+                    </p>
+                    <ul className="flex flex-col gap-2">
+                        {group.shortcuts.map((shortcut) =>
+                            shortcutKeyboardItem(shortcut),
+                        )}
+                    </ul>
+                </div>
+            ))}
+        </div>
+    );
+
     return (
         <Modal
             isOpen={isOpen}
@@ -107,44 +140,15 @@ export function ShortcutsDialog({ children }: { children?: React.ReactNode }) {
                 </Modal.Trigger>
             )}
             <Modal.Backdrop>
-                <Modal.Container size="md" scroll="inside">
+                <Modal.Container>
                     <Modal.Dialog>
                         <Modal.CloseTrigger />
                         <Modal.Header>
-                            <Modal.Heading className="text-base">
+                            <Modal.Heading>
                                 Keyboard shortcuts
                             </Modal.Heading>
                         </Modal.Header>
-                        <Modal.Body className="flex flex-col gap-6 pt-6">
-                            {SHORTCUT_GROUPS.map((group) => (
-                                <div key={group.title}>
-                                    <p className="text-muted mb-2 text-xs font-medium tracking-wide uppercase">
-                                        {group.title}
-                                    </p>
-                                    <ul className="flex flex-col gap-2">
-                                        {group.shortcuts.map((shortcut) => (
-                                            <li
-                                                key={shortcut.description}
-                                                className="flex items-center justify-between gap-4"
-                                            >
-                                                <span className="text-foreground text-sm">
-                                                    {shortcut.description}
-                                                </span>
-                                                <span className="flex shrink-0 items-center gap-1">
-                                                    {shortcut.keys.map(
-                                                        (key) => (
-                                                            <Kbd key={key}>
-                                                                {key}
-                                                            </Kbd>
-                                                        ),
-                                                    )}
-                                                </span>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            ))}
-                        </Modal.Body>
+                        <Modal.Body className="gap-0">{modalBody}</Modal.Body>
                     </Modal.Dialog>
                 </Modal.Container>
             </Modal.Backdrop>
