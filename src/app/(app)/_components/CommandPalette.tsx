@@ -293,7 +293,7 @@ export function CommandPalette({ children }: { children?: React.ReactNode }) {
             <Modal.Backdrop>
                 <Modal.Container size="sm">
                     <Modal.Dialog className="max-w-md">
-                        <Modal.Body>
+                        <Modal.Body className="gap-0">
                             <Input
                                 autoFocus
                                 placeholder="Type a command..."
