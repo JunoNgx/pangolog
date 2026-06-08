@@ -310,6 +310,51 @@ export function CategoryDialog({
         </div>
     );
 
+    const modalBody = (
+        <>
+            <div className="flex flex-col gap-1">
+                <Label htmlFor="name" className="sr-only">
+                    Name
+                </Label>
+                <Input
+                    id="name"
+                    ref={nameInputRef}
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                    autoFocus={shouldAutoFocus}
+                    placeholder="Name"
+                />
+            </div>
+            <div className="flex justify-between">
+                {emojiPickerSection}
+                {colourPickerSection}
+            </div>
+            <Checkbox isSelected={isBuckOnly} onChange={setIsBuckOnly}>
+                <Checkbox.Control>
+                    <Checkbox.Indicator />
+                </Checkbox.Control>
+                <Checkbox.Content>
+                    <Label>Big-buck only</Label>
+                </Checkbox.Content>
+            </Checkbox>
+            {!isExpenseOnlyMode && (
+                <Checkbox
+                    className="mb-4"
+                    isSelected={isIncomeOnly}
+                    onChange={setIsIncomeOnly}
+                >
+                    <Checkbox.Control>
+                        <Checkbox.Indicator />
+                    </Checkbox.Control>
+                    <Checkbox.Content>
+                        <Label>Income only</Label>
+                    </Checkbox.Content>
+                </Checkbox>
+            )}
+        </>
+    );
+
     return (
         <Modal
             isOpen={isOpen}
@@ -333,53 +378,7 @@ export function CategoryDialog({
                                         : "New Category"}
                                 </Modal.Heading>
                             </Modal.Header>
-                            <Modal.Body>
-                                <div className="flex flex-col gap-1">
-                                    <Label htmlFor="name" className="sr-only">
-                                        Name
-                                    </Label>
-                                    <Input
-                                        id="name"
-                                        ref={nameInputRef}
-                                        value={name}
-                                        onChange={(e) =>
-                                            setName(e.target.value)
-                                        }
-                                        required
-                                        autoFocus={shouldAutoFocus}
-                                        placeholder="Name"
-                                    />
-                                </div>
-                                <div className="flex justify-between">
-                                    {emojiPickerSection}
-                                    {colourPickerSection}
-                                </div>
-                                <Checkbox
-                                    isSelected={isBuckOnly}
-                                    onChange={setIsBuckOnly}
-                                >
-                                    <Checkbox.Control>
-                                        <Checkbox.Indicator />
-                                    </Checkbox.Control>
-                                    <Checkbox.Content>
-                                        <Label>Big-buck only</Label>
-                                    </Checkbox.Content>
-                                </Checkbox>
-                                {!isExpenseOnlyMode && (
-                                    <Checkbox
-                                        className="mb-4"
-                                        isSelected={isIncomeOnly}
-                                        onChange={setIsIncomeOnly}
-                                    >
-                                        <Checkbox.Control>
-                                            <Checkbox.Indicator />
-                                        </Checkbox.Control>
-                                        <Checkbox.Content>
-                                            <Label>Income only</Label>
-                                        </Checkbox.Content>
-                                    </Checkbox>
-                                )}
-                            </Modal.Body>
+                            <Modal.Body>{modalBody}</Modal.Body>
                             <Modal.Footer>
                                 <DialogFooter
                                     isEditing={isEditing}
