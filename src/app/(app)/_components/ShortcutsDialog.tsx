@@ -144,9 +144,7 @@ export function ShortcutsDialog({ children }: { children?: React.ReactNode }) {
                     <Modal.Dialog>
                         <Modal.CloseTrigger />
                         <Modal.Header>
-                            <Modal.Heading>
-                                Keyboard shortcuts
-                            </Modal.Heading>
+                            <Modal.Heading>Keyboard shortcuts</Modal.Heading>
                         </Modal.Header>
                         <Modal.Body className="gap-0">{modalBody}</Modal.Body>
                     </Modal.Dialog>
