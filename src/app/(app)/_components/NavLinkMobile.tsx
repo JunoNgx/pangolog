@@ -15,7 +15,8 @@ export function NavLinkMobile({
     return (
         <NextLink
             href={item.href}
-            className={`flex flex-auto items-center justify-center gap-1 border-t py-3 text-sm transition-colors ${activeStatusClasses}`}
+            // z-index so focus ring isn't overlapped by adjacent navlink
+            className={`relative flex flex-auto items-center justify-center gap-1 border-t py-3 text-sm transition-colors focus-visible:z-10 ${activeStatusClasses}`}
             aria-current={isActive ? "page" : undefined}
         >
             <item.icon size={14} />
