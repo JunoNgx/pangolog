@@ -110,6 +110,43 @@ export function CategoryFilterDropdown({
         </li>
     );
 
+    const popoverContent = (
+        <div className="flex w-48 flex-col">
+            <ul className="flex max-h-64 flex-col overflow-y-auto px-2 py-1">
+                {uncategorisedItem}
+                {activeCategories.map((cat) => (
+                    <CategoryFilterItem
+                        key={cat.id}
+                        name={cat.name}
+                        icon={cat.icon}
+                        isIncomeOnly={cat.isIncomeOnly}
+                        isBuck={buckCategoryIds.has(cat.id)}
+                        isSelected={isChecked(cat.id)}
+                        onToggle={() => handleToggle(cat.id)}
+                    />
+                ))}
+            </ul>
+            <div className="flex gap-1 border-t pt-2">
+                <Button
+                    size="sm"
+                    variant="ghost"
+                    className="flex-1 text-sm"
+                    onPress={() => onChange(null)}
+                >
+                    Check all
+                </Button>
+                <Button
+                    size="sm"
+                    variant="ghost"
+                    className="flex-1 text-sm"
+                    onPress={() => onChange([])}
+                >
+                    Uncheck all
+                </Button>
+            </div>
+        </div>
+    );
+
     return (
         <Popover>
             <Popover.Trigger>
@@ -119,42 +156,7 @@ export function CategoryFilterDropdown({
                 </Button>
             </Popover.Trigger>
             <Popover.Content placement="bottom end">
-                <Popover.Dialog>
-                    <div className="flex w-48 flex-col">
-                        <ul className="flex max-h-64 flex-col overflow-y-auto px-2 py-1">
-                            {uncategorisedItem}
-                            {activeCategories.map((cat) => (
-                                <CategoryFilterItem
-                                    key={cat.id}
-                                    name={cat.name}
-                                    icon={cat.icon}
-                                    isIncomeOnly={cat.isIncomeOnly}
-                                    isBuck={buckCategoryIds.has(cat.id)}
-                                    isSelected={isChecked(cat.id)}
-                                    onToggle={() => handleToggle(cat.id)}
-                                />
-                            ))}
-                        </ul>
-                        <div className="flex gap-1 border-t pt-2">
-                            <Button
-                                size="sm"
-                                variant="ghost"
-                                className="flex-1 text-sm"
-                                onPress={() => onChange(null)}
-                            >
-                                Check all
-                            </Button>
-                            <Button
-                                size="sm"
-                                variant="ghost"
-                                className="flex-1 text-sm"
-                                onPress={() => onChange([])}
-                            >
-                                Uncheck all
-                            </Button>
-                        </div>
-                    </div>
-                </Popover.Dialog>
+                <Popover.Dialog>{popoverContent}</Popover.Dialog>
             </Popover.Content>
         </Popover>
     );
