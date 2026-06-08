@@ -286,7 +286,7 @@ export function CommandPalette({ children }: { children?: React.ReactNode }) {
                 onKeyDown={handleKeyDown}
                 className="w-full rounded-none border-0 border-b bg-transparent shadow-none"
             />
-            <div ref={scrollRef} className="max-h-128 overflow-y-auto pb-2">
+            <div ref={scrollRef} className="max-h-132 overflow-y-auto">
                 {filteredCommands.length === 0 && (
                     <p className="text-muted py-6 text-center text-sm">
                         No commands found
@@ -297,7 +297,7 @@ export function CommandPalette({ children }: { children?: React.ReactNode }) {
                         return (
                             <p
                                 key={`header-${item.group}`}
-                                className="text-muted px-3 pt-3 pb-1 text-xs font-medium"
+                                className="text-muted px-3 pt-3 pb-1 text-xs font-medium uppercase"
                             >
                                 {item.group}
                             </p>
@@ -311,11 +311,11 @@ export function CommandPalette({ children }: { children?: React.ReactNode }) {
                             key={cmd.id}
                             type="button"
                             data-index={idx}
-                            className={`flex w-full cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-left text-sm ${isSelected ? "bg-surface-secondary" : "hover:bg-surface-tertiary"}`}
+                            className={`text-foreground flex w-full cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-left text-sm ${isSelected ? "bg-surface-secondary" : "hover:bg-surface-tertiary"}`}
                             onClick={() => execute(cmd)}
                             onMouseEnter={() => setSelectedIndex(idx)}
                         >
-                            <span className="text-muted shrink-0">
+                            <span className="text-foreground shrink-0">
                                 {cmd.icon}
                             </span>
                             {cmd.label}
@@ -340,8 +340,8 @@ export function CommandPalette({ children }: { children?: React.ReactNode }) {
                 </Modal.Trigger>
             )}
             <Modal.Backdrop>
-                <Modal.Container size="sm">
-                    <Modal.Dialog className="max-w-md">
+                <Modal.Container>
+                    <Modal.Dialog>
                         <Modal.Body className="gap-0">{modalBody}</Modal.Body>
                     </Modal.Dialog>
                 </Modal.Container>
