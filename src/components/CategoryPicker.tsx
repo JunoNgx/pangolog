@@ -36,9 +36,10 @@ export function CategoryPicker({
                 </p>
             )}
             <div className="flex flex-wrap gap-2">
-                {categories.map((cat) => (
+                {categories.map((cat, index) => (
                     <Button
                         key={cat.id}
+                        id={index === 0 ? "first-category" : undefined}
                         className="h-7 gap-1.5 rounded-md px-2 sm:h-9 sm:rounded-lg"
                         size="sm"
                         variant={selectedId === cat.id ? "primary" : "outline"}

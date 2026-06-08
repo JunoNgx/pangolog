@@ -182,6 +182,16 @@ export function TransactionDialog({
         createTransaction.isPending || updateTransaction.isPending;
     const isDeleting = deleteTransaction.isPending;
 
+    const skipToFirstCatBtn = (
+        <button
+            type="button"
+            className="sr-only focus:not-sr-only focus:m-auto focus:inline-flex focus:w-fit focus:px-1"
+            onClick={() => document.getElementById("first-category")?.focus()}
+        >
+            Jump to category
+        </button>
+    );
+
     return (
         <>
             <Modal
@@ -262,6 +272,8 @@ export function TransactionDialog({
                                             placeholder="Description"
                                         />
                                     </div>
+
+                                    {skipToFirstCatBtn}
 
                                     <div className="flex items-center gap-4 sm:gap-16">
                                         <Label
