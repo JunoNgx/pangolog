@@ -15,7 +15,8 @@ export function NavLinkDesktop({
     return (
         <NextLink
             href={item.href}
-            className={`flex items-center gap-2 border-b px-3 py-1.5 text-sm transition-colors ${activeStatusClasses}`}
+            // z-index so focus ring isn't overlapped by adjacent navlink
+            className={`relative flex items-center gap-2 border-b px-3 py-1.5 text-sm transition-colors focus-visible:z-10 ${activeStatusClasses}`}
             aria-current={isActive ? "page" : undefined}
         >
             <item.icon size={15} />
