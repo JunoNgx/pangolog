@@ -17,7 +17,7 @@ import { DriveSyncSection } from "@/app/(app)/settings/DriveSyncSection";
 import { ImportDataSection } from "@/app/(app)/settings/ImportDataSection";
 import { LinkButton } from "@/components/LinkButton";
 import { MainListContainer } from "@/components/MainListContainer";
-import { MIME_JSON } from "@/lib/constants";
+import { DEVELOPER_WEBSITE, GITHUB_REPO, MIME_JSON } from "@/lib/constants";
 import { useRouteHeader } from "@/lib/context/RouteHeaderContext";
 import { clearAllData, forceDeleteDb } from "@/lib/db";
 import { exportJson } from "@/lib/export";
@@ -556,7 +556,7 @@ export default function SettingsClient() {
                         <p className="text-muted text-xs">
                             Pangolog is developed by{" "}
                             <a
-                                href="https://junongx.com"
+                                href={DEVELOPER_WEBSITE}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-blue-500 hover:underline"
@@ -568,7 +568,7 @@ export default function SettingsClient() {
                         <p className="text-muted text-xs">
                             This project is free and{" "}
                             <a
-                                href="https://github.com/JunoNgx/pangolog"
+                                href={GITHUB_REPO}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-blue-500 hover:underline"

@@ -3,6 +3,8 @@ import type { Frequency } from "@/lib/types";
 /* APP CONFIG */
 export const BASE_URL =
     process.env.NEXT_PUBLIC_BASE_URL ?? "https://pangolog.app";
+export const DEVELOPER_WEBSITE = "https://junongx.com";
+export const GITHUB_REPO = "https://github.com/JunoNgx/pangolog";
 
 /* CLASSNAMES */
 export const SELECT_CLASSES = `

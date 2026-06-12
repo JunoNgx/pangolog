@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { DEVELOPER_WEBSITE, GITHUB_REPO } from "@/lib/constants";
 
 const FEATURES: { headline: string; body: ReactNode }[] = [
     {
@@ -81,7 +82,7 @@ export default function LandingPage() {
                     <p className="text-muted text-sm">
                         by{" "}
                         <Link
-                            href="https://junongx.com"
+                            href={DEVELOPER_WEBSITE}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-blue-500 hover:underline"
@@ -91,7 +92,7 @@ export default function LandingPage() {
                     </p>
                     <div className="flex items-center gap-3">
                         <Link
-                            href="https://github.com/JunoNgx/pangolog"
+                            href={GITHUB_REPO}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-sm text-blue-500 hover:underline"
