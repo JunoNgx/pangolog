@@ -15,6 +15,7 @@ export async function seedDemoData(): Promise<void> {
     const threeDaysAgo = now.minus({ days: 3 });
     const twoDaysAgo = now.minus({ days: 2 });
     const yesterday = now.minus({ days: 1 });
+    const tomorrow = now.plus({ days: 1 });
 
     const auditNow = toIsoString(now.toUTC());
     const catCreatedAt = toIsoString(threeDaysAgo.toUTC());
@@ -408,20 +409,6 @@ export async function seedDemoData(): Promise<void> {
             updatedAt: auditNow,
             deletedAt: null,
         });
-        txStore.put({
-            id: generateId(),
-            description: "Apartment rent",
-            amount: 3000,
-            categoryId: catRent,
-            isIncome: false,
-            isBigBuck: false,
-            transactedAt: todayIso,
-            year: now.year,
-            month: now.month,
-            updatedAt: auditNow,
-            deletedAt: null,
-        });
-
         const rrStore = tx.objectStore(STORE_RECURRING_RULES);
         rrStore.put({
             id: generateId(),
@@ -435,7 +422,7 @@ export async function seedDemoData(): Promise<void> {
             dayOfMonth: null,
             monthOfYear: null,
             lastGeneratedAt: auditNow,
-            nextGenerationAt: toIsoString(now.plus({ weeks: 1 })),
+            nextGenerationAt: toIsoString(tomorrow),
             isActive: true,
             createdAt: auditNow,
             updatedAt: auditNow,
