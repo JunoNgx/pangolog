@@ -455,8 +455,7 @@ To add an entry in a logbook
         - Create the transaction
         - Advance `nextGenerationAt` until `nextGenerationAt` is in the future
         - IMPORTANT: create only one new row per execution
-            - Implication: For users who do not use the app frequently, gap in history is silently lost.
-            - User should be warned of this implication somewhere.
+            - This is by design, not a bug. The runner intentionally skips intermediate missed periods and generates only the single most recent missed transaction to prevent a backlog.
         - Advancing `nextGenerationAt`/`lastGeneratedAt` must NOT update `updatedAt`. Bumping `updatedAt` here would cause a stale device (one that has not yet synced a user's deactivation) to win the last-write-wins merge and silently revert the deactivation on the next sync.
         - Trade-off: since the runner never bumps `updatedAt`, two devices can both see the rule as due before either syncs, each generating a transaction. `ruleId` and `rulePeriod` on generated transactions exist to detect and resolve these post-sync duplicates.
 
