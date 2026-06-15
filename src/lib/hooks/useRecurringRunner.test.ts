@@ -1,7 +1,26 @@
 import { DateTime } from "luxon";
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { RecurringRule } from "../db/types";
-import { computeNextDate } from "./useRecurringRunner";
+import { computeNextDate, processRule } from "./useRecurringRunner";
+
+vi.mock("../db/transactions", () => ({
+    createTransaction: vi.fn(),
+}));
+
+vi.mock("../db/recurringRules", () => ({
+    advanceRecurringRule: vi.fn(),
+}));
+
+vi.mock("../utils", async () => {
+    const actual = await vi.importActual<typeof import("../utils")>("../utils");
+    return {
+        ...actual,
+        utcNowString: vi.fn(() => DateTime.now().toUTC().toISO()),
+    };
+});
+
+import { advanceRecurringRule } from "../db/recurringRules";
+import { createTransaction } from "../db/transactions";
 
 function buildRule(
     frequency: RecurringRule["frequency"],
@@ -93,5 +112,64 @@ describe("computeNextDate", () => {
         const result = computeNextDate(from, rule);
 
         expect(result.toISODate()).toBe("2025-06-15");
+    });
+});
+
+describe("processRule", () => {
+    beforeEach(() => {
+        vi.useFakeTimers();
+        vi.clearAllMocks();
+    });
+
+    afterEach(() => {
+        vi.useRealTimers();
+    });
+
+    it("creates only one transaction when multiple periods are missed", async () => {
+        vi.setSystemTime(new Date("2024-04-15T12:00:00Z"));
+
+        const rule = buildRule("monthly", {
+            dayOfMonth: 15,
+            nextGenerationAt: "2024-01-15T00:00:00+00:00",
+        });
+
+        await processRule(rule);
+
+        expect(createTransaction).toHaveBeenCalledTimes(1);
+        expect(createTransaction).toHaveBeenCalledWith(
+            expect.objectContaining({
+                ruleId: "rule-1",
+                rulePeriod: "2024-04",
+            }),
+        );
+        expect(advanceRecurringRule).toHaveBeenCalledWith(
+            "rule-1",
+            expect.stringContaining("2024-05-15"),
+            expect.stringContaining("2024-04-15T12:00:00"),
+        );
+    });
+
+    it("creates one transaction and advances by one period when a single period is missed", async () => {
+        vi.setSystemTime(new Date("2024-02-15T12:00:00Z"));
+
+        const rule = buildRule("monthly", {
+            dayOfMonth: 15,
+            nextGenerationAt: "2024-01-15T00:00:00+00:00",
+        });
+
+        await processRule(rule);
+
+        expect(createTransaction).toHaveBeenCalledTimes(1);
+        expect(createTransaction).toHaveBeenCalledWith(
+            expect.objectContaining({
+                ruleId: "rule-1",
+                rulePeriod: "2024-02",
+            }),
+        );
+        expect(advanceRecurringRule).toHaveBeenCalledWith(
+            "rule-1",
+            expect.stringContaining("2024-03-15"),
+            expect.stringContaining("2024-02-15T12:00:00"),
+        );
     });
 });

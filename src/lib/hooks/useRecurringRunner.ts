@@ -53,7 +53,7 @@ function computeRulePeriod(date: DateTime, rule: RecurringRule): string {
     }
 }
 
-async function processRule(rule: RecurringRule): Promise<void> {
+export async function processRule(rule: RecurringRule): Promise<void> {
     const now = DateTime.now();
     let nextScheduledDate = DateTime.fromISO(rule.nextGenerationAt);
     let scheduledDate = nextScheduledDate;
