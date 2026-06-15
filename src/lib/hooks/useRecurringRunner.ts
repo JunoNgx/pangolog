@@ -1,8 +1,8 @@
 "use client";
 
-import { useQueryClient } from "@tanstack/react-query";
+import { type QueryClient, useQueryClient } from "@tanstack/react-query";
 import { DateTime } from "luxon";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect } from "react";
 import {
     advanceRecurringRule,
     getDueRecurringRules,
@@ -10,6 +10,9 @@ import {
 import { createTransaction } from "../db/transactions";
 import type { RecurringRule } from "../db/types";
 import { toIsoDateString, toIsoString, utcNowString } from "../utils";
+
+// Module-level guard prevents concurrent runs across hook instances.
+let isRunnerRunning = false;
 
 export function computeNextDate(from: DateTime, rule: RecurringRule): DateTime {
     switch (rule.frequency) {
@@ -95,24 +98,30 @@ export async function processRule(rule: RecurringRule): Promise<void> {
     );
 }
 
+export async function runRecurringRunner(
+    queryClient: QueryClient,
+): Promise<void> {
+    if (isRunnerRunning) return;
+    isRunnerRunning = true;
+
+    try {
+        const dueRules = await getDueRecurringRules();
+        if (dueRules.length === 0) return;
+
+        await Promise.allSettled(dueRules.map(processRule));
+        await queryClient.invalidateQueries();
+    } finally {
+        isRunnerRunning = false;
+    }
+}
+
 export function useRecurringRunner() {
     const queryClient = useQueryClient();
-    const isRunningRef = useRef(false);
 
-    const run = useCallback(async () => {
-        if (isRunningRef.current) return;
-        isRunningRef.current = true;
-
-        try {
-            const dueRules = await getDueRecurringRules();
-            if (dueRules.length === 0) return;
-
-            await Promise.allSettled(dueRules.map(processRule));
-            await queryClient.invalidateQueries();
-        } finally {
-            isRunningRef.current = false;
-        }
-    }, [queryClient]);
+    const run = useCallback(
+        () => runRecurringRunner(queryClient),
+        [queryClient],
+    );
 
     useEffect(() => {
         run();
