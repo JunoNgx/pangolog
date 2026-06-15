@@ -35,7 +35,7 @@ export function CategoryPicker({
                         : "No categories available. Add one from the Categories menu."}
                 </p>
             )}
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2 pb-2">
                 {categories.map((cat, index) => (
                     <Button
                         key={cat.id}
