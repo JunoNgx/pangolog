@@ -152,7 +152,7 @@ function TransactionItem({
             >
                 <div className="ml-2 min-w-0 grow-4">
                     {hasCategory ? (
-                        <p>
+                        <p className="truncate">
                             <span className="mr-2">{category.icon || "·"}</span>
                             <span className="text-foreground">
                                 {category.name}
@@ -175,7 +175,7 @@ function TransactionItem({
                 {isBigBuck && <BigBuckIndicator />}
 
                 <span
-                    className={`self-center font-mono font-medium ${transaction.isIncome ? "text-success" : ""} `}
+                    className={`shrink-0 self-center font-mono font-medium ${transaction.isIncome ? "text-success" : ""} `}
                 >
                     {transaction.isIncome ? "+" : ""}
                     {amountDisplay}
