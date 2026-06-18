@@ -354,8 +354,11 @@ export default function SettingsClient() {
                                 </Radio.Content>
                             </Radio>
                         </RadioGroup>
-                        <p className="text-muted font-mono text-sm">
-                            Preview: {preview}
+                        <p className="text-sm">
+                            Preview:{" "}
+                            <span className="text-muted font-mono">
+                                {preview}
+                            </span>
                         </p>
                     </div>
                 </section>
