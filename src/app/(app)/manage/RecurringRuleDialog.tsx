@@ -226,7 +226,7 @@ export function RecurringRuleDialog({
     const isTxTypeSwitchVisible = !isExpenseOnlyMode;
 
     const ruleStatusPanel = isEditing && rule && (
-        <div className="bg-surface-tertiary flex items-center justify-between rounded-lg border p-3">
+        <div className="border-foreground flex items-center justify-between rounded-lg border p-3">
             <div className="flex flex-col gap-1">
                 <Switch isSelected={isActive} onChange={setIsActive}>
                     <Switch.Control>
