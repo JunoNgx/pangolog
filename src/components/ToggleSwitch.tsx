@@ -86,7 +86,7 @@ export function ToggleSwitch({
                         className="peer sr-only"
                     />
                     <span
-                        className={`${buttonClasses} ${isDisabled ? "cursor-not-allowed opacity-50" : ""} ${!isSelectingRight ? "text-background" : "hover:bg-surface"}`}
+                        className={`${buttonClasses} ${isDisabled ? "cursor-not-allowed opacity-50" : ""} ${!isSelectingRight ? "text-background" : "hover:bg-surface-tertiary"}`}
                     >
                         {LeftIcon && <LeftIcon size={16} />}
                         {leftLabel}
@@ -107,7 +107,7 @@ export function ToggleSwitch({
                     <span
                         className={`${buttonClasses} ${
                             isDisabled ? "cursor-not-allowed opacity-50" : ""
-                        } ${isSelectingRight ? "text-background" : "hover:bg-surface"}`}
+                        } ${isSelectingRight ? "text-background" : "hover:bg-surface-tertiary"}`}
                     >
                         {RightIcon && <RightIcon size={16} />}
                         {rightLabel}
