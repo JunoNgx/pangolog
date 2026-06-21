@@ -1,6 +1,7 @@
 "use client";
 
 import type { LucideIcon } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 interface ToggleSwitchProps {
     label: string;
@@ -27,6 +28,30 @@ export function ToggleSwitch({
     isDisabled = false,
     className = "",
 }: ToggleSwitchProps) {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const leftLabelRef = useRef<HTMLLabelElement>(null);
+    const rightLabelRef = useRef<HTMLLabelElement>(null);
+    const [sliderStyle, setSliderStyle] = useState<{
+        left: number;
+        width: number;
+    }>({ left: 0, width: 0 });
+
+    useEffect(() => {
+        const container = containerRef.current;
+        const selectedLabel = isSelectingRight
+            ? rightLabelRef.current
+            : leftLabelRef.current;
+        if (!container || !selectedLabel) return;
+
+        const containerRect = container.getBoundingClientRect();
+        const selectedRect = selectedLabel.getBoundingClientRect();
+
+        setSliderStyle({
+            left: selectedRect.left - containerRect.left,
+            width: selectedRect.width,
+        });
+    }, [isSelectingRight]);
+
     const buttonClasses =
         "flex items-center justify-center gap-1.5 w-full rounded-md px-3 py-1 text-sm transition-colors peer-focus-visible:outline-2 peer-focus-visible:outline-offset-3 peer-focus-visible:outline-focus";
 
@@ -37,8 +62,21 @@ export function ToggleSwitch({
             >
                 {label}
             </span>
-            <div className="border-foreground flex flex-1 items-center gap-1 rounded-xl border p-1">
-                <label className="flex-1 cursor-pointer rounded-sm">
+            <div
+                ref={containerRef}
+                className="border-foreground relative flex flex-1 items-center gap-1 rounded-xl border p-1"
+            >
+                <div
+                    className="bg-foreground absolute top-1 bottom-1 rounded-md transition-[left,width] duration-200 ease-in-out motion-reduce:transition-none"
+                    style={{
+                        left: sliderStyle.left,
+                        width: sliderStyle.width,
+                    }}
+                />
+                <label
+                    ref={leftLabelRef}
+                    className="relative z-10 flex-1 cursor-pointer rounded-sm"
+                >
                     <input
                         type="radio"
                         name={`toggle-${leftLabel}-${rightLabel}`}
@@ -48,17 +86,16 @@ export function ToggleSwitch({
                         className="peer sr-only"
                     />
                     <span
-                        className={`${buttonClasses} ${
-                            !isSelectingRight
-                                ? "bg-foreground text-background"
-                                : "text-foreground hover:bg-surface bg-transparent"
-                        } ${isDisabled ? "cursor-not-allowed opacity-50" : ""}`}
+                        className={`${buttonClasses} ${isDisabled ? "cursor-not-allowed opacity-50" : ""} ${!isSelectingRight ? "text-background" : "hover:bg-surface"}`}
                     >
                         {LeftIcon && <LeftIcon size={16} />}
                         {leftLabel}
                     </span>
                 </label>
-                <label className="cursor-pointer">
+                <label
+                    ref={rightLabelRef}
+                    className="relative z-10 cursor-pointer"
+                >
                     <input
                         type="radio"
                         name={`toggle-${leftLabel}-${rightLabel}`}
@@ -69,10 +106,8 @@ export function ToggleSwitch({
                     />
                     <span
                         className={`${buttonClasses} ${
-                            isSelectingRight
-                                ? "bg-foreground text-background"
-                                : "text-foreground hover:bg-surface bg-transparent"
-                        } ${isDisabled ? "cursor-not-allowed opacity-50" : ""}`}
+                            isDisabled ? "cursor-not-allowed opacity-50" : ""
+                        } ${isSelectingRight ? "text-background" : "hover:bg-surface"}`}
                     >
                         {RightIcon && <RightIcon size={16} />}
                         {rightLabel}
