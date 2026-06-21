@@ -28,7 +28,6 @@ export function ToggleSwitch({
     isDisabled = false,
     className = "",
 }: ToggleSwitchProps) {
-    const containerRef = useRef<HTMLDivElement>(null);
     const leftLabelRef = useRef<HTMLLabelElement>(null);
     const rightLabelRef = useRef<HTMLLabelElement>(null);
     const [sliderStyle, setSliderStyle] = useState<{
@@ -37,18 +36,14 @@ export function ToggleSwitch({
     }>({ left: 0, width: 0 });
 
     useEffect(() => {
-        const container = containerRef.current;
-        const selectedLabel = isSelectingRight
-            ? rightLabelRef.current
-            : leftLabelRef.current;
-        if (!container || !selectedLabel) return;
+        const leftLabel = leftLabelRef.current;
+        const rightLabel = rightLabelRef.current;
+        if (!leftLabel || !rightLabel) return;
 
-        const containerRect = container.getBoundingClientRect();
-        const selectedRect = selectedLabel.getBoundingClientRect();
-
+        const selectedLabel = isSelectingRight ? rightLabel : leftLabel;
         setSliderStyle({
-            left: selectedRect.left - containerRect.left,
-            width: selectedRect.width,
+            left: selectedLabel.offsetLeft,
+            width: selectedLabel.offsetWidth,
         });
     }, [isSelectingRight]);
 
@@ -62,10 +57,7 @@ export function ToggleSwitch({
             >
                 {label}
             </span>
-            <div
-                ref={containerRef}
-                className="border-foreground relative flex flex-1 items-center gap-1 rounded-xl border p-1"
-            >
+            <div className="border-foreground relative flex flex-1 items-center gap-1 rounded-xl border p-1">
                 <div
                     className="bg-foreground absolute top-1 bottom-1 rounded-md transition-[left,width] duration-200 ease-in-out motion-reduce:transition-none"
                     style={{
