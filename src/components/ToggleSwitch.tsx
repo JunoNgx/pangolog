@@ -40,11 +40,21 @@ export function ToggleSwitch({
         const rightLabel = rightLabelRef.current;
         if (!leftLabel || !rightLabel) return;
 
-        const selectedLabel = isSelectingRight ? rightLabel : leftLabel;
-        setSliderStyle({
-            left: selectedLabel.offsetLeft,
-            width: selectedLabel.offsetWidth,
-        });
+        function recalculate() {
+            const selectedLabel = isSelectingRight ? rightLabel : leftLabel;
+            if (!selectedLabel) return;
+            setSliderStyle({
+                left: selectedLabel.offsetLeft,
+                width: selectedLabel.offsetWidth,
+            });
+        }
+
+        recalculate();
+
+        const observer = new ResizeObserver(recalculate);
+        observer.observe(leftLabel);
+        observer.observe(rightLabel);
+        return () => observer.disconnect();
     }, [isSelectingRight]);
 
     const buttonClasses =
