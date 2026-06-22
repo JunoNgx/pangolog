@@ -69,7 +69,7 @@ export function ToggleSwitch({
             </span>
             <div className="border-foreground relative flex flex-1 items-center gap-1 rounded-xl border p-1">
                 <div
-                    className="bg-foreground absolute top-1 bottom-1 rounded-md transition-[left,width] duration-200 ease-in-out motion-reduce:transition-none"
+                    className="bg-foreground absolute top-1 bottom-1 rounded-lg transition-[left,width] duration-200 ease-in-out motion-reduce:transition-none"
                     style={{
                         left: sliderStyle.left,
                         width: sliderStyle.width,
