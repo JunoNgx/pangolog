@@ -1,6 +1,7 @@
 "use client";
 
 import NextLink from "next/link";
+import { BrandMark } from "@/components/BrandMark";
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import { AppNavbar } from "./AppNavbar";
 
@@ -10,8 +11,12 @@ export function AppHeader() {
             <AppNavbar />
             <div className="border-b-foreground flex flex-1 shrink-0 items-center justify-end gap-2 border-b pb-1">
                 <ThemeSwitcher />
-                <NextLink href="/" className="shrink-0 text-lg font-bold">
+                <NextLink
+                    href="/"
+                    className="flex shrink-0 gap-1 text-lg font-bold"
+                >
                     Pangolog
+                    <BrandMark size={32} />
                 </NextLink>
             </div>
         </header>
