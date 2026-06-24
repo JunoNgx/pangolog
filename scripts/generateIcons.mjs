@@ -4,7 +4,7 @@ import sharp from "sharp";
 
 const BG_COL = "#1d1d16";
 const OUT_DIR = "public/icons";
-const SOURCE_FILE = "assets/logo.svg";
+const SOURCE_FILE = "src/assets/logo.svg";
 
 const FAVICON_SIZE = 32;
 const ANY_PURPOSE_SIZES = [
