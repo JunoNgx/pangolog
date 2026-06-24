@@ -15,9 +15,15 @@ import { useTheme } from "next-themes";
 import { useLayoutEffect, useRef, useState } from "react";
 import { DriveSyncSection } from "@/app/(app)/settings/DriveSyncSection";
 import { ImportDataSection } from "@/app/(app)/settings/ImportDataSection";
+import { BrandMark } from "@/components/BrandMark";
 import { LinkButton } from "@/components/LinkButton";
 import { MainListContainer } from "@/components/MainListContainer";
-import { DEVELOPER_WEBSITE, GITHUB_REPO, MIME_JSON } from "@/lib/constants";
+import {
+    DESIGNER_WEBSITE,
+    DEVELOPER_WEBSITE,
+    GITHUB_REPO,
+    MIME_JSON,
+} from "@/lib/constants";
 import { useRouteHeader } from "@/lib/context/RouteHeaderContext";
 import { clearAllData, forceDeleteDb } from "@/lib/db";
 import { exportJson } from "@/lib/export";
@@ -556,8 +562,13 @@ export default function SettingsClient() {
                         About
                     </h3>
                     <div className="flex flex-col gap-1">
+                        <BrandMark size={128} />
+                        <p className="text-muted mt-2 font-mono text-xs">
+                            v{process.env.NEXT_PUBLIC_VERSION} (
+                            {process.env.NEXT_PUBLIC_COMMIT_HASH})
+                        </p>
                         <p className="text-muted text-xs">
-                            Pangolog is developed by{" "}
+                            Pangolog is conceptualised and developed by{" "}
                             <a
                                 href={DEVELOPER_WEBSITE}
                                 target="_blank"
@@ -566,7 +577,19 @@ export default function SettingsClient() {
                             >
                                 Juno Nguyen
                             </a>
-                            , with playfulness and curiosity.
+                            .
+                        </p>
+                        <p className="text-muted text-xs">
+                            UI, UX, and logo illustration by{" "}
+                            <a
+                                href={DESIGNER_WEBSITE}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-blue-500 hover:underline"
+                            >
+                                Casey Kwokdinata
+                            </a>
+                            .
                         </p>
                         <p className="text-muted text-xs">
                             This project is free and{" "}
@@ -579,10 +602,6 @@ export default function SettingsClient() {
                                 open source software
                             </a>
                             .
-                        </p>
-                        <p className="text-muted mt-2 font-mono text-xs">
-                            v{process.env.NEXT_PUBLIC_VERSION} (
-                            {process.env.NEXT_PUBLIC_COMMIT_HASH})
                         </p>
                         <div className="mt-2 flex flex-wrap gap-2">
                             <LinkButton href="/privacy">

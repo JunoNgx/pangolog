@@ -4,6 +4,7 @@ import type { Frequency } from "@/lib/types";
 export const BASE_URL =
     process.env.NEXT_PUBLIC_BASE_URL ?? "https://pangolog.app";
 export const DEVELOPER_WEBSITE = "https://junongx.com";
+export const DESIGNER_WEBSITE = "https://caseykwokdinata.webflow.io/";
 export const GITHUB_REPO = "https://github.com/JunoNgx/pangolog";
 
 /* CLASSNAMES */

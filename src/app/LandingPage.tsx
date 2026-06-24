@@ -2,7 +2,11 @@
 
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { DEVELOPER_WEBSITE, GITHUB_REPO } from "@/lib/constants";
+import {
+    DESIGNER_WEBSITE,
+    DEVELOPER_WEBSITE,
+    GITHUB_REPO,
+} from "@/lib/constants";
 
 const FEATURES: { headline: string; body: ReactNode }[] = [
     {
@@ -88,6 +92,15 @@ export default function LandingPage() {
                             className="text-blue-500 hover:underline"
                         >
                             Juno Nguyen
+                        </Link>{" "}
+                        and{" "}
+                        <Link
+                            href={DESIGNER_WEBSITE}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-500 hover:underline"
+                        >
+                            Casey Kwokdinata
                         </Link>
                     </p>
                     <div className="flex items-center gap-3">
