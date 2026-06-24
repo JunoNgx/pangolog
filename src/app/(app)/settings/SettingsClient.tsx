@@ -15,6 +15,7 @@ import { useTheme } from "next-themes";
 import { useLayoutEffect, useRef, useState } from "react";
 import { DriveSyncSection } from "@/app/(app)/settings/DriveSyncSection";
 import { ImportDataSection } from "@/app/(app)/settings/ImportDataSection";
+import { BrandMark } from "@/components/BrandMark";
 import { LinkButton } from "@/components/LinkButton";
 import { MainListContainer } from "@/components/MainListContainer";
 import { DEVELOPER_WEBSITE, GITHUB_REPO, MIME_JSON } from "@/lib/constants";
@@ -556,6 +557,7 @@ export default function SettingsClient() {
                         About
                     </h3>
                     <div className="flex flex-col gap-1">
+                        <BrandMark size={128} />
                         <p className="text-muted text-xs">
                             Pangolog is developed by{" "}
                             <a
