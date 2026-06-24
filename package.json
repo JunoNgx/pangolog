@@ -11,7 +11,8 @@
         "efix": "pnpm biome check --write --unsafe && prettier --write .",
         "typecheck": "pnpm tsc --noEmit",
         "test": "vitest run",
-        "test:watch": "vitest"
+        "test:watch": "vitest",
+        "gen-icons": "node scripts/generateIcons.mjs"
     },
     "dependencies": {
         "@dnd-kit/helpers": "^0.3.0",
