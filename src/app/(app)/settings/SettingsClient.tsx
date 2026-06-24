@@ -563,6 +563,10 @@ export default function SettingsClient() {
                     </h3>
                     <div className="flex flex-col gap-1">
                         <BrandMark size={128} />
+                        <p className="text-muted mt-2 font-mono text-xs">
+                            v{process.env.NEXT_PUBLIC_VERSION} (
+                            {process.env.NEXT_PUBLIC_COMMIT_HASH})
+                        </p>
                         <p className="text-muted text-xs">
                             Pangolog is conceptualised and developed by{" "}
                             <a
@@ -598,10 +602,6 @@ export default function SettingsClient() {
                                 open source software
                             </a>
                             .
-                        </p>
-                        <p className="text-muted mt-2 font-mono text-xs">
-                            v{process.env.NEXT_PUBLIC_VERSION} (
-                            {process.env.NEXT_PUBLIC_COMMIT_HASH})
                         </p>
                         <div className="mt-2 flex flex-wrap gap-2">
                             <LinkButton href="/privacy">
