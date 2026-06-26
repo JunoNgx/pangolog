@@ -525,8 +525,6 @@ export default function SettingsClient() {
 
                 <ImportDataSection />
 
-                <ImportDimeSection />
-
                 <section>
                     <h3 className="mb-1 text-lg font-semibold">
                         Help &amp; Info
@@ -657,6 +655,8 @@ export default function SettingsClient() {
                         {resetAppModal}
                     </section>
                 )}
+
+                {isDebugVisible && <ImportDimeSection />}
                 {/* END DEBUG */}
 
                 <section className="mt-8">
