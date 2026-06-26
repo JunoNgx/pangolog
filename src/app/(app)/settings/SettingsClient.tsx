@@ -553,17 +553,14 @@ export default function SettingsClient() {
                 </section>
 
                 <section>
-                    <h3
-                        className="mb-2 text-lg font-semibold"
-                        onClick={handleDebugRevealTap}
-                        onKeyDown={handleDebugRevealTap}
-                        // biome-ignore lint/a11y/noNoninteractiveTabindex: intentional
-                        tabIndex={0}
-                    >
-                        About
-                    </h3>
+                    <h3 className="mb-2 text-lg font-semibold">About</h3>
                     <div className="flex flex-col gap-1">
-                        <BrandMark size={128} />
+                        <button
+                            onClick={handleDebugRevealTap}
+                            className="self-start"
+                        >
+                            <BrandMark size={128} />
+                        </button>
                         <p className="text-muted mt-2 font-mono text-xs">
                             v{process.env.NEXT_PUBLIC_VERSION} (
                             {process.env.NEXT_PUBLIC_COMMIT_HASH})
