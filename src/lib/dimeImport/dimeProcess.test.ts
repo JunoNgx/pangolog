@@ -16,11 +16,6 @@ const MIXED_TYPES_CSV = [
     "2026-06-26 10:00:00 +0000,Refund,5.00,Refund,Income",
 ].join("\n");
 
-const _REUSED_CATEGORY_CSV = [
-    "Date,Note,Amount,Category,Type",
-    "2026-06-26 12:00:00 +0000,Note,1.00,Food,Expense",
-].join("\n");
-
 const UNKNOWN_CATEGORY_CSV = [
     "Date,Note,Amount,Category,Type",
     "2026-06-26 12:00:00 +0000,Note,1.00,Pet Care,Expense",
