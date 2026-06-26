@@ -15,6 +15,7 @@ import { useTheme } from "next-themes";
 import { useLayoutEffect, useRef, useState } from "react";
 import { DriveSyncSection } from "@/app/(app)/settings/DriveSyncSection";
 import { ImportDataSection } from "@/app/(app)/settings/ImportDataSection";
+import { ImportDimeSection } from "@/app/(app)/settings/ImportDimeSection";
 import { BrandMark } from "@/components/BrandMark";
 import { LinkButton } from "@/components/LinkButton";
 import { MainListContainer } from "@/components/MainListContainer";
@@ -523,6 +524,8 @@ export default function SettingsClient() {
                 </section>
 
                 <ImportDataSection />
+
+                <ImportDimeSection />
 
                 <section>
                     <h3 className="mb-1 text-lg font-semibold">
