@@ -125,11 +125,6 @@ export async function convertDimeToPangolog(
         }
 
         const trimmedNote = row.note.trim();
-        if (!trimmedNote) {
-            skippedCount += 1;
-            errors.push(`Row ${rowNumber} skipped: empty note.`);
-            continue;
-        }
 
         const amount = parseDimeAmount(String(row.amount));
         if (amount === null) {
