@@ -295,7 +295,7 @@ export const googleProvider: SyncProvider = {
     name: "google",
     connectLabel: "Google Drive",
     expiredMessage:
-        "Google Drive session expired (pre-sync). Please reconnect in Settings.",
+        "Google Drive session expired. Please reconnect in Settings.",
     revokedMessage:
         "Google Drive access was revoked or has insufficient permissions. Please reconnect in Settings.",
 
