@@ -383,7 +383,7 @@ export default function SettingsClient() {
                             <Checkbox.Content>
                                 <Label>Expense only mode</Label>
                                 <span className="text-muted text-xs">
-                                    Hides income-related UI to reduce clutter.
+                                    Hides income-related UI to reduce clutter
                                 </span>
                             </Checkbox.Content>
                         </Checkbox>
