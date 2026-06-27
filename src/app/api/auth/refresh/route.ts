@@ -26,8 +26,12 @@ export async function POST() {
     });
 
     if (!tokenResponse.ok) {
+        const data = await tokenResponse.json();
+        if (data.error === "invalid_grant") {
+            session.destroy();
+        }
         return Response.json(
-            { error: "Failed to refresh token" },
+            { error: data.error_description ?? "Failed to refresh token" },
             { status: 401 },
         );
     }
