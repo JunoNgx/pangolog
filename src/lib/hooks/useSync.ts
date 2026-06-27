@@ -8,7 +8,6 @@ import { useLocalSyncDataStore } from "@/lib/store/useLocalSyncDataStore";
 import { runFullSync } from "@/lib/sync/syncEngine";
 import type { SyncTokenResult } from "@/lib/sync/syncProviderTypes";
 import { useSyncProvider } from "@/lib/sync/useSyncProvider";
-import { useLogger } from "./useLogger";
 
 // Module-level flag prevents concurrent syncs across hook instances.
 let isSyncing = false;
@@ -35,29 +34,16 @@ export function useSyncFn() {
     } = useLocalSyncDataStore();
 
     const { provider, getValidToken } = useSyncProvider();
-    const { addLoggerEntry } = useLogger();
     const queryClient = useQueryClient();
 
-    const AUTH_ERRORS = {
-        preSync: {
-            code: "SYNC_AUTH_PRE_SYNC",
-            toastMessage: provider.expiredMessage,
-        },
-        midSync: {
-            code: "SYNC_AUTH_MID_SYNC",
-            toastMessage: provider.expiredMessage,
-        },
-    };
-
     const handleAuthExpired = useCallback(
-        (logMessage: string, logcode: string, toastMessage: string) => {
-            addLoggerEntry(logMessage, logcode);
+        (message: string) => {
             if (navigator.onLine) setAuthToken(null);
-            authReconnectToastKey = toast.danger(toastMessage, {
+            authReconnectToastKey = toast.danger(message, {
                 timeout: 0,
             });
         },
-        [addLoggerEntry, setAuthToken],
+        [setAuthToken],
     );
 
     const sync = useCallback(
@@ -67,11 +53,7 @@ export function useSyncFn() {
 
             const tokenResult = await getValidToken();
             if (isExpiredResult(tokenResult)) {
-                handleAuthExpired(
-                    `Session expired before sync: ${tokenResult.expired}`,
-                    AUTH_ERRORS.preSync.code,
-                    AUTH_ERRORS.preSync.toastMessage,
-                );
+                handleAuthExpired(tokenResult.expired);
                 isSyncing = false;
                 return;
             }
@@ -129,11 +111,7 @@ export function useSyncFn() {
                 const refreshResult = await getValidToken(true);
                 if (isExpiredResult(refreshResult)) {
                     setSyncStatus("idle");
-                    handleAuthExpired(
-                        `Session expired mid-sync: ${refreshResult.expired}`,
-                        AUTH_ERRORS.midSync.code,
-                        AUTH_ERRORS.midSync.toastMessage,
-                    );
+                    handleAuthExpired(refreshResult.expired);
                     return;
                 }
 
@@ -152,10 +130,6 @@ export function useSyncFn() {
             setSyncError,
             setSyncStatus,
             handleAuthExpired,
-            AUTH_ERRORS.midSync.code,
-            AUTH_ERRORS.midSync.toastMessage,
-            AUTH_ERRORS.preSync.code,
-            AUTH_ERRORS.preSync.toastMessage,
         ],
     );
 
