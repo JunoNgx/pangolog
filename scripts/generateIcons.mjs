@@ -6,6 +6,7 @@ const BG_COL = "#1d1d16";
 const OUT_DIR = "public/icons";
 const SOURCE_FILE = "src/assets/logo.svg";
 
+const GEN_PURPOSE_SIZE = 128;
 const FAVICON_SIZE = 32;
 const ANY_PURPOSE_SIZES = [
     [192, "icon-192.png"],
@@ -16,6 +17,13 @@ const MASKABLE_SIZE = 512;
 const MASKABLE_SAFE_ZONE_RATIO = 0.8;
 
 const sourceBuf = await readFile(SOURCE_FILE);
+
+async function generateGeneralPurposeNoBgIcon() {
+    await sharp(sourceBuf)
+        .resize(GEN_PURPOSE_SIZE, GEN_PURPOSE_SIZE)
+        .png()
+        .toFile(join(OUT_DIR, "gen-purpose-no-bg-icon.png"));
+}
 
 async function generateFavicons() {
     await writeFile(join(OUT_DIR, "favicon.svg"), sourceBuf);
@@ -59,6 +67,7 @@ async function generateMaskableIcon() {
         .toFile(join(OUT_DIR, `icon-maskable-${MASKABLE_SIZE}.png`));
 }
 
+await generateGeneralPurposeNoBgIcon();
 await generateFavicons();
 await generateIconsWithBg();
 await generateMaskableIcon();
