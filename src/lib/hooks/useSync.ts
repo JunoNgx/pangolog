@@ -15,7 +15,7 @@ let authReconnectToastKey: string | null = null;
 
 function isExpiredResult(
     result: SyncTokenResult,
-): result is { expired: string } {
+): result is { expiredMessage: string } {
     return typeof result === "object" && result !== null;
 }
 
@@ -53,7 +53,7 @@ export function useSyncFn() {
 
             const tokenResult = await getValidToken();
             if (isExpiredResult(tokenResult)) {
-                handleAuthExpired(tokenResult.expired);
+                handleAuthExpired(tokenResult.expiredMessage);
                 isSyncing = false;
                 return;
             }
@@ -111,7 +111,7 @@ export function useSyncFn() {
                 const refreshResult = await getValidToken(true);
                 if (isExpiredResult(refreshResult)) {
                     setSyncStatus("idle");
-                    handleAuthExpired(refreshResult.expired);
+                    handleAuthExpired(refreshResult.expiredMessage);
                     return;
                 }
 
