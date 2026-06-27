@@ -34,6 +34,14 @@ export async function POST() {
 
     const tokens = await tokenResponse.json();
 
+    const shouldRotateRefreshToken =
+        typeof tokens.refresh_token === "string" &&
+        tokens.refresh_token !== session.refreshToken;
+    if (shouldRotateRefreshToken) {
+        session.refreshToken = tokens.refresh_token;
+        await session.save();
+    }
+
     return Response.json({
         accessToken: tokens.access_token,
         expiresAt: Date.now() + tokens.expires_in * 1000,
