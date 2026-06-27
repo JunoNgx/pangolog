@@ -5,7 +5,7 @@ export interface SyncAuthToken {
     email: string;
 }
 
-export type SyncTokenResult = string | null | { expired: string };
+export type SyncTokenResult = string | null | { expiredMessage: string };
 
 export interface SyncFile {
     id: string;
