@@ -556,6 +556,7 @@ export default function SettingsClient() {
                     <h3 className="mb-2 text-lg font-semibold">About</h3>
                     <div className="flex flex-col gap-1">
                         <button
+                            type="button"
                             onClick={handleDebugRevealTap}
                             className="self-start"
                         >
