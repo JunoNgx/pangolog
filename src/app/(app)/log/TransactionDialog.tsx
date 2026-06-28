@@ -72,22 +72,14 @@ export function TransactionDialog({
     });
 
     useEffect(() => {
-        if (transaction) {
-            setAmount((transaction.amount / 100).toFixed(2));
-            setTransactedAt(toDateInputValue(transaction.transactedAt));
-            setIsIncome(transaction.isIncome);
-            setIsBigBuck(transaction.isBigBuck);
-            setCategoryId(transaction.categoryId);
-            setDescription(transaction.description);
-        } else {
-            setAmount("");
-            setTransactedAt(todayDateString());
-            setIsIncome(false);
-            setIsBigBuck(defaultIsBigBuck);
-            setCategoryId(null);
-            setDescription("");
-        }
-    }, [transaction, defaultIsBigBuck]);
+        if (!transaction) return;
+        setAmount((transaction.amount / 100).toFixed(2));
+        setTransactedAt(toDateInputValue(transaction.transactedAt));
+        setIsIncome(transaction.isIncome);
+        setIsBigBuck(transaction.isBigBuck);
+        setCategoryId(transaction.categoryId);
+        setDescription(transaction.description);
+    }, [transaction]);
 
     const localeDateFormat = useMemo(() => getLocaleDateFormat(), []);
 

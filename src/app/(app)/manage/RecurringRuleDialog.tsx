@@ -93,25 +93,15 @@ export function RecurringRuleDialog({
     const localeDateFormat = useMemo(() => getLocaleDateFormat(), []);
 
     useEffect(() => {
-        if (rule) {
-            setAmount((rule.amount / 100).toFixed(2));
-            setDescription(rule.description);
-            setIsIncome(rule.isIncome);
-            setIsBigBuck(rule.isBigBuck);
-            setCategoryId(rule.categoryId);
-            setFrequency(rule.frequency);
-            setStartDate(toDateInputValue(rule.nextGenerationAt));
-            setIsActive(rule.isActive);
-        } else {
-            setAmount("");
-            setDescription("");
-            setIsIncome(false);
-            setIsBigBuck(true);
-            setCategoryId(null);
-            setFrequency("monthly");
-            setStartDate(todayDateString());
-            setIsActive(true);
-        }
+        if (!rule) return;
+        setAmount((rule.amount / 100).toFixed(2));
+        setDescription(rule.description);
+        setIsIncome(rule.isIncome);
+        setIsBigBuck(rule.isBigBuck);
+        setCategoryId(rule.categoryId);
+        setFrequency(rule.frequency);
+        setStartDate(toDateInputValue(rule.nextGenerationAt));
+        setIsActive(rule.isActive);
     }, [rule]);
 
     const filteredCategories = useMemo(() => {

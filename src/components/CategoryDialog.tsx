@@ -138,21 +138,13 @@ export function CategoryDialog({
     const isEditing = !!category;
 
     useEffect(() => {
-        if (category) {
-            setName(category.name);
-            setColour(parseColor(category.colour));
-            setIcon(category.icon);
+        if (!category) return;
+        setName(category.name);
+        setColour(parseColor(category.colour));
+        setIcon(category.icon);
 
-            setIsIncomeOnly(category.isIncomeOnly);
-            setIsBuckOnly(category.isBuckOnly);
-        } else {
-            setName("");
-            setColour(parseColor(randomHexColor()));
-            setIcon(randomEmoji());
-
-            setIsIncomeOnly(false);
-            setIsBuckOnly(false);
-        }
+        setIsIncomeOnly(category.isIncomeOnly);
+        setIsBuckOnly(category.isBuckOnly);
     }, [category]);
 
     function handleEmojiSelect({ emoji }: { emoji: string }) {
