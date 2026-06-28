@@ -71,7 +71,7 @@ export function RecurringRuleDialog({
     const [amount, setAmount] = useState("");
     const [description, setDescription] = useState("");
     const [isIncome, setIsIncome] = useState(false);
-    const [isBigBuck, setIsBigBuck] = useState(true);
+    const [isBigBuck, setIsBigBuck] = useState(false);
     const [categoryId, setCategoryId] = useState<string | null>(null);
     const [frequency, setFrequency] = useState<Frequency>("monthly");
     const [startDate, setStartDate] = useState(todayDateString());
