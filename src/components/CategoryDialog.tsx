@@ -23,7 +23,7 @@ import {
     useRestoreCategory,
     useUpdateCategory,
 } from "@/lib/hooks/useCategories";
-import { useDelayedAutoFocusOnAndroid } from "@/lib/hooks/useDelayedAutoFocusOnAndroid";
+import { useDialogAutoFocus } from "@/lib/hooks/useDialogAutoFocus";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
 import { showDeleteToast } from "@/lib/utils";
 
@@ -120,7 +120,7 @@ export function CategoryDialog({
 }: CategoryDialogProps) {
     const [name, setName] = useState("");
     const nameInputRef = useRef<HTMLInputElement>(null);
-    const { shouldAutoFocus } = useDelayedAutoFocusOnAndroid({
+    const { shouldAutoFocus } = useDialogAutoFocus({
         isModalOpen: isOpen,
         focusableElRef: nameInputRef,
     });
