@@ -44,10 +44,12 @@ export default function SettingsClient() {
         isPrefixCurrency,
         isExpenseOnlyMode,
         isCategoryAlphabetical,
+        shouldAutoSelectFirstCategory,
         setCustomCurrency,
         setIsPrefixCurrency,
         setIsExpenseOnlyMode,
         setIsCategoryAlphabetical,
+        setShouldAutoSelectFirstCategory,
     } = useProfileSettingsStore();
     const { isConnected, disconnect } = useSyncProvider();
     const { theme, setTheme } = useTheme();
@@ -384,6 +386,23 @@ export default function SettingsClient() {
                                 <Label>Expense only mode</Label>
                                 <span className="text-muted text-xs">
                                     Hides income-related UI to reduce clutter
+                                </span>
+                            </Checkbox.Content>
+                        </Checkbox>
+                        <Checkbox
+                            isSelected={shouldAutoSelectFirstCategory}
+                            onChange={setShouldAutoSelectFirstCategory}
+                        >
+                            <Checkbox.Control>
+                                <Checkbox.Indicator />
+                            </Checkbox.Control>
+                            <Checkbox.Content>
+                                <Label>
+                                    Auto-select first category for new
+                                    transactions
+                                </Label>
+                                <span className="text-muted text-xs">
+                                    Useful for one frequently-used category
                                 </span>
                             </Checkbox.Content>
                         </Checkbox>

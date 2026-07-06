@@ -62,7 +62,8 @@ export function TransactionDialog({
     const deleteTransaction = useDeleteTransaction();
     const restoreTransaction = useRestoreTransaction();
 
-    const { isExpenseOnlyMode } = useProfileSettingsStore();
+    const { isExpenseOnlyMode, shouldAutoSelectFirstCategory } =
+        useProfileSettingsStore();
     const isEditing = !!transaction;
     const formRef = useRef<HTMLFormElement>(null);
     const amountInputRef = useRef<HTMLInputElement>(null);
@@ -92,6 +93,19 @@ export function TransactionDialog({
             return true;
         });
     }, [categories, isBigBuck, isIncome]);
+
+    useEffect(() => {
+        if (isEditing) return;
+        if (!shouldAutoSelectFirstCategory) return;
+        if (categoryId !== null) return;
+        if (filteredCategories.length === 0) return;
+        setCategoryId(filteredCategories[0].id);
+    }, [
+        isEditing,
+        shouldAutoSelectFirstCategory,
+        filteredCategories,
+        categoryId,
+    ]);
 
     function handleClose() {
         setAmount("");
