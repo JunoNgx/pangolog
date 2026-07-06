@@ -68,6 +68,7 @@ export function TransactionDialog({
     const amountInputRef = useRef<HTMLInputElement>(null);
     const { shouldAutoFocus } = useDialogAutoFocus({
         isModalOpen: isOpen,
+        isEditing,
         focusableElRef: amountInputRef,
     });
 

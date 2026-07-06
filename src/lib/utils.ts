@@ -8,6 +8,11 @@ export function isAndroid(): boolean {
     return /android/i.test(navigator.userAgent);
 }
 
+export function isMobileDevice(): boolean {
+    if (typeof window === "undefined") return false;
+    return window.matchMedia("(pointer: coarse)").matches;
+}
+
 export function getLocaleDateFormat(): string {
     if (typeof window === "undefined") return "";
     return new Intl.DateTimeFormat(navigator.language, {

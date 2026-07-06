@@ -120,8 +120,10 @@ export function CategoryDialog({
 }: CategoryDialogProps) {
     const [name, setName] = useState("");
     const nameInputRef = useRef<HTMLInputElement>(null);
+    const isEditing = !!category;
     const { shouldAutoFocus } = useDialogAutoFocus({
         isModalOpen: isOpen,
+        isEditing,
         focusableElRef: nameInputRef,
     });
     const [colour, setColour] = useState(() => parseColor(randomHexColor()));
@@ -134,8 +136,6 @@ export function CategoryDialog({
     const updateCategory = useUpdateCategory();
     const deleteCategory = useDeleteCategory();
     const restoreCategory = useRestoreCategory();
-
-    const isEditing = !!category;
 
     useEffect(() => {
         if (!category) return;

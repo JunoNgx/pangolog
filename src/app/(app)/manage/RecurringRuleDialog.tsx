@@ -79,8 +79,10 @@ export function RecurringRuleDialog({
     const [isCategoryDialogOpen, setIsCategoryDialogOpen] = useState(false);
 
     const amountInputRef = useRef<HTMLInputElement>(null);
+    const isEditing = !!rule;
     const { shouldAutoFocus } = useDialogAutoFocus({
         isModalOpen: isOpen,
+        isEditing,
         focusableElRef: amountInputRef,
     });
     const { data: categories } = useCategories();
@@ -89,7 +91,6 @@ export function RecurringRuleDialog({
     const deleteRule = useDeleteRecurringRule();
     const restoreRule = useRestoreRecurringRule();
 
-    const isEditing = !!rule;
     const localeDateFormat = useMemo(() => getLocaleDateFormat(), []);
 
     useEffect(() => {
