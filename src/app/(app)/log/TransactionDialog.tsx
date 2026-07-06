@@ -18,7 +18,7 @@ import { FocusSink } from "@/components/FocusSink";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
 import type { Transaction } from "@/lib/db/types";
 import { useCategories } from "@/lib/hooks/useCategories";
-import { useDelayedAutoFocusOnAndroid } from "@/lib/hooks/useDelayedAutoFocusOnAndroid";
+import { useDialogAutoFocus } from "@/lib/hooks/useDialogAutoFocus";
 import {
     useCreateTransaction,
     useDeleteTransaction,
@@ -66,7 +66,7 @@ export function TransactionDialog({
     const isEditing = !!transaction;
     const formRef = useRef<HTMLFormElement>(null);
     const amountInputRef = useRef<HTMLInputElement>(null);
-    const { shouldAutoFocus } = useDelayedAutoFocusOnAndroid({
+    const { shouldAutoFocus } = useDialogAutoFocus({
         isModalOpen: isOpen,
         focusableElRef: amountInputRef,
     });

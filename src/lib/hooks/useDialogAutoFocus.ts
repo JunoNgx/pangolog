@@ -14,15 +14,15 @@ import { isAndroid } from "@/lib/utils";
 //       - Android browsers fix the scroll behaviour
 //       - HeroUI's implementation improves and is more aligned with React Aria
 
-interface UseDelayedAutoFocusOnAndroidOptions {
+interface UseDialogAutoFocusOptions {
     isModalOpen: boolean;
     focusableElRef: RefObject<HTMLInputElement | null>;
 }
 
-export function useDelayedAutoFocusOnAndroid({
+export function useDialogAutoFocus({
     isModalOpen,
     focusableElRef,
-}: UseDelayedAutoFocusOnAndroidOptions) {
+}: UseDialogAutoFocusOptions) {
     const [isAndroidDevice, setIsAndroidDevice] = useState(false);
 
     useLayoutEffect(() => {
