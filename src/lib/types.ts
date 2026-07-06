@@ -10,6 +10,7 @@ export interface ProfileSettings {
     isPrefixCurrency: boolean;
     isExpenseOnlyMode: boolean;
     isCategoryAlphabetical: boolean;
+    shouldAutoSelectFirstCategory: boolean;
     updatedAt: string;
 }
 

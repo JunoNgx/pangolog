@@ -142,6 +142,7 @@ export async function runFullSync(
             remoteSettings.isPrefixCurrency ?? true,
             remoteSettings.isExpenseOnlyMode ?? false,
             remoteSettings.isCategoryAlphabetical ?? false,
+            remoteSettings.shouldAutoSelectFirstCategory ?? false,
             remoteSettings.updatedAt,
         );
     }

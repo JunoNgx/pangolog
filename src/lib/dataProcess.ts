@@ -18,6 +18,7 @@ export async function buildDataSnapshot(shouldIncludeDeleted = true) {
         isPrefixCurrency,
         isExpenseOnlyMode,
         isCategoryAlphabetical,
+        shouldAutoSelectFirstCategory,
         updatedAt,
     } = useProfileSettingsStore.getState();
 
@@ -28,6 +29,7 @@ export async function buildDataSnapshot(shouldIncludeDeleted = true) {
             isPrefixCurrency,
             isExpenseOnlyMode,
             isCategoryAlphabetical,
+            shouldAutoSelectFirstCategory,
             updatedAt,
         },
         transactions: transactions

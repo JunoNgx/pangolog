@@ -9,16 +9,19 @@ interface ProfileSettingsStore {
     isPrefixCurrency: boolean;
     isExpenseOnlyMode: boolean;
     isCategoryAlphabetical: boolean;
+    shouldAutoSelectFirstCategory: boolean;
     updatedAt: string;
     setCustomCurrency: (value: string) => void;
     setIsPrefixCurrency: (value: boolean) => void;
     setIsExpenseOnlyMode: (value: boolean) => void;
     setIsCategoryAlphabetical: (value: boolean) => void;
+    setShouldAutoSelectFirstCategory: (value: boolean) => void;
     applyRemoteSettings: (
         customCurrency: string,
         isPrefixCurrency: boolean,
         isExpenseOnlyMode: boolean,
         isCategoryAlphabetical: boolean,
+        shouldAutoSelectFirstCategory: boolean,
         updatedAt: string,
     ) => void;
 }
@@ -30,6 +33,7 @@ export const useProfileSettingsStore = create<ProfileSettingsStore>()(
             isPrefixCurrency: true,
             isExpenseOnlyMode: false,
             isCategoryAlphabetical: false,
+            shouldAutoSelectFirstCategory: false,
             updatedAt: toIsoString(DateTime.fromMillis(0)),
             setCustomCurrency: (value) =>
                 set({
@@ -51,11 +55,17 @@ export const useProfileSettingsStore = create<ProfileSettingsStore>()(
                     isCategoryAlphabetical: value,
                     updatedAt: utcNowString(),
                 }),
+            setShouldAutoSelectFirstCategory: (value) =>
+                set({
+                    shouldAutoSelectFirstCategory: value,
+                    updatedAt: utcNowString(),
+                }),
             applyRemoteSettings: (
                 customCurrency,
                 isPrefixCurrency,
                 isExpenseOnlyMode,
                 isCategoryAlphabetical,
+                shouldAutoSelectFirstCategory,
                 updatedAt,
             ) =>
                 set({
@@ -63,6 +73,7 @@ export const useProfileSettingsStore = create<ProfileSettingsStore>()(
                     isPrefixCurrency,
                     isExpenseOnlyMode,
                     isCategoryAlphabetical,
+                    shouldAutoSelectFirstCategory,
                     updatedAt,
                 }),
         }),
@@ -73,6 +84,8 @@ export const useProfileSettingsStore = create<ProfileSettingsStore>()(
                 isPrefixCurrency: state.isPrefixCurrency,
                 isExpenseOnlyMode: state.isExpenseOnlyMode,
                 isCategoryAlphabetical: state.isCategoryAlphabetical,
+                shouldAutoSelectFirstCategory:
+                    state.shouldAutoSelectFirstCategory,
                 updatedAt: state.updatedAt,
             }),
         },
