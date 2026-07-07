@@ -1,6 +1,6 @@
 import { DateTime } from "luxon";
 import { RO, RW, STORE_RECURRING_RULES } from "@/lib/constants";
-import { todayDateString, toIsoDateString, utcNowString } from "../utils";
+import { isOnOrBeforeToday, utcNowString } from "../utils";
 import { getDb } from "./connection";
 import { openStore, performIdbRequest, performIdbUpdate } from "./idbHelpers";
 import type {
@@ -116,7 +116,6 @@ export async function getAllRecurringRules(): Promise<RecurringRule[]> {
 
 export async function getDueRecurringRules(): Promise<RecurringRule[]> {
     const db = await getDb();
-    const today = todayDateString();
 
     const results = await performIdbRequest(
         openStore({ db, storeName: STORE_RECURRING_RULES, mode: RO }).getAll(),
@@ -126,6 +125,6 @@ export async function getDueRecurringRules(): Promise<RecurringRule[]> {
         (rule: RecurringRule) =>
             rule.deletedAt === null &&
             rule.isActive &&
-            toIsoDateString(DateTime.fromISO(rule.nextGenerationAt)) <= today,
+            isOnOrBeforeToday(DateTime.fromISO(rule.nextGenerationAt)),
     );
 }

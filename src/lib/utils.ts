@@ -54,6 +54,12 @@ export function toIsoDateString(dt: DateTime): string {
     return result;
 }
 
+export function isOnOrBeforeToday(dt: DateTime): boolean {
+    return (
+        toIsoDateString(dt.toUTC()) <= toIsoDateString(DateTime.now().toUTC())
+    );
+}
+
 export function todayDateString(): string {
     return toIsoDateString(DateTime.now());
 }
