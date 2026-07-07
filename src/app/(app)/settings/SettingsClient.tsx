@@ -150,6 +150,7 @@ export default function SettingsClient() {
 
     function handleClearDebugLoggerEntry() {
         clearLoggerEntries();
+        toast.success("Logger entries cleared.");
     }
 
     async function handleCopyDebugLoggerEntries() {
