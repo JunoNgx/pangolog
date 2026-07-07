@@ -48,7 +48,7 @@ export function useDialogAutoFocus({
             MODAL_ENTER_DELAY_MS,
         );
         return () => clearTimeout(timeout);
-    }, [isModalOpen, focusableElRef, isAndroidDevice]);
+    }, [isModalOpen, focusableElRef, isAndroidDevice, isEditingOnMobile]);
 
     return {
         shouldAutoFocus: !isAndroidDevice && !isEditingOnMobile,
