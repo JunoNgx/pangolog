@@ -9,7 +9,12 @@ import {
 } from "../db/recurringRules";
 import { createTransaction } from "../db/transactions";
 import type { RecurringRule } from "../db/types";
-import { toIsoDateString, toIsoString, utcNowString } from "../utils";
+import {
+    isOnOrBeforeToday,
+    toIsoDateString,
+    toIsoString,
+    utcNowString,
+} from "../utils";
 import { useLogger } from "./useLogger";
 
 // Module-level guard prevents concurrent runs across hook instances.
@@ -67,7 +72,7 @@ export async function processRule(
     let nextScheduledDate = DateTime.fromISO(rule.nextGenerationAt);
     let scheduledDate = nextScheduledDate;
 
-    while (nextScheduledDate <= now) {
+    while (isOnOrBeforeToday(nextScheduledDate)) {
         scheduledDate = nextScheduledDate;
         nextScheduledDate = computeNextDate(nextScheduledDate, rule).set({
             hour: 0,
