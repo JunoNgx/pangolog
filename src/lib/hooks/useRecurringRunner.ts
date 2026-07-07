@@ -62,7 +62,7 @@ export async function processRule(
     // TODO: remove after resolving double-trigger bug
     addLoggerEntry?: (message: string, logcode: string, data?: unknown) => void,
 ): Promise<void> {
-    const logger = addLoggerEntry ?? (() => {});
+    const addLogEntry = addLoggerEntry ?? (() => {});
     const now = DateTime.now();
     let nextScheduledDate = DateTime.fromISO(rule.nextGenerationAt);
     let scheduledDate = nextScheduledDate;
@@ -85,7 +85,7 @@ export async function processRule(
     });
 
     // TODO: remove after resolving double-trigger bug
-    logger("Creating transaction for rule", "RULE_TX", {
+    addLogEntry("Creating transaction for rule", "RULE_TX", {
         ruleId: rule.id,
         rulePeriod: computeRulePeriod(scheduledDate, rule),
         oldNextGenerationAt: rule.nextGenerationAt,
@@ -112,7 +112,7 @@ export async function processRule(
     );
 
     // TODO: remove after resolving double-trigger bug
-    logger("Rule advanced", "RULE_ADVANCED", {
+    addLogEntry("Rule advanced", "RULE_ADVANCED", {
         ruleId: rule.id,
         oldNextGenerationAt: rule.nextGenerationAt,
         newNextGenerationAt: toIsoString(nextScheduledDate),
