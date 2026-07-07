@@ -69,7 +69,12 @@ export async function processRule(
 
     while (nextScheduledDate <= now) {
         scheduledDate = nextScheduledDate;
-        nextScheduledDate = computeNextDate(nextScheduledDate, rule);
+        nextScheduledDate = computeNextDate(nextScheduledDate, rule).set({
+            hour: 0,
+            minute: 0,
+            second: 0,
+            millisecond: 0,
+        });
     }
 
     // TODO: remove after resolving double-trigger bug
@@ -98,14 +103,7 @@ export async function processRule(
 
     await advanceRecurringRule(
         rule.id,
-        toIsoString(
-            nextScheduledDate.set({
-                hour: 0,
-                minute: 0,
-                second: 0,
-                millisecond: 0,
-            }),
-        ),
+        toIsoString(nextScheduledDate),
         utcNowString(),
     );
 
