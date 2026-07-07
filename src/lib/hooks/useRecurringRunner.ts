@@ -83,15 +83,15 @@ export async function processRule(
         rulePeriod: computeRulePeriod(scheduledDate, rule),
     });
 
+    const newTransactionTimestamp = scheduledDate.set({
+        hour: now.hour,
+        minute: now.minute,
+        second: now.second,
+        millisecond: now.millisecond,
+    });
+
     await createTransaction({
-        transactedAt: toIsoString(
-            scheduledDate.set({
-                hour: now.hour,
-                minute: now.minute,
-                second: now.second,
-                millisecond: now.millisecond,
-            }),
-        ),
+        transactedAt: toIsoString(newTransactionTimestamp),
         amount: rule.amount,
         isIncome: rule.isIncome,
         isBigBuck: rule.isBigBuck,
