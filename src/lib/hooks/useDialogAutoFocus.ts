@@ -39,9 +39,10 @@ export function useDialogAutoFocus({
     }, []);
 
     const MODAL_ENTER_DELAY_MS = 250;
+    const isEditingOnMobile = isEditing && isMobileDevice;
 
     useEffect(() => {
-        if (!isModalOpen || !isAndroidDevice) return;
+        if (!isModalOpen || !isAndroidDevice || isEditingOnMobile) return;
         const timeout = setTimeout(
             () => focusableElRef.current?.focus(),
             MODAL_ENTER_DELAY_MS,
@@ -49,7 +50,6 @@ export function useDialogAutoFocus({
         return () => clearTimeout(timeout);
     }, [isModalOpen, focusableElRef, isAndroidDevice]);
 
-    const isEditingOnMobile = isEditing && isMobileDevice;
     return {
         shouldAutoFocus: !isAndroidDevice && !isEditingOnMobile,
     };
