@@ -9,7 +9,12 @@ import {
 } from "../db/recurringRules";
 import { createTransaction } from "../db/transactions";
 import type { RecurringRule } from "../db/types";
-import { toIsoDateString, toIsoString, utcNowString } from "../utils";
+import {
+    isOnOrBeforeToday,
+    toIsoDateString,
+    toIsoString,
+    utcNowString,
+} from "../utils";
 import { useLogger } from "./useLogger";
 
 // Module-level guard prevents concurrent runs across hook instances.
@@ -62,31 +67,40 @@ export async function processRule(
     // TODO: remove after resolving double-trigger bug
     addLoggerEntry?: (message: string, logcode: string, data?: unknown) => void,
 ): Promise<void> {
-    const logger = addLoggerEntry ?? (() => {});
+    const addLogEntry = addLoggerEntry ?? (() => {});
     const now = DateTime.now();
     let nextScheduledDate = DateTime.fromISO(rule.nextGenerationAt);
     let scheduledDate = nextScheduledDate;
 
-    while (nextScheduledDate <= now) {
+    while (isOnOrBeforeToday(nextScheduledDate)) {
         scheduledDate = nextScheduledDate;
-        nextScheduledDate = computeNextDate(nextScheduledDate, rule);
+        nextScheduledDate = computeNextDate(nextScheduledDate, rule).set({
+            hour: 0,
+            minute: 0,
+            second: 0,
+            millisecond: 0,
+        });
     }
 
+    const newTransactionTimestamp = scheduledDate.set({
+        hour: now.hour,
+        minute: now.minute,
+        second: now.second,
+        millisecond: now.millisecond,
+    });
+
     // TODO: remove after resolving double-trigger bug
-    logger("Creating transaction for rule", "RULE_TX", {
+    addLogEntry("Creating transaction for rule", "RULE_TX", {
         ruleId: rule.id,
         rulePeriod: computeRulePeriod(scheduledDate, rule),
+        oldNextGenerationAt: rule.nextGenerationAt,
+        transactedAt: toIsoString(newTransactionTimestamp),
+        scheduledDate: toIsoString(scheduledDate),
+        now: toIsoString(now),
     });
 
     await createTransaction({
-        transactedAt: toIsoString(
-            scheduledDate.set({
-                hour: now.hour,
-                minute: now.minute,
-                second: now.second,
-                millisecond: now.millisecond,
-            }),
-        ),
+        transactedAt: toIsoString(newTransactionTimestamp),
         amount: rule.amount,
         isIncome: rule.isIncome,
         isBigBuck: rule.isBigBuck,
@@ -98,50 +112,31 @@ export async function processRule(
 
     await advanceRecurringRule(
         rule.id,
-        toIsoString(
-            nextScheduledDate.set({
-                hour: 0,
-                minute: 0,
-                second: 0,
-                millisecond: 0,
-            }),
-        ),
+        toIsoString(nextScheduledDate),
         utcNowString(),
     );
 
     // TODO: remove after resolving double-trigger bug
-    logger("Rule advanced", "RULE_ADVANCED", {
+    addLogEntry("Rule advanced", "RULE_ADVANCED", {
         ruleId: rule.id,
+        oldNextGenerationAt: rule.nextGenerationAt,
         newNextGenerationAt: toIsoString(nextScheduledDate),
+        scheduledDate: toIsoString(scheduledDate),
+        now: toIsoString(now),
     });
 }
 
 export async function runRecurringRunner(
     queryClient: QueryClient,
     addLoggerEntry: (message: string, logcode: string, data?: unknown) => void,
-    trigger: string,
 ): Promise<void> {
-    // TODO: remove after resolving double-trigger bug
     if (isRunnerRunning) {
-        addLoggerEntry("Recurring runner skipped", "RUNNER_SKIP", {
-            trigger,
-            isRunnerRunning,
-        });
         return;
     }
-    addLoggerEntry("Recurring runner started", "RUNNER_START", {
-        trigger,
-        isRunnerRunning,
-    });
     isRunnerRunning = true;
 
     try {
         const dueRules = await getDueRecurringRules();
-        addLoggerEntry("Due rules fetched", "RUNNER_DUE", {
-            trigger,
-            count: dueRules.length,
-            ruleIds: dueRules.map((r) => r.id),
-        });
         if (dueRules.length === 0) return;
 
         await Promise.allSettled(
@@ -158,19 +153,18 @@ export function useRecurringRunner() {
     const { addLoggerEntry } = useLogger();
 
     const run = useCallback(
-        (trigger: string) =>
-            runRecurringRunner(queryClient, addLoggerEntry, trigger),
+        () => runRecurringRunner(queryClient, addLoggerEntry),
         [queryClient, addLoggerEntry],
     );
 
     useEffect(() => {
-        run("mount");
+        run();
     }, [run]);
 
     useEffect(() => {
         function handleVisibilityChange() {
             if (document.visibilityState !== "visible") return;
-            run("visibilitychange");
+            run();
         }
         document.addEventListener("visibilitychange", handleVisibilityChange);
         return () =>

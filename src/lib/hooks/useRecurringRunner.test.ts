@@ -172,4 +172,28 @@ describe("processRule", () => {
             expect.stringContaining("2024-02-15T12:00:00"),
         );
     });
+
+    it("persists the next period, not the same day, even when the input time is midday", async () => {
+        vi.setSystemTime(new Date("2026-07-07T20:00:00.000+08:00"));
+
+        const rule = buildRule("monthly", {
+            dayOfMonth: 7,
+            nextGenerationAt: "2026-07-07T12:00:00.000+08:00",
+        });
+
+        await processRule(rule);
+
+        expect(createTransaction).toHaveBeenCalledTimes(1);
+        expect(createTransaction).toHaveBeenCalledWith(
+            expect.objectContaining({
+                ruleId: "rule-1",
+                rulePeriod: "2026-07",
+            }),
+        );
+        expect(advanceRecurringRule).toHaveBeenCalledWith(
+            "rule-1",
+            expect.stringContaining("2026-08-07"),
+            expect.any(String),
+        );
+    });
 });
