@@ -55,9 +55,7 @@ export function toIsoDateString(dt: DateTime): string {
 }
 
 export function isOnOrBeforeToday(dt: DateTime): boolean {
-    return (
-        toIsoDateString(dt.toUTC()) <= toIsoDateString(DateTime.now().toUTC())
-    );
+    return toIsoDateString(dt.toLocal()) <= toIsoDateString(DateTime.now());
 }
 
 export function todayDateString(): string {
