@@ -15,7 +15,6 @@ import {
     toIsoString,
     utcNowString,
 } from "../utils";
-import { useLogger } from "./useLogger";
 
 // Module-level guard prevents concurrent runs across hook instances.
 let isRunnerRunning = false;
@@ -62,12 +61,7 @@ function computeRulePeriod(date: DateTime, rule: RecurringRule): string {
     }
 }
 
-export async function processRule(
-    rule: RecurringRule,
-    // TODO: remove after resolving double-trigger bug
-    addLoggerEntry?: (message: string, logcode: string, data?: unknown) => void,
-): Promise<void> {
-    const addLogEntry = addLoggerEntry ?? (() => {});
+export async function processRule(rule: RecurringRule): Promise<void> {
     const now = DateTime.now();
     let nextScheduledDate = DateTime.fromISO(rule.nextGenerationAt);
     let scheduledDate = nextScheduledDate;
@@ -89,16 +83,6 @@ export async function processRule(
         millisecond: now.millisecond,
     });
 
-    // TODO: remove after resolving double-trigger bug
-    addLogEntry("Creating transaction for rule", "RULE_TX", {
-        ruleId: rule.id,
-        rulePeriod: computeRulePeriod(scheduledDate, rule),
-        oldNextGenerationAt: rule.nextGenerationAt,
-        transactedAt: toIsoString(newTransactionTimestamp),
-        scheduledDate: toIsoString(scheduledDate),
-        now: toIsoString(now),
-    });
-
     await createTransaction({
         transactedAt: toIsoString(newTransactionTimestamp),
         amount: rule.amount,
@@ -115,20 +99,10 @@ export async function processRule(
         toIsoString(nextScheduledDate),
         utcNowString(),
     );
-
-    // TODO: remove after resolving double-trigger bug
-    addLogEntry("Rule advanced", "RULE_ADVANCED", {
-        ruleId: rule.id,
-        oldNextGenerationAt: rule.nextGenerationAt,
-        newNextGenerationAt: toIsoString(nextScheduledDate),
-        scheduledDate: toIsoString(scheduledDate),
-        now: toIsoString(now),
-    });
 }
 
 export async function runRecurringRunner(
     queryClient: QueryClient,
-    addLoggerEntry: (message: string, logcode: string, data?: unknown) => void,
 ): Promise<void> {
     if (isRunnerRunning) {
         return;
@@ -139,9 +113,7 @@ export async function runRecurringRunner(
         const dueRules = await getDueRecurringRules();
         if (dueRules.length === 0) return;
 
-        await Promise.allSettled(
-            dueRules.map((rule) => processRule(rule, addLoggerEntry)),
-        );
+        await Promise.allSettled(dueRules.map((rule) => processRule(rule)));
         await queryClient.invalidateQueries();
     } finally {
         isRunnerRunning = false;
@@ -150,11 +122,10 @@ export async function runRecurringRunner(
 
 export function useRecurringRunner() {
     const queryClient = useQueryClient();
-    const { addLoggerEntry } = useLogger();
 
     const run = useCallback(
-        () => runRecurringRunner(queryClient, addLoggerEntry),
-        [queryClient, addLoggerEntry],
+        () => runRecurringRunner(queryClient),
+        [queryClient],
     );
 
     useEffect(() => {
