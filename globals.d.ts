@@ -5,6 +5,10 @@
 // The build pipeline resolves them regardless; these declarations
 // only exist to align static type checking with bundler behavior.
 declare module "*.css";
+declare module "*.png" {
+    const content: import("next/dist/shared/lib/image-external").StaticImageData;
+    export default content;
+}
 declare module "*.svg" {
     const src: string;
     export default src;
