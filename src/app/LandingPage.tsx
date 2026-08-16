@@ -1,7 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
+
+import landingAnimationApng from "@/assets/landing-animation.png";
 import {
     DESIGNER_WEBSITE,
     DEVELOPER_WEBSITE,
@@ -36,24 +39,17 @@ export default function LandingPage() {
     return (
         <div className="flex max-h-screen min-h-screen flex-col justify-center overflow-y-auto px-4 py-8">
             <div className="mx-auto flex max-h-screen max-w-lg flex-col gap-12 p-8">
-                <div className="flex flex-col gap-6">
-                    <div className="flex items-center gap-4">
-                        <h1 className="text-3xl font-bold tracking-tight">
-                            Pangolog
-                        </h1>
-                        <div className="border-l-2 pl-4">
-                            <p className="text-foreground font-mono text-sm">
-                                log
-                            </p>
-                            <p className="text-muted font-mono text-sm">
-                                /lɔːɡ/ (verb)
-                            </p>
-                            <p className="text-muted font-mono text-sm">
-                                To add an entry in a logbook
-                            </p>
-                        </div>
-                    </div>
-                    <p className="text-muted">
+                <div className="flex flex-col items-center gap-4">
+                    <Image
+                        className="max-h-sm max-w-sm"
+                        src={landingAnimationApng}
+                        alt="Pangolog landing page animation"
+                        priority
+                    />
+                    <h1 className="text-3xl font-bold tracking-tight">
+                        Pangolog
+                    </h1>
+                    <p className="text-muted text-center">
                         A minimalist, offline-first, and privacy-first personal
                         expense tracker.
                     </p>
