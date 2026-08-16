@@ -41,7 +41,7 @@ export default function LandingPage() {
             <div className="mx-auto flex max-h-screen max-w-lg flex-col gap-12 p-8">
                 <div className="flex flex-col items-center gap-4">
                     <Image
-                        className="max-h-sm max-w-sm"
+                        className="max-h-xs max-w-xs"
                         src={landingAnimationApng}
                         alt="Pangolog landing page animation"
                         priority
