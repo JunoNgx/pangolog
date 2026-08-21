@@ -37,11 +37,11 @@ const FEATURES: { headline: string; body: ReactNode }[] = [
 
 export default function LandingPage() {
     return (
-        <div className="flex max-h-screen min-h-screen flex-col justify-center overflow-y-auto px-4 py-8">
-            <div className="mx-auto flex max-h-screen max-w-lg flex-col gap-12 p-8">
+        <div className="flex max-h-screen min-h-screen flex-col justify-center overflow-y-auto px-6 py-8">
+            <div className="mx-auto flex max-h-screen max-w-lg flex-col gap-12">
                 <div className="flex flex-col items-center gap-4">
                     <Image
-                        className="max-h-xs max-w-xs"
+                        className="max-h-xs max-w-xs pt-2"
                         src={landingAnimationApng}
                         alt="Pangolog landing page animation"
                         priority
@@ -78,7 +78,7 @@ export default function LandingPage() {
                     </p>
                 </div>
 
-                <footer className="flex flex-col items-center gap-2">
+                <footer className="flex flex-col items-center gap-2 pb-4">
                     <p className="text-muted text-sm">
                         by{" "}
                         <Link
