@@ -11,7 +11,12 @@ export async function POST() {
     );
 
     if (!session.refreshToken) {
-        return Response.json({ error: "Not authenticated" }, { status: 401 });
+        return Response.json(
+            {
+                error: "Authentication expired. To continue syncing, reconnect from Settings",
+            },
+            { status: 401 },
+        );
     }
 
     const tokenResponse = await fetch("https://oauth2.googleapis.com/token", {
