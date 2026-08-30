@@ -59,7 +59,7 @@ export function CommandPalette({ children }: { children?: React.ReactNode }) {
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
-    const { isConnected } = useSyncProvider();
+    const { isConnected, connect } = useSyncProvider();
     const { sync } = useSyncFn();
     const { theme, setTheme } = useTheme();
 
@@ -184,7 +184,7 @@ export function CommandPalette({ children }: { children?: React.ReactNode }) {
                           group: "Actions",
                           label: "Connect Google Drive to sync",
                           icon: <RefreshCw size={16} />,
-                          action: () => router.push("/settings"),
+                          action: connect,
                       },
                   ]),
             {
@@ -211,7 +211,7 @@ export function CommandPalette({ children }: { children?: React.ReactNode }) {
         ];
 
         return [...navigate, ...create, ...actions];
-    }, [router, createCommand, isConnected, sync, theme, setTheme]);
+    }, [router, createCommand, isConnected, connect, sync, theme, setTheme]);
 
     const filteredCommands = useMemo(() => {
         if (!query) return commands;
