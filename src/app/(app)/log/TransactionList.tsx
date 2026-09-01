@@ -6,7 +6,7 @@ import { BigBuckIndicator } from "@/components/BigBuckIndicator";
 import { MainListContainer } from "@/components/MainListContainer";
 import type { Category, Transaction } from "@/lib/db/types";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
-import { formatAmount, toIsoDateString } from "@/lib/utils";
+import { formatAmount, getCategoryDisplay, toIsoDateString } from "@/lib/utils";
 import { TransactionDialog } from "./TransactionDialog";
 
 interface TransactionListProps {
@@ -130,9 +130,12 @@ function TransactionItem({
 
     const hasCategory = !!category;
     const isUnknownCategory = transaction.categoryId !== null && !category;
-    const categoryLabel = shouldShowUnknownCategoriesAsOne
-        ? "Deleted category"
-        : `Deleted category (${transaction.categoryId})`;
+    const categoryDisplay = getCategoryDisplay(
+        transaction.categoryId,
+        category,
+        shouldShowUnknownCategoriesAsOne,
+    );
+    const categoryLabel = categoryDisplay.name;
     const hasDescription = !!transaction.description;
     const txDate = DateTime.fromISO(transaction.transactedAt);
     const txDay = txDate.day;
@@ -156,7 +159,7 @@ function TransactionItem({
                 aria-label={ariaLabel}
                 onClick={() => openEditDialog(transaction)}
                 className="bg-background hover:border-foreground focus:ring-accent mt-2 flex w-full cursor-pointer gap-2 border-b border-l-4 pt-1 pr-2 pb-1 pl-1 text-left transition-[border-color] outline-none focus:ring-2 focus:ring-offset-2"
-                style={{ borderLeftColor: category?.colour }}
+                style={{ borderLeftColor: categoryDisplay.colour }}
             >
                 <div className="ml-2 min-w-0 grow-4">
                     {hasCategory ? (
