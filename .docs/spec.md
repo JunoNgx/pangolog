@@ -43,6 +43,7 @@ Approach: - TanStack Query as the source of truth for UI - IndexedDB as the loca
     - Emoji icon
 - Update: reorder category priority in the create transaction dialog
 - Delete: remove category
+    - Existing transactions retain references to deleted categories; these are displayed as unknown categories.
 
 ### Advanced financial review:
 
@@ -77,6 +78,7 @@ Approach: - TanStack Query as the source of truth for UI - IndexedDB as the loca
 ### Other settings
 
 - Freely user-set custom currency (as a string), as a prefix or suffix. E.g. `$12` or `12k IDR`. This is merely a cosmetic display unit, and has no bearing on the logic and/or data.
+- Merge unknown categories, enabled by default. When enabled, all unknown category IDs are treated as one category; when disabled, each full ID is shown separately.
 
 ### Offline support
 
@@ -141,7 +143,7 @@ Approach: - TanStack Query as the source of truth for UI - IndexedDB as the loca
     - Stored as local-offset ISO (e.g. `2026-02-15T12:00:00+07:00`) so calendar date bucketing (month/year) is always correct in the user's timezone.
 - `updatedAt`: iso timestamp, date of updating (also for collision resolution logic).
 - `deletedAt`: iso timestamp, date of deletion for soft deletion and sync'ing purpose. `null` by default.
-- `categoryId`: uuid, foreign key to `categories`.
+- `categoryId`: uuid, normally referencing `categories`; may reference a deleted or missing category. `null` means uncategorised.
 - `amount`: integer (Stored as minor units, e.g., 100 for $1.00 or 100 for 100 VND).
     - Must be > 0
 - `year`: integer, derived field from `transactedAt`
@@ -213,6 +215,7 @@ Approach: - TanStack Query as the source of truth for UI - IndexedDB as the loca
 - `isPrefixCurrency`: boolean, whether to display the currency in front of the amount, to differentiate different conventions. E.g. `$12` and `12 SGD`.
 - `isExpenseOnlyMode`: boolean, if true hides income transactions in the log view.
 - `isCategoryAlphabetical`: boolean, if true sorts categories alphabetically in pickers instead of by priority.
+- `shouldShowUnknownCategoriesAsOne`: boolean, if true treats all unknown category IDs as one category, true by default.
 - `updatedAt`: ISO timestamp, used for last-write-wins conflict resolution when syncing settings to Drive and JSON export/import.
 
 ### `useLocalUserSettingsStore` (device-local settings, not synced)
@@ -281,9 +284,10 @@ Approach: - TanStack Query as the source of truth for UI - IndexedDB as the loca
     - Toggle switch: Small Dimes vs Big Bucks
     - Checkbox: (Small Dimes only) Also show Big Buck transactions
     - Calendar month picker: (Small Dimes only) Month to display Small Dimes transactions
-    - Dropdown: Filter transactions by category. Includes "Uncategorised" option, Check all / Uncheck all utility buttons. Active filter indicated on trigger button.
+    - Dropdown: Filter transactions by category. Always includes all active categories, unknown categories from all non-deleted transactions, and "Uncategorised". Unknown categories are merged according to the "Merge unknown categories" setting. Includes Check all / Uncheck all utility buttons. Active filter indicated on trigger button.
     - Empty state: there is no transaction for this month/year
-    - Item without category is marked `uncategorised`
+    - Item without category is marked `uncategorised`.
+    - Items with an unknown category reference are marked `Unknown category`. Editing shows an `Unknown category` option and the notice `Unknown category found: $fullId`.
 
 - Magic input in transaction view, ignore this unless specified:
     - A magic input with multiple function
@@ -310,7 +314,7 @@ Approach: - TanStack Query as the source of truth for UI - IndexedDB as the loca
     - Toggle switch: monthly vs yearly.
     - Toggle switch: Small Dimes vs Big Bucks (yearly only).
     - Checkbox: include Big Buck transactions alongside dimes (monthly and yearly, Small Dimes mode only).
-    - Data: Segmented horizontal bar for expenses and incomes, each with a legend (category icon, name, amount, %). Categories below 3% are collapsed into "Other".
+    - Data: Segmented horizontal bar for expenses and incomes, each with a legend (category icon, name, amount, %). Unknown categories are merged according to the "Merge unknown categories" setting.
 
 - Landing page
     - Overview description of the app.

@@ -100,6 +100,9 @@ export const RESTORE_SYNC_THRESHOLD_MS = 24 * 60 * 60 * 1000;
 /* DISPLAY */
 export const VIEW_DISPLAY_MODES = ["dimes", "bucks", "all"] as const;
 export const UNCATEGORISED_ID = "__uncategorised__";
+export const UNKNOWN_CATEGORY_ID = "__unknown_category__";
+export const UNCATEGORISED_COLOUR = "#9ca3af";
+export const UNKNOWN_CATEGORY_COLOUR = "#f97316";
 
 /* PERSIST STORES */
 export const PERSIST_SUMMARY_VIEW = "pangolog-summary-view-settings";

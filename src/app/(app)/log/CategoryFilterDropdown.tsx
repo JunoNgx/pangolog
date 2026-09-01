@@ -4,13 +4,13 @@ import { BigBuckIndicator } from "@/components/BigBuckIndicator";
 import { ChipLabel } from "@/components/ChipLabel";
 import { UNCATEGORISED_ID } from "@/lib/constants";
 import type { Category } from "@/lib/db/types";
+import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
 
 interface CategoryFilterDropdownProps {
     categories: Category[];
+    unknownCategoryIds: string[];
     selectedIds: string[] | null;
     onChange: (ids: string[] | null) => void;
-    activeCategoryIds: Set<string>;
-    hasUncategorised: boolean;
     buckCategoryIds: Set<string>;
 }
 
@@ -54,23 +54,40 @@ function CategoryFilterItem({
 
 export function CategoryFilterDropdown({
     categories,
+    unknownCategoryIds,
     selectedIds,
     onChange,
-    activeCategoryIds,
-    hasUncategorised,
     buckCategoryIds,
 }: CategoryFilterDropdownProps) {
-    const activeCategories = categories.filter((c) =>
-        activeCategoryIds.has(c.id),
+    const shouldShowUnknownCategoriesAsOne = useProfileSettingsStore(
+        (state) => state.shouldShowUnknownCategoriesAsOne,
     );
+    const unknownCategoryIdSet = new Set(unknownCategoryIds);
     const allIds = [
-        ...(hasUncategorised ? [UNCATEGORISED_ID] : []),
-        ...activeCategories.map((c) => c.id),
+        UNCATEGORISED_ID,
+        ...categories.map((category) => category.id),
+        ...unknownCategoryIds,
     ];
-    const totalCount = allIds.length;
-    const selectedCount =
-        selectedIds === null ? totalCount : selectedIds.length;
+    const hasUnknownCategories = unknownCategoryIds.length > 0;
+    const totalCount =
+        categories.length +
+        1 +
+        (shouldShowUnknownCategoriesAsOne
+            ? Number(hasUnknownCategories)
+            : unknownCategoryIds.length);
     const isFiltered = selectedIds !== null;
+    const isUnknownCategorySelected =
+        selectedIds === null ||
+        (hasUnknownCategories &&
+            unknownCategoryIds.every((id) => selectedIds.includes(id)));
+    const selectedCount =
+        selectedIds === null
+            ? totalCount
+            : selectedIds.filter((id) => !unknownCategoryIdSet.has(id)).length +
+              (shouldShowUnknownCategoriesAsOne
+                  ? Number(isUnknownCategorySelected)
+                  : unknownCategoryIds.filter((id) => selectedIds.includes(id))
+                        .length);
 
     function isChecked(id: string): boolean {
         if (selectedIds === null) return true;
@@ -90,11 +107,30 @@ export function CategoryFilterDropdown({
         );
     }
 
+    function handleUnknownCategoriesToggle() {
+        if (selectedIds === null) {
+            onChange(allIds.filter((id) => !unknownCategoryIdSet.has(id)));
+            return;
+        }
+
+        const nextSelectedIds = isUnknownCategorySelected
+            ? selectedIds.filter((id) => !unknownCategoryIdSet.has(id))
+            : [
+                  ...selectedIds,
+                  ...unknownCategoryIds.filter(
+                      (id) => !selectedIds.includes(id),
+                  ),
+              ];
+        onChange(
+            nextSelectedIds.length === allIds.length ? null : nextSelectedIds,
+        );
+    }
+
     const label = isFiltered
         ? `Filter (${selectedCount}/${totalCount})`
         : "Filter";
 
-    const uncategorisedItem = hasUncategorised && (
+    const uncategorisedItem = (
         <li className="py-1">
             <Checkbox
                 isSelected={isChecked(UNCATEGORISED_ID)}
@@ -113,18 +149,35 @@ export function CategoryFilterDropdown({
     const popoverContent = (
         <div className="flex w-48 flex-col">
             <ul className="flex max-h-64 flex-col overflow-y-auto px-2 py-1">
-                {uncategorisedItem}
-                {activeCategories.map((cat) => (
+                {categories.map((category) => (
                     <CategoryFilterItem
-                        key={cat.id}
-                        name={cat.name}
-                        icon={cat.icon}
-                        isIncomeOnly={cat.isIncomeOnly}
-                        isBuck={buckCategoryIds.has(cat.id)}
-                        isSelected={isChecked(cat.id)}
-                        onToggle={() => handleToggle(cat.id)}
+                        key={category.id}
+                        name={category.name}
+                        icon={category.icon}
+                        isIncomeOnly={category.isIncomeOnly}
+                        isBuck={buckCategoryIds.has(category.id)}
+                        isSelected={isChecked(category.id)}
+                        onToggle={() => handleToggle(category.id)}
                     />
                 ))}
+                {hasUnknownCategories && shouldShowUnknownCategoriesAsOne && (
+                    <CategoryFilterItem
+                        name="Unknown categories"
+                        isSelected={isUnknownCategorySelected}
+                        onToggle={handleUnknownCategoriesToggle}
+                    />
+                )}
+                {hasUnknownCategories &&
+                    !shouldShowUnknownCategoriesAsOne &&
+                    unknownCategoryIds.map((id) => (
+                        <CategoryFilterItem
+                            key={id}
+                            name={`Unknown category (${id})`}
+                            isSelected={isChecked(id)}
+                            onToggle={() => handleToggle(id)}
+                        />
+                    ))}
+                {uncategorisedItem}
             </ul>
             <div className="flex gap-1 border-t pt-2">
                 <Button

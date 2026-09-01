@@ -9,6 +9,11 @@ interface CategoryPickerProps {
     selectedId: string | null;
     onChange: (id: string | null) => void;
     onAdd?: () => void;
+    customOption?: {
+        id: string;
+        label: string;
+    };
+    customOptionDescription?: string;
 }
 
 export function CategoryPicker({
@@ -16,6 +21,8 @@ export function CategoryPicker({
     selectedId,
     onChange,
     onAdd,
+    customOption,
+    customOptionDescription,
 }: CategoryPickerProps) {
     return (
         <div>
@@ -28,6 +35,11 @@ export function CategoryPicker({
                     </Button>
                 )}
             </div>
+            {customOptionDescription && (
+                <p className="text-muted mb-2 text-sm">
+                    {customOptionDescription}
+                </p>
+            )}
             {categories.length === 0 && (
                 <p className="text-muted text-sm">
                     {onAdd
@@ -36,10 +48,35 @@ export function CategoryPicker({
                 </p>
             )}
             <div className="flex flex-wrap gap-2 pb-2">
+                {customOption && (
+                    <Button
+                        id="first-category"
+                        className="h-7 gap-1.5 rounded-md px-2 sm:h-9 sm:rounded-lg"
+                        size="sm"
+                        variant={
+                            selectedId === customOption.id
+                                ? "primary"
+                                : "outline"
+                        }
+                        onPress={() =>
+                            onChange(
+                                selectedId === customOption.id
+                                    ? null
+                                    : customOption.id,
+                            )
+                        }
+                    >
+                        <span>{customOption.label}</span>
+                    </Button>
+                )}
                 {categories.map((cat, index) => (
                     <Button
                         key={cat.id}
-                        id={index === 0 ? "first-category" : undefined}
+                        id={
+                            index === 0 && !customOption
+                                ? "first-category"
+                                : undefined
+                        }
                         className="h-7 gap-1.5 rounded-md px-2 sm:h-9 sm:rounded-lg"
                         size="sm"
                         variant={selectedId === cat.id ? "primary" : "outline"}

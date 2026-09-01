@@ -62,8 +62,11 @@ export function TransactionDialog({
     const deleteTransaction = useDeleteTransaction();
     const restoreTransaction = useRestoreTransaction();
 
-    const { isExpenseOnlyMode, shouldAutoSelectFirstCategory } =
-        useProfileSettingsStore();
+    const {
+        isExpenseOnlyMode,
+        shouldAutoSelectFirstCategory,
+        shouldShowUnknownCategoriesAsOne,
+    } = useProfileSettingsStore();
     const isEditing = !!transaction;
     const formRef = useRef<HTMLFormElement>(null);
     const amountInputRef = useRef<HTMLInputElement>(null);
@@ -93,6 +96,24 @@ export function TransactionDialog({
             return true;
         });
     }, [categories, isBigBuck, isIncome]);
+
+    const originalCategoryId = transaction?.categoryId ?? null;
+    const hasOriginalCategory = (categories ?? []).some(
+        (category) => category.id === originalCategoryId,
+    );
+    const isOriginalCategoryUnknown =
+        isEditing && originalCategoryId !== null && !hasOriginalCategory;
+    const isUnknownCategory =
+        categoryId !== null &&
+        !(categories ?? []).some((category) => category.id === categoryId);
+    const customCategoryOption =
+        isOriginalCategoryUnknown && originalCategoryId !== null
+            ? { id: originalCategoryId, label: "Unknown category" }
+            : undefined;
+    const shouldShowUnknownCategoryDescription =
+        isOriginalCategoryUnknown &&
+        !shouldShowUnknownCategoriesAsOne &&
+        (categoryId === null || isUnknownCategory);
 
     useEffect(() => {
         if (isEditing) return;
@@ -271,6 +292,12 @@ export function TransactionDialog({
                 selectedId={categoryId}
                 onChange={setCategoryId}
                 onAdd={() => setIsCategoryDialogOpen(true)}
+                customOption={customCategoryOption}
+                customOptionDescription={
+                    shouldShowUnknownCategoryDescription
+                        ? `Unknown category found: ${originalCategoryId}`
+                        : undefined
+                }
             />
         </>
     );

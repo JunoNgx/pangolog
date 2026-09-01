@@ -10,18 +10,21 @@ interface ProfileSettingsStore {
     isExpenseOnlyMode: boolean;
     isCategoryAlphabetical: boolean;
     shouldAutoSelectFirstCategory: boolean;
+    shouldShowUnknownCategoriesAsOne: boolean;
     updatedAt: string;
     setCustomCurrency: (value: string) => void;
     setIsPrefixCurrency: (value: boolean) => void;
     setIsExpenseOnlyMode: (value: boolean) => void;
     setIsCategoryAlphabetical: (value: boolean) => void;
     setShouldAutoSelectFirstCategory: (value: boolean) => void;
+    setShouldShowUnknownCategoriesAsOne: (value: boolean) => void;
     applyRemoteSettings: (
         customCurrency: string,
         isPrefixCurrency: boolean,
         isExpenseOnlyMode: boolean,
         isCategoryAlphabetical: boolean,
         shouldAutoSelectFirstCategory: boolean,
+        shouldShowUnknownCategoriesAsOne: boolean,
         updatedAt: string,
     ) => void;
 }
@@ -34,6 +37,7 @@ export const useProfileSettingsStore = create<ProfileSettingsStore>()(
             isExpenseOnlyMode: false,
             isCategoryAlphabetical: false,
             shouldAutoSelectFirstCategory: false,
+            shouldShowUnknownCategoriesAsOne: true,
             updatedAt: toIsoString(DateTime.fromMillis(0)),
             setCustomCurrency: (value) =>
                 set({
@@ -60,12 +64,18 @@ export const useProfileSettingsStore = create<ProfileSettingsStore>()(
                     shouldAutoSelectFirstCategory: value,
                     updatedAt: utcNowString(),
                 }),
+            setShouldShowUnknownCategoriesAsOne: (value) =>
+                set({
+                    shouldShowUnknownCategoriesAsOne: value,
+                    updatedAt: utcNowString(),
+                }),
             applyRemoteSettings: (
                 customCurrency,
                 isPrefixCurrency,
                 isExpenseOnlyMode,
                 isCategoryAlphabetical,
                 shouldAutoSelectFirstCategory,
+                shouldShowUnknownCategoriesAsOne,
                 updatedAt,
             ) =>
                 set({
@@ -74,6 +84,7 @@ export const useProfileSettingsStore = create<ProfileSettingsStore>()(
                     isExpenseOnlyMode,
                     isCategoryAlphabetical,
                     shouldAutoSelectFirstCategory,
+                    shouldShowUnknownCategoriesAsOne,
                     updatedAt,
                 }),
         }),
@@ -86,6 +97,8 @@ export const useProfileSettingsStore = create<ProfileSettingsStore>()(
                 isCategoryAlphabetical: state.isCategoryAlphabetical,
                 shouldAutoSelectFirstCategory:
                     state.shouldAutoSelectFirstCategory,
+                shouldShowUnknownCategoriesAsOne:
+                    state.shouldShowUnknownCategoriesAsOne,
                 updatedAt: state.updatedAt,
             }),
         },

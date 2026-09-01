@@ -1,5 +1,11 @@
 import { toast } from "@heroui/react";
 import { DateTime } from "luxon";
+import {
+    UNCATEGORISED_COLOUR,
+    UNKNOWN_CATEGORY_COLOUR,
+    UNKNOWN_CATEGORY_ID,
+} from "@/lib/constants";
+import type { Category } from "@/lib/db/types";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
 import type { TimeFormat } from "@/lib/types";
 
@@ -104,6 +110,34 @@ export function formatAmount(minorUnits: number): string {
     if (!customCurrency) return value;
     if (isPrefixCurrency) return `${customCurrency}${value}`;
     return `${value} ${customCurrency}`;
+}
+
+export interface CategoryDisplay {
+    name: string;
+    colour: string;
+}
+
+export function getCategoryDisplay(
+    categoryId: string | null,
+    category: Category | undefined,
+    shouldShowUnknownCategoriesAsOne: boolean,
+): CategoryDisplay {
+    if (categoryId === null) {
+        return { name: "Uncategorised", colour: UNCATEGORISED_COLOUR };
+    }
+
+    if (category) return { name: category.name, colour: category.colour };
+
+    if (categoryId === UNKNOWN_CATEGORY_ID) {
+        return {
+            name: "Unknown categories",
+            colour: UNKNOWN_CATEGORY_COLOUR,
+        };
+    }
+
+    let categoryName = `Unknown category (${categoryId})`;
+    if (shouldShowUnknownCategoriesAsOne) categoryName = "Unknown category";
+    return { name: categoryName, colour: UNKNOWN_CATEGORY_COLOUR };
 }
 
 export function formatAmountShort(minorUnits: number): string {

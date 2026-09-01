@@ -6,6 +6,7 @@ import { ConfigWrapper } from "@/components/ConfigWrapper";
 import { MainListContainer } from "@/components/MainListContainer";
 import { PeriodPicker } from "@/components/PeriodPicker";
 import { TransactionTypeDropdown } from "@/components/TransactionTypeDropdown";
+import { UNKNOWN_CATEGORY_ID } from "@/lib/constants";
 import { useRouteHeader } from "@/lib/context/RouteHeaderContext";
 import type { Category, Transaction } from "@/lib/db/types";
 import { useCategories } from "@/lib/hooks/useCategories";
@@ -16,10 +17,8 @@ import {
 } from "@/lib/hooks/useTransactions";
 import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
 import { useSummaryViewSettingsStore } from "@/lib/store/useSummaryViewSettingsStore";
-import { formatAmount } from "@/lib/utils";
+import { formatAmount, getCategoryDisplay } from "@/lib/utils";
 import ExpensesByMonthChart from "./ExpensesByMonthChart";
-
-const OTHER_COLOUR = "#9ca3af";
 
 interface CategorySlice {
     categoryId: string | null;
@@ -39,6 +38,7 @@ function buildSlices(
     transactions: Transaction[],
     categoryMap: Map<string, Category>,
     isIncome: boolean,
+    shouldShowUnknownCategoriesAsOne: boolean,
 ): SliceResult {
     const filteredTransactions = transactions.filter(
         (t) => t.isIncome === isIncome,
@@ -46,8 +46,16 @@ function buildSlices(
 
     const totalsById = new Map<string | null, number>();
     for (const tx of filteredTransactions) {
-        const key = tx.categoryId ?? null;
-        totalsById.set(key, (totalsById.get(key) ?? 0) + tx.amount);
+        const isUnknownCategory =
+            tx.categoryId !== null && !categoryMap.has(tx.categoryId);
+        let categoryKey = tx.categoryId;
+        if (isUnknownCategory && shouldShowUnknownCategoriesAsOne) {
+            categoryKey = UNKNOWN_CATEGORY_ID;
+        }
+        totalsById.set(
+            categoryKey,
+            (totalsById.get(categoryKey) ?? 0) + tx.amount,
+        );
     }
 
     const grandTotal = [...totalsById.values()].reduce((a, b) => a + b, 0);
@@ -57,13 +65,19 @@ function buildSlices(
 
     for (const [categoryId, total] of totalsById) {
         const pct = (total / grandTotal) * 100;
-        const cat = categoryId ? categoryMap.get(categoryId) : undefined;
+        const category =
+            categoryId === null ? undefined : categoryMap.get(categoryId);
+        const categoryDisplay = getCategoryDisplay(
+            categoryId,
+            category,
+            shouldShowUnknownCategoriesAsOne,
+        );
 
         slices.push({
             categoryId,
-            name: cat?.name ?? "Uncategorised",
-            icon: cat?.icon ?? "",
-            colour: cat?.colour ?? OTHER_COLOUR,
+            name: categoryDisplay.name,
+            icon: category?.icon ?? "",
+            colour: categoryDisplay.colour,
             total,
             pct,
         });
@@ -137,7 +151,8 @@ function SegmentBar({ label, slices, total }: SegmentBarProps) {
 }
 
 export default function SummaryClient() {
-    const { isExpenseOnlyMode } = useProfileSettingsStore();
+    const { isExpenseOnlyMode, shouldShowUnknownCategoriesAsOne } =
+        useProfileSettingsStore();
     const {
         isYearly,
         setIsYearly,
@@ -221,12 +236,24 @@ export default function SummaryClient() {
     ]);
 
     const { slices: expenseSlices, total: expenseTotal } = useMemo(
-        () => buildSlices(transactions, categoryMap, false),
-        [transactions, categoryMap],
+        () =>
+            buildSlices(
+                transactions,
+                categoryMap,
+                false,
+                shouldShowUnknownCategoriesAsOne,
+            ),
+        [transactions, categoryMap, shouldShowUnknownCategoriesAsOne],
     );
     const { slices: incomeSlices, total: incomeTotal } = useMemo(
-        () => buildSlices(transactions, categoryMap, true),
-        [transactions, categoryMap],
+        () =>
+            buildSlices(
+                transactions,
+                categoryMap,
+                true,
+                shouldShowUnknownCategoriesAsOne,
+            ),
+        [transactions, categoryMap, shouldShowUnknownCategoriesAsOne],
     );
 
     const expenseLabel = isYearly ? "Expenses by category" : "Expenses";
