@@ -130,13 +130,13 @@ export function getCategoryDisplay(
 
     if (categoryId === UNKNOWN_CATEGORY_ID) {
         return {
-            name: "Deleted categories",
+            name: "Unknown categories",
             colour: UNKNOWN_CATEGORY_COLOUR,
         };
     }
 
-    let categoryName = `Deleted category (${categoryId})`;
-    if (shouldShowUnknownCategoriesAsOne) categoryName = "Deleted category";
+    let categoryName = `Unknown category (${categoryId})`;
+    if (shouldShowUnknownCategoriesAsOne) categoryName = "Unknown category";
     return { name: categoryName, colour: UNKNOWN_CATEGORY_COLOUR };
 }
 

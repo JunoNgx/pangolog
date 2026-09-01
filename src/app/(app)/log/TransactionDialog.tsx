@@ -99,7 +99,7 @@ export function TransactionDialog({
         categoryId !== null &&
         !(categories ?? []).some((category) => category.id === categoryId);
     const customCategoryOption = isUnknownCategory
-        ? { id: categoryId, label: "Deleted category" }
+        ? { id: categoryId, label: "Unknown category" }
         : undefined;
 
     useEffect(() => {

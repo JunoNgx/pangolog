@@ -162,7 +162,7 @@ export function CategoryFilterDropdown({
                 ))}
                 {hasUnknownCategories && shouldShowUnknownCategoriesAsOne && (
                     <CategoryFilterItem
-                        name="Deleted categories"
+                        name="Unknown categories"
                         isSelected={isUnknownCategorySelected}
                         onToggle={handleUnknownCategoriesToggle}
                     />
@@ -172,7 +172,7 @@ export function CategoryFilterDropdown({
                     unknownCategoryIds.map((id) => (
                         <CategoryFilterItem
                             key={id}
-                            name={`Deleted category (${id})`}
+                            name={`Unknown category (${id})`}
                             isSelected={isChecked(id)}
                             onToggle={() => handleToggle(id)}
                         />
