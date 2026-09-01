@@ -5,6 +5,7 @@ import { useState } from "react";
 import { BigBuckIndicator } from "@/components/BigBuckIndicator";
 import { MainListContainer } from "@/components/MainListContainer";
 import type { Category, Transaction } from "@/lib/db/types";
+import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
 import { formatAmount, toIsoDateString } from "@/lib/utils";
 import { TransactionDialog } from "./TransactionDialog";
 
@@ -122,9 +123,16 @@ function TransactionItem({
     category,
     openEditDialog,
 }: TransactionItemProps) {
+    const shouldShowUnknownCategoriesAsOne = useProfileSettingsStore(
+        (state) => state.shouldShowUnknownCategoriesAsOne,
+    );
     const amountDisplay = formatAmount(transaction.amount);
 
     const hasCategory = !!category;
+    const isUnknownCategory = transaction.categoryId !== null && !category;
+    const categoryLabel = shouldShowUnknownCategoriesAsOne
+        ? "Deleted category"
+        : `Deleted category (${transaction.categoryId})`;
     const hasDescription = !!transaction.description;
     const txDate = DateTime.fromISO(transaction.transactedAt);
     const txDay = txDate.day;
@@ -133,7 +141,7 @@ function TransactionItem({
 
     const ariaLabel = [
         transaction.description,
-        category?.name,
+        category?.name ?? (isUnknownCategory ? categoryLabel : undefined),
         transaction.isIncome ? "income" : "expense",
         amountDisplay,
         `${txDay} ${txMonth}`,
@@ -158,6 +166,8 @@ function TransactionItem({
                                 {category.name}
                             </span>
                         </p>
+                    ) : isUnknownCategory ? (
+                        <p className="text-muted truncate">{categoryLabel}</p>
                     ) : (
                         <p className="text-muted">(no category)</p>
                     )}

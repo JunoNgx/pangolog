@@ -4,9 +4,11 @@ import { BigBuckIndicator } from "@/components/BigBuckIndicator";
 import { ChipLabel } from "@/components/ChipLabel";
 import { UNCATEGORISED_ID } from "@/lib/constants";
 import type { Category } from "@/lib/db/types";
+import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
 
 interface CategoryFilterDropdownProps {
     categories: Category[];
+    unknownCategoryIds: string[];
     selectedIds: string[] | null;
     onChange: (ids: string[] | null) => void;
     buckCategoryIds: Set<string>;
@@ -52,18 +54,40 @@ function CategoryFilterItem({
 
 export function CategoryFilterDropdown({
     categories,
+    unknownCategoryIds,
     selectedIds,
     onChange,
     buckCategoryIds,
 }: CategoryFilterDropdownProps) {
+    const shouldShowUnknownCategoriesAsOne = useProfileSettingsStore(
+        (state) => state.shouldShowUnknownCategoriesAsOne,
+    );
+    const unknownCategoryIdSet = new Set(unknownCategoryIds);
     const allIds = [
         UNCATEGORISED_ID,
         ...categories.map((category) => category.id),
+        ...unknownCategoryIds,
     ];
-    const totalCount = allIds.length;
-    const selectedCount =
-        selectedIds === null ? totalCount : selectedIds.length;
+    const hasUnknownCategories = unknownCategoryIds.length > 0;
+    const totalCount =
+        categories.length +
+        1 +
+        (shouldShowUnknownCategoriesAsOne
+            ? Number(hasUnknownCategories)
+            : unknownCategoryIds.length);
     const isFiltered = selectedIds !== null;
+    const isUnknownCategorySelected =
+        selectedIds === null ||
+        (hasUnknownCategories &&
+            unknownCategoryIds.every((id) => selectedIds.includes(id)));
+    const selectedCount =
+        selectedIds === null
+            ? totalCount
+            : selectedIds.filter((id) => !unknownCategoryIdSet.has(id)).length +
+              (shouldShowUnknownCategoriesAsOne
+                  ? Number(isUnknownCategorySelected)
+                  : unknownCategoryIds.filter((id) => selectedIds.includes(id))
+                        .length);
 
     function isChecked(id: string): boolean {
         if (selectedIds === null) return true;
@@ -80,6 +104,25 @@ export function CategoryFilterDropdown({
             : [...selectedIds, id];
         onChange(
             nextSelectedIds.length === totalCount ? null : nextSelectedIds,
+        );
+    }
+
+    function handleUnknownCategoriesToggle() {
+        if (selectedIds === null) {
+            onChange(allIds.filter((id) => !unknownCategoryIdSet.has(id)));
+            return;
+        }
+
+        const nextSelectedIds = isUnknownCategorySelected
+            ? selectedIds.filter((id) => !unknownCategoryIdSet.has(id))
+            : [
+                  ...selectedIds,
+                  ...unknownCategoryIds.filter(
+                      (id) => !selectedIds.includes(id),
+                  ),
+              ];
+        onChange(
+            nextSelectedIds.length === allIds.length ? null : nextSelectedIds,
         );
     }
 
@@ -117,6 +160,23 @@ export function CategoryFilterDropdown({
                         onToggle={() => handleToggle(category.id)}
                     />
                 ))}
+                {hasUnknownCategories && shouldShowUnknownCategoriesAsOne && (
+                    <CategoryFilterItem
+                        name="Deleted categories"
+                        isSelected={isUnknownCategorySelected}
+                        onToggle={handleUnknownCategoriesToggle}
+                    />
+                )}
+                {hasUnknownCategories &&
+                    !shouldShowUnknownCategoriesAsOne &&
+                    unknownCategoryIds.map((id) => (
+                        <CategoryFilterItem
+                            key={id}
+                            name={`Deleted category (${id})`}
+                            isSelected={isChecked(id)}
+                            onToggle={() => handleToggle(id)}
+                        />
+                    ))}
                 {uncategorisedItem}
             </ul>
             <div className="flex gap-1 border-t pt-2">

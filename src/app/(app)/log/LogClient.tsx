@@ -17,6 +17,7 @@ import { useCategories } from "@/lib/hooks/useCategories";
 import { useHotkey } from "@/lib/hooks/useHotkey";
 import { useSyncFn } from "@/lib/hooks/useSync";
 import { useLogViewSettingsStore } from "@/lib/store/useLogViewSettingsStore";
+import { useProfileSettingsStore } from "@/lib/store/useProfileSettingsStore";
 
 const OfflineIndicator = dynamic(
     () =>
@@ -82,6 +83,9 @@ export default function LogClient() {
     const [selectedCategoryIds, setSelectedCategoryIds] = useState<
         string[] | null
     >(null);
+    const _shouldShowUnknownCategoriesAsOne = useProfileSettingsStore(
+        (state) => state.shouldShowUnknownCategoriesAsOne,
+    );
 
     const [isSearchMode, setIsSearchMode] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
@@ -95,6 +99,29 @@ export default function LogClient() {
     const { data: yearlyTransactions } = useTransactionsByYear(selectedYear);
     const { data: allTransactions } = useAllTransactions();
     const { data: categories } = useCategories();
+
+    const unknownCategoryIds = useMemo(() => {
+        const categoryIds = new Set(
+            (categories ?? []).map((category) => category.id),
+        );
+        const unknownIds = new Set<string>();
+        for (const transaction of allTransactions ?? []) {
+            if (
+                transaction.deletedAt !== null ||
+                transaction.categoryId === null
+            ) {
+                continue;
+            }
+            if (!categoryIds.has(transaction.categoryId)) {
+                unknownIds.add(transaction.categoryId);
+            }
+        }
+        return [...unknownIds].sort();
+    }, [allTransactions, categories]);
+
+    useEffect(() => {
+        setSelectedCategoryIds(null);
+    }, []);
 
     function handleSearchHotkey() {
         if (isSearchMode) {
@@ -235,6 +262,7 @@ export default function LogClient() {
             </span>
             <CategoryFilterDropdown
                 categories={categories ?? []}
+                unknownCategoryIds={unknownCategoryIds}
                 selectedIds={selectedCategoryIds}
                 onChange={setSelectedCategoryIds}
                 buckCategoryIds={buckCategoryIds}

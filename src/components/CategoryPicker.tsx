@@ -9,6 +9,11 @@ interface CategoryPickerProps {
     selectedId: string | null;
     onChange: (id: string | null) => void;
     onAdd?: () => void;
+    customOption?: {
+        id: string;
+        label: string;
+    };
+    customOptionNotice?: string;
 }
 
 export function CategoryPicker({
@@ -16,6 +21,8 @@ export function CategoryPicker({
     selectedId,
     onChange,
     onAdd,
+    customOption,
+    customOptionNotice,
 }: CategoryPickerProps) {
     return (
         <div>
@@ -28,6 +35,9 @@ export function CategoryPicker({
                     </Button>
                 )}
             </div>
+            {customOptionNotice && (
+                <p className="text-muted mb-2 text-sm">{customOptionNotice}</p>
+            )}
             {categories.length === 0 && (
                 <p className="text-muted text-sm">
                     {onAdd
@@ -55,6 +65,26 @@ export function CategoryPicker({
                         <span>{cat.name}</span>
                     </Button>
                 ))}
+                {customOption && (
+                    <Button
+                        className="h-7 gap-1.5 rounded-md px-2 sm:h-9 sm:rounded-lg"
+                        size="sm"
+                        variant={
+                            selectedId === customOption.id
+                                ? "primary"
+                                : "outline"
+                        }
+                        onPress={() =>
+                            onChange(
+                                selectedId === customOption.id
+                                    ? null
+                                    : customOption.id,
+                            )
+                        }
+                    >
+                        <span>{customOption.label}</span>
+                    </Button>
+                )}
             </div>
         </div>
     );

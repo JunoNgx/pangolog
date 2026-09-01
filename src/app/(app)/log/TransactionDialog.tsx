@@ -94,6 +94,14 @@ export function TransactionDialog({
         });
     }, [categories, isBigBuck, isIncome]);
 
+    const isUnknownCategory =
+        isEditing &&
+        categoryId !== null &&
+        !(categories ?? []).some((category) => category.id === categoryId);
+    const customCategoryOption = isUnknownCategory
+        ? { id: categoryId, label: "Deleted category" }
+        : undefined;
+
     useEffect(() => {
         if (isEditing) return;
         if (!shouldAutoSelectFirstCategory) return;
@@ -271,6 +279,12 @@ export function TransactionDialog({
                 selectedId={categoryId}
                 onChange={setCategoryId}
                 onAdd={() => setIsCategoryDialogOpen(true)}
+                customOption={customCategoryOption}
+                customOptionNotice={
+                    isUnknownCategory
+                        ? `Unknown category found: ${categoryId}`
+                        : undefined
+                }
             />
         </>
     );
