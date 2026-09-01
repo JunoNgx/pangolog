@@ -46,27 +46,9 @@ export function CategoryPicker({
                 </p>
             )}
             <div className="flex flex-wrap gap-2 pb-2">
-                {categories.map((cat, index) => (
-                    <Button
-                        key={cat.id}
-                        id={index === 0 ? "first-category" : undefined}
-                        className="h-7 gap-1.5 rounded-md px-2 sm:h-9 sm:rounded-lg"
-                        size="sm"
-                        variant={selectedId === cat.id ? "primary" : "outline"}
-                        onPress={() =>
-                            onChange(selectedId === cat.id ? null : cat.id)
-                        }
-                    >
-                        <span
-                            className="inline-block h-5 w-1 sm:h-6"
-                            style={{ backgroundColor: cat.colour }}
-                        />
-                        <span>{cat.icon}</span>
-                        <span>{cat.name}</span>
-                    </Button>
-                ))}
                 {customOption && (
                     <Button
+                        id="first-category"
                         className="h-7 gap-1.5 rounded-md px-2 sm:h-9 sm:rounded-lg"
                         size="sm"
                         variant={
@@ -85,6 +67,29 @@ export function CategoryPicker({
                         <span>{customOption.label}</span>
                     </Button>
                 )}
+                {categories.map((cat, index) => (
+                    <Button
+                        key={cat.id}
+                        id={
+                            index === 0 && !customOption
+                                ? "first-category"
+                                : undefined
+                        }
+                        className="h-7 gap-1.5 rounded-md px-2 sm:h-9 sm:rounded-lg"
+                        size="sm"
+                        variant={selectedId === cat.id ? "primary" : "outline"}
+                        onPress={() =>
+                            onChange(selectedId === cat.id ? null : cat.id)
+                        }
+                    >
+                        <span
+                            className="inline-block h-5 w-1 sm:h-6"
+                            style={{ backgroundColor: cat.colour }}
+                        />
+                        <span>{cat.icon}</span>
+                        <span>{cat.name}</span>
+                    </Button>
+                ))}
             </div>
         </div>
     );
