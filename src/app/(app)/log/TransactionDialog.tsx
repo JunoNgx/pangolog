@@ -62,8 +62,11 @@ export function TransactionDialog({
     const deleteTransaction = useDeleteTransaction();
     const restoreTransaction = useRestoreTransaction();
 
-    const { isExpenseOnlyMode, shouldAutoSelectFirstCategory } =
-        useProfileSettingsStore();
+    const {
+        isExpenseOnlyMode,
+        shouldAutoSelectFirstCategory,
+        shouldShowUnknownCategoriesAsOne,
+    } = useProfileSettingsStore();
     const isEditing = !!transaction;
     const formRef = useRef<HTMLFormElement>(null);
     const amountInputRef = useRef<HTMLInputElement>(null);
@@ -280,8 +283,8 @@ export function TransactionDialog({
                 onChange={setCategoryId}
                 onAdd={() => setIsCategoryDialogOpen(true)}
                 customOption={customCategoryOption}
-                customOptionNotice={
-                    isUnknownCategory
+                customOptionDescription={
+                    isUnknownCategory && !shouldShowUnknownCategoriesAsOne
                         ? `Unknown category found: ${categoryId}`
                         : undefined
                 }

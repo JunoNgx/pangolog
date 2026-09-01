@@ -13,7 +13,7 @@ interface CategoryPickerProps {
         id: string;
         label: string;
     };
-    customOptionNotice?: string;
+    customOptionDescription?: string;
 }
 
 export function CategoryPicker({
@@ -22,7 +22,7 @@ export function CategoryPicker({
     onChange,
     onAdd,
     customOption,
-    customOptionNotice,
+    customOptionDescription,
 }: CategoryPickerProps) {
     return (
         <div>
@@ -35,8 +35,10 @@ export function CategoryPicker({
                     </Button>
                 )}
             </div>
-            {customOptionNotice && (
-                <p className="text-muted mb-2 text-sm">{customOptionNotice}</p>
+            {customOptionDescription && (
+                <p className="text-muted mb-2 text-sm">
+                    {customOptionDescription}
+                </p>
             )}
             {categories.length === 0 && (
                 <p className="text-muted text-sm">
