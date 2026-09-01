@@ -419,9 +419,9 @@ export default function SettingsClient() {
                             <Checkbox.Content>
                                 <Label>Merge unknown categories</Label>
                                 <span className="text-muted text-xs">
-                                    All categories with missing reference will
-                                    be treated as the same without an ID
-                                    specified
+                                    Groups transactions with unavailable
+                                    categories together instead of showing
+                                    separate IDs
                                 </span>
                             </Checkbox.Content>
                         </Checkbox>
