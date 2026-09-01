@@ -183,19 +183,6 @@ export default function LogClient() {
         });
     }, [transactions, selectedCategoryIds]);
 
-    const activeCategoryIds = useMemo(() => {
-        const ids = new Set<string>();
-        for (const tx of transactions) {
-            if (tx.categoryId) ids.add(tx.categoryId);
-        }
-        return ids;
-    }, [transactions]);
-
-    const hasUncategorised = useMemo(
-        () => transactions.some((tx) => tx.categoryId === null),
-        [transactions],
-    );
-
     const buckCategoryIds = useMemo(() => {
         const ids = new Set<string>();
         for (const tx of queriedBucks) {
@@ -246,16 +233,12 @@ export default function LogClient() {
                     )}
                 </span>
             </span>
-            {(activeCategoryIds.size > 0 || hasUncategorised) && (
-                <CategoryFilterDropdown
-                    categories={categories ?? []}
-                    selectedIds={selectedCategoryIds}
-                    onChange={setSelectedCategoryIds}
-                    activeCategoryIds={activeCategoryIds}
-                    hasUncategorised={hasUncategorised}
-                    buckCategoryIds={buckCategoryIds}
-                />
-            )}
+            <CategoryFilterDropdown
+                categories={categories ?? []}
+                selectedIds={selectedCategoryIds}
+                onChange={setSelectedCategoryIds}
+                buckCategoryIds={buckCategoryIds}
+            />
         </div>
     );
 

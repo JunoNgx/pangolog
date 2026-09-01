@@ -9,8 +9,6 @@ interface CategoryFilterDropdownProps {
     categories: Category[];
     selectedIds: string[] | null;
     onChange: (ids: string[] | null) => void;
-    activeCategoryIds: Set<string>;
-    hasUncategorised: boolean;
     buckCategoryIds: Set<string>;
 }
 
@@ -56,16 +54,11 @@ export function CategoryFilterDropdown({
     categories,
     selectedIds,
     onChange,
-    activeCategoryIds,
-    hasUncategorised,
     buckCategoryIds,
 }: CategoryFilterDropdownProps) {
-    const activeCategories = categories.filter((c) =>
-        activeCategoryIds.has(c.id),
-    );
     const allIds = [
-        ...(hasUncategorised ? [UNCATEGORISED_ID] : []),
-        ...activeCategories.map((c) => c.id),
+        UNCATEGORISED_ID,
+        ...categories.map((category) => category.id),
     ];
     const totalCount = allIds.length;
     const selectedCount =
@@ -94,7 +87,7 @@ export function CategoryFilterDropdown({
         ? `Filter (${selectedCount}/${totalCount})`
         : "Filter";
 
-    const uncategorisedItem = hasUncategorised && (
+    const uncategorisedItem = (
         <li className="py-1">
             <Checkbox
                 isSelected={isChecked(UNCATEGORISED_ID)}
@@ -113,18 +106,18 @@ export function CategoryFilterDropdown({
     const popoverContent = (
         <div className="flex w-48 flex-col">
             <ul className="flex max-h-64 flex-col overflow-y-auto px-2 py-1">
-                {uncategorisedItem}
-                {activeCategories.map((cat) => (
+                {categories.map((category) => (
                     <CategoryFilterItem
-                        key={cat.id}
-                        name={cat.name}
-                        icon={cat.icon}
-                        isIncomeOnly={cat.isIncomeOnly}
-                        isBuck={buckCategoryIds.has(cat.id)}
-                        isSelected={isChecked(cat.id)}
-                        onToggle={() => handleToggle(cat.id)}
+                        key={category.id}
+                        name={category.name}
+                        icon={category.icon}
+                        isIncomeOnly={category.isIncomeOnly}
+                        isBuck={buckCategoryIds.has(category.id)}
+                        isSelected={isChecked(category.id)}
+                        onToggle={() => handleToggle(category.id)}
                     />
                 ))}
+                {uncategorisedItem}
             </ul>
             <div className="flex gap-1 border-t pt-2">
                 <Button
