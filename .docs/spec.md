@@ -287,7 +287,7 @@ Approach: - TanStack Query as the source of truth for UI - IndexedDB as the loca
     - Dropdown: Filter transactions by category. Always includes all active categories, unknown categories from all non-deleted transactions, and "Uncategorised". Unknown categories are merged according to the "Merge unknown categories" setting. Includes Check all / Uncheck all utility buttons. Active filter indicated on trigger button.
     - Empty state: there is no transaction for this month/year
     - Item without category is marked `uncategorised`.
-    - Items with an unknown category reference are marked `Deleted category`. Editing shows a `Deleted category` option and the notice `Unknown category found: $fullId`.
+    - Items with an unknown category reference are marked `Unknown category`. Editing shows an `Unknown category` option and the notice `Unknown category found: $fullId`.
 
 - Magic input in transaction view, ignore this unless specified:
     - A magic input with multiple function
