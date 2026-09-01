@@ -97,13 +97,23 @@ export function TransactionDialog({
         });
     }, [categories, isBigBuck, isIncome]);
 
+    const originalCategoryId = transaction?.categoryId ?? null;
+    const hasOriginalCategory = (categories ?? []).some(
+        (category) => category.id === originalCategoryId,
+    );
+    const isOriginalCategoryUnknown =
+        isEditing && originalCategoryId !== null && !hasOriginalCategory;
     const isUnknownCategory =
-        isEditing &&
         categoryId !== null &&
         !(categories ?? []).some((category) => category.id === categoryId);
-    const customCategoryOption = isUnknownCategory
-        ? { id: categoryId, label: "Unknown category" }
-        : undefined;
+    const customCategoryOption =
+        isOriginalCategoryUnknown && originalCategoryId !== null
+            ? { id: originalCategoryId, label: "Unknown category" }
+            : undefined;
+    const shouldShowUnknownCategoryDescription =
+        isOriginalCategoryUnknown &&
+        !shouldShowUnknownCategoriesAsOne &&
+        (categoryId === null || isUnknownCategory);
 
     useEffect(() => {
         if (isEditing) return;
@@ -284,8 +294,8 @@ export function TransactionDialog({
                 onAdd={() => setIsCategoryDialogOpen(true)}
                 customOption={customCategoryOption}
                 customOptionDescription={
-                    isUnknownCategory && !shouldShowUnknownCategoriesAsOne
-                        ? `Unknown category found: ${categoryId}`
+                    shouldShowUnknownCategoryDescription
+                        ? `Unknown category found: ${originalCategoryId}`
                         : undefined
                 }
             />
