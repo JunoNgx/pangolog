@@ -19,6 +19,7 @@ export async function buildDataSnapshot(shouldIncludeDeleted = true) {
         isExpenseOnlyMode,
         isCategoryAlphabetical,
         shouldAutoSelectFirstCategory,
+        shouldShowUnknownCategoriesAsOne,
         updatedAt,
     } = useProfileSettingsStore.getState();
 
@@ -30,6 +31,7 @@ export async function buildDataSnapshot(shouldIncludeDeleted = true) {
             isExpenseOnlyMode,
             isCategoryAlphabetical,
             shouldAutoSelectFirstCategory,
+            shouldShowUnknownCategoriesAsOne,
             updatedAt,
         },
         transactions: transactions

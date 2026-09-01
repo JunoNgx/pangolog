@@ -45,11 +45,13 @@ export default function SettingsClient() {
         isExpenseOnlyMode,
         isCategoryAlphabetical,
         shouldAutoSelectFirstCategory,
+        shouldShowUnknownCategoriesAsOne,
         setCustomCurrency,
         setIsPrefixCurrency,
         setIsExpenseOnlyMode,
         setIsCategoryAlphabetical,
         setShouldAutoSelectFirstCategory,
+        setShouldShowUnknownCategoriesAsOne,
     } = useProfileSettingsStore();
     const { isConnected, disconnect } = useSyncProvider();
     const { theme, setTheme } = useTheme();
@@ -404,6 +406,22 @@ export default function SettingsClient() {
                                 </Label>
                                 <span className="text-muted text-xs">
                                     Useful for one frequently-used category
+                                </span>
+                            </Checkbox.Content>
+                        </Checkbox>
+                        <Checkbox
+                            isSelected={shouldShowUnknownCategoriesAsOne}
+                            onChange={setShouldShowUnknownCategoriesAsOne}
+                        >
+                            <Checkbox.Control>
+                                <Checkbox.Indicator />
+                            </Checkbox.Control>
+                            <Checkbox.Content>
+                                <Label>Merge unknown categories</Label>
+                                <span className="text-muted text-xs">
+                                    All categories with missing reference will
+                                    be treated as the same without an ID
+                                    specified
                                 </span>
                             </Checkbox.Content>
                         </Checkbox>

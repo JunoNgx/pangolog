@@ -11,6 +11,7 @@ export interface ProfileSettings {
     isExpenseOnlyMode: boolean;
     isCategoryAlphabetical: boolean;
     shouldAutoSelectFirstCategory: boolean;
+    shouldShowUnknownCategoriesAsOne: boolean;
     updatedAt: string;
 }
 

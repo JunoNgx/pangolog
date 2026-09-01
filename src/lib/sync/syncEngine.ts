@@ -143,6 +143,7 @@ export async function runFullSync(
             remoteSettings.isExpenseOnlyMode ?? false,
             remoteSettings.isCategoryAlphabetical ?? false,
             remoteSettings.shouldAutoSelectFirstCategory ?? false,
+            remoteSettings.shouldShowUnknownCategoriesAsOne ?? true,
             remoteSettings.updatedAt,
         );
     }

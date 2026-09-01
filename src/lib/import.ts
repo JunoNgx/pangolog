@@ -272,6 +272,7 @@ export async function executeImport(data: ImportData): Promise<ImportPreview> {
                 data.settings.isExpenseOnlyMode ?? false,
                 data.settings.isCategoryAlphabetical ?? false,
                 data.settings.shouldAutoSelectFirstCategory ?? false,
+                data.settings.shouldShowUnknownCategoriesAsOne ?? true,
                 data.settings.updatedAt,
             );
         }
