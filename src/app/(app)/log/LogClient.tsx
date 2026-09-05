@@ -320,6 +320,7 @@ export default function LogClient() {
                 <TransactionList
                     transactions={searchResults}
                     categories={categories ?? []}
+                    shouldShowYear={true}
                 />
             ) : (
                 <TransactionList

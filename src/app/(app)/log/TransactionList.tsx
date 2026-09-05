@@ -12,11 +12,13 @@ import { TransactionDialog } from "./TransactionDialog";
 interface TransactionListProps {
     transactions: Transaction[];
     categories: Category[];
+    shouldShowYear?: boolean;
 }
 
 export function TransactionList({
     transactions,
     categories,
+    shouldShowYear = false,
 }: TransactionListProps) {
     const [editingTx, setEditingTx] = useState<Transaction | undefined>();
     const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -60,11 +62,15 @@ export function TransactionList({
         }[]
     >((acc, tx) => {
         const dt = DateTime.fromISO(tx.transactedAt);
-        const dateText = dt.toLocaleString({
+        const dateTextFormatOptions: Intl.DateTimeFormatOptions = {
             weekday: "short",
             day: "numeric",
             month: "short",
-        });
+        };
+        if (shouldShowYear) {
+            dateTextFormatOptions.year = "numeric";
+        }
+        const dateText = dt.toLocaleString(dateTextFormatOptions);
         const dateKey = toIsoDateString(dt);
 
         const lastGroup = acc[acc.length - 1];
