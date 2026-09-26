@@ -51,6 +51,11 @@ const SHORTCUT_GROUPS: ShortcutGroup[] = [
                 keys: ["Ctrl/Cmd", "Enter"],
                 description: "Submit form from anywhere in dialog",
             },
+            {
+                keys: ["A-Z / 0-9"],
+                description:
+                    "With a category focused, focus the next category by first character",
+            },
         ],
     },
     {
