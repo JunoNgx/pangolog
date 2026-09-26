@@ -53,6 +53,7 @@ export function TransactionDialog({
     const [isIncome, setIsIncome] = useState(false);
     const [isBigBuck, setIsBigBuck] = useState(defaultIsBigBuck);
     const [categoryId, setCategoryId] = useState<string | null>(null);
+    const hasUserChangedCategoryRef = useRef(false);
     const [description, setDescription] = useState("");
     const [isCategoryDialogOpen, setIsCategoryDialogOpen] = useState(false);
 
@@ -118,6 +119,7 @@ export function TransactionDialog({
     useEffect(() => {
         if (isEditing) return;
         if (!shouldAutoSelectFirstCategory) return;
+        if (hasUserChangedCategoryRef.current) return;
         if (categoryId !== null) return;
         if (filteredCategories.length === 0) return;
         setCategoryId(filteredCategories[0].id);
@@ -128,7 +130,13 @@ export function TransactionDialog({
         categoryId,
     ]);
 
+    function handleCategoryChange(nextCategoryId: string | null) {
+        hasUserChangedCategoryRef.current = true;
+        setCategoryId(nextCategoryId);
+    }
+
     function handleClose() {
+        hasUserChangedCategoryRef.current = false;
         setAmount("");
         setTransactedAt(todayDateString());
         setIsIncome(false);
@@ -290,7 +298,7 @@ export function TransactionDialog({
             <CategoryPicker
                 categories={filteredCategories}
                 selectedId={categoryId}
-                onChange={setCategoryId}
+                onChange={handleCategoryChange}
                 onAdd={() => setIsCategoryDialogOpen(true)}
                 customOption={customCategoryOption}
                 customOptionDescription={
@@ -352,7 +360,7 @@ export function TransactionDialog({
             <CategoryDialog
                 isOpen={isCategoryDialogOpen}
                 onClose={() => setIsCategoryDialogOpen(false)}
-                onCreated={setCategoryId}
+                onCreated={handleCategoryChange}
             />
         </>
     );
