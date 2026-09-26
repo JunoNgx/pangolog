@@ -32,7 +32,15 @@ export function CategoryPicker({
         ...categories.map((category) => category.name),
     ];
 
-    function handleCategoryKeyDown(event: KeyboardEvent<HTMLButtonElement>) {
+    // Bug: Pressing Escape does not close the parent modal when a category
+    //      button has focus.
+    // Why: HeroUI Button stops keydown propagation, so the modal's Escape
+    //      handler never receives the event.
+    // Fix: Handle category typeahead on keyup. This leaves keydown available
+    //      for HeroUI and the modal while preserving focus cycling.
+    // Todo: Prefer keydown when HeroUI no longer blocks the modal's Escape
+    //       handling through propagation.
+    function handleCategoryKeyUp(event: KeyboardEvent<HTMLButtonElement>) {
         if (document.activeElement !== event.currentTarget) {
             return;
         }
@@ -115,7 +123,7 @@ export function CategoryPicker({
                                     : customOption.id,
                             )
                         }
-                        onKeyDown={handleCategoryKeyDown}
+                        onKeyUp={handleCategoryKeyUp}
                         ref={(button) => {
                             categoryButtonRefs.current[0] = button;
                         }}
@@ -146,7 +154,7 @@ export function CategoryPicker({
                                 selectedId === category.id ? null : category.id,
                             )
                         }
-                        onKeyDown={handleCategoryKeyDown}
+                        onKeyUp={handleCategoryKeyUp}
                     >
                         <span
                             className="inline-block h-5 w-1 sm:h-6"
