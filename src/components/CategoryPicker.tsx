@@ -2,6 +2,7 @@
 
 import { Button } from "@heroui/react";
 import { Plus } from "lucide-react";
+import { type KeyboardEvent, useRef } from "react";
 import type { Category } from "@/lib/db/types";
 
 interface CategoryPickerProps {
@@ -24,6 +25,50 @@ export function CategoryPicker({
     customOption,
     customOptionDescription,
 }: CategoryPickerProps) {
+    const categoryButtonRefs = useRef<Array<HTMLButtonElement | null>>([]);
+
+    function handleCategoryKeyDown(event: KeyboardEvent<HTMLButtonElement>) {
+        if (document.activeElement !== event.currentTarget) {
+            return;
+        }
+
+        const key = event.key.toLowerCase();
+        const isSingleCharacterKey = key.length === 1;
+        const isAsciiLetter = isSingleCharacterKey && key >= "a" && key <= "z";
+        const isAsciiDigit = isSingleCharacterKey && key >= "0" && key <= "9";
+        const isAsciiAlphanumericKey = isAsciiLetter || isAsciiDigit;
+
+        if (!isAsciiAlphanumericKey) {
+            return;
+        }
+
+        const matchingCategoryIndexes = categories.reduce<number[]>(
+            (categoryIndexes, category, index) => {
+                if (category.name.toLowerCase().startsWith(key)) {
+                    categoryIndexes.push(index);
+                }
+
+                return categoryIndexes;
+            },
+            [],
+        );
+
+        if (matchingCategoryIndexes.length === 0) {
+            return;
+        }
+
+        const focusedCategoryIndex = categoryButtonRefs.current.indexOf(
+            event.currentTarget,
+        );
+        const nextCategoryIndex =
+            matchingCategoryIndexes.find(
+                (categoryIndex) => categoryIndex > focusedCategoryIndex,
+            ) ?? matchingCategoryIndexes[0];
+
+        event.preventDefault();
+        categoryButtonRefs.current[nextCategoryIndex]?.focus();
+    }
+
     return (
         <div>
             <div className="mb-2 flex items-center justify-between">
@@ -69,9 +114,12 @@ export function CategoryPicker({
                         <span>{customOption.label}</span>
                     </Button>
                 )}
-                {categories.map((cat, index) => (
+                {categories.map((category, index) => (
                     <Button
-                        key={cat.id}
+                        key={category.id}
+                        ref={(button) => {
+                            categoryButtonRefs.current[index] = button;
+                        }}
                         id={
                             index === 0 && !customOption
                                 ? "first-category"
@@ -79,17 +127,22 @@ export function CategoryPicker({
                         }
                         className="h-7 gap-1.5 rounded-md px-2 sm:h-9 sm:rounded-lg"
                         size="sm"
-                        variant={selectedId === cat.id ? "primary" : "outline"}
-                        onPress={() =>
-                            onChange(selectedId === cat.id ? null : cat.id)
+                        variant={
+                            selectedId === category.id ? "primary" : "outline"
                         }
+                        onPress={() =>
+                            onChange(
+                                selectedId === category.id ? null : category.id,
+                            )
+                        }
+                        onKeyDown={handleCategoryKeyDown}
                     >
                         <span
                             className="inline-block h-5 w-1 sm:h-6"
-                            style={{ backgroundColor: cat.colour }}
+                            style={{ backgroundColor: category.colour }}
                         />
-                        <span>{cat.icon}</span>
-                        <span>{cat.name}</span>
+                        <span>{category.icon}</span>
+                        <span>{category.name}</span>
                     </Button>
                 ))}
             </div>
