@@ -48,6 +48,10 @@ export function useSyncFn() {
 
     const sync = useCallback(
         async (isSilent = false) => {
+            if (typeof navigator !== "undefined" && !navigator.onLine) {
+                if (!isSilent) toast.warning("You are offline.");
+                return;
+            }
             if (isSyncing) return;
             isSyncing = true;
 
@@ -183,6 +187,12 @@ export function useSync() {
                 "visibilitychange",
                 handleVisibilityChange,
             );
+    }, [sync]);
+
+    useEffect(() => {
+        const handleOnline = () => sync(true);
+        window.addEventListener("online", handleOnline);
+        return () => window.removeEventListener("online", handleOnline);
     }, [sync]);
 
     return { sync };

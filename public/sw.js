@@ -10,8 +10,8 @@ self.addEventListener("install", (event) => {
                     "/",
                     "/log",
                     "/summary",
+                    "/manage",
                     "/settings",
-                    "/recurring",
                     "/help",
                     "/terms",
                     "/privacy",
@@ -71,7 +71,10 @@ self.addEventListener("fetch", (event) => {
                         .then((cache) => cache.put(request, response.clone()));
                     return response;
                 })
-                .catch(() => caches.match(request) ?? caches.match("/")),
+                .catch(async () => {
+                    const cachedResponse = await caches.match(request);
+                    return cachedResponse ?? (await caches.match("/"));
+                }),
         );
     }
 });

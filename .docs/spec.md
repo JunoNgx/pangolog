@@ -84,7 +84,7 @@ Approach: - TanStack Query as the source of truth for UI - IndexedDB as the loca
 
 - Works offline without an internet connection via a hand-written service worker (`public/sw.js`)
 - Cache-first for `/_next/static/` assets (content-addressed, immutable); network-first with cache fallback for page navigations; network-only for `/api/`
-- Cache versioned via `?v=NEXT_PUBLIC_VERSION` URL param on SW registration - no manual bumping needed
+- Cache versioned via `?v=NEXT_PUBLIC_COMMIT_HASH` URL param on SW registration, falling back to `NEXT_PUBLIC_VERSION` - no manual bumping needed
 - Disabled in dev (`NODE_ENV === 'development'`) and overridable via `NEXT_PUBLIC_SW_ENABLED=false`
 - Offline indicator shown in SyncButton (connected users) and LogClient (non-connected users)
 - Sync attempted while offline triggers a warning toast instead of a network call
