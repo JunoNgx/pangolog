@@ -26,6 +26,11 @@ export function CategoryPicker({
     customOptionDescription,
 }: CategoryPickerProps) {
     const categoryButtonRefs = useRef<Array<HTMLButtonElement | null>>([]);
+    const customOptionOffset = customOption ? 1 : 0;
+    const categoryNames = [
+        ...(customOption ? [customOption.label] : []),
+        ...categories.map((category) => category.name),
+    ];
 
     function handleCategoryKeyDown(event: KeyboardEvent<HTMLButtonElement>) {
         if (document.activeElement !== event.currentTarget) {
@@ -42,9 +47,9 @@ export function CategoryPicker({
             return;
         }
 
-        const matchingCategoryIndexes = categories.reduce<number[]>(
-            (categoryIndexes, category, index) => {
-                if (category.name.toLowerCase().startsWith(key)) {
+        const matchingCategoryIndexes = categoryNames.reduce<number[]>(
+            (categoryIndexes, categoryName, index) => {
+                if (categoryName.toLowerCase().startsWith(key)) {
                     categoryIndexes.push(index);
                 }
 
@@ -110,6 +115,10 @@ export function CategoryPicker({
                                     : customOption.id,
                             )
                         }
+                        onKeyDown={handleCategoryKeyDown}
+                        ref={(button) => {
+                            categoryButtonRefs.current[0] = button;
+                        }}
                     >
                         <span>{customOption.label}</span>
                     </Button>
@@ -118,10 +127,12 @@ export function CategoryPicker({
                     <Button
                         key={category.id}
                         ref={(button) => {
-                            categoryButtonRefs.current[index] = button;
+                            categoryButtonRefs.current[
+                                index + customOptionOffset
+                            ] = button;
                         }}
                         id={
-                            index === 0 && !customOption
+                            category.id === categories[0]?.id && !customOption
                                 ? "first-category"
                                 : undefined
                         }
