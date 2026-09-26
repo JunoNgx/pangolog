@@ -12,7 +12,6 @@ self.addEventListener("install", (event) => {
                     "/summary",
                     "/manage",
                     "/settings",
-                    "/recurring",
                     "/help",
                     "/terms",
                     "/privacy",
