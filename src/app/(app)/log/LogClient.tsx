@@ -57,6 +57,7 @@ export default function LogClient() {
     const isOnlyBigBucks = logViewDisplayMode === "bucks";
 
     useHotkey("f", handleSearchHotkey, { hasMod: true });
+    useHotkey("BrowserSearch", handleSearchHotkey);
 
     function handleCycleDisplayMode() {
         if (logViewDisplayMode === "dimes") {
