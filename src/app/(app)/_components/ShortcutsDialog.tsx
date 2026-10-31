@@ -8,6 +8,7 @@ import { useHotkey } from "@/lib/hooks/useHotkey";
 
 type Shortcut = {
     keys: string[];
+    alternativeKeys?: string[];
     description: string;
 };
 
@@ -31,7 +32,11 @@ const SHORTCUT_GROUPS: ShortcutGroup[] = [
         title: "Transaction view",
         shortcuts: [
             { keys: ["Ctrl/Cmd", "Enter"], description: "Open create dialog" },
-            { keys: ["Ctrl/Cmd", "F"], description: "Enter search mode" },
+            {
+                keys: ["Ctrl/Cmd", "F"],
+                alternativeKeys: ["Search key"],
+                description: "Enter search mode",
+            },
             { keys: ["["], description: "Go to previous period" },
             { keys: ["]"], description: "Go to next period" },
             {
@@ -106,10 +111,22 @@ export function ShortcutsDialog({ children }: { children?: React.ReactNode }) {
             <span className="text-foreground text-sm">
                 {shortcut.description}
             </span>
-            <span className="flex shrink-0 items-center gap-1">
-                {shortcut.keys.map((key) => (
-                    <Kbd key={key}>{key}</Kbd>
-                ))}
+            <span className="flex max-w-full min-w-0 flex-wrap items-center justify-end gap-1">
+                <span className="flex shrink-0 items-center gap-1">
+                    {shortcut.keys.map((key) => (
+                        <Kbd key={key}>{key}</Kbd>
+                    ))}
+                </span>
+                {shortcut.alternativeKeys && (
+                    <>
+                        <span className="text-muted text-xs">or</span>
+                        <span className="flex shrink-0 items-center gap-1">
+                            {shortcut.alternativeKeys.map((key) => (
+                                <Kbd key={key}>{key}</Kbd>
+                            ))}
+                        </span>
+                    </>
+                )}
             </span>
         </li>
     );
